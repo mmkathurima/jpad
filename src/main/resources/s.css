@@ -1,0 +1,229 @@
+body {
+    width: 95%;
+    margin: 20px 11px;
+    background: #F4F4F4;
+    text-decoration: none;
+    color: #333;
+}
+
+h1, h2, h3, h4 {
+    color: #2580A2;
+    margin: 1px;
+}
+
+h1 {
+    font: bold 22pt tahoma, sans-serif;
+    border-bottom: 2px solid #047;
+    margin: 20px auto;
+}
+
+h2 {
+    width: 80%;
+    border-bottom: 1px solid #047;
+    margin: 6px auto 6px 0;
+}
+
+.error {
+    color: red;
+}
+
+
+/******************** FOOTER CSS *******************/
+
+
+.footer {
+    margin: 120px 0 5px;
+    padding: 0;
+    border-top: 1px solid #047;
+    border-right: 1px solid #047;
+    border-left: 1px solid #047;
+    border-bottom: 1px solid #047;
+    background: #D0D0FF;
+    color: #2580A2;
+    text-align: center;
+}
+
+.footer p {
+    padding: 2px;
+    margin: 0;
+    text-align: center;
+}
+
+
+.footer a, .footer a:hover, .footer a:focus, .footer a:active {
+    color: #2580A2;
+}
+
+/******************** Table *******************/
+
+
+table {
+    border: 1px solid gray;
+    border-collapse: collapse;
+    color: #fff;
+    font: normal 10px verdana, arial, helvetica, sans-serif;
+}
+
+caption {
+    border: 1px solid #5C443A;
+    color: #5C443A;
+    font-weight: bold;
+    letter-spacing: 20px;
+    padding: 6px 4px 8px 0px;
+    text-align: center;
+    text-transform: uppercase;
+}
+
+
+td, th {
+    color: #222;
+    border: 1px gray;
+    padding: .4em;
+    border: 1px dotted gray;
+}
+
+tr {
+    border: 1px dotted gray;
+}
+
+th {
+    color: #FFFFFF;
+}
+
+thead th a, tfoot th a {
+    text-decoration: none;
+    color: #FFFFFF;
+}
+
+a img {
+    border: 0
+}
+
+thead th, tfoot th {
+    background: #226CAE;
+    padding: 3px 10px 3px 10px;
+    text-align: left;
+    border: 1px solid gray;
+}
+
+/** keyed / attributed columns styling **/
+col.atts, col.attg, col.attp, col.attu {
+    border: 1px solid #AAAAAA;
+}
+
+col.atts {
+    border-color: #F00;
+}
+
+col.attp {
+    border-color: #0F0;
+}
+
+col.attu {
+    border-color: #FD4;
+}
+
+col.attg {
+    border-color: #00F;
+}
+
+col.key {
+    border-right: 2px solid #000000;
+}
+
+tbody td a {
+    color: #22A;
+    text-decoration: none;
+    padding: 0 5px 0 0;
+}
+
+tbody td a:hover {
+    text-decoration: underline;
+}
+
+tbody tr:nth-child(odd) {
+    background-color: #eee;
+}
+
+tbody tr:nth-child(even) {
+    background-color: #fff;
+}
+
+tbody th a {
+    color: #363636;
+    font-weight: normal;
+    text-decoration: none;
+}
+
+tbody th a:hover {
+    color: #363636;
+}
+
+tbody th, tbody td {
+    text-align: left;
+    vertical-align: top;
+}
+
+tfoot td {
+    background: #fff;
+    color: #FFFFFF;
+    padding-top: 3px;
+}
+
+.odd {
+    background: #D3E4E5;
+}
+
+tbody tr:hover {
+    background: #EE6;
+    border: 1px solid #222222;
+    color: #000000;
+}
+
+a {
+    color: #00F;
+}
+
+
+/***********************************       CHART.html  **/
+
+body#chart {
+}
+
+#chart #explain {
+    font-size: 0.8em;
+}
+
+#chart #graphdiv {
+    margin: 3px;
+}
+
+#chart #graphout {
+    margin: 10px 0;
+    padding: 5px;
+    border: 1px solid #444;
+    width: 720px;
+    height: 340px;
+}
+
+
+.boxy {
+    background: #DDF;
+    border: 1px solid #AAF;
+    width: 700px;
+    padding: 5px 10px 5px 10px;
+}
+
+.boxyerr {
+    background: #FEE;
+    border: 1px solid #FAA;
+    width: 700px;
+    padding: 5px 10px 5px 10px;
+}
+
+/***********************************       QUERY.html  **/
+
+#qresults {
+    margin: 20px auto;
+}
+
