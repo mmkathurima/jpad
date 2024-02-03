@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 class ChartResultSetBuilder {
     public static ChartResultSet getChartResultSet(ResultSet rs) throws SQLException {
         rs.beforeFirst();
@@ -16,7 +15,6 @@ class ChartResultSetBuilder {
         List<ChartResultSet.NumericCol> numericColumns = new ArrayList<ChartResultSet.NumericCol>();
         List<ChartResultSet.StringyCol> stringyColumns = new ArrayList<ChartResultSet.StringyCol>();
         ChartResultSet.TimeCol timeColumn = null;
-
 
         String rowTitle = "";
         List<Integer> stringIdxs = new ArrayList<Integer>();
@@ -50,7 +48,6 @@ class ChartResultSetBuilder {
         return new ChartResultSet(numericColumns, stringyColumns, rowLabels, timeColumn, rowTitle, "");
     }
 
-
     private static List<String> getRowLabels(ResultSet rs, List<Integer> stringIdxs) throws SQLException {
         List<String> rowNames = new ArrayList<String>();
 
@@ -72,7 +69,6 @@ class ChartResultSetBuilder {
         return rowNames;
     }
 
-
     private static double[] getDoubles(int column, ResultSet rs, int rowCount) throws SQLException {
         double[] nums = new double[rowCount];
         rs.beforeFirst();
@@ -90,7 +86,6 @@ class ChartResultSetBuilder {
         assert i == nums.length;
         return nums;
     }
-
 
     private static List<Object> getObjects(int column, ResultSet rs) throws SQLException {
         ArrayList<Object> vals = new ArrayList();

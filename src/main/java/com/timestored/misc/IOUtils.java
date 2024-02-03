@@ -7,7 +7,6 @@ import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-
 public class IOUtils {
     public static String toString(File file, Charset charset, int bytes) throws IOException {
         int bytesToRead = (bytes != -1) ? bytes : (int) file.length();
@@ -18,16 +17,13 @@ public class IOUtils {
         return new String(buffer, charset);
     }
 
-
     public static String toString(File file, Charset charset) throws IOException {
         return toString(file, charset, -1);
     }
 
-
     public static String toString(File file) throws IOException {
         return toString(file, StandardCharsets.UTF_8, -1);
     }
-
 
     public static String toString(Class c, String resourceName) throws IOException {
         InputStream is = c.getResourceAsStream(resourceName);
@@ -46,7 +42,6 @@ public class IOUtils {
         return bos.toString();
     }
 
-
     public static File createTempCopy(String filename, InputStream is) throws IOException {
         File tempf = Files.createTempDir();
         File f = new File(tempf, filename);
@@ -55,7 +50,6 @@ public class IOUtils {
         Files.write(buffer, f);
         return f;
     }
-
 
     public static boolean containsMoreThanMaxFiles(File file, int maxFiles) {
         return (countFiles(file, maxFiles, 0) > maxFiles);

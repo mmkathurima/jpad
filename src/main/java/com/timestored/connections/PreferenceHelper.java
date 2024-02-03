@@ -6,7 +6,6 @@ import com.timestored.misc.Encryptor;
 
 import java.io.IOException;
 
-
 public class PreferenceHelper {
     private static final String ENCRYPTED_PREFIX = "XXX_I_AM_ENCRYPTED_XXX";
     private static final String ENCODED_PREFIX = "XXX_ENCODED_XXX";

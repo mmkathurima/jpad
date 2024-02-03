@@ -1,18 +1,15 @@
 package io.jpad.resultset;
 
-
 import com.google.common.collect.Maps;
 
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.Map;
 
-
 class SimpleCollectionResultSet<T>
         extends CollectionResultSet<T>
         implements KeyedResultSet {
     private static final Map<Class<?>, Integer> simpleToSqlType = Maps.newHashMap();
-
 
     static {
 
@@ -49,16 +46,13 @@ class SimpleCollectionResultSet<T>
         simpleToSqlType.put(Boolean.class, Integer.valueOf(-7));
 
         simpleToSqlType.put(boolean.class, Integer.valueOf(-7));
-
     }
 
     private final ResultSetMetaData rsmd;
 
-
     public SimpleCollectionResultSet(String colNameAndCaption, Iterable<T> c) {
 
         super(c);
-
 
         Class<?> t = CollectionUtils.getType(c);
 
@@ -67,68 +61,50 @@ class SimpleCollectionResultSet<T>
         if (colType == null) {
 
             colType = Integer.valueOf(12);
-
         }
 
         this.rsmd = new SimpleResultSetMetaData(colNameAndCaption, colType.intValue());
-
     }
-
 
     public static boolean isCompatible(Class<?> cls) {
 
         return simpleToSqlType.containsKey(cls);
-
     }
-
 
     public static Integer getSqlType(Class<?> cls) {
 
         return simpleToSqlType.get(cls);
-
     }
-
 
     public ResultSetMetaData getMetaData() throws SQLException {
 
         return this.rsmd;
-
     }
-
 
     public Object getObject(int columnIndex) throws SQLException {
 
         return this.l.get(this.i);
-
     }
-
 
     public int findColumn(String columnLabel) throws SQLException {
 
         return 1;
-
     }
-
 
     public Object getObject(int columnIndex, Map<String, Class<?>> map) throws SQLException {
 
         return null;
-
     }
-
 
     public int getNumberOfKeyColumns() {
 
         return 0;
-
     }
 
     public String getCaption() {
 
         return "";
-
     }
-
 }
 
 

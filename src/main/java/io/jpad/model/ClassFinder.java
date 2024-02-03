@@ -1,6 +1,5 @@
 package io.jpad.model;
 
-
 import com.google.common.collect.Lists;
 
 import java.io.File;
@@ -12,15 +11,12 @@ import java.util.jar.JarFile;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class ClassFinder {
     private static final Logger log = Logger.getLogger(ClassFinder.class.getName());
 
+    public static <T> List<Class<T>> findClasses(Predicate<String> filter, Class<T> interfaceWanted) {
 
-    public static <T> List<Class<T>> findClasses(final Predicate<String> filter, final Class<T> interfaceWanted) {
-
-        final List<Class<T>> instances = Lists.newArrayList();
-
+        List<Class<T>> instances = Lists.newArrayList();
 
         findClasses(new Visitor<String>() {
 
@@ -35,34 +31,25 @@ public class ClassFinder {
                         if (interfaceWanted.isAssignableFrom(cls)) {
 
                             instances.add((Class<T>) cls);
-
                         }
-
                     } catch (ClassNotFoundException | NoClassDefFoundError e) {
 
-                        ClassFinder.log.log(Level.WARNING, "problem loading plugin", e);
-
+                        log.log(Level.WARNING, "problem loading plugin", e);
                     }
-
                 }
 
                 return true;
-
             }
-
         });
 
         return instances;
-
     }
-
 
     public static void findClasses(Visitor<String> visitor) {
 
         String classpath = System.getProperty("java.class.path");
 
         String[] paths = classpath.split(System.getProperty("path.separator"));
-
 
         String javaHome = System.getProperty("java.home");
 
@@ -71,9 +58,7 @@ public class ClassFinder {
         if (file.exists()) {
 
             findClasses(file, file, true, visitor);
-
         }
-
 
         for (String path : paths) {
 
@@ -82,13 +67,9 @@ public class ClassFinder {
             if (file.exists()) {
 
                 findClasses(file, file, true, visitor);
-
             }
-
         }
-
     }
-
 
     private static boolean findClasses(File root, File file, boolean includeJars, Visitor<String> visitor) {
 
@@ -99,12 +80,8 @@ public class ClassFinder {
                 if (!findClasses(root, child, includeJars, visitor)) {
 
                     return false;
-
                 }
-
             }
-
-
         } else if (file.getName().toLowerCase().endsWith(".jar") && includeJars) {
 
             JarFile jar = null;
@@ -112,10 +89,8 @@ public class ClassFinder {
             try {
 
                 jar = new JarFile(file);
-
             } catch (Exception ex) {
             }
-
 
             if (jar != null) {
 
@@ -133,23 +108,14 @@ public class ClassFinder {
                             !visitor.visit(name.substring(0, extIndex).replace("/", "."))) {
 
                         return false;
-
                     }
-
                 }
-
-
             }
-
-
         } else return !file.getName().toLowerCase().endsWith(".class") ||
                 visitor.visit(createClassName(root, file));
 
-
         return true;
-
     }
-
 
     private static String createClassName(File root, File file) {
 
@@ -166,13 +132,10 @@ public class ClassFinder {
             sb.insert(0, '.').insert(0, file.getName());
 
             file = file.getParentFile();
-
         }
 
         return sb.toString();
-
     }
-
 }
 
 

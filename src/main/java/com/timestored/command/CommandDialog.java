@@ -15,7 +15,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 
-
 public class CommandDialog
         extends JDialog {
     private static final long serialVersionUID = 1L;
@@ -26,7 +25,6 @@ public class CommandDialog
     private String prevSearch = "";
     private Collection<Command> commands = Collections.emptyList();
 
-
     public CommandDialog(String title, List<Command> commands, ExecutorService executorService) {
         this(title, new CommandProvider() {
             public Collection<Command> getCommands() {
@@ -35,17 +33,15 @@ public class CommandDialog
         }, executorService);
     }
 
-
-    public CommandDialog(String title, final CommandProvider commandProvider, ExecutorService executorService) {
+    public CommandDialog(String title, CommandProvider commandProvider, ExecutorService executorService) {
         this.executorService = Preconditions.checkNotNull(executorService);
-        setTitle(title);
-        setName("CodeOutlineDialog");
-        setMinimumSize(PREF_DIMENSION);
-        setPreferredSize(PREF_DIMENSION);
+        this.setTitle(title);
+        this.setName("CodeOutlineDialog");
+        this.setMinimumSize(PREF_DIMENSION);
+        this.setPreferredSize(PREF_DIMENSION);
 
         this.commandPanel = new CommandPanel();
-        final JTextField searchTextField = new JTextField();
-
+        JTextField searchTextField = new JTextField();
 
         ActionMap am = searchTextField.getActionMap();
         InputMap im = searchTextField.getInputMap();
@@ -97,14 +93,14 @@ public class CommandDialog
             }
         });
 
-        addWindowFocusListener(new WindowFocusListener() {
-                                   public void windowLostFocus(WindowEvent e) {
-                                       CommandDialog.this.dispose();
-                                   }
+        this.addWindowFocusListener(new WindowFocusListener() {
+                                        public void windowLostFocus(WindowEvent e) {
+                                            CommandDialog.this.dispose();
+                                        }
 
-                                   public void windowGainedFocus(WindowEvent e) {
-                                   }
-                               }
+                                        public void windowGainedFocus(WindowEvent e) {
+                                        }
+                                    }
         );
         searchTextField.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
@@ -120,15 +116,14 @@ public class CommandDialog
             }
         });
 
-        setLayout(new BorderLayout());
-        add(searchTextField, "North");
-        add(this.commandPanel, "Center");
+        this.setLayout(new BorderLayout());
+        this.add(searchTextField, "North");
+        this.add(this.commandPanel, "Center");
         searchTextField.requestFocus();
 
+        this.pack();
 
-        pack();
-
-        addFocusListener(new FocusListener() {
+        this.addFocusListener(new FocusListener() {
             public void focusLost(FocusEvent e) {
                 CommandDialog.this.setVisible(false);
                 CommandDialog.this.dispose();
@@ -148,7 +143,6 @@ public class CommandDialog
             }
         });
     }
-
 
     private void showDocsForSearch(String txt) {
         if (txt.trim().length() > 0) {

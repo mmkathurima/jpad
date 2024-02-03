@@ -1,28 +1,23 @@
 package io.jpad.japl;
 
-
 import com.google.common.base.Preconditions;
 
 import java.util.*;
-
 
 public class Japl {
     private static final Map<String, Object> data = new HashMap<>();
     private static final Random p = new Random();
 
-
     public static int[] set(String key, int[] value) {
 
         data.put(key, copy(value));
         return value;
-
     }
 
     public static double[] set(String key, double[] value) {
         data.put(key, copy(value));
         return value;
     }
-
 
     public static int set(String key, int value) {
         data.put(key, Integer.valueOf(value));
@@ -33,24 +28,19 @@ public class Japl {
 
         data.put(key, Double.valueOf(value));
         return value;
-
     }
-
 
     public static Object get(String key) {
         return data.get(key);
     }
 
-
     public static int geti(String key) {
         return ((Integer) data.get(key)).intValue();
     }
 
-
     public static double getd(String key) {
         return ((Double) data.get(key)).doubleValue();
     }
-
 
     public static int[] getia(String key) {
         return copy((int[]) data.get(key));
@@ -59,38 +49,31 @@ public class Japl {
     public static double[] getda(String key) {
 
         return copy((double[]) data.get(key));
-
     }
-
 
     private static void cl(double[] x, double[] y) {
 
         if (x.length != y.length) throw new IllegalArgumentException("length");
-
     }
 
     private static void cl(float[] x, float[] y) {
 
         if (x.length != y.length) throw new IllegalArgumentException("length");
-
     }
 
     private static void cl(short[] x, short[] y) {
 
         if (x.length != y.length) throw new IllegalArgumentException("length");
-
     }
 
     private static void cl(long[] x, long[] y) {
 
         if (x.length != y.length) throw new IllegalArgumentException("length");
-
     }
 
     private static void cl(byte[] x, byte[] y) {
 
         if (x.length != y.length) throw new IllegalArgumentException("length");
-
     }
 
     private static void cl(boolean[] x, boolean[] y) {
@@ -99,20 +82,16 @@ public class Japl {
         cn(y);
 
         if (x.length != y.length) throw new LengthKException();
-
     }
 
     private static void cl(int[] x, int[] y) {
 
         if (x.length != y.length) throw new IllegalArgumentException("length");
-
     }
-
 
     private static void cn(Object o) {
         if (o == null) throw new TypeKException();
     }
-
 
     private static double[] cD(int[] x) {
         double[] r;
@@ -125,7 +104,6 @@ public class Japl {
         }
         return r;
     }
-
 
     public static boolean[] cB(int[] x) {
         boolean[] r;
@@ -150,9 +128,7 @@ public class Japl {
             i++;
         }
         return r;
-
     }
-
 
     private static int[] cI(List<Integer> l) {
 
@@ -164,9 +140,7 @@ public class Japl {
         }
 
         return r;
-
     }
-
 
     public static double[] choose(int x, double y) {
 
@@ -177,7 +151,6 @@ public class Japl {
             i++;
         }
         return res;
-
     }
 
     public static int[] choose(int x, int y) {
@@ -189,9 +162,7 @@ public class Japl {
             i++;
         }
         return res;
-
     }
-
 
     public static int[] til(int x) {
 
@@ -204,7 +175,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static long[] til(long x) {
@@ -218,21 +188,17 @@ public class Japl {
             i++;
         }
         return r;
-
     }
-
 
     public static double[] asc(double[] x) {
         Arrays.sort(x);
         return x;
     }
 
-
     public static int[] asc(int[] x) {
         Arrays.sort(x);
         return x;
     }
-
 
     public static double asc(double x) {
         return x;
@@ -241,9 +207,7 @@ public class Japl {
     public static double asc(int x) {
 
         return x;
-
     }
-
 
     public static double max(double[] x) {
         double r = Double.NEGATIVE_INFINITY;
@@ -255,7 +219,6 @@ public class Japl {
         return r;
     }
 
-
     public static int max(int[] x) {
         int r = Integer.MIN_VALUE;
 
@@ -266,7 +229,6 @@ public class Japl {
         return r;
     }
 
-
     public static double max(double x) {
         return x;
     }
@@ -274,9 +236,7 @@ public class Japl {
     public static int max(int x) {
 
         return x;
-
     }
-
 
     public static double min(double[] x) {
         double r = Double.POSITIVE_INFINITY;
@@ -288,7 +248,6 @@ public class Japl {
         return r;
     }
 
-
     public static int min(int[] x) {
         int r = Integer.MAX_VALUE;
 
@@ -299,7 +258,6 @@ public class Japl {
         return r;
     }
 
-
     public static double min(double x) {
         return x;
     }
@@ -307,9 +265,7 @@ public class Japl {
     public static double min(int x) {
 
         return x;
-
     }
-
 
     public static double[] reverse(double[] x) {
 
@@ -318,12 +274,9 @@ public class Japl {
             double t = x[i];
             x[i] = x[x.length - i - 1];
             x[x.length - i - 1] = t;
-
         }
         return x;
-
     }
-
 
     public static int[] reverse(int[] x) {
         for (int i = 0; i < x.length / 2; i++) {
@@ -331,11 +284,9 @@ public class Japl {
             int t = x[i];
             x[i] = x[x.length - i - 1];
             x[x.length - i - 1] = t;
-
         }
         return x;
     }
-
 
     public static double desc(double x) {
         return x;
@@ -344,9 +295,7 @@ public class Japl {
     public static double desc(int x) {
 
         return x;
-
     }
-
 
     public static double[] copy(double[] x) {
 
@@ -357,7 +306,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] copy(int[] x) {
@@ -369,9 +317,7 @@ public class Japl {
             i++;
         }
         return r;
-
     }
-
 
     public static double[] mod(double[] x, double y) {
 
@@ -382,7 +328,6 @@ public class Japl {
             i++;
         }
         return x;
-
     }
 
     public static int[] mod(int[] x, int y) {
@@ -394,7 +339,6 @@ public class Japl {
             i++;
         }
         return x;
-
     }
 
     public static long[] mod(long[] x, long y) {
@@ -406,9 +350,7 @@ public class Japl {
             i++;
         }
         return x;
-
     }
-
 
     public static double sum(double[] x) {
 
@@ -422,9 +364,7 @@ public class Japl {
     public static double sum(double x) {
 
         return x;
-
     }
-
 
     public static int sum(int[] x) {
         int r = 0;
@@ -435,9 +375,7 @@ public class Japl {
     public static int sum(int x) {
 
         return x;
-
     }
-
 
     public static double prd(double[] x) {
         double r = 1.0D;
@@ -448,9 +386,7 @@ public class Japl {
     public static double prd(double x) {
 
         return x;
-
     }
-
 
     public static int prd(int[] x) {
         int r = 1;
@@ -461,9 +397,7 @@ public class Japl {
     public static int prd(int x) {
 
         return x;
-
     }
-
 
     public static double[] sums(double[] x) {
 
@@ -477,9 +411,7 @@ public class Japl {
     public static double sums(double x) {
 
         return x;
-
     }
-
 
     public static double[] prds(double[] x) {
         for (int i = 1; i < x.length; ) {
@@ -492,9 +424,7 @@ public class Japl {
     public static double prds(double x) {
 
         return x;
-
     }
-
 
     public static int[] where(boolean[] x) {
 
@@ -508,9 +438,7 @@ public class Japl {
         }
 
         return cI(r);
-
     }
-
 
     public static boolean[] equal(int x, int[] y) {
 
@@ -522,9 +450,7 @@ public class Japl {
         }
 
         return r;
-
     }
-
 
     public static double[] index(double[] vals, int[] indices) {
 
@@ -535,7 +461,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] index(int[] vals, int[] indices) {
@@ -547,7 +472,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static boolean[] index(boolean[] vals, int[] indices) {
@@ -559,9 +483,7 @@ public class Japl {
             i++;
         }
         return r;
-
     }
-
 
     public static int[] floor(double[] x) {
 
@@ -572,9 +494,7 @@ public class Japl {
             i++;
         }
         return r;
-
     }
-
 
     public static int[] ceiling(double[] x) {
 
@@ -585,9 +505,7 @@ public class Japl {
             i++;
         }
         return r;
-
     }
-
 
     public static int last(int[] x) {
 
@@ -597,9 +515,7 @@ public class Japl {
     public static double last(double[] x) {
 
         return x[x.length - 1];
-
     }
-
 
     public static int first(int[] x) {
 
@@ -609,9 +525,7 @@ public class Japl {
     public static double first(double[] x) {
 
         return x[0];
-
     }
-
 
     public static double[] join(double[] first, double[]... next) {
 
@@ -620,20 +534,16 @@ public class Japl {
         for (double[] d : next) {
 
             l += d.length;
-
         }
 
         double[] r = new double[l];
-
 
         int i = 0;
 
         for (; i < first.length; i++) {
 
             r[i] = first[i];
-
         }
-
 
         for (double[] d : next) {
 
@@ -642,18 +552,13 @@ public class Japl {
             for (; j < d.length; j++) {
 
                 r[i + j] = d[j];
-
             }
 
             i += j;
-
         }
 
-
         return r;
-
     }
-
 
     public static double[] step(double from, double to, int numSteps) {
 
@@ -665,12 +570,9 @@ public class Japl {
         if (numSteps == 1) {
 
             return new double[]{(from + to) / 2.0D};
-
         }
 
-
         double[] r = new double[numSteps];
-
 
         r[0] = from;
 
@@ -679,20 +581,16 @@ public class Japl {
         for (int i = 1; i < numSteps; i++) {
 
             r[i] = r[i - 1] + step;
-
         }
 
         r[numSteps - 1] = to;
 
         return r;
-
     }
-
 
     public static int mul(int x, int y) {
 
         return x * y;
-
     }
 
     public static int[] mul(int[] x, int y) {
@@ -704,7 +602,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] mul(int x, int[] y) {
@@ -716,7 +613,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] mul(int[] x, int[] y) {
@@ -729,13 +625,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int mul(byte x, byte y) {
 
         return x * y;
-
     }
 
     public static int[] mul(byte[] x, byte y) {
@@ -747,7 +641,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] mul(byte x, byte[] y) {
@@ -759,7 +652,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] mul(byte[] x, byte[] y) {
@@ -772,13 +664,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int mul(short x, short y) {
 
         return x * y;
-
     }
 
     public static int[] mul(short[] x, short y) {
@@ -790,7 +680,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] mul(short x, short[] y) {
@@ -802,7 +691,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] mul(short[] x, short[] y) {
@@ -815,13 +703,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static long mul(long x, long y) {
 
         return x * y;
-
     }
 
     public static long[] mul(long[] x, long y) {
@@ -833,7 +719,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static long[] mul(long x, long[] y) {
@@ -845,7 +730,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static long[] mul(long[] x, long[] y) {
@@ -858,13 +742,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static float mul(float x, float y) {
 
         return x * y;
-
     }
 
     public static float[] mul(float[] x, float y) {
@@ -876,7 +758,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static float[] mul(float x, float[] y) {
@@ -888,7 +769,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static float[] mul(float[] x, float[] y) {
@@ -901,13 +781,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double mul(double x, double y) {
 
         return x * y;
-
     }
 
     public static double[] mul(double[] x, double y) {
@@ -919,7 +797,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double[] mul(double x, double[] y) {
@@ -931,9 +808,7 @@ public class Japl {
             i++;
         }
         return r;
-
     }
-
 
     public static double[] mul(double[] x, double[] y) {
         double[] r = new double[x.length];
@@ -946,7 +821,6 @@ public class Japl {
         return r;
     }
 
-
     public static double[] mul(double x, int[] y) {
         return mul(x, cD(y));
     }
@@ -954,14 +828,11 @@ public class Japl {
     public static double[] mul(int[] x, double y) {
 
         return mul(cD(x), y);
-
     }
-
 
     public static int add(int x, int y) {
 
         return x + y;
-
     }
 
     public static int[] add(int[] x, int y) {
@@ -973,7 +844,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] add(int x, int[] y) {
@@ -985,7 +855,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] add(int[] x, int[] y) {
@@ -998,13 +867,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int add(byte x, byte y) {
 
         return x + y;
-
     }
 
     public static int[] add(byte[] x, byte y) {
@@ -1016,7 +883,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] add(byte x, byte[] y) {
@@ -1028,7 +894,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] add(byte[] x, byte[] y) {
@@ -1041,13 +906,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int add(short x, short y) {
 
         return x + y;
-
     }
 
     public static int[] add(short[] x, short y) {
@@ -1059,7 +922,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] add(short x, short[] y) {
@@ -1071,7 +933,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] add(short[] x, short[] y) {
@@ -1084,13 +945,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static long add(long x, long y) {
 
         return x + y;
-
     }
 
     public static long[] add(long[] x, long y) {
@@ -1102,7 +961,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static long[] add(long x, long[] y) {
@@ -1114,7 +972,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static long[] add(long[] x, long[] y) {
@@ -1127,13 +984,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static float add(float x, float y) {
 
         return x + y;
-
     }
 
     public static float[] add(float[] x, float y) {
@@ -1145,7 +1000,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static float[] add(float x, float[] y) {
@@ -1157,7 +1011,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static float[] add(float[] x, float[] y) {
@@ -1170,13 +1023,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double add(double x, double y) {
 
         return x + y;
-
     }
 
     public static double[] add(double[] x, double y) {
@@ -1188,7 +1039,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double[] add(double x, double[] y) {
@@ -1200,9 +1050,7 @@ public class Japl {
             i++;
         }
         return r;
-
     }
-
 
     public static double[] add(double[] x, double[] y) {
         double[] r = new double[x.length];
@@ -1215,7 +1063,6 @@ public class Japl {
         return r;
     }
 
-
     public static double[] add(double x, int[] y) {
         return add(x, cD(y));
     }
@@ -1223,14 +1070,11 @@ public class Japl {
     public static double[] add(int[] x, double y) {
 
         return add(cD(x), y);
-
     }
-
 
     public static int sub(int x, int y) {
 
         return x - y;
-
     }
 
     public static int[] sub(int[] x, int y) {
@@ -1242,7 +1086,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] sub(int x, int[] y) {
@@ -1254,7 +1097,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] sub(int[] x, int[] y) {
@@ -1267,13 +1109,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int sub(byte x, byte y) {
 
         return x - y;
-
     }
 
     public static int[] sub(byte[] x, byte y) {
@@ -1285,7 +1125,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] sub(byte x, byte[] y) {
@@ -1297,7 +1136,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] sub(byte[] x, byte[] y) {
@@ -1310,13 +1148,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int sub(short x, short y) {
 
         return x - y;
-
     }
 
     public static int[] sub(short[] x, short y) {
@@ -1328,7 +1164,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] sub(short x, short[] y) {
@@ -1340,7 +1175,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] sub(short[] x, short[] y) {
@@ -1353,13 +1187,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static long sub(long x, long y) {
 
         return x - y;
-
     }
 
     public static long[] sub(long[] x, long y) {
@@ -1371,7 +1203,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static long[] sub(long x, long[] y) {
@@ -1383,7 +1214,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static long[] sub(long[] x, long[] y) {
@@ -1396,13 +1226,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static float sub(float x, float y) {
 
         return x - y;
-
     }
 
     public static float[] sub(float[] x, float y) {
@@ -1414,7 +1242,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static float[] sub(float x, float[] y) {
@@ -1426,7 +1253,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static float[] sub(float[] x, float[] y) {
@@ -1439,13 +1265,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double sub(double x, double y) {
 
         return x - y;
-
     }
 
     public static double[] sub(double[] x, double y) {
@@ -1457,7 +1281,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double[] sub(double x, double[] y) {
@@ -1469,9 +1292,7 @@ public class Japl {
             i++;
         }
         return r;
-
     }
-
 
     public static double[] sub(double[] x, double[] y) {
         double[] r = new double[x.length];
@@ -1484,7 +1305,6 @@ public class Japl {
         return r;
     }
 
-
     public static double[] sub(double x, int[] y) {
         return sub(x, cD(y));
     }
@@ -1492,14 +1312,11 @@ public class Japl {
     public static double[] sub(int[] x, double y) {
 
         return sub(cD(x), y);
-
     }
-
 
     public static int div(int x, int y) {
 
         return x / y;
-
     }
 
     public static int[] div(int[] x, int y) {
@@ -1511,7 +1328,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] div(int x, int[] y) {
@@ -1523,7 +1339,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] div(int[] x, int[] y) {
@@ -1536,13 +1351,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int div(byte x, byte y) {
 
         return x / y;
-
     }
 
     public static int[] div(byte[] x, byte y) {
@@ -1554,7 +1367,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] div(byte x, byte[] y) {
@@ -1566,7 +1378,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] div(byte[] x, byte[] y) {
@@ -1579,13 +1390,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int div(short x, short y) {
 
         return x / y;
-
     }
 
     public static int[] div(short[] x, short y) {
@@ -1597,7 +1406,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] div(short x, short[] y) {
@@ -1609,7 +1417,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static int[] div(short[] x, short[] y) {
@@ -1622,13 +1429,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static long div(long x, long y) {
 
         return x / y;
-
     }
 
     public static long[] div(long[] x, long y) {
@@ -1640,7 +1445,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static long[] div(long x, long[] y) {
@@ -1652,7 +1456,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static long[] div(long[] x, long[] y) {
@@ -1665,13 +1468,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static float div(float x, float y) {
 
         return x / y;
-
     }
 
     public static float[] div(float[] x, float y) {
@@ -1683,7 +1484,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static float[] div(float x, float[] y) {
@@ -1695,7 +1495,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static float[] div(float[] x, float[] y) {
@@ -1708,13 +1507,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double div(double x, double y) {
 
         return x / y;
-
     }
 
     public static double[] div(double[] x, double y) {
@@ -1726,7 +1523,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double[] div(double x, double[] y) {
@@ -1738,9 +1534,7 @@ public class Japl {
             i++;
         }
         return r;
-
     }
-
 
     public static double[] div(double[] x, double[] y) {
         double[] r = new double[x.length];
@@ -1753,7 +1547,6 @@ public class Japl {
         return r;
     }
 
-
     public static double[] div(double x, int[] y) {
         return div(x, cD(y));
     }
@@ -1761,9 +1554,7 @@ public class Japl {
     public static double[] div(int[] x, double y) {
 
         return div(cD(x), y);
-
     }
-
 
     public static double[] sin(double[] x) {
 
@@ -1774,13 +1565,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double[] sin(int[] x) {
         return sin(cD(x));
     }
-
 
     public static double sin(double x) {
         return Math.sin(x);
@@ -1789,9 +1578,7 @@ public class Japl {
     public static double sin(int x) {
 
         return Math.sin(x);
-
     }
-
 
     public static double[] cos(double[] x) {
 
@@ -1802,13 +1589,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double[] cos(int[] x) {
         return cos(cD(x));
     }
-
 
     public static double cos(double x) {
         return Math.cos(x);
@@ -1817,9 +1602,7 @@ public class Japl {
     public static double cos(int x) {
 
         return Math.cos(x);
-
     }
-
 
     public static double[] tan(double[] x) {
 
@@ -1830,13 +1613,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double[] tan(int[] x) {
         return tan(cD(x));
     }
-
 
     public static double tan(double x) {
         return Math.tan(x);
@@ -1845,9 +1626,7 @@ public class Japl {
     public static double tan(int x) {
 
         return Math.tan(x);
-
     }
-
 
     public static double[] asin(double[] x) {
 
@@ -1858,13 +1637,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double[] asin(int[] x) {
         return asin(cD(x));
     }
-
 
     public static double asin(double x) {
         return Math.asin(x);
@@ -1873,9 +1650,7 @@ public class Japl {
     public static double asin(int x) {
 
         return Math.asin(x);
-
     }
-
 
     public static double[] acos(double[] x) {
 
@@ -1886,13 +1661,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double[] acos(int[] x) {
         return acos(cD(x));
     }
-
 
     public static double acos(double x) {
         return Math.acos(x);
@@ -1901,9 +1674,7 @@ public class Japl {
     public static double acos(int x) {
 
         return Math.acos(x);
-
     }
-
 
     public static double[] atan(double[] x) {
 
@@ -1914,13 +1685,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double[] atan(int[] x) {
         return atan(cD(x));
     }
-
 
     public static double atan(double x) {
         return Math.atan(x);
@@ -1929,9 +1698,7 @@ public class Japl {
     public static double atan(int x) {
 
         return Math.atan(x);
-
     }
-
 
     public static double[] sqrt(double[] x) {
 
@@ -1942,13 +1709,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double[] sqrt(int[] x) {
         return sqrt(cD(x));
     }
-
 
     public static double sqrt(double x) {
         return Math.sqrt(x);
@@ -1957,9 +1722,7 @@ public class Japl {
     public static double sqrt(int x) {
 
         return Math.sqrt(x);
-
     }
-
 
     public static double[] abs(double[] x) {
 
@@ -1970,13 +1733,11 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static double[] abs(int[] x) {
         return abs(cD(x));
     }
-
 
     public static double abs(double x) {
         return Math.abs(x);
@@ -1985,14 +1746,11 @@ public class Japl {
     public static double abs(int x) {
 
         return Math.abs(x);
-
     }
-
 
     public static boolean and(boolean x, boolean y) {
 
         return (x && y);
-
     }
 
     public static boolean[] and(boolean[] x, boolean[] y) {
@@ -2005,7 +1763,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static boolean[] and(int[] x, int[] y) {
@@ -2018,9 +1775,7 @@ public class Japl {
             i++;
         }
         return r;
-
     }
-
 
     public static boolean[] and(double[] x, double[] y) {
         cl(x, y);
@@ -2033,26 +1788,21 @@ public class Japl {
         return r;
     }
 
-
     public static boolean[] and(double[] x, int[] y) {
         return and(cB(x), cB(y));
     }
-
 
     public static boolean[] and(int[] x, double[] y) {
         return and(cB(x), cB(y));
     }
 
-
     public static boolean[] and(boolean[] x, int[] y) {
         return and(x, cB(y));
     }
 
-
     public static boolean[] and(int[] x, boolean[] y) {
         return and(cB(x), y);
     }
-
 
     public static boolean[] and(boolean[] x, double[] y) {
         return and(x, cB(y));
@@ -2061,14 +1811,11 @@ public class Japl {
     public static boolean[] and(double[] x, boolean[] y) {
 
         return and(cB(x), y);
-
     }
-
 
     public static boolean or(boolean x, boolean y) {
 
         return (x || y);
-
     }
 
     public static boolean[] or(boolean[] x, boolean[] y) {
@@ -2081,7 +1828,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static boolean[] or(int[] x, int[] y) {
@@ -2094,9 +1840,7 @@ public class Japl {
             i++;
         }
         return r;
-
     }
-
 
     public static boolean[] or(double[] x, double[] y) {
         cl(x, y);
@@ -2109,26 +1853,21 @@ public class Japl {
         return r;
     }
 
-
     public static boolean[] or(double[] x, int[] y) {
         return or(cB(x), cB(y));
     }
-
 
     public static boolean[] or(int[] x, double[] y) {
         return or(cB(x), cB(y));
     }
 
-
     public static boolean[] or(boolean[] x, int[] y) {
         return or(x, cB(y));
     }
 
-
     public static boolean[] or(int[] x, boolean[] y) {
         return or(cB(x), y);
     }
-
 
     public static boolean[] or(boolean[] x, double[] y) {
         return or(x, cB(y));
@@ -2137,14 +1876,11 @@ public class Japl {
     public static boolean[] or(double[] x, boolean[] y) {
 
         return or(cB(x), y);
-
     }
-
 
     public static boolean xor(boolean x, boolean y) {
 
         return x ^ y;
-
     }
 
     public static boolean[] xor(boolean[] x, boolean[] y) {
@@ -2157,7 +1893,6 @@ public class Japl {
             i++;
         }
         return r;
-
     }
 
     public static boolean[] xor(int[] x, int[] y) {
@@ -2170,9 +1905,7 @@ public class Japl {
             i++;
         }
         return r;
-
     }
-
 
     public static boolean[] xor(double[] x, double[] y) {
         cl(x, y);
@@ -2185,26 +1918,21 @@ public class Japl {
         return r;
     }
 
-
     public static boolean[] xor(double[] x, int[] y) {
         return xor(cB(x), cB(y));
     }
-
 
     public static boolean[] xor(int[] x, double[] y) {
         return xor(cB(x), cB(y));
     }
 
-
     public static boolean[] xor(boolean[] x, int[] y) {
         return xor(x, cB(y));
     }
 
-
     public static boolean[] xor(int[] x, boolean[] y) {
         return xor(cB(x), y);
     }
-
 
     public static boolean[] xor(boolean[] x, double[] y) {
         return xor(x, cB(y));
@@ -2213,26 +1941,21 @@ public class Japl {
     public static boolean[] xor(double[] x, boolean[] y) {
 
         return xor(cB(x), y);
-
     }
 
     public static class TypeKException extends IllegalArgumentException {
     }
 
-
     public static class LengthKException extends IllegalArgumentException {
         public LengthKException() {
 
             super("length");
-
         }
     }
-
 
     public static class LimitKException
             extends IllegalArgumentException {
     }
-
 }
 
 

@@ -15,7 +15,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class OpenDocumentPersister
         implements OpenDocumentsModel.Listener {
     private static final Logger log = Logger.getLogger(OpenDocumentPersister.class.getName());
@@ -26,7 +25,7 @@ public class OpenDocumentPersister
     private final OpenDocumentsModel openDocumentsModel;
     private final FifoBuffer<String> recentFilePaths = new FifoBuffer(9);
 
-    private final PersistanceInterface persistance;
+    private final PersistenceInterface persistance;
 
     private final File scratchDir;
 
@@ -34,8 +33,7 @@ public class OpenDocumentPersister
 
     private final KeyInterface lastOpenedFolderKey;
 
-
-    public OpenDocumentPersister(OpenDocumentsModel openDocumentsModel, PersistanceInterface persistance, File scratchDir, KeyInterface recentDocsKey, KeyInterface lastOpenedFolderKey) {
+    public OpenDocumentPersister(OpenDocumentsModel openDocumentsModel, PersistenceInterface persistance, File scratchDir, KeyInterface recentDocsKey, KeyInterface lastOpenedFolderKey) {
         this.openDocumentsModel = Preconditions.checkNotNull(openDocumentsModel);
         this.persistance = Preconditions.checkNotNull(persistance);
         this.scratchDir = Preconditions.checkNotNull(scratchDir);
@@ -46,8 +44,7 @@ public class OpenDocumentPersister
         scratchDir.mkdir();
     }
 
-
-    private static List<String> getFilePaths(PersistanceInterface persistance, KeyInterface filekey) {
+    private static List<String> getFilePaths(PersistenceInterface persistance, KeyInterface filekey) {
         List<String> filepaths = Lists.newArrayList();
         String recent = persistance.get(filekey, "");
         String[] recDocs = recent.split(";");
@@ -59,14 +56,12 @@ public class OpenDocumentPersister
         return filepaths;
     }
 
-
     private void persistOpenDocuments() {
-        storeDocumentsScratch();
+        this.storeDocumentsScratch();
 
         String recent = Joiner.on(";").join(this.recentFilePaths.getAll());
         this.persistance.put(this.recentDocsKey, recent);
     }
-
 
     public void storeDocumentsScratch() {
         int i = 0;
@@ -98,10 +93,8 @@ public class OpenDocumentPersister
         }
     }
 
-
     public void restoreDocuments() {
         List<Document> startingDocuments = Lists.newArrayList(this.openDocumentsModel.getDocuments());
-
 
         File[] files = this.scratchDir.listFiles();
         List<File> scratchFiles = Collections.emptyList();
@@ -152,7 +145,6 @@ public class OpenDocumentPersister
             }
         }
 
-
         if (startingDocuments.size() == 1) {
             Document onlyDoc = startingDocuments.get(0);
             if (onlyDoc.getContent().trim().isEmpty()) {
@@ -165,8 +157,7 @@ public class OpenDocumentPersister
         return this.recentFilePaths.getAll();
     }
 
-
-    public File getOpenFolder(PersistanceInterface persistance) {
+    public File getOpenFolder(PersistenceInterface persistance) {
         String path = persistance.get(this.lastOpenedFolderKey, "");
         if (!path.equals("")) {
             File f = new File(path);
@@ -177,29 +168,26 @@ public class OpenDocumentPersister
         return null;
     }
 
-
     public void docClosed(Document document) {
         if (document.getFilePath() != null) {
             this.recentFilePaths.add(document.getFilePath());
         }
-        persistOpenDocuments();
+        this.persistOpenDocuments();
     }
 
     public void docAdded(Document document) {
         if (document.getFilePath() != null) {
             this.recentFilePaths.add(document.getFilePath());
         }
-        persistOpenDocuments();
+        this.persistOpenDocuments();
     }
 
     public void docSaved() {
-        persistOpenDocuments();
+        this.persistOpenDocuments();
     }
-
 
     public void docSelected(Document document) {
     }
-
 
     public void folderSelected(File selectedFolder) {
         String path = (selectedFolder == null) ? "" : selectedFolder.getAbsolutePath();

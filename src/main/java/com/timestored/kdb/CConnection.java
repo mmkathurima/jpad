@@ -7,7 +7,6 @@ import javax.activation.UnsupportedDataTypeException;
 import java.io.IOException;
 import java.util.logging.Logger;
 
-
 public class CConnection
         implements KdbConnection {
     private static final Logger LOG = Logger.getLogger(CConnection.class.getName());
@@ -18,7 +17,7 @@ public class CConnection
     private final String username;
     private final String password;
     private C c;
-    private boolean closed = false;
+    private boolean closed;
 
     CConnection(String host, int port, String username, String password) throws C.KException, IOException {
         this.host = host;
@@ -29,7 +28,6 @@ public class CConnection
         C.setEncoding("UTF-8");
     }
 
-
     CConnection(String host, int port) throws C.KException, IOException {
         this(host, port, null, null);
     }
@@ -38,31 +36,27 @@ public class CConnection
         this(sconf.getHost(), sconf.getPort(), sconf.getUsername(), sconf.getPassword());
     }
 
-
     public void close() throws IOException {
         LOG.info("close");
         this.closed = true;
         this.c.close();
     }
 
-
     public C.Flip queryFlip(String query) throws IOException, C.KException {
-        Object k = query(query);
+        Object k = this.query(query);
         if (k instanceof C.Flip) {
             return (C.Flip) k;
         }
         throw new UnsupportedDataTypeException("FlipExpected");
     }
 
-
     public C.Dict queryDict(String query) throws IOException, C.KException {
-        Object k = query(query);
+        Object k = this.query(query);
         if (k instanceof C.Dict) {
             return (C.Dict) k;
         }
         throw new UnsupportedDataTypeException("DictExpected");
     }
-
 
     public Object query(String query) throws IOException, C.KException {
         LOG.info("querying -> " + query);
@@ -80,7 +74,7 @@ public class CConnection
                 LOG.fine("query queried");
             } catch (IOException e) {
                 try {
-                    reconnect();
+                    this.reconnect();
                 } catch (IOException io) {
                 }
                 if (r >= 1) {
@@ -92,11 +86,9 @@ public class CConnection
         return ret;
     }
 
-
     public void send(String s) throws IOException {
-        sendObject(s);
+        this.sendObject(s);
     }
-
 
     private void sendObject(Object obj) throws IOException {
         LOG.info("sending -> " + obj);
@@ -117,7 +109,7 @@ public class CConnection
             } catch (IOException e) {
                 try {
                     LOG.info("query failed to send... reconnecting...");
-                    reconnect();
+                    this.reconnect();
                 } catch (IOException io) {
                 }
                 if (r >= 1) {
@@ -128,11 +120,9 @@ public class CConnection
         }
     }
 
-
     public void send(Object o) throws IOException {
-        sendObject(o);
+        this.sendObject(o);
     }
-
 
     private void reconnect() throws IOException {
         if (this.closed) {

@@ -7,7 +7,6 @@ import bibliothek.util.xml.XIO;
 import java.io.IOException;
 import java.util.Set;
 
-
 public class DockerHelper {
     public static String getLayout(DockFrontend frontend) {
         XElement xroot = new XElement("layout");
@@ -15,7 +14,6 @@ public class DockerHelper {
         String layoutXml = xroot.toString();
         return layoutXml;
     }
-
 
     public static void loadLayout(String layoutXml, DockFrontend frontend) {
         if (layoutXml.length() > 0)

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
 public class CommandManager
         implements CommandProvider {
     private final List<CommandProvider> providers = new ArrayList<CommandProvider>();

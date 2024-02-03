@@ -15,7 +15,6 @@ import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
-
 public class SqlDashboardLauncher {
     private static SqlDashFrame appFrame;
 
@@ -23,37 +22,34 @@ public class SqlDashboardLauncher {
         return new KeyedPrefs("com.timestored.sqldashboard");
     }
 
-
-    public static void main(final String[] args) {
+    public static void main(String[] args) {
         PluginLoader.loadPlugins();
 
         SwingUtilities.invokeLater(new Runnable() {
             public void run() {
-                String title = "sqlDashboards";
+                final String title = "sqlDashboards";
                 AppLaunchHelper.setMacAndWindowsAppearance(title);
                 AppLaunchHelper.logToUsersFolder("sqlDash");
 
-                KeyedPrefs<SqldKey> storedPrefs = SqlDashboardLauncher.getStoredPrefs();
-
+                KeyedPrefs<SqldKey> storedPrefs = getStoredPrefs();
 
                 String websiteUrl = TimeStored.getContactUrl("sqlDashboards Error Report");
-                String email = "tech@timestored.com";
-                String emailTitle = "sqlDashboards Bug Report 1.41";
-                int minutesBetweenErrMessage = 720;
+                final String email = "tech@timestored.com";
+                final String emailTitle = "sqlDashboards Bug Report 1.41";
+                final int minutesBetweenErrMessage = 720;
                 ErrorReporter errRep = new ErrorReporter(websiteUrl, email, emailTitle, minutesBetweenErrMessage);
                 Thread.setDefaultUncaughtExceptionHandler(errRep.getUncaughtExceptionHandler());
-
 
                 AppModel appModel = new AppModel(ConnectionManager.newInstance());
                 appModel.startQueryEngine();
                 List<JdbcTypes> jdbcTypesSupported = Arrays.asList(JdbcTypes.values());
-                SqlDashboardLauncher.appFrame = new SqlDashFrame(appModel, jdbcTypesSupported);
-                SqlDashboardLauncher.appFrame.setExtendedState(6);
-                SqlDashboardLauncher.appFrame.setVisible(true);
+                appFrame = new SqlDashFrame(appModel, jdbcTypesSupported);
+                appFrame.setExtendedState(6);
+                appFrame.setVisible(true);
                 if (args.length > 0) {
                     File f = new File(args[0]);
                     if (f.isFile() && f.exists()) {
-                        SqlDashboardLauncher.appFrame.openFile(f);
+                        appFrame.openFile(f);
                     } else {
                         JOptionPane.showMessageDialog(null, "No valid file was selected", "Error Opening File", 0);
                     }

@@ -10,17 +10,14 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
-
 public class AppLaunchHelper {
     private static final Logger LOG = Logger.getLogger(AppLaunchHelper.class.getName());
-
 
     public static void setMacAndWindowsAppearance(String title) {
         if (System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0) {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
         }
-
 
         try {
             for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
@@ -32,7 +29,6 @@ public class AppLaunchHelper {
         } catch (Exception e) {
         }
     }
-
 
     public static void logToUsersFolder(String folder) {
         try {

@@ -15,7 +15,6 @@ import org.jfree.data.xy.DefaultXYZDataset;
 import java.awt.Component;
 import java.util.List;
 
-
 enum BubbleChartViewStrategy
         implements ViewStrategy {
     INSTANCE;
@@ -55,10 +54,8 @@ enum BubbleChartViewStrategy
         return Joiner.on("\r\n").join(FORMATA);
     }
 
-
     public List<ExampleView> getExamples() {
         ExampleView ev = new ExampleView("Single series", "The three columns are used for x-axis,y-axis and size respectively. Notice the GdpPerCapita column has been divided to make it similar sized to the othercolumns so that the bubbles are a sensible size.", ExampleTestCases.COUNTRY_STATS_ADJUSTED_POP);
-
 
         return ImmutableList.of(ev);
     }

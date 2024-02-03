@@ -5,7 +5,6 @@ import com.timestored.connections.JdbcTypes;
 
 import java.util.*;
 
-
 public class QueryTranslator {
     public static final char ARGW = '$';
     private final Map<String, Object> keyToVals;
@@ -155,7 +154,6 @@ public class QueryTranslator {
                 char[] a = qry.toCharArray();
 
                 for (int i = 0; i < a.length; i++) {
-
 
                     if (a[i] == '$' && i + 1 < a.length) {
                         boolean nextIsDollar = (i + 1 < a.length && a[i + 1] == '$');

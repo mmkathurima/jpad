@@ -1,6 +1,5 @@
 package io.jpad.model;
 
-
 import com.timestored.misc.HtmlUtils;
 import io.jpad.resultset.KeyedResultSet;
 import io.jpad.scratch.CapturedObject;
@@ -11,10 +10,8 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 class HtmlConverter {
     private static final Logger log = Logger.getLogger(HtmlConverter.class.getName());
-
 
     public static String convert(List<CapturedObject> dumps) {
 
@@ -24,44 +21,33 @@ class HtmlConverter {
 
             KeyedResultSet rs = co.getResultSet();
 
-
             String n = co.getName();
 
             if (n.trim().length() > 0) {
 
                 sb.append("<h2>").append(n).append("</h2>");
-
             }
-
 
             appendContent(sb, co.getObject(), rs);
 
-
             sb.append("<br />\r\n");
-
         }
 
         return sb.toString();
-
     }
-
 
     private static void appendContent(StringBuilder sb, Object o, KeyedResultSet rs) {
 
         if (rs != null) {
 
             appendAsHtmlTable(sb, rs);
-
         } else {
 
             String s = (o == null) ? "null" : o.toString();
 
             HtmlUtils.appendEscapedHtml(sb, s);
-
         }
-
     }
-
 
     private static void appendAsHtmlTable(StringBuilder sb, KeyedResultSet rs) {
 
@@ -74,7 +60,6 @@ class HtmlConverter {
             HtmlUtils.appendEscapedHtml(sb, rs.getCaption());
 
             sb.append("</caption>");
-
         }
 
         try {
@@ -91,7 +76,6 @@ class HtmlConverter {
                 HtmlUtils.appendEscapedHtml(sb, md.getColumnName(c));
 
                 sb.append("</th>");
-
             }
 
             sb.append("</tr></thead><tbody>");
@@ -111,32 +95,23 @@ class HtmlConverter {
                     if (o instanceof KeyedResultSet) {
 
                         appendContent(sb, o, (KeyedResultSet) o);
-
                     } else {
 
                         appendContent(sb, o, null);
-
                     }
 
                     sb.append("</td>");
-
                 }
 
                 sb.append("</tr>");
-
             }
-
-
         } catch (SQLException e) {
 
             log.log(Level.SEVERE, "Could not output RS as html table", e);
-
         }
 
         sb.append("\r\n</tbody></table>\r\n");
-
     }
-
 }
 
 

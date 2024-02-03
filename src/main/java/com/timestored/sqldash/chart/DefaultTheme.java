@@ -16,7 +16,6 @@ import java.awt.Paint;
 import java.util.List;
 import java.util.Locale;
 
-
 class DefaultTheme
         implements ChartTheme {
     private static final StandardXYBarPainter barPainter = new StandardXYBarPainter();
@@ -30,11 +29,10 @@ class DefaultTheme
     private final String description;
     private final String title;
 
-    private DefaultTheme(final ColorScheme colorScheme, String title, String description) {
+    private DefaultTheme(ColorScheme colorScheme, String title, String description) {
         this.colorScheme = Preconditions.checkNotNull(colorScheme);
         this.title = Preconditions.checkNotNull(title);
         this.description = Preconditions.checkNotNull(description);
-
 
         this.chartTheme = (StandardChartTheme) StandardChartTheme.createJFreeTheme();
         this.chartTheme.setXYBarPainter(barPainter);
@@ -50,14 +48,11 @@ class DefaultTheme
         this.chartTheme.setChartBackgroundPaint(colorScheme.getBG());
         this.chartTheme.setTitlePaint(colorScheme.getFG());
 
-
         this.chartTheme.setAxisLabelPaint(colorScheme.getText());
         this.chartTheme.setLabelLinkPaint(colorScheme.getFG());
 
-
         this.chartTheme.setLegendItemPaint(colorScheme.getText());
         this.chartTheme.setLegendBackgroundPaint(colorScheme.getBG());
-
 
         if (Locale.getDefault().getLanguage().equals(Locale.SIMPLIFIED_CHINESE.getLanguage())) {
             Font oldExtraLargeFont = this.chartTheme.getExtraLargeFont();
@@ -70,7 +65,6 @@ class DefaultTheme
             Font regularFont = new Font("Sans-serif", oldRegularFont.getStyle(), oldRegularFont.getSize());
             Font smallFont = new Font("Sans-serif", oldSmallFont.getStyle(), oldSmallFont.getSize());
 
-
             this.chartTheme.setExtraLargeFont(extraLargeFont);
             this.chartTheme.setLargeFont(largeFont);
             this.chartTheme.setRegularFont(regularFont);
@@ -80,8 +74,8 @@ class DefaultTheme
         this.drawingSupplier = new DefaultDrawingSupplier() {
             private static final long serialVersionUID = 1L;
             final Color[] colors = colorScheme.getColorArray();
-            int i = 0;
-            int j = 0;
+            int i;
+            int j;
 
             public Paint getNextPaint() {
                 return this.colors[this.i++ % this.colors.length];
@@ -93,7 +87,6 @@ class DefaultTheme
         };
         this.chartTheme.setDrawingSupplier(this.drawingSupplier);
     }
-
 
     public static ChartTheme getInstance(ColorScheme colorScheme, String title, String description) {
         return new DefaultTheme(colorScheme, title, description);
@@ -133,7 +126,6 @@ class DefaultTheme
                     setAxisColor(((XYPlot) plot).getRangeAxis(i), this.colorScheme);
                 }
             }
-
         } else {
 
             Plot plot = chart.getPlot();
@@ -151,13 +143,12 @@ class DefaultTheme
             }
         }
 
-
         if (chart.getPlot() instanceof CategoryPlot) {
             CategoryPlot categoryPlot = (CategoryPlot) chart.getPlot();
             categoryPlot.setDomainGridlinesVisible(true);
             CategoryAxis categoryAxis = categoryPlot.getDomainAxis();
             categoryAxis.setCategoryLabelPositions(CategoryLabelPositions.DOWN_45);
-            double margin = 0.02D;
+            final double margin = 0.02D;
             categoryAxis.setCategoryMargin(0.02D);
             categoryAxis.setLowerMargin(0.0D);
             categoryAxis.setUpperMargin(0.0D);

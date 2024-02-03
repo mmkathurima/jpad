@@ -3,7 +3,6 @@ package com.timestored.jgrowl;
 import javax.swing.ImageIcon;
 import java.util.logging.Level;
 
-
 class Growl {
     private final String message;
     private final String title;

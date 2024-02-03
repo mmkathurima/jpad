@@ -6,11 +6,9 @@ import java.awt.Image;
 import java.awt.image.BufferedImage;
 import java.net.URL;
 
-
 public class IconHelper {
     public static BufferedImage getBufferedImage(ImageIcon ii) {
         BufferedImage bi = new BufferedImage(ii.getIconWidth(), ii.getIconHeight(), 2);
-
 
         Graphics g = bi.createGraphics();
 
@@ -18,7 +16,6 @@ public class IconHelper {
         g.dispose();
         return bi;
     }
-
 
     public static ImageIcon[] getDiffSizesOfIcon(URL resourceUrl) {
         ImageIcon ii = null;
@@ -31,7 +28,6 @@ public class IconHelper {
             ii32 = new ImageIcon(i.getScaledInstance(32, 32, 16));
         } catch (Exception e) {
         }
-
 
         return new ImageIcon[]{ii, ii16, ii32};
     }

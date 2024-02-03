@@ -1,6 +1,5 @@
 package io.jpad.resultset;
 
-
 import com.google.common.base.Preconditions;
 import com.timestored.misc.IOUtils;
 
@@ -16,7 +15,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.logging.Logger;
 
-
 class SameObjectCollectionResultSet<T>
         extends CollectionResultSet<T>
         implements KeyedResultSet {
@@ -26,15 +24,11 @@ class SameObjectCollectionResultSet<T>
     private final List<String> colNames = new ArrayList<>();
     private final List<Method> methods = new ArrayList<>();
 
-
     private final String caption;
-
 
     private final Processor processor;
 
-
     private final int depth;
-
 
     public SameObjectCollectionResultSet(Collection<T> c, String caption, Processor processor, int depth) {
 
@@ -44,23 +38,17 @@ class SameObjectCollectionResultSet<T>
 
         this.depth = depth;
 
-
         Class<?> t = CollectionUtils.getType(c);
-
 
         if (caption.isEmpty()) {
 
             this.caption = c.getClass().getSimpleName() + "<" + t.getSimpleName() + ">";
-
         } else {
 
             this.caption = caption;
-
         }
 
-
         List<Integer> colTypes = new ArrayList<>();
-
 
         try {
 
@@ -77,13 +65,11 @@ class SameObjectCollectionResultSet<T>
                     if (sqlType == null) {
 
                         sqlType = Integer.valueOf(12);
-
                     }
 
                     if (!m.getName().equals("getClass")) {
 
                         this.methods.add(m);
-
 
                         m.setAccessible(true);
 
@@ -92,26 +78,18 @@ class SameObjectCollectionResultSet<T>
                         this.colNames.add(s.startsWith("get") ? s.substring(3) : s);
 
                         colTypes.add(Integer.valueOf((sqlType != null) ? sqlType.intValue() : 12));
-
                     }
-
                 }
-
             }
-
         } catch (IntrospectionException e) {
         }
 
-
         this.rsmd = new SimpleResultSetMetaData(this.colNames, colTypes);
-
     }
-
 
     public int getNumberOfKeyColumns() {
         return 0;
     }
-
 
     public String getCaption() {
         return this.caption;
@@ -120,9 +98,7 @@ class SameObjectCollectionResultSet<T>
     public ResultSetMetaData getMetaData() throws SQLException {
 
         return this.rsmd;
-
     }
-
 
     public Object getObject(int columnIndex) throws SQLException {
 
@@ -133,33 +109,24 @@ class SameObjectCollectionResultSet<T>
         try {
 
             return this.processor.process(m.invoke(o), this.depth + 1);
-
-        } catch (IllegalAccessException | IllegalArgumentException | java.lang.reflect.InvocationTargetException e) {
-
+        } catch (IllegalAccessException | IllegalArgumentException |
+                 java.lang.reflect.InvocationTargetException e) {
 
             LOG.warning(IOUtils.toString(e));
 
-
             return null;
-
         }
-
     }
-
 
     public int findColumn(String columnLabel) throws SQLException {
 
         return 1 + this.colNames.indexOf(columnLabel);
-
     }
-
 
     public Object getObject(int columnIndex, Map<String, Class<?>> map) throws SQLException {
 
         return null;
-
     }
-
 }
 
 

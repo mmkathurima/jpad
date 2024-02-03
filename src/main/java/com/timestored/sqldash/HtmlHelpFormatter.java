@@ -7,7 +7,6 @@ import joptsimple.OptionDescriptor;
 
 import java.util.*;
 
-
 class HtmlHelpFormatter
         implements HelpFormatter {
     public String format(Map<String, ? extends OptionDescriptor> options) {
@@ -24,25 +23,23 @@ class HtmlHelpFormatter
 
             Set<String> seenCommands = Sets.newHashSet();
 
-
             for (OptionDescriptor od : options.values()) {
-                String k = getOptionDisplay(od);
+                String k = this.getOptionDisplay(od);
                 if (!seenCommands.contains(k)) {
                     seenCommands.add(k);
                     sorted.add(od);
                 }
             }
 
-
             sb.append("<table>\r\n<tr><th>Option");
-            if (hasRequiredOption(sorted)) {
+            if (this.hasRequiredOption(sorted)) {
                 sb.append(" (<span class='required'>*</span> = required)");
             }
             sb.append("</th><th>Description</th></tr>");
             for (OptionDescriptor od : sorted) {
                 sb.append("\r\n\t<tr>");
                 sb.append("<td style='white-space:nowrap;'><code>");
-                sb.append(getOptionDisplay(od));
+                sb.append(this.getOptionDisplay(od));
                 sb.append("</code></td><td>");
 
                 List<?> defVals = od.defaultValues();
@@ -84,16 +81,15 @@ class HtmlHelpFormatter
             }
         }
 
-        maybeAppendOptionInfo(buffer, descriptor);
+        this.maybeAppendOptionInfo(buffer, descriptor);
         return buffer.toString();
     }
 
-
     private void maybeAppendOptionInfo(StringBuilder buffer, OptionDescriptor descriptor) {
-        String indicator = extractTypeIndicator(descriptor);
+        String indicator = this.extractTypeIndicator(descriptor);
         String description = descriptor.argumentDescription();
         if (indicator != null || !Strings.isNullOrEmpty(description))
-            appendOptionHelp(buffer, indicator, description, descriptor.requiresArgument());
+            this.appendOptionHelp(buffer, indicator, description, descriptor.requiresArgument());
     }
 
     private String extractTypeIndicator(OptionDescriptor descriptor) {
@@ -108,9 +104,9 @@ class HtmlHelpFormatter
 
     private void appendOptionHelp(StringBuilder buffer, String typeIndicator, String description, boolean required) {
         if (required) {
-            appendTypeIndicator(buffer, typeIndicator, description, "&lt;", "&gt;");
+            this.appendTypeIndicator(buffer, typeIndicator, description, "&lt;", "&gt;");
         } else {
-            appendTypeIndicator(buffer, typeIndicator, description, "[", "]");
+            this.appendTypeIndicator(buffer, typeIndicator, description, "[", "]");
         }
     }
 

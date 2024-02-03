@@ -18,16 +18,13 @@ import java.util.Map;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class HtmlUtils {
     public static final String END = "</body></html>";
     public static final String START = "<html><body>";
     private static final Logger LOG = Logger.getLogger(HtmlUtils.class.getName());
     private static final boolean browseSupported;
 
-
     private static final String HEAD_PRE = "<!DOCTYPE html PUBLIC \"-//W3C//DTD XHTML 1.0 Strict//EN\"\"http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd\"><html xmlns=\"http://www.w3.org/1999/xhtml\" xml:lang=\"en\" ><head><meta http-equiv=\"content-type\" content=\"text/html; charset=iso-8859-1\" />";
-
 
     private static final String FAVICON_LINK = "<link rel=\"shortcut icon\" type=\"image/png\" href=\"http://www.timestored.com/favicon.png\" />";
     private static int counter = 13;
@@ -53,7 +50,6 @@ public class HtmlUtils {
 
     public static String getTSPageHead(String title, String subTitleLink, String headContent, boolean withTSFavicon) {
 
-
         String s = getHead(title + " - TimeStored.com", headContent + "<link rel=\"shortcut icon\" type=\"image/png\" href=\"http://www.timestored.com/favicon.png\" />") +
                 "\r\n<div id='wrap'><div id='page'>" +
                 "\r\n<div id='header'><h2>" + subTitleLink + " - " + "<a target='a' href='" + "http://www.timestored.com" + "'>TimeStored.com</a></h2></div>" +
@@ -62,7 +58,6 @@ public class HtmlUtils {
     }
 
     public static String getTSPageTail(String subTitleLink) {
-
 
         String s = "\r\n</div>" +
                 "<div id='footer'> <p>&copy; 2013 " +
@@ -102,7 +97,6 @@ public class HtmlUtils {
         return "<table>" + expandMapToHtml(smap, hideEmpty, "<tr><th>", "</th>", "<td>", "</td></tr>") + "</table>";
     }
 
-
     private static String expandMapToHtml(Map<String, String> smap, boolean hideEmpty, String preKey, String postKey, String preVal, String postVal) {
         StringBuilder sb = new StringBuilder();
         List<String> keyList = new ArrayList<String>(smap.keySet());
@@ -119,7 +113,6 @@ public class HtmlUtils {
 
         return sb.toString();
     }
-
 
     public static String extractBody(String htmlDoc) {
         if (htmlDoc != null && !htmlDoc.trim().isEmpty()) {
@@ -141,7 +134,6 @@ public class HtmlUtils {
         return htmlDoc.substring(st + b.length(), end);
     }
 
-
     public static boolean browse(String url) {
         if (browseSupported) {
             try {
@@ -156,11 +148,9 @@ public class HtmlUtils {
         return false;
     }
 
-
     public static boolean isBrowseSupported() {
         return browseSupported;
     }
-
 
     public static Action getWWWaction(String title, String url) {
         return new WwwAction(title, url);
@@ -209,7 +199,6 @@ public class HtmlUtils {
                     previousWasASpace = false;
                 } else {
                     previousWasASpace = true;
-
 
                     switch (c) {
                         case '<':
@@ -269,7 +258,6 @@ public class HtmlUtils {
                         break;
                 }
             }
-
         }
         return sb;
     }
@@ -299,11 +287,11 @@ public class HtmlUtils {
         WwwAction(String title, String url) {
             super(title, Theme.CIcon.TEXT_HTML.get16());
             this.url = url;
-            setEnabled(HtmlUtils.isBrowseSupported());
+            this.setEnabled(isBrowseSupported());
         }
 
         public void actionPerformed(ActionEvent e) {
-            HtmlUtils.browse(this.url);
+            browse(this.url);
         }
     }
 }

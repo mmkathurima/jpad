@@ -9,10 +9,9 @@ import java.io.IOException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 public class ConnectionManagerH2Test {
     private final DBTestRunner tRunner = H2DBTestRunner.getInstance();
-    protected volatile boolean failedFlag = false;
+    protected volatile boolean failedFlag;
     private ConnectionManager csManager;
 
     @Before
@@ -29,11 +28,11 @@ public class ConnectionManagerH2Test {
     public void test() throws IOException, SQLException {
         ServerConfig sc = this.tRunner.getServerConfig();
 
-        String createSQL = "CREATE TABLE STATION (ID INTEGER PRIMARY KEY,CITY CHAR(20),STATE CHAR(2),LAT_N REAL,LONG_W REAL); ";
+        final String createSQL = "CREATE TABLE STATION (ID INTEGER PRIMARY KEY,CITY CHAR(20),STATE CHAR(2),LAT_N REAL,LONG_W REAL); ";
 
         Assert.assertTrue(this.csManager.execute(sc, createSQL));
 
-        String insertSQL = "INSERT INTO STATION VALUES (13, 'Phoenix', 'AZ', 33, 112); INSERT INTO STATION VALUES (44, 'Denver', 'CO', 40, 105); ";
+        final String insertSQL = "INSERT INTO STATION VALUES (13, 'Phoenix', 'AZ', 33, 112); INSERT INTO STATION VALUES (44, 'Denver', 'CO', 40, 105); ";
 
         Assert.assertTrue(this.csManager.execute(sc, insertSQL));
 

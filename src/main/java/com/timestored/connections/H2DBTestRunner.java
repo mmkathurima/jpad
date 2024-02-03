@@ -4,7 +4,6 @@ import org.h2.tools.Server;
 
 import java.sql.SQLException;
 
-
 class H2DBTestRunner
         implements DBTestRunner {
     private static final int PORT = 8000;
@@ -21,7 +20,6 @@ class H2DBTestRunner
 
         csManager = ConnectionManager.newInstance();
         serverConfig = (new ServerConfigBuilder(new ServerConfig("localhost", 8000))).setName("h2Server").setJdbcType(JdbcTypes.H2).setDatabase("mem:db1").build();
-
 
         csManager.addServer(serverConfig);
         return csManager;

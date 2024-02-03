@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class SnipUploadDialog
         extends JDialog {
     private static final long serialVersionUID = 1L;
@@ -42,11 +41,10 @@ public class SnipUploadDialog
         this.username = Preconditions.checkNotNull(username);
         this.password = Preconditions.checkNotNull(password);
 
-        setIconImage(Theme.CIcon.UP_CLOUD.get().getImage());
+        this.setIconImage(Theme.CIcon.UP_CLOUD.get().getImage());
 
-
-        setLocationRelativeTo(parent);
-        setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        this.setLocationRelativeTo(parent);
+        this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         SwingUtils.addEscapeCloseListener(this);
 
         Theme.InputLabeller IL = Theme.getInputLabeller(80, 20);
@@ -55,15 +53,14 @@ public class SnipUploadDialog
         this.descriptionTextField.setFocusTraversalKeys(0, null);
         this.descriptionTextField.setFocusTraversalKeys(1, null);
 
-
         this.tagsTextField = new JTextField(30);
 
-        setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());
         JPanel c = Theme.getVerticalBoxPanel();
         c.setBorder(BorderFactory.createBevelBorder(0));
-        add(c, "Center");
+        this.add(c, "Center");
 
-        String helpMsg = "By adding a good title and tags this will make your snippets searchable in future.\r\n";
+        final String helpMsg = "By adding a good title and tags this will make your snippets searchable in future.\r\n";
         c.add(new JLabel(helpMsg));
         c.add(IL.get("Title:", this.titleTextField, "titleTextField"));
         c.add(IL.get("Description:", this.descriptionTextField, "descriptionTextField"));
@@ -87,10 +84,9 @@ public class SnipUploadDialog
 
         c.add(buttonPanel);
 
-        refreshGui();
-        pack();
+        this.refreshGui();
+        this.pack();
     }
-
 
     public UploadResult getUploadResult() {
         return this.uploadResult;
@@ -101,7 +97,6 @@ public class SnipUploadDialog
         this.descriptionTextField.setText(this.snip.getDescription());
         this.tagsTextField.setText(this.snip.getTags());
     }
-
 
     private void upload() {
         this.snip.setTitle(this.titleTextField.getText());
@@ -118,7 +113,7 @@ public class SnipUploadDialog
 
         if (this.uploadResult != null && this.uploadResult.getType().equals(UploadResult.ResultType.SUCCESS)) {
             HtmlUtils.browse(this.uploadResult.getUrl());
-            dispose();
+            this.dispose();
         } else {
             if (this.uploadResult != null) {
                 msg = this.uploadResult.getMessage();

@@ -11,19 +11,16 @@ import java.sql.ResultSet;
 import java.util.Collections;
 import java.util.List;
 
-
 public enum NoRedrawViewStrategy
         implements ViewStrategy {
     INSTANCE;
 
     private static final String DESC = "Do not draw anything. This selection does nothing and is for use by those who do not want a chart, allowing quicker result drawing times.";
 
-
     public UpdateableView getView(ChartTheme theme) {
         return new UpdateableView() {
             public void update(ResultSet rs, ChartResultSet chartResultSet) throws ChartFormatException {
             }
-
 
             public Component getComponent() {
                 JPanel p = new JPanel(new BorderLayout());
@@ -63,7 +60,7 @@ public enum NoRedrawViewStrategy
     }
 
     public String toString() {
-        return getDescription();
+        return this.getDescription();
     }
 }
 

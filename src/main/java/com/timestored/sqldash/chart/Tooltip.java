@@ -7,16 +7,13 @@ import org.jfree.chart.labels.XYZToolTipGenerator;
 
 import java.text.DecimalFormat;
 
-
 class Tooltip {
     public static String LABEL_XY_FORMAT = "<html><b>{0}:</b><br>{1}<br>{2}</html>";
     public static String LABEL_XYZ_FORMAT = "<html><b>{0}:</b><br>{1}<br>{2}</html>";
 
-
     public static XYToolTipGenerator getXYNumbersGenerator() {
         return new StandardXYToolTipGenerator(LABEL_XY_FORMAT, new DecimalFormat("#,###.##"), new DecimalFormat("#,###.##"));
     }
-
 
     public static XYZToolTipGenerator getXYZNumbersGenerator() {
         return new StandardXYZToolTipGenerator(LABEL_XYZ_FORMAT, new DecimalFormat("#,###.##"), new DecimalFormat("#,###.##"), new DecimalFormat("#,###.##"));

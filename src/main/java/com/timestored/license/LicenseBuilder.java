@@ -6,13 +6,12 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-
 public class LicenseBuilder {
     private final List<ProductLicense> productLicenses = new ArrayList<ProductLicense>();
-    private Date startDate = null;
-    private Date endDate = null;
-    private String owner = null;
-    private String company = null;
+    private final String owner;
+    private Date startDate;
+    private Date endDate;
+    private String company;
 
     private LicenseBuilder(String owner) {
         this.owner = Preconditions.checkNotNull(owner);
@@ -35,7 +34,7 @@ public class LicenseBuilder {
     }
 
     public LicenseBuilder addProduct(String productTitle, Date endDate, Date startDate) {
-        ProductLicense pl = getProductLicense(productTitle);
+        ProductLicense pl = this.getProductLicense(productTitle);
         if (pl != null) {
             throw new IllegalArgumentException("product already exists");
         }
@@ -44,30 +43,30 @@ public class LicenseBuilder {
     }
 
     public LicenseBuilder addProduct(String productTitle, Date endDate) {
-        return addProduct(productTitle, endDate, null);
+        return this.addProduct(productTitle, endDate, null);
     }
 
     public LicenseBuilder addProduct(String productTitle) {
-        return addProduct(productTitle, null);
+        return this.addProduct(productTitle, null);
     }
 
     public LicenseBuilder addFeature(String productTitle, String title, Date endDate, Date startDate) {
-        addFeature(productTitle, new FeatureLicense(title, endDate, startDate));
+        this.addFeature(productTitle, new FeatureLicense(title, endDate, startDate));
         return this;
     }
 
     public LicenseBuilder addFeature(String productTitle, String title, Date endDate) {
-        addFeature(productTitle, new FeatureLicense(title, endDate));
+        this.addFeature(productTitle, new FeatureLicense(title, endDate));
         return this;
     }
 
     public LicenseBuilder addFeature(String productTitle, String title) {
-        addFeature(productTitle, new FeatureLicense(title));
+        this.addFeature(productTitle, new FeatureLicense(title));
         return this;
     }
 
     private void addFeature(String productTitle, FeatureLicense fl) {
-        ProductLicense prodLic = getProductLicense(productTitle);
+        ProductLicense prodLic = this.getProductLicense(productTitle);
         if (prodLic != null) {
             prodLic.addFeature(fl);
         } else {

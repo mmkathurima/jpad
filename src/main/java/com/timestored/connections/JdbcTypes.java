@@ -6,7 +6,6 @@ import com.timestored.plugins.DatabaseAuthenticationService;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
-
 public enum JdbcTypes {
     KDB("Kdb", "kx.jdbc", 5000, false) {
         private static final String URL_PREFIX = "jdbc:q:";
@@ -26,17 +25,15 @@ public enum JdbcTypes {
     POSTGRES("Postgres", "org.postgresql.Driver", 5432, true) {
         private static final String URL_PREFIX = "jdbc:postgresql://";
 
-
         public String getURL(ServerConfig sc) {
             return "jdbc:postgresql://" + sc.getHost() + ":" + sc.getPort() + "/" + sc.getDatabase() + "?";
         }
     },
 
-
     CUSTOM(getProperty("jdbc.niceName", "Custom JDBC Driver"), getProperty("jdbc.driver", "DriverNotSpecified"), getProperty("jdbc.port", 5000), getProperty("jdbc.dbRequired", true)) {
         private final String JDBC_URL_FORMAT = getProperty("jdbc.urlFormat", "DriverUrlPrefixNotSpecified");
         private volatile DatabaseAuthenticationService dbAuthenticatorService;
-        private volatile boolean init = false;
+        private volatile boolean init;
         private final boolean isKDB = getProperty("jdbc.isKDB", false);
 
         public DatabaseAuthenticationService getAuthenticator() {
@@ -83,7 +80,6 @@ public enum JdbcTypes {
     MSSERVER("Microsoft SQL Server", "com.microsoft.sqlserver.jdbc.SQLServerDriver", 1433, true) {
         private static final String URL_PREFIX = "jdbc:sqlserver://";
 
-
         public String getURL(ServerConfig sc) {
             String s = "jdbc:sqlserver://" + sc.getHost() + ":" + sc.getPort();
             s = s + conv(";databaseName=", sc.getDatabase());
@@ -93,7 +89,6 @@ public enum JdbcTypes {
 
     H2("H2", "org.h2.Driver", 8082, true) {
         private static final String URL_PREFIX = "jdbc:h2:tcp://";
-
 
         public String getURL(ServerConfig sc) {
             String s = "jdbc:h2:tcp://" + sc.getHost() + ":" + sc.getPort();

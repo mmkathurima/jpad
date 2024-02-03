@@ -6,23 +6,20 @@ import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Map;
 
-
 public class SimpleResultSet
         extends BaseResultSet {
     private final String[] colNames;
     private final Object[] colValues;
     private final ResultSetMetaData resultSetMetaData;
-    private int idx = 0;
+    private int idx;
 
     public SimpleResultSet(String[] colNames) {
         this(colNames, new Object[0]);
     }
 
-
     public SimpleResultSet(String[] colNames, Object[] colValues) {
         this.colNames = colNames;
         this.colValues = colValues;
-
 
         int[] types = null;
         if (colValues.length == 0) {
@@ -31,7 +28,6 @@ public class SimpleResultSet
         } else {
             types = getTypes(colValues);
         }
-
 
         this.resultSetMetaData = new SimpleResultSetMetaData(colNames, types);
     }
@@ -61,7 +57,6 @@ public class SimpleResultSet
         return 12;
     }
 
-
     private static int[] getTypes(Object[] colValues) {
         int[] r = new int[colValues.length];
         for (int i = 0; i < r.length; i++) {
@@ -70,12 +65,10 @@ public class SimpleResultSet
         return r;
     }
 
-
     public boolean absolute(int row) throws SQLException {
         this.idx = row - 1;
         return true;
     }
-
 
     public void beforeFirst() throws SQLException {
         this.idx = -1;
@@ -87,7 +80,6 @@ public class SimpleResultSet
         }
     }
 
-
     public int findColumn(String columnLabel) throws SQLException {
         for (int i = 0; i < this.colNames.length; i++) {
             if (this.colNames[i].equals(columnLabel)) {
@@ -97,52 +89,42 @@ public class SimpleResultSet
         throw new SQLException();
     }
 
-
     public boolean first() throws SQLException {
         this.idx = 0;
         return true;
     }
 
-
     public ResultSetMetaData getMetaData() throws SQLException {
         return this.resultSetMetaData;
     }
-
 
     public Object getObject(int columnIndex) throws SQLException {
         return Array.get(this.colValues[columnIndex - 1], this.idx);
     }
 
-
     public Object getObject(int columnIndex, Map<String, Class<?>> map) throws SQLException {
         throw new UnsupportedOperationException();
     }
-
 
     public int getRow() throws SQLException {
         return this.idx;
     }
 
-
     public boolean isAfterLast() throws SQLException {
         return (this.idx >= this.colNames.length);
     }
-
 
     public boolean isBeforeFirst() throws SQLException {
         return (this.idx < 0);
     }
 
-
     public boolean isFirst() throws SQLException {
         return (this.idx == 0);
     }
 
-
     public boolean isLast() throws SQLException {
         return (this.idx == this.colNames.length - 1);
     }
-
 
     public boolean last() throws SQLException {
         if (this.colValues.length > 0) {
@@ -152,12 +134,10 @@ public class SimpleResultSet
         return false;
     }
 
-
     public boolean next() throws SQLException {
         this.idx++;
         return (this.colValues.length > 0 && this.idx < Array.getLength(this.colValues[0]));
     }
-
 
     public boolean previous() throws SQLException {
         this.idx--;

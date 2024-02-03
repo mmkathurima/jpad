@@ -7,11 +7,10 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
-
 public abstract class AbstractWidget
         implements Widget {
     private static final Logger LOG = Logger.getLogger(AbstractWidget.class.getName());
-    private static int count = 0;
+    private static int count;
     protected final transient DesktopModel desktopModel;
     private final transient List<Widget.Listener> listeners = new CopyOnWriteArrayList<Widget.Listener>();
     private final int id;
@@ -47,11 +46,11 @@ public abstract class AbstractWidget
 
     public void setTitle(String title) {
         this.title = title;
-        configChanged();
+        this.configChanged();
     }
 
     protected void configChanged() {
-        LOG.info("Widget " + getId() + " configChanged");
+        LOG.info("Widget " + this.id + " configChanged");
         for (Widget.Listener l : this.listeners) {
             l.configChanged(this);
         }
@@ -65,14 +64,12 @@ public abstract class AbstractWidget
         return this.listeners.remove(widgetListener);
     }
 
-
     public int getId() {
         return this.id;
     }
 
-
     public AbstractWidget setServerName(String serverName) {
-        for (Queryable q : getQueryables()) {
+        for (Queryable q : this.getQueryables()) {
             q.setServerName(serverName);
         }
         return this;

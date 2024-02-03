@@ -5,7 +5,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 
 import java.awt.Color;
 
-
 @XStreamAlias("ServerConfig")
 class ServerConfigDTO {
     @XStreamAsAttribute

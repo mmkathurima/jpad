@@ -46,7 +46,6 @@ class FeatureLicense {
         return MoreObjects.toStringHelper(this).add("title", this.title).add("startDate", this.startDate).add("endDate", this.endDate).toString();
     }
 
-
     public int hashCode() {
         return Objects.hashCode(this.title, this.startDate, this.endDate);
     }
@@ -56,7 +55,6 @@ class FeatureLicense {
             FeatureLicense that = (FeatureLicense) object;
             return (Objects.equal(this.title, that.title) && Objects.equal(this.startDate, that.startDate) && Objects.equal(this.endDate, that.endDate));
         }
-
 
         return false;
     }

@@ -14,7 +14,6 @@ import java.sql.Statement;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class KdbTestHelper {
     public static final int QPORT = 15000;
     public static final ServerConfig SERVER_CONFIG = new ServerConfig("localhost", 15000, "", "", "testServer");
@@ -28,15 +27,11 @@ public class KdbTestHelper {
     private static Process proc_b;
     private static ConnectionManager connMan = ConnectionManager.newInstance();
 
-
     private static KdbConnection kdbConn;
-
 
     private static Connection conn;
 
-
     private static File latestDir;
-
 
     public static KdbConnection getNewKdbConnection() throws C.KException, IOException, InterruptedException {
         killAnyOpenProcesses();
@@ -44,7 +39,6 @@ public class KdbTestHelper {
         kdbConn = new CConnection("localhost", 15000);
         return kdbConn;
     }
-
 
     private static void startQ() throws IOException, InterruptedException {
         if (proc != null || proc_b != null) {
@@ -56,11 +50,9 @@ public class KdbTestHelper {
         Thread.sleep(200L);
     }
 
-
     private static void l(Exception e) {
         LOG.log(Level.WARNING, "error", e);
     }
-
 
     public static void killAnyOpenProcesses() throws IOException {
         if (kdbConn != null) {
@@ -87,7 +79,6 @@ public class KdbTestHelper {
             }
         }
 
-
         if (proc != null)
             try {
                 proc.destroy();
@@ -101,7 +92,6 @@ public class KdbTestHelper {
             } catch (Exception e) {
                 l(e);
             }
-
         }
         proc = null;
         proc_b = null;
@@ -127,7 +117,6 @@ public class KdbTestHelper {
         } catch (Exception e) {
             l(e);
         }
-
     }
 
     public static String getServerName() {
@@ -137,7 +126,6 @@ public class KdbTestHelper {
     public static String getServerNameB() {
         return SERVER_CONFIG_B.getName();
     }
-
 
     public static Connection getNewConn() throws IOException {
         killAnyOpenProcesses();
@@ -156,7 +144,6 @@ public class KdbTestHelper {
 
             conn = connMan.getConnection(SERVER_CONFIG);
 
-
             Statement st = conn.createStatement();
             st.execute("q)static:([] sym:1000?`4; price:1000?100.0)");
         } catch (SQLException se) {
@@ -172,7 +159,6 @@ public class KdbTestHelper {
         return conn;
     }
 
-
     public static ConnectionManager getNewConnectedMangager() throws IOException, InterruptedException {
         ConnectionManager cMan = ConnectionManager.newInstance();
         killAnyOpenProcesses();
@@ -184,10 +170,8 @@ public class KdbTestHelper {
         } catch (IllegalArgumentException e) {
         }
 
-
         return cMan;
     }
-
 
     public static File getLatestDir() {
         return latestDir;

@@ -21,7 +21,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-
 public enum HeatMapViewStrategy
         implements ViewStrategy {
     INSTANCE;
@@ -38,7 +37,6 @@ public enum HeatMapViewStrategy
         TreeMapNode rootNode = builder.buildBranch("Root", null);
 
         int levels = stringCols.size() - 1;
-
 
         if (levels >= 0) {
             List<Map<String, TreeMapNode>> levelMaps = Lists.newArrayListWithCapacity(levels);
@@ -69,13 +67,11 @@ public enum HeatMapViewStrategy
             }
         }
 
-
         return builder.getRoot();
     }
 
     public UpdateableView getView(ChartTheme theme) {
         return new HardRefreshUpdateableView(new HardRefreshUpdateableView.ViewGetter() {
-
 
             public Component getView(ResultSet resultSet, ChartResultSet chartResultSet) throws ChartFormatException {
                 JTreeMap treeMap = new JTreeMap(HeatMapViewStrategy.this.createTreeMapDataset(chartResultSet));
@@ -95,7 +91,6 @@ public enum HeatMapViewStrategy
     private TreeMapNode createTreeMapDataset(ChartResultSet colResultSet) throws ChartFormatException {
         ImmutableList<ChartResultSet.StringyCol> immutableList = ImmutableList.of();
         List<ChartResultSet.NumericCol> numColumns = colResultSet.getNumericColumns();
-
 
         if (numColumns.size() < 1) {
             throw new ChartFormatException("There must be atleast one number column.");
@@ -119,24 +114,19 @@ public enum HeatMapViewStrategy
         return "Heat Map";
     }
 
-
     public String getFormatExplainationHtml() {
         return "A HeatMap works best with 1+ string columns.<ol><li>" + Joiner.on("</li><li>").join(FORMATA) + "</li></ol>";
     }
-
 
     public String getFormatExplaination() {
         return "A HeatMap works best with 1+ string columns.\r\n" + Joiner.on("\r\n").join(FORMATA);
     }
 
-
     public List<ExampleView> getExamples() {
         ExampleView ev = new ExampleView("Country GDP's", "The continent column is a top-level branch, the country column becomes leafs.The first two columns are GDP and GDP per Capita which become the size and color of the leafs respectively.", ExampleTestCases.COUNTRY_STATS);
 
-
         return ImmutableList.of(ev);
     }
-
 
     public String getQueryEg(JdbcTypes jdbcType) {
         if (jdbcType.equals(JdbcTypes.KDB)) {
@@ -144,7 +134,6 @@ public enum HeatMapViewStrategy
         }
         return null;
     }
-
 
     public Component getControlPanel() {
         return null;

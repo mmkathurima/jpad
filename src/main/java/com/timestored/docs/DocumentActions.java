@@ -23,7 +23,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class DocumentActions
         implements FileDropDocumentHandler.Listener {
     private static final Logger LOG = Logger.getLogger(DocumentActions.class.getName());
@@ -54,13 +53,11 @@ public class DocumentActions
     private File lastSelectedOpenFileFolder;
     private File lastSelectedSaveFolder;
 
-
     public DocumentActions(OpenDocumentsModel openDocumentsModel, String defaultFiletypeExtension) {
         this(openDocumentsModel, defaultFiletypeExtension, null);
     }
 
-
-    public DocumentActions(final OpenDocumentsModel openDocumentsModel, String defaultFiletypeExtension, Action generateDocumentationAction) {
+    public DocumentActions(OpenDocumentsModel openDocumentsModel, String defaultFiletypeExtension, Action generateDocumentationAction) {
         this.openDocumentsModel = Preconditions.checkNotNull(openDocumentsModel);
         this.defaultFiletypeExtension = defaultFiletypeExtension;
 
@@ -72,24 +69,23 @@ public class DocumentActions
         this.openFilesAction = new ShortcutAction(Msg.get(Msg.Key.OPEN_FILE) + "...", Theme.CIcon.DOCUMENT_OPEN, 79) {
             private static final long serialVersionUID = 1L;
 
-
             public void actionPerformed(ActionEvent arg0) {
-                JFileChooser fc = DocumentActions.getFileChooser(DocumentActions.this.lastSelectedOpenFileFolder);
+                JFileChooser fc = getFileChooser(DocumentActions.this.lastSelectedOpenFileFolder);
                 fc.setMultiSelectionEnabled(true);
                 if (fc.showOpenDialog(null) == 0) {
                     DocumentActions.this.openFiles(Arrays.asList(fc.getSelectedFiles()));
                 } else {
-                    DocumentActions.LOG.info(Msg.get(Msg.Key.OPEN_CANCELLED));
+                    LOG.info(Msg.get(Msg.Key.OPEN_CANCELLED));
                 }
             }
         };
 
-        final String oFolder = Msg.get(Msg.Key.OPEN_FOLDER);
+        String oFolder = Msg.get(Msg.Key.OPEN_FOLDER);
         this.openFolderAction = new AbstractAction(oFolder + "...") {
             private static final long serialVersionUID = 1L;
 
             public void actionPerformed(ActionEvent arg0) {
-                JFileChooser fc = DocumentActions.getFileChooser(DocumentActions.this.lastSelectedOpenFileFolder);
+                JFileChooser fc = getFileChooser(DocumentActions.this.lastSelectedOpenFileFolder);
                 fc.setFileSelectionMode(1);
                 fc.setMultiSelectionEnabled(false);
                 fc.setDialogTitle(Msg.get(Msg.Key.BROWSE_FOLDER));
@@ -105,7 +101,7 @@ public class DocumentActions
                         JOptionPane.showMessageDialog(null, message);
                     }
                 } else {
-                    DocumentActions.LOG.info(Msg.get(Msg.Key.OPEN_CANCELLED));
+                    LOG.info(Msg.get(Msg.Key.OPEN_CANCELLED));
                 }
             }
         };
@@ -121,7 +117,6 @@ public class DocumentActions
         this.newFileAction = new ShortcutAction(Msg.get(Msg.Key.NEW_FILE), Theme.CIcon.DOCUMENT_NEW, 78) {
             private static final long serialVersionUID = 1L;
 
-
             public void actionPerformed(ActionEvent arg0) {
                 openDocumentsModel.addDocument();
             }
@@ -130,16 +125,13 @@ public class DocumentActions
         this.closeFileAction = new ShortcutAction(Msg.get(Msg.Key.CLOSE), null, Msg.get(Msg.Key.CLOSE), Integer.valueOf(67), 115) {
             private static final long serialVersionUID = 1L;
 
-
             public void actionPerformed(ActionEvent arg0) {
                 DocumentActions.this.closeWithConfirmation(openDocumentsModel.getSelectedDocument());
             }
         };
 
-
         this.saveFileAction = new ShortcutAction(Msg.get(Msg.Key.SAVE_FILE), Theme.CIcon.DOCUMENT_SAVE, 83) {
             private static final long serialVersionUID = 1L;
-
 
             public void actionPerformed(ActionEvent ae) {
                 try {
@@ -151,12 +143,11 @@ public class DocumentActions
                     }
                 } catch (IOException e) {
                     String msg = Msg.get(Msg.Key.SAVE_FILE_ERROR);
-                    DocumentActions.LOG.info(msg);
+                    LOG.info(msg);
                     JOptionPane.showMessageDialog(null, msg, Msg.get(Msg.Key.SAVE_ERROR), 0);
                 }
             }
         };
-
 
         this.nextDocumentAction = new ShortcutAction(Msg.get(Msg.Key.NEXT_DOCUMENT), null, 34) {
             private static final long serialVersionUID = 1L;
@@ -178,12 +169,10 @@ public class DocumentActions
 
         this.fileActions = Collections.unmodifiableList(Arrays.asList(this.newFileAction, this.openFilesAction, this.openFolderAction, this.closeFileAction, this.closeAllFileAction, this.closeFolderAction, this.saveFileAction, this.saveAsFileAction));
 
-
         this.cutAction = getAction(Msg.get(Msg.Key.CUT), Theme.CIcon.EDIT_CUT, new DefaultEditorKit.CutAction(), 88);
         this.copyAction = getAction(Msg.get(Msg.Key.COPY), Theme.CIcon.EDIT_COPY, new DefaultEditorKit.CopyAction(), 67);
         Action findNextAction = getAction(Msg.get(Msg.Key.FIND_NEXT), Theme.CIcon.EDIT_FIND_NEXT, new FindNextAction(), 114);
         Action toggleCommentAction = getAction(Msg.get(Msg.Key.TOGGLE_COMMENTS), Theme.CIcon.EDIT_COMMENT, new ToggleCommentsAction(), 47);
-
 
         toggleCommentAction.putValue("LineComments", "/ ");
         findNextAction.putValue("AcceleratorKey", KeyStroke.getKeyStroke("F3"));
@@ -197,7 +186,6 @@ public class DocumentActions
         acts.add(findNextAction);
         acts.add(getAction(Msg.get(Msg.Key.GOTO_LINE) + "...", Theme.CIcon.EDIT_GOTO_LINE, new GotoLineAction(), 71));
         this.editorActions = Collections.unmodifiableList(acts);
-
 
         openDocumentsModel.addListener(new OpenDocumentsModel.Adapter() {
             public void docSelected(Document document) {
@@ -217,7 +205,7 @@ public class DocumentActions
             }
         });
 
-        refresh();
+        this.refresh();
     }
 
     private static Action getAction(String title, Icon icon, Action action, int acceleratorKey) {
@@ -243,13 +231,12 @@ public class DocumentActions
     }
 
     public void openFile(File file) {
-        openFiles(Collections.singletonList(file));
+        this.openFiles(Collections.singletonList(file));
     }
 
     public void openFiles(List<File> files) {
         String errMsg = "";
         for (File f : files) {
-
 
             boolean proceed = true;
             double fileSizeMb = f.length() / 1048576.0D;
@@ -265,7 +252,7 @@ public class DocumentActions
                     this.lastSelectedOpenFileFolder = f.getParentFile();
                 }
             } catch (IOException e) {
-                errMsg = errMsg + "\r\n" + f.getAbsolutePath();
+                errMsg = String.format("%s\r\n%s", errMsg, f.getAbsolutePath());
                 LOG.log(Level.WARNING, "openFiles exception", e);
             }
         }
@@ -276,7 +263,7 @@ public class DocumentActions
     }
 
     public List<Action> getEditorActions() {
-        refresh();
+        this.refresh();
         return this.editorActions;
     }
 
@@ -304,7 +291,7 @@ public class DocumentActions
         return this.closeFileAction;
     }
 
-    public Action getCloseFileAction(final Document document) {
+    public Action getCloseFileAction(Document document) {
         String t = (document == null) ? "" : document.getTitle();
         Action a = new AbstractAction(Msg.get(Msg.Key.CLOSE) + " " + t) {
             private static final long serialVersionUID = 1L;
@@ -315,11 +302,10 @@ public class DocumentActions
         };
         a.setEnabled((document != null && this.openDocumentsModel.getDocuments().contains(document)));
 
-
         return a;
     }
 
-    public Action getCloseOtherFilesAction(final Document document) {
+    public Action getCloseOtherFilesAction(Document document) {
         Action closeOthersAction = new AbstractAction("Close Other Tabs") {
             public void actionPerformed(ActionEvent e) {
                 for (Document d : DocumentActions.this.openDocumentsModel.getDocuments()) {
@@ -329,7 +315,7 @@ public class DocumentActions
                 }
             }
         };
-        closeOthersAction.putValue("MnemonicKey", Integer.valueOf(79));
+        closeOthersAction.putValue("MnemonicKey", 79);
         return closeOthersAction;
     }
 
@@ -344,14 +330,16 @@ public class DocumentActions
                 String message = Msg.get(Msg.Key.DOCUMENT) + document.getTitle() + Msg.get(Msg.Key.UNSAVED_CHANGES_CONFIRM);
 
                 int choice = JOptionPane.showConfirmDialog(null, message);
-                if (choice == 0) {
-                    if (document.getFilePath() != null) {
-                        this.openDocumentsModel.saveDocument();
-                    } else {
-                        letUserChooseFileAndSave();
-                    }
-                } else if (choice == 1) {
-                    this.openDocumentsModel.closeDocument(document);
+                switch (choice) {
+                    case 0:
+                        if (document.getFilePath() != null)
+                            this.openDocumentsModel.saveDocument();
+                        else
+                            this.letUserChooseFileAndSave();
+                        break;
+                    case 1:
+                        this.openDocumentsModel.closeDocument(document);
+                        break;
                 }
             } else {
                 this.openDocumentsModel.closeDocument(document);
@@ -405,7 +393,7 @@ public class DocumentActions
     }
 
     public void filesDropped(List<File> files) {
-        openFiles(files);
+        this.openFiles(files);
     }
 
     public List<Action> getOpenRecentActions(List<String> filePaths) {
@@ -424,7 +412,7 @@ public class DocumentActions
         return r;
     }
 
-    public Action openAllAction(final List<String> filePaths) {
+    public Action openAllAction(List<String> filePaths) {
         return new AbstractAction(Msg.get(Msg.Key.OPEN_ALL_RECENT)) {
             public void actionPerformed(ActionEvent e) {
                 List<File> files = Lists.newArrayList();
@@ -444,8 +432,8 @@ public class DocumentActions
     }
 
     public void addActionsToEditor(JComponent component, Document document) {
-        addAction(component, this.nextDocumentAction);
-        addAction(component, this.prevDocumentAction);
+        this.addAction(component, this.nextDocumentAction);
+        this.addAction(component, this.prevDocumentAction);
     }
 
     private void addAction(JComponent component, Action action) {
@@ -459,13 +447,11 @@ public class DocumentActions
             extends AbstractAction {
         private static final long serialVersionUID = 1L;
 
-
         public CloseAllFileAction() {
             super(Msg.get(Msg.Key.CLOSE_ALL));
-            putValue("ShortDescription", Msg.get(Msg.Key.CLOSE_ALL));
-            putValue("MnemonicKey", Integer.valueOf(65));
+            this.putValue("ShortDescription", Msg.get(Msg.Key.CLOSE_ALL));
+            this.putValue("MnemonicKey", Integer.valueOf(65));
         }
-
 
         public void actionPerformed(ActionEvent arg0) {
             for (Document d : DocumentActions.this.openDocumentsModel.getDocuments()) {
@@ -478,13 +464,11 @@ public class DocumentActions
             extends AbstractAction {
         private static final long serialVersionUID = 1L;
 
-
         public SaveAsFileAction() {
             super(Msg.get(Msg.Key.SAVE_AS) + "...", Theme.CIcon.DOCUMENT_SAVE.get16());
-            putValue("ShortDescription", Msg.get(Msg.Key.SAVE_AS) + "...");
-            putValue("MnemonicKey", Integer.valueOf(65));
+            this.putValue("ShortDescription", Msg.get(Msg.Key.SAVE_AS) + "...");
+            this.putValue("MnemonicKey", Integer.valueOf(65));
         }
-
 
         public void actionPerformed(ActionEvent arg0) {
             DocumentActions.this.letUserChooseFileAndSave();

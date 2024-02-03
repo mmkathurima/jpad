@@ -40,9 +40,8 @@ public class HtmlResultPanel extends PanelResultRenderer {
         this.html = "";
         this.htmlLastSaveFile = null;
         this.csvLastSaveFile = null;
-        setLayout(new java.awt.BorderLayout());
+        this.setLayout(new java.awt.BorderLayout());
         JToolBar toolBar = new JToolBar("htmlResultBar");
-
 
         try {
             c = java.nio.file.Files.readString(Path.of(this.getClass().getClassLoader().getResource("s.css").toURI()));
@@ -66,28 +65,26 @@ public class HtmlResultPanel extends PanelResultRenderer {
     }
 
     public void compiling(JPadCode code) {
-        display("Compiling...");
+        this.display("Compiling...");
     }
 
     public void resultReturned(RunResult runResult) {
         this.runResult = runResult;
-        display(runResult.toHtml());
+        this.display(runResult.toHtml());
     }
 
     private synchronized void display(String body) {
         this.html = "<html><head><style>" + this.css + "</style></head><body>" + body + "</body></html>";
 
-
         if (this.jfxPanel == null) {
             this.jfxPanel = new JFXPanel();
-            add(this.jfxPanel, "Center");
+            this.add(this.jfxPanel, "Center");
         }
-
 
         Platform.runLater(() -> {
             WebView webView = new WebView();
             webView.setContextMenuEnabled(false);
-            createContextMenu(webView);
+            this.createContextMenu(webView);
             this.jfxPanel.setScene(new Scene(webView));
             webView.getEngine().loadContent(this.html);
         });

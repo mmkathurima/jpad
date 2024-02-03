@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class ApplicationInstanceManager {
     private static final Logger LOG = Logger.getLogger(ApplicationInstanceManager.class.getName());
     private static final int SINGLE_INSTANCE_NETWORK_SOCKET = 44331;
@@ -20,11 +19,10 @@ public class ApplicationInstanceManager {
     private static ApplicationInstanceListener subListener;
 
     public static boolean registerInstance(String[] args) {
-        boolean returnValueOnError = true;
-
+        final boolean returnValueOnError = true;
 
         try {
-            final ServerSocket socket = new ServerSocket(44331, 10, InetAddress.getLocalHost());
+            ServerSocket socket = new ServerSocket(44331, 10, InetAddress.getLocalHost());
 
             LOG.fine("Listening for application instances on socket 44331");
             Thread instanceListenerThread = new Thread(new Runnable() {
@@ -40,17 +38,17 @@ public class ApplicationInstanceManager {
                             ObjectInputStream oin = new ObjectInputStream(client.getInputStream());
                             String message = (String) oin.readObject();
                             if ("$$NewInstance$$\n".trim().equals(message.trim())) {
-                                ApplicationInstanceManager.LOG.fine("Shared key matched - new application instance found");
+                                LOG.fine("Shared key matched - new application instance found");
                                 String[] myArgs = (String[]) oin.readObject();
-                                ApplicationInstanceManager.fireNewInstance(Arrays.asList(myArgs));
+                                fireNewInstance(Arrays.asList(myArgs));
                             }
                             oin.close();
                             client.close();
                         } catch (ClassNotFoundException e) {
-                            ApplicationInstanceManager.LOG.severe("Shared key matched - new application instance found");
+                            LOG.severe("Shared key matched - new application instance found");
                             socketClosed = true;
                         } catch (IOException e) {
-                            ApplicationInstanceManager.LOG.severe("Shared key matched - new application instance found");
+                            LOG.severe("Shared key matched - new application instance found");
                             socketClosed = true;
                         }
                     }

@@ -307,7 +307,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
     /**
      * A flag that controls whether or not to adjust for daylight saving.
      */
-    private boolean adjustForDaylightSaving = false;
+    private boolean adjustForDaylightSaving;
 
     ////////////////////////////////////////////////////////////////////////////
     // constructors and factory methods
@@ -380,7 +380,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
     public static SegmentedTimeline newMondayThroughFridayTimeline() {
         SegmentedTimeline timeline
                 = new SegmentedTimeline(DAY_SEGMENT_SIZE, 5, 2);
-        timeline.setStartTime(firstMondayAfter1900());
+        timeline.startTime = firstMondayAfter1900();
         return timeline;
     }
 
@@ -404,8 +404,8 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
     public static SegmentedTimeline newFifteenMinuteTimeline() {
         SegmentedTimeline timeline = new SegmentedTimeline(
                 FIFTEEN_MINUTE_SEGMENT_SIZE, 28, 68);
-        timeline.setStartTime(firstMondayAfter1900() + 36
-                * timeline.getSegmentSize());
+        timeline.startTime = firstMondayAfter1900() + 36
+                * timeline.segmentSize;
         timeline.setBaseTimeline(newMondayThroughFridayTimeline());
         return timeline;
     }
@@ -557,19 +557,19 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
 
         // verify that baseTimeline is compatible with us
         if (baseTimeline != null) {
-            if (baseTimeline.getSegmentSize() < this.segmentSize) {
+            if (baseTimeline.segmentSize < this.segmentSize) {
                 throw new IllegalArgumentException(
                         "baseTimeline.getSegmentSize() "
                                 + "is smaller than segmentSize");
-            } else if (baseTimeline.getStartTime() > this.startTime) {
+            } else if (baseTimeline.startTime > this.startTime) {
                 throw new IllegalArgumentException(
                         "baseTimeline.getStartTime() is after startTime");
-            } else if ((baseTimeline.getSegmentSize() % this.segmentSize) != 0) {
+            } else if ((baseTimeline.segmentSize % this.segmentSize) != 0) {
                 throw new IllegalArgumentException(
                         "baseTimeline.getSegmentSize() is not multiple of "
                                 + "segmentSize");
             } else if (((this.startTime
-                    - baseTimeline.getStartTime()) % this.segmentSize) != 0) {
+                    - baseTimeline.startTime) % this.segmentSize) != 0) {
                 throw new IllegalArgumentException(
                         "baseTimeline is not aligned");
             }
@@ -594,24 +594,24 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
         long groupIndex = rawMilliseconds / this.segmentsGroupSize;
 
         if (groupMilliseconds >= this.segmentsIncludedSize) {
-            result = toTimelineValue(this.startTime + this.segmentsGroupSize
+            result = this.toTimelineValue(this.startTime + this.segmentsGroupSize
                     * (groupIndex + 1));
         } else {
-            Segment segment = getSegment(millisecond);
+            Segment segment = this.getSegment(millisecond);
             if (segment.inExceptionSegments()) {
                 int p;
-                while ((p = binarySearchExceptionSegments(segment)) >= 0) {
-                    segment = getSegment(millisecond = ((Segment)
+                while ((p = this.binarySearchExceptionSegments(segment)) >= 0) {
+                    segment = this.getSegment(millisecond = ((Segment)
                             this.exceptionSegments.get(p)).getSegmentEnd() + 1);
                 }
-                result = toTimelineValue(millisecond);
+                result = this.toTimelineValue(millisecond);
             } else {
                 long shiftedSegmentedValue = millisecond - this.startTime;
                 long x = shiftedSegmentedValue % this.segmentsGroupSize;
                 long y = shiftedSegmentedValue / this.segmentsGroupSize;
 
                 long wholeExceptionsBeforeDomainValue =
-                        getExceptionSegmentCount(this.startTime, millisecond - 1);
+                        this.getExceptionSegmentCount(this.startTime, millisecond - 1);
 
 //                long partialTimeInException = 0;
 //                Segment ss = getSegment(millisecond);
@@ -646,7 +646,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
      * @return The timeline value (in milliseconds).
      */
     public long toTimelineValue(Date date) {
-        return toTimelineValue(getTime(date));
+        return this.toTimelineValue(this.getTime(date));
         //return toTimelineValue(dateDomainValue.getTime());
     }
 
@@ -670,7 +670,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
 
             // skip all whole exception segments in the range
             long exceptionSegmentCount;
-            while ((exceptionSegmentCount = getExceptionSegmentCount(
+            while ((exceptionSegmentCount = this.getExceptionSegmentCount(
                     lastIndex, (result.millisecond / this.segmentSize)
                             * this.segmentSize - 1)) > 0
             ) {
@@ -695,7 +695,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
             lastIndex++;
         }
 
-        return getTimeFromLong(result.millisecond);
+        return this.getTimeFromLong(result.millisecond);
     }
 
     /**
@@ -732,7 +732,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
      * @return <code>true</code> if value is contained in the timeline.
      */
     public boolean containsDomainValue(long millisecond) {
-        Segment segment = getSegment(millisecond);
+        Segment segment = this.getSegment(millisecond);
         return segment.inIncludeSegments();
     }
 
@@ -743,7 +743,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
      * @return <code>true</code> if value is contained in the timeline
      */
     public boolean containsDomainValue(Date date) {
-        return containsDomainValue(getTime(date));
+        return this.containsDomainValue(this.getTime(date));
     }
 
     /**
@@ -762,7 +762,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
                     "domainValueEnd (" + domainValueEnd
                             + ") < domainValueStart (" + domainValueStart + ")");
         }
-        Segment segment = getSegment(domainValueStart);
+        Segment segment = this.getSegment(domainValueStart);
         boolean contains = true;
         do {
             contains = (segment.inIncludeSegments());
@@ -787,8 +787,8 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
      */
     public boolean containsDomainRange(Date dateDomainValueStart,
                                        Date dateDomainValueEnd) {
-        return containsDomainRange(getTime(dateDomainValueStart),
-                getTime(dateDomainValueEnd));
+        return this.containsDomainRange(this.getTime(dateDomainValueStart),
+                this.getTime(dateDomainValueEnd));
     }
 
     /**
@@ -804,7 +804,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
      * @param millisecond domain value to treat as an exception
      */
     public void addException(long millisecond) {
-        addException(new Segment(millisecond));
+        this.addException(new Segment(millisecond));
     }
 
     /**
@@ -823,7 +823,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
      * @param toDomainValue   end of domain range to treat as an exception
      */
     public void addException(long fromDomainValue, long toDomainValue) {
-        addException(new SegmentRange(fromDomainValue, toDomainValue));
+        this.addException(new SegmentRange(fromDomainValue, toDomainValue));
     }
 
     /**
@@ -838,7 +838,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
      * @param exceptionDate Date into the segment to exclude.
      */
     public void addException(Date exceptionDate) {
-        addException(getTime(exceptionDate));
+        this.addException(this.getTime(exceptionDate));
         //addException(exceptionDate.getTime());
     }
 
@@ -856,7 +856,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
      */
     public void addExceptions(List exceptionList) {
         for (Iterator iter = exceptionList.iterator(); iter.hasNext(); ) {
-            addException((Date) iter.next());
+            this.addException((Date) iter.next());
         }
     }
 
@@ -872,7 +872,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
      */
     private void addException(Segment segment) {
         if (segment.inIncludeSegments()) {
-            int p = binarySearchExceptionSegments(segment);
+            int p = this.binarySearchExceptionSegments(segment);
             this.exceptionSegments.add(-(p + 1), segment);
         }
     }
@@ -900,7 +900,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
 
             // cycle through all the segments contained in the BaseTimeline
             // exception segment
-            Segment segment = getSegment(baseSegment.getSegmentStart());
+            Segment segment = this.getSegment(baseSegment.getSegmentStart());
             while (segment.getSegmentStart() <= baseSegment.getSegmentEnd()) {
                 if (segment.inIncludeSegments()) {
 
@@ -914,8 +914,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
                     while (segment.inIncludeSegments());
 
                     // add the interval as an exception
-                    addException(fromDomainValue, toDomainValue);
-
+                    this.addException(fromDomainValue, toDomainValue);
                 } else {
                     // this is not one of our included segment, skip it
                     segment.inc();
@@ -937,7 +936,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
      * @param date date domain value to treat as a baseTimeline exception
      */
     public void addBaseTimelineException(Date date) {
-        addBaseTimelineException(getTime(date));
+        this.addBaseTimelineException(this.getTime(date));
     }
 
     /**
@@ -958,19 +957,18 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
                 && !baseSegment.inExcludeSegments()) {
 
             baseSegment.inc();
-
         }
 
         // cycle over all the base segments groups in the range
         while (baseSegment.getSegmentStart() <= toBaseDomainValue) {
 
             long baseExclusionRangeEnd = baseSegment.getSegmentStart()
-                    + this.baseTimeline.getSegmentsExcluded()
-                    * this.baseTimeline.getSegmentSize() - 1;
+                    + this.baseTimeline.segmentsExcluded
+                    * this.baseTimeline.segmentSize - 1;
 
             // cycle through all the segments contained in the base exclusion
             // area
-            Segment segment = getSegment(baseSegment.getSegmentStart());
+            Segment segment = this.getSegment(baseSegment.getSegmentStart());
             while (segment.getSegmentStart() <= baseExclusionRangeEnd) {
                 if (segment.inIncludeSegments()) {
 
@@ -984,7 +982,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
                     while (segment.inIncludeSegments());
 
                     // add the interval as an exception
-                    addException(new BaseTimelineSegmentRange(
+                    this.addException(new BaseTimelineSegmentRange(
                             fromDomainValue, toDomainValue));
                 } else {
                     // this is not one of our included segment, skip it
@@ -993,7 +991,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
             }
 
             // go to next base segment group
-            baseSegment.inc(this.baseTimeline.getGroupSegmentCount());
+            baseSegment.inc(this.baseTimeline.groupSegmentCount);
         }
     }
 
@@ -1053,7 +1051,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
      * @return A Segment that contains date, or the next possible Segment.
      */
     public Segment getSegment(Date date) {
-        return (getSegment(getTime(date)));
+        return (this.getSegment(this.getTime(date)));
     }
 
     /**
@@ -1079,11 +1077,11 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
         if (o instanceof SegmentedTimeline) {
             SegmentedTimeline other = (SegmentedTimeline) o;
 
-            boolean b0 = (this.segmentSize == other.getSegmentSize());
-            boolean b1 = (this.segmentsIncluded == other.getSegmentsIncluded());
-            boolean b2 = (this.segmentsExcluded == other.getSegmentsExcluded());
-            boolean b3 = (this.startTime == other.getStartTime());
-            boolean b4 = equals(this.exceptionSegments,
+            boolean b0 = (this.segmentSize == other.segmentSize);
+            boolean b1 = (this.segmentsIncluded == other.segmentsIncluded);
+            boolean b2 = (this.segmentsExcluded == other.segmentsExcluded);
+            boolean b3 = (this.startTime == other.startTime);
+            boolean b4 = this.equals(this.exceptionSegments,
                     other.getExceptionSegments());
             return b0 && b1 && b2 && b3 && b4;
         } else {
@@ -1236,7 +1234,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
          * @param millisecond the millisecond (as encoded by java.util.Date).
          */
         protected Segment(long millisecond) {
-            this.segmentNumber = calculateSegmentNumber(millisecond);
+            this.segmentNumber = this.calculateSegmentNumber(millisecond);
             this.segmentStart = SegmentedTimeline.this.startTime
                     + this.segmentNumber * SegmentedTimeline.this.segmentSize;
             this.segmentEnd
@@ -1350,7 +1348,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
          * segment.
          */
         public boolean contains(Segment segment) {
-            return contains(segment.getSegmentStart(), segment.getSegmentEnd());
+            return this.contains(segment.segmentStart, segment.segmentEnd);
         }
 
         /**
@@ -1390,7 +1388,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
          * @return A boolean.
          */
         public boolean before(Segment other) {
-            return (this.segmentEnd < other.getSegmentStart());
+            return (this.segmentEnd < other.segmentStart);
         }
 
         /**
@@ -1401,7 +1399,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
          * @return A boolean.
          */
         public boolean after(Segment other) {
-            return (this.segmentStart > other.getSegmentEnd());
+            return (this.segmentStart > other.segmentEnd);
         }
 
         /**
@@ -1414,10 +1412,10 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
         public boolean equals(Object object) {
             if (object instanceof Segment) {
                 Segment other = (Segment) object;
-                return (this.segmentNumber == other.getSegmentNumber()
-                        && this.segmentStart == other.getSegmentStart()
-                        && this.segmentEnd == other.getSegmentEnd()
-                        && this.millisecond == other.getMillisecond());
+                return (this.segmentNumber == other.segmentNumber
+                        && this.segmentStart == other.segmentStart
+                        && this.segmentEnd == other.segmentEnd
+                        && this.millisecond == other.millisecond);
             } else {
                 return false;
             }
@@ -1463,9 +1461,9 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
          * @return <code>true</code> or <code>false</code>.
          */
         public boolean inIncludeSegments() {
-            if (getSegmentNumberRelativeToGroup()
+            if (this.getSegmentNumberRelativeToGroup()
                     < SegmentedTimeline.this.segmentsIncluded) {
-                return !inExceptionSegments();
+                return !this.inExceptionSegments();
             } else {
                 return false;
             }
@@ -1477,7 +1475,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
          * @return <code>true</code> or <code>false</code>.
          */
         public boolean inExcludeSegments() {
-            return getSegmentNumberRelativeToGroup()
+            return this.getSegmentNumberRelativeToGroup()
                     >= SegmentedTimeline.this.segmentsIncluded;
         }
 
@@ -1510,7 +1508,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
          * @return <code>true</code> if we are an exception segment.
          */
         public boolean inExceptionSegments() {
-            return binarySearchExceptionSegments(this) >= 0;
+            return SegmentedTimeline.this.binarySearchExceptionSegments(this) >= 0;
         }
 
         /**
@@ -1532,7 +1530,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
          * The exact time incremented is segmentSize.
          */
         public void inc() {
-            inc(1);
+            this.inc(1);
         }
 
         /**
@@ -1554,7 +1552,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
          * The exact time decremented is segmentSize.
          */
         public void dec() {
-            dec(1);
+            this.dec(1);
         }
 
         /**
@@ -1570,7 +1568,6 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
         public void moveIndexToEnd() {
             this.millisecond = this.segmentEnd;
         }
-
     }
 
     /**
@@ -1595,8 +1592,8 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
          */
         public SegmentRange(long fromMillisecond, long toMillisecond) {
 
-            Segment start = getSegment(fromMillisecond);
-            Segment end = getSegment(toMillisecond);
+            Segment start = SegmentedTimeline.this.getSegment(fromMillisecond);
+            Segment end = SegmentedTimeline.this.getSegment(toMillisecond);
 //            if (start.getSegmentStart() != fromMillisecond
 //                || end.getSegmentEnd() != toMillisecond) {
 //                throw new IllegalArgumentException("Invalid Segment Range ["
@@ -1604,7 +1601,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
 //            }
 
             this.millisecond = fromMillisecond;
-            this.segmentNumber = calculateSegmentNumber(fromMillisecond);
+            this.segmentNumber = this.calculateSegmentNumber(fromMillisecond);
             this.segmentStart = start.segmentStart;
             this.segmentEnd = end.segmentEnd;
             this.segmentCount
@@ -1654,7 +1651,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
          * @return <code>true</code> or </code>false</code>.
          */
         public boolean inIncludeSegments() {
-            for (Segment segment = getSegment(this.segmentStart);
+            for (Segment segment = SegmentedTimeline.this.getSegment(this.segmentStart);
                  segment.getSegmentStart() < this.segmentEnd;
                  segment.inc()) {
                 if (!segment.inIncludeSegments()) {
@@ -1670,7 +1667,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
          * @return <code>true</code> or </code>false</code>.
          */
         public boolean inExcludeSegments() {
-            for (Segment segment = getSegment(this.segmentStart);
+            for (Segment segment = SegmentedTimeline.this.getSegment(this.segmentStart);
                  segment.getSegmentStart() < this.segmentEnd;
                  segment.inc()) {
                 if (!segment.inExceptionSegments()) {
@@ -1690,7 +1687,6 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
             throw new IllegalArgumentException(
                     "Not implemented in SegmentRange");
         }
-
     }
 
     /**
@@ -1708,7 +1704,5 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
                                         long toDomainValue) {
             super(fromDomainValue, toDomainValue);
         }
-
     }
-
 }

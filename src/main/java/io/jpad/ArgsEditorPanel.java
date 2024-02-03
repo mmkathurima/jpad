@@ -13,21 +13,20 @@ import java.awt.EventQueue;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 
-
 class ArgsEditorPanel
         extends JPanel {
     private static final long serialVersionUID = 1L;
     private final JTextField textField = new JTextField(20);
     private final RunConfig runConfig;
 
-    public ArgsEditorPanel(@NotNull final RunConfig runConfig) {
+    public ArgsEditorPanel(@NotNull RunConfig runConfig) {
         if (runConfig == null) throw new NullPointerException("runConfig");
 
         this.runConfig = runConfig;
 
-        setLayout(new BorderLayout());
-        add(new JLabel("Program Arguments:"), "West");
-        add(this.textField, "Center");
+        this.setLayout(new BorderLayout());
+        this.add(new JLabel("Program Arguments:"), "West");
+        this.add(this.textField, "Center");
 
         this.textField.addKeyListener(new KeyAdapter() {
             public void keyReleased(KeyEvent e) {
@@ -41,7 +40,7 @@ class ArgsEditorPanel
                 ArgsEditorPanel.this.refresh();
             }
         });
-        refresh();
+        this.refresh();
     }
 
     private void refresh() {

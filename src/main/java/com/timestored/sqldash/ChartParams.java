@@ -16,7 +16,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-
 public class ChartParams {
     private static final OptionParser p = getParser();
     final String query;
@@ -56,48 +55,35 @@ public class ChartParams {
 
         p.acceptsAll(List.of(new String[]{"h", "host"}), "SQL server host that will be queried.").withRequiredArg().describedAs("host_name").defaultsTo("localhost", new String[0]).ofType(String.class);
 
-
         p.acceptsAll(List.of(new String[]{"P", "port"}), "The TCP/IP port number to use for the SQL Server connection.").withRequiredArg().describedAs("port_num");
-
 
         p.acceptsAll(List.of(new String[]{"D", "database"}), "The database to use.").withRequiredArg().describedAs("db_name").ofType(String.class);
 
-
         p.acceptsAll(List.of(new String[]{"u", "user"}), "Username used to connect to SQL server.").withRequiredArg().describedAs("user_name").ofType(String.class);
-
 
         p.acceptsAll(List.of(new String[]{"p", "password"}), "Password used to connect to SQL server.").withRequiredArg().describedAs("password").ofType(String.class);
 
-
         p.acceptsAll(List.of(new String[]{"e", "execute"}), "Execute the selected sql statement.").withRequiredArg().describedAs("sql_statement").ofType(String.class);
-
 
         p.acceptsAll(List.of(new String[]{"t", "theme"}), "Set the color theme for the chart. Options available: light,dark,pastel").withRequiredArg().describedAs("color_theme").defaultsTo("light", new String[0]).ofType(String.class);
 
-
         p.acceptsAll(List.of(new String[]{"s", "servertype"}), "The type of sql server being queried. Valid values include:kdb,mysql,postgres,mssql,h2.").withRequiredArg().describedAs("server_type").required().ofType(String.class);
-
 
         String desc = "Set the selected chart type. Options available: " + Joiner.on(", ").join(getChartTypes());
 
         p.acceptsAll(List.of(new String[]{"c", "chart"}), desc).withRequiredArg().describedAs("chart_type").defaultsTo("barchart");
 
-
         p.acceptsAll(List.of(new String[]{"W", "width"}), "Set the width of the chart output").withRequiredArg().describedAs("output_width").defaultsTo("400");
-
 
         p.acceptsAll(List.of(new String[]{"H", "height"}), "Set the height of the chart output").withRequiredArg().describedAs("output_height").defaultsTo("300");
 
-
         p.acceptsAll(List.of(new String[]{"o", "out"}), "The name of the destination image file.").withRequiredArg().describedAs("file_name").defaultsTo("out.png");
-
 
         p.acceptsAll(List.of(new String[]{"?", "help"}), "Display a help message and exit.").forHelp();
 
         p.allowsUnrecognizedOptions();
         return p;
     }
-
 
     public static ChartParams getChartParams(OptionSet o) throws IOException {
         String qry = "";
@@ -128,7 +114,6 @@ public class ChartParams {
 
         ChartTheme ct = getChartTheme(("" + o.valueOf("theme")).toLowerCase());
 
-
         File file = new File("" + o.valueOf("out"));
 
         String database = null;
@@ -136,7 +121,6 @@ public class ChartParams {
             database = "" + o.valueOf("database");
         }
         ServerConfig sc = new ServerConfig("" + o.valueOf("host"), port, (String) o.valueOf("user"), (String) o.valueOf("password"), "servername", jdbcTypes, null, database);
-
 
         return (new ChartParamsBuilder()).query(qry).file(file).serverConfig(sc).chartTheme(ct).viewStrategy(vs).height(Integer.parseInt("" + o.valueOf("height"))).width(Integer.parseInt("" + o.valueOf("width"))).build();
     }

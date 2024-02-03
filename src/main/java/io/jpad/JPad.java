@@ -9,7 +9,6 @@ import java.util.Arrays;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 
-
 public class JPad {
     public static void main(String... args) throws IOException {
         boolean debug = Arrays.asList(args).contains("-debug");
@@ -46,7 +45,6 @@ public class JPad {
         }
         return ret;
     }
-
 
     public static int testGenerate(String arg) throws IOException {
         return run(JPadParams.parseCommand(arg));

@@ -18,13 +18,11 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.logging.Logger;
 
-
 public class SwingUtils {
     public static final KeyStroke ESC_KEYSTROKE = KeyStroke.getKeyStroke(27, 0);
     private static final Logger LOG = Logger.getLogger(SwingUtils.class.getName());
 
-
-    public static void addEscapeCloseListener(final JDialog dialog) {
+    public static void addEscapeCloseListener(JDialog dialog) {
         putEscapeAction(dialog.getRootPane(), new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
                 WindowEvent wev = new WindowEvent(dialog, 201);
@@ -43,7 +41,6 @@ public class SwingUtils {
         });
     }
 
-
     public static void forceToFront(JFrame frame) {
         frame.setState(0);
         frame.toFront();
@@ -51,7 +48,6 @@ public class SwingUtils {
         frame.setAlwaysOnTop(false);
         frame.repaint();
     }
-
 
     public static JDialog showSplashDialog(URL r, Color bgColor, String txt) {
         JDialog dialog = null;
@@ -84,7 +80,6 @@ public class SwingUtils {
         return dialog;
     }
 
-
     public static JFrame getPopupFrame(Component parent, String title, Component content, Image icon) {
         JFrame f = new JFrame(StringUtils.abbreviate(title, 80));
         f.setIconImage(icon);
@@ -93,7 +88,6 @@ public class SwingUtils {
         setSensibleDimensions(parent, f);
         return f;
     }
-
 
     public static void showAppDialog(Component parent, String title, JPanel contentPanel, Image icon) {
         JDialog d = new JDialog();
@@ -106,7 +100,6 @@ public class SwingUtils {
         d.setLayout(new BorderLayout());
         d.add(contentPanel);
         setSensibleDimensions(parent, d);
-
 
         d.setLocationRelativeTo(parent);
 
@@ -125,14 +118,12 @@ public class SwingUtils {
         w.setSize(defWidth, defHeight);
     }
 
-
     private static void putEscapeAction(JComponent com, Action action) {
         ActionMap am = com.getActionMap();
         InputMap im = com.getInputMap(1);
         am.put("escapeAction", action);
         im.put(ESC_KEYSTROKE, "escapeAction");
     }
-
 
     public static void showMessageDialog(Component parentComponent, String message, String title, int messageType) {
         String[] st = message.split("\r");
@@ -145,10 +136,8 @@ public class SwingUtils {
             }
         }
 
-
         String style = (maxLineLength > 100) ? " style='width: 600px;'" : "";
         Object msg = "<html><body><p" + style + ">" + message + "</body></html>";
-
 
         if (lineCount > 15 || message.length() > 800) {
 
@@ -161,11 +150,9 @@ public class SwingUtils {
         JOptionPane.showMessageDialog(parentComponent, msg, title, messageType);
     }
 
-
     public static void offerToOpenFile(String message, File file, String optionOpen, String optionClose) {
         String[] options = {optionOpen, optionClose};
         int option = JOptionPane.showOptionDialog(null, message, "Open File?", 2, 1, Theme.CIcon.TEXT_HTML.get32(), options, options[0]);
-
 
         if (option == 0) {
             try {
@@ -175,7 +162,6 @@ public class SwingUtils {
             }
         }
     }
-
 
     public static File askUserSaveLocation(String filetypeExtension, File fileOrFolder) {
         JFileChooser fc = null;
@@ -205,7 +191,6 @@ public class SwingUtils {
 
         return null;
     }
-
 
     public static File askUserAndSave(String filetypeExtension, File file, String content) {
         Preconditions.checkNotNull(content);

@@ -8,7 +8,6 @@ import java.awt.Component;
 import java.awt.EventQueue;
 import java.sql.ResultSet;
 
-
 class HardRefreshUpdateableView
         implements UpdateableView {
     private final ViewGetter viewGetter;
@@ -18,7 +17,6 @@ class HardRefreshUpdateableView
         this.viewGetter = Preconditions.checkNotNull(viewGetter);
     }
 
-
     public void update(ResultSet resultSet, ChartResultSet chartResultSet) throws ChartFormatException {
         if (chartResultSet == null) {
             throw new ChartFormatException("Could not construct ResultSet.");
@@ -27,7 +25,7 @@ class HardRefreshUpdateableView
         Component c = this.viewGetter.getView(resultSet, chartResultSet);
 
         if (c != null) {
-            final Component com = c;
+            Component com = c;
             EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     HardRefreshUpdateableView.this.panel.removeAll();

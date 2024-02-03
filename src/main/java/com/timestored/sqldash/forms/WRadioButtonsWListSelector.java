@@ -11,7 +11,6 @@ import java.awt.event.ActionListener;
 import java.util.Enumeration;
 import java.util.List;
 
-
 class WRadioButtonsWListSelector
         extends AbstractWListSelector {
     private static final long serialVersionUID = 1L;
@@ -20,9 +19,8 @@ class WRadioButtonsWListSelector
 
     public WRadioButtonsWListSelector(ListSelectionWidget lsw, DesktopModel desktopModel) {
         super(lsw, desktopModel);
-        refresh();
+        this.refresh();
     }
-
 
     public Component getInputComponent(DesktopModel desktopModel) {
         this.radioPanel = new JPanel();
@@ -31,7 +29,6 @@ class WRadioButtonsWListSelector
 
         return this.radioPanel;
     }
-
 
     public void setSelection(List<String> value) {
         synchronized (this) {
@@ -44,7 +41,6 @@ class WRadioButtonsWListSelector
             }
         }
     }
-
 
     public void setOptionsShown(List<String> v) {
         synchronized (this) {

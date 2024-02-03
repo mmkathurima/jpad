@@ -9,9 +9,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
 
-
 public class JPadParamsTest {
-    private static String FILE_PATH = null;
+    private static String FILE_PATH;
 
     @BeforeClass
     public static void makeEmptyFile() throws IOException {

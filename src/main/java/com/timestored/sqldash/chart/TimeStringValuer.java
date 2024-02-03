@@ -10,7 +10,6 @@ import java.text.*;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class TimeStringValuer
         implements StringValue {
     private static final long serialVersionUID = 1L;
@@ -24,11 +23,9 @@ public class TimeStringValuer
         this.formatters.put(Timestamp.class, new TimestampFormat());
     }
 
-
     public boolean isSupported(Class<?> key) {
         return this.formatters.containsKey(key);
     }
-
 
     public String getString(Object o) {
         if (o != null) {
@@ -40,15 +37,12 @@ public class TimeStringValuer
         return StringValues.TO_STRING.getString(o);
     }
 
-
     private static class TimestampFormat
             extends Format {
         private static final long serialVersionUID = 1L;
 
-
         SimpleDateFormat f = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
         DecimalFormat df = new DecimalFormat("000");
-
 
         private TimestampFormat() {
         }

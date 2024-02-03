@@ -14,7 +14,6 @@ import java.sql.Time;
 import java.sql.Timestamp;
 import java.util.*;
 
-
 class ChartResultSet {
     private final List<NumericCol> numericColumns;
     private final List<StringyCol> stringyColumns;
@@ -30,7 +29,6 @@ class ChartResultSet {
         this.rowTitle = Preconditions.checkNotNull(rowTitle);
         this.colTitle = Preconditions.checkNotNull(colTitle);
         this.timeCol = timeCol;
-
 
         int rowCount = rowTitles.size();
         Preconditions.checkArgument((timeCol == null || (timeCol.getDates()).length == rowCount));
@@ -63,16 +61,13 @@ class ChartResultSet {
         return this.rowLabels.size();
     }
 
-
     public TimeCol getTimeCol() {
         return this.timeCol;
     }
 
-
     public List<NumericCol> getNumericColumns() {
         return this.numericColumns;
     }
-
 
     public List<StringyCol> getStringyColumns() {
         return this.stringyColumns;
@@ -91,7 +86,7 @@ class ChartResultSet {
     }
 
     public String toString() {
-        MoreObjects.ToStringHelper tsh = MoreObjects.toStringHelper(this).add("numericColumns", Joiner.on(',').join(getColumnNames(this.numericColumns)));
+        MoreObjects.ToStringHelper tsh = MoreObjects.toStringHelper(this).add("numericColumns", Joiner.on(',').join(this.getColumnNames(this.numericColumns)));
 
         if (this.timeCol == null) {
             tsh.add("timeCol", "no time col");
@@ -117,25 +112,22 @@ class ChartResultSet {
         for (String s : this.rowLabels) {
             objList.add(s);
         }
-        return new StringyCol(getRowTitle(), 12, objList);
+        return new StringyCol(this.rowTitle, 12, objList);
     }
 
-    public static abstract class Col {
+    public abstract static class Col {
         private final int type;
 
         private final String name;
-
 
         Col(String name, int type) {
             this.name = name;
             this.type = type;
         }
 
-
         public String getLabel() {
             return this.name;
         }
-
 
         public int getType() {
             return this.type;
@@ -174,15 +166,14 @@ class ChartResultSet {
         }
 
         public int hashCode() {
-            int prime = 31;
+            final int prime = 31;
             int result = 1;
             result = 31 * result + ((this.vals == null) ? 0 : this.vals.hashCode());
             return result;
         }
 
-
         public boolean equals(Object obj) {
-            if (obj != null && getClass() == obj.getClass()) {
+            if (obj != null && this.getClass() == obj.getClass()) {
                 StringyCol that = (StringyCol) obj;
                 if (this.vals.size() != that.vals.size()) {
                     return false;
@@ -204,29 +195,26 @@ class ChartResultSet {
 
     public static class TimeCol
             extends StringyCol {
-        private volatile Date[] dates = null;
+        private volatile Date[] dates;
 
         TimeCol(String name, int type, List<Object> vals) {
             super(name, type, vals);
         }
 
-
         public Date[] getDates() {
             if (this.dates == null) {
                 synchronized (this) {
                     if (this.dates == null) {
-                        this.dates = convertToDate(this.vals);
+                        this.dates = this.convertToDate(this.vals);
                     }
                 }
             }
             return this.dates;
         }
 
-
         public RegularTimePeriod[] getRegularTimePeriods() {
-            return convertToJFreeTime(this.vals);
+            return this.convertToJFreeTime(this.vals);
         }
-
 
         private RegularTimePeriod[] convertToJFreeTime(List<Object> timeObjects) {
             int rowCount = timeObjects.size();
@@ -255,7 +243,6 @@ class ChartResultSet {
             return res;
         }
 
-
         private Date[] convertToDate(List<Object> timeObjects) {
             int rowCount = timeObjects.size();
             Date[] res = new Date[rowCount];
@@ -268,7 +255,6 @@ class ChartResultSet {
                 } else if (timeObject instanceof Timestamp) {
                     Timestamp t = (Timestamp) timeObject;
                     timePeriod = new Date(t.getTime());
-
                 } else {
 
                     nullRows++;

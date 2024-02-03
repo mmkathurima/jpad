@@ -2,7 +2,6 @@ package com.timestored.connections;
 
 import java.awt.Color;
 
-
 public class ServerConfigBuilder {
     private String name;
     private String username;
@@ -12,9 +11,7 @@ public class ServerConfigBuilder {
     private String database;
     private JdbcTypes jdbcType = JdbcTypes.KDB;
 
-
     private Color color;
-
 
     public ServerConfigBuilder(ServerConfig sc) {
         this.name = sc.getName();

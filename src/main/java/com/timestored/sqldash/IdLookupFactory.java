@@ -12,7 +12,6 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.util.Map;
 
-
 public abstract class IdLookupFactory
         extends AbstractDockFactory
         implements DockFactory<Dockable, PerspectiveElement, MyLayout> {
@@ -28,14 +27,12 @@ public abstract class IdLookupFactory
     }
 
     public MyLayout getLayout(Dockable dd, Map<Dockable, Integer> a) {
-        return new MyLayout(getId(dd));
+        return new MyLayout(this.getId(dd));
     }
-
 
     public Dockable layout(MyLayout ml, PlaceholderStrategy ps) {
-        return getDockable(ml.getId());
+        return this.getDockable(ml.getId());
     }
-
 
     public MyLayout read(DataInputStream i, PlaceholderStrategy arg1) throws IOException {
         return new MyLayout(i.readInt());
@@ -44,7 +41,6 @@ public abstract class IdLookupFactory
     public MyLayout read(XElement x, PlaceholderStrategy ps) {
         return new MyLayout(x.getInt("idl"));
     }
-
 
     public void write(MyLayout ml, DataOutputStream o) throws IOException {
         o.writeInt(ml.getId());

@@ -5,7 +5,6 @@ import com.google.common.base.Preconditions;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 
-
 class SimpleResultSetMetaData
         implements ResultSetMetaData {
     private final String[] colNames;
@@ -21,7 +20,6 @@ class SimpleResultSetMetaData
         return this.colNames.length;
     }
 
-
     public int getColumnType(int column) throws SQLException {
         if (column > this.colNames.length) {
             throw new IllegalArgumentException("column outside data range");
@@ -31,7 +29,7 @@ class SimpleResultSetMetaData
     }
 
     public String getColumnLabel(int column) throws SQLException {
-        return getColumnName(column);
+        return this.getColumnName(column);
     }
 
     public String getColumnName(int column) throws SQLException {
@@ -41,7 +39,6 @@ class SimpleResultSetMetaData
     public String getColumnClassName(int column) throws SQLException {
         throw new UnsupportedOperationException();
     }
-
 
     public boolean isWrapperFor(Class<?> iface) throws SQLException {
         throw new UnsupportedOperationException();
@@ -55,11 +52,9 @@ class SimpleResultSetMetaData
         throw new UnsupportedOperationException();
     }
 
-
     public int getColumnDisplaySize(int column) throws SQLException {
         throw new UnsupportedOperationException();
     }
-
 
     public String getColumnTypeName(int column) throws SQLException {
         return null;

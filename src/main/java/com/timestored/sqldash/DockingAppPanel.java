@@ -31,7 +31,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class DockingAppPanel
         extends JPanel {
     public static final String FACTORY_ID = "REARDEN";
@@ -47,10 +46,9 @@ public class DockingAppPanel
     private final Map<Integer, DefaultDockable> apptoDockable = new ConcurrentHashMap<Integer, DefaultDockable>();
     private final Map<Dockable, Widget> dockableToWidget = new ConcurrentHashMap<Dockable, Widget>();
     private final JPanel stationHolder;
-    private boolean refreshing = false;
+    private boolean refreshing;
 
-
-    public DockingAppPanel(String uniqueId, JFrame parentFrame, final AppModel appModel, AppActions appActions) {
+    public DockingAppPanel(String uniqueId, JFrame parentFrame, AppModel appModel, AppActions appActions) {
         Preconditions.checkNotNull(parentFrame);
         this.appModel = Preconditions.checkNotNull(appModel);
         this.appActions = Preconditions.checkNotNull(appActions);
@@ -89,9 +87,9 @@ public class DockingAppPanel
         this.appEditorPanel = new JPanel(new BorderLayout());
         this.appEditorPanel.setBorder(BorderFactory.createRaisedBevelBorder());
 
-        setLayout(new BorderLayout());
-        add(this.appEditorPanel, "South");
-        add(this.stationHolder, "Center");
+        this.setLayout(new BorderLayout());
+        this.add(this.appEditorPanel, "South");
+        this.add(this.stationHolder, "Center");
 
         appModel.addListener(new AppModel.Listener() {
             public void desktopChanged(DesktopModel selectedDesktopModel) {
@@ -101,14 +99,14 @@ public class DockingAppPanel
 
         this.station.addDockStationListener(new DockStationListener() {
             public void dockablesRepositioned(DockStation arg0, Dockable[] arg1) {
-                saveChangedLayout();
+                this.saveChangedLayout();
             }
 
             private void saveChangedLayout() {
                 if (!DockingAppPanel.this.refreshing) {
                     synchronized (this) {
                         if (!DockingAppPanel.this.refreshing) {
-                            DockingAppPanel.LOG.info("saveChangedLayout");
+                            LOG.info("saveChangedLayout");
                             WorkspaceModel wsm = appModel.getSelectedWorkspaceModel();
                             if (wsm != null) {
                                 XElement xroot = new XElement("jlayout");
@@ -121,9 +119,8 @@ public class DockingAppPanel
             }
 
             public void dockableShowingChanged(DockStation arg0, Dockable arg1, boolean arg2) {
-                saveChangedLayout();
+                this.saveChangedLayout();
             }
-
 
             public void dockableSelected(DockStation arg0, Dockable arg1, Dockable arg2) {
             }
@@ -135,17 +132,17 @@ public class DockingAppPanel
             }
 
             public void dockableRemoved(DockStation arg0, Dockable arg1) {
-                saveChangedLayout();
+                this.saveChangedLayout();
             }
 
             public void dockableAdded(DockStation arg0, Dockable arg1) {
-                saveChangedLayout();
+                this.saveChangedLayout();
             }
         });
 
         appModel.addOpenedDesktopListener(new RefreshOnDesktopChangesListener());
 
-        refreshDesktop();
+        this.refreshDesktop();
     }
 
     private static SimpleButtonAction getActionButton(Action a) {
@@ -163,7 +160,6 @@ public class DockingAppPanel
             this.refreshing = true;
             DesktopModel dm = this.appModel.getSelectedDesktopModel();
 
-
             this.station.removeAllDockables();
             this.apptoDockable.clear();
             for (Dockable d : this.frontend.getDockables()) {
@@ -174,25 +170,24 @@ public class DockingAppPanel
                 WorkspaceModel workspaceShown = dm.getSelectedWorkspace();
                 if (workspaceShown != null) {
                     for (Widget app : workspaceShown.getApps()) {
-                        addDockableApp(workspaceShown, app);
+                        this.addDockableApp(workspaceShown, app);
                     }
                 }
             }
 
             this.stationHolder.removeAll();
             if (this.apptoDockable.size() == 0) {
-                this.stationHolder.add(getHelpComponent());
+                this.stationHolder.add(this.getHelpComponent());
             } else {
                 this.stationHolder.add(this.station);
             }
 
-            refreshlayout();
+            this.refreshlayout();
 
-            refreshAppEditor();
+            this.refreshAppEditor();
             this.refreshing = false;
         }
     }
-
 
     private void refreshlayout() {
         WorkspaceModel ws = this.appModel.getSelectedWorkspaceModel();
@@ -202,7 +197,6 @@ public class DockingAppPanel
             if (layoutXML != null) {
 
                 try {
-
 
                     Set<String> layouts = this.frontend.getSettings();
                     String[] keys = layouts.toArray(new String[layouts.size()]);
@@ -219,8 +213,7 @@ public class DockingAppPanel
 
     private Component getHelpComponent() {
         JPanel p = Theme.getVerticalBoxPanel();
-        String helpHtml = "<html><p>To create a dashboard you must:<ol><li>Create atleast one server connection.</li><li>Add a widget and specify the server / query.</li><li>Set the chart type to one that supports the given query.</li></ol><br />For help see: <a href='http://www.timestored.com/sqlDashboards/help'>sqlDashboards Help</a><br /><br /><br />Or to start an interactive demo using a built-in datebase click the button below:</html>";
-
+        final String helpHtml = "<html><p>To create a dashboard you must:<ol><li>Create atleast one server connection.</li><li>Add a widget and specify the server / query.</li><li>Set the chart type to one that supports the given query.</li></ol><br />For help see: <a href='http://www.timestored.com/sqlDashboards/help'>sqlDashboards Help</a><br /><br /><br />Or to start an interactive demo using a built-in datebase click the button below:</html>";
 
         p.add(Theme.getHeader("Getting Started"));
         p.add(Theme.getHtmlText(helpHtml));
@@ -256,20 +249,18 @@ public class DockingAppPanel
         }
     }
 
-
     private void addDockableApp(WorkspaceModel workspaceModel, Widget app) {
         if (this.apptoDockable.size() == 0) {
             this.stationHolder.removeAll();
             this.stationHolder.add(this.station);
         }
 
-        DefaultDockable dockable = createDockable(workspaceModel, app);
+        DefaultDockable dockable = this.createDockable(workspaceModel, app);
 
         this.frontend.addDockable("" + app.getId(), dockable);
         this.frontend.setHideable(dockable, true);
         this.station.drop(dockable);
     }
-
 
     public void removeDockable(Widget app) {
         app.invalidatePanelCache();
@@ -282,13 +273,12 @@ public class DockingAppPanel
 
         if (this.apptoDockable.size() == 0) {
             this.stationHolder.removeAll();
-            this.stationHolder.add(getHelpComponent());
+            this.stationHolder.add(this.getHelpComponent());
         }
     }
 
-
-    public DefaultDockable createDockable(final WorkspaceModel workspaceModel, final Widget app) {
-        final DefaultDockable dockable = new DefaultDockable();
+    public DefaultDockable createDockable(WorkspaceModel workspaceModel, Widget app) {
+        DefaultDockable dockable = new DefaultDockable();
         dockable.setTitleText(app.getTitle());
         dockable.setFactoryID("REARDEN");
         dockable.setTitleIcon(app.getIcon());
@@ -309,7 +299,6 @@ public class DockingAppPanel
 
         dockable.setActionOffers(dockActions);
 
-
         JPanel kdbChartPanel = app.getPanel();
 
         dockable.add(kdbChartPanel);
@@ -321,7 +310,6 @@ public class DockingAppPanel
                     if (((!DockingAppPanel.this.frontend.isHidden(dockable) ? 1 : 0) & (!app.equals(dm.getSelectedApp()) ? 1 : 0)) != 0) {
                         dm.setSelectedApp(workspaceModel, app);
                     }
-
             }
         });
         this.apptoDockable.put(Integer.valueOf(app.getId()), dockable);
@@ -346,10 +334,8 @@ public class DockingAppPanel
             DockingAppPanel.this.refreshDesktop();
         }
 
-
         public void argChange(Map<String, Object> changes) {
         }
-
 
         public void appRemoved(WorkspaceModel workspaceModel, Widget app) {
             DockingAppPanel.this.removeDockable(app);
@@ -369,10 +355,8 @@ public class DockingAppPanel
             }
         }
 
-
         public void workspaceTitleChanged(WorkspaceModel workspaceModel) {
         }
-
 
         public void appEdited(WorkspaceModel workspaceModel, Widget widget) {
             DefaultDockable dockable = DockingAppPanel.this.apptoDockable.get(Integer.valueOf(widget.getId()));

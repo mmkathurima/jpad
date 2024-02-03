@@ -11,11 +11,10 @@ import java.text.DecimalFormat;
 import java.util.TimeZone;
 import java.util.UUID;
 
-
 public class C {
     private static final char[][] FUNC_1;
     private static final char[][] FUNC_2;
-    private static final String[] ADVERBS = new String[]{"'", "/", "\\", "':", "/:", "\\:"};
+    private static final String[] ADVERBS = {"'", "/", "\\", "':", "/:", "\\:"};
     public static Object[] NULL;
     static int ni;
     static long nj;
@@ -30,26 +29,20 @@ public class C {
     static {
         String[] monadics = {null, "+:", "-:", "*:", "%:", "&:", "|:", "^:", "=:", "<:", ">:", "$:", ",:", "#:", "_:", "~:", "!:", "?:", "@:", ".:", "0::", "1::", "2::", "avg", "last", "sum", "prd", "min", "max", "exit", "getenv", "abs", "sqrt", "log", "exp", "sin", "asin", "cos", "acos", "tan", "atan", "plist"};
 
-
         FUNC_1 = toChars(monadics);
 
         String[] dyads = {":", "+", "-", "*", "%", "&", "|", "^", "=", "<", ">", "$", ",", "#", "_", "~", "!", "?", "@", ".", "0:", "1:", "2:", "in", "within", "like", "bin", "ss", "insert", "wsum", "wavg", "div", "xexp", "setenv"};
 
-
         FUNC_2 = toChars(dyads);
-
 
         ni = Integer.MIN_VALUE;
         nj = Long.MIN_VALUE;
         nf = Double.NaN;
 
-
         k = 946684800000L;
         n = 1000000000L;
 
-
         nt = new int[]{0, 1, 16, 0, 1, 2, 4, 8, 4, 8, 1, 0, 8, 4, 4, 8, 8, 4, 4, 4};
-
 
         NULL = new Object[]{null, Boolean.FALSE, new UUID(0L, 0L), null, Byte.valueOf((byte) 0), -32768, Integer.valueOf(ni), Long.valueOf(nj), new Float(nf), new Double(nf), new Character(' '), "", new Timestamp(nj), new Month(ni), new Date(nj), new Date(nj), new Timespan(nj), new Minute(ni), new Second(ni), new Time(nj)};
     }
@@ -64,7 +57,7 @@ public class C {
     int J;
     int vt;
     boolean a;
-    private int sync = 0;
+    private int sync;
 
     public C(ServerSocket s) throws IOException {
         this(s, null);
@@ -76,10 +69,10 @@ public class C {
 
     public C(ServerSocket s, IAuthenticate a) throws IOException {
         this.tz = TimeZone.getDefault();
-        io(s.accept());
+        this.io(s.accept());
         int n = this.i.read(this.b = new byte[99]);
         if (a != null) if (!a.authenticate(new String(this.b, 0, (n > 1) ? (n - 2) : 0))) {
-            close();
+            this.close();
             throw new IOException("access");
         }
         this.vt = (n > 1) ? this.b[n - 2] : 0;
@@ -90,19 +83,19 @@ public class C {
     public C(String h, int p, String u) throws KException, IOException {
         this.tz = TimeZone.getDefault();
         this.B = new byte[2 + ns(u)];
-        io(new Socket(h, p));
+        this.io(new Socket(h, p));
         this.J = 0;
-        w(u + "\003");
+        this.w(u + "\003");
         this.o.write(this.B);
         if (1 != this.i.read(this.B, 0, 1)) {
-            close();
+            this.close();
             this.B = new byte[1 + ns(u)];
-            io(new Socket(h, p));
+            this.io(new Socket(h, p));
             this.J = 0;
-            w(u);
+            this.w(u);
             this.o.write(this.B);
             if (1 != this.i.read(this.B, 0, 1)) {
-                close();
+                this.close();
                 throw new KException("access");
             }
         }
@@ -167,8 +160,10 @@ public class C {
         if (X instanceof Flip)
             return (Flip) X;
         Dict d = (Dict) X;
-        Flip a = (Flip) d.x, b = (Flip) d.y;
-        int m = n(a.x), n = n(b.x);
+        Flip a = (Flip) d.x;
+        Flip b = (Flip) d.y;
+        int m = n(a.x);
+        int n = n(b.x);
         String[] x = new String[m + n];
         System.arraycopy(a.x, 0, x, 0, m);
         System.arraycopy(b.x, 0, x, m, n);
@@ -243,7 +238,7 @@ public class C {
         int n = 0, r = 0, f = 0, s = 8, p = s;
         short i = 0;
         this.j = 0;
-        byte[] dst = new byte[ri()];
+        byte[] dst = new byte[this.ri()];
         int d = this.j;
         int[] aa = new int[256];
         while (s < dst.length) {
@@ -278,7 +273,7 @@ public class C {
     }
 
     void w(boolean x) {
-        w((byte) (x ? 1 : 0));
+        this.w((byte) (x ? 1 : 0));
     }
 
     char rc() {
@@ -286,100 +281,103 @@ public class C {
     }
 
     void w(char c1) {
-        w((byte) c1);
+        this.w((byte) c1);
     }
 
     short rh() {
-        int x = this.b[this.j++], y = this.b[this.j++];
+        int x = this.b[this.j++];
+        int y = this.b[this.j++];
         return (short) (this.a ? (x & 0xFF | y << 8) : (x << 8 | y & 0xFF));
     }
 
     void w(short h) {
-        w((byte) (h >> 8));
-        w((byte) h);
+        this.w((byte) (h >> 8));
+        this.w((byte) h);
     }
 
     int ri() {
-        int x = rh(), y = rh();
+        int x = this.rh();
+        int y = this.rh();
         return this.a ? (x & 0xFFFF | y << 16) : (x << 16 | y & 0xFFFF);
     }
 
     void w(int i) {
-        w((short) (i >> 16));
-        w((short) i);
+        this.w((short) (i >> 16));
+        this.w((short) i);
     }
 
     UUID rg() {
         boolean oa = this.a;
         this.a = false;
-        UUID g = new UUID(rj(), rj());
+        UUID g = new UUID(this.rj(), this.rj());
         this.a = oa;
         return g;
     }
 
     void w(UUID uuid) {
         if (this.vt < 3) throw new RuntimeException("Guid not valid pre kdb+3.0");
-        w(uuid.getMostSignificantBits());
-        w(uuid.getLeastSignificantBits());
+        this.w(uuid.getMostSignificantBits());
+        this.w(uuid.getLeastSignificantBits());
     }
 
     long rj() {
-        int x = ri(), y = ri();
+        int x = this.ri();
+        int y = this.ri();
         return this.a ? (x & 0xFFFFFFFFL | (long) y << 32L) : ((long) x << 32L | y & 0xFFFFFFFFL);
     }
 
     void w(long j) {
-        w((int) (j >> 32L));
-        w((int) j);
+        this.w((int) (j >> 32L));
+        this.w((int) j);
     }
 
     float re() {
-        return Float.intBitsToFloat(ri());
+        return Float.intBitsToFloat(this.ri());
     }
 
     void w(float e) {
-        w(Float.floatToIntBits(e));
+        this.w(Float.floatToIntBits(e));
     }
 
     double rf() {
-        return Double.longBitsToDouble(rj());
+        return Double.longBitsToDouble(this.rj());
     }
 
     void w(double f) {
-        w(Double.doubleToLongBits(f));
+        this.w(Double.doubleToLongBits(f));
     }
 
     Month rm() {
-        return new Month(ri());
+        return new Month(this.ri());
     }
 
     void w(Month m) {
-        w(m.i);
+        this.w(m.i);
     }
 
     Minute ru() {
-        return new Minute(ri());
+        return new Minute(this.ri());
     }
 
     void w(Minute u) {
-        w(u.i);
+        this.w(u.i);
     }
 
     Second rv() {
-        return new Second(ri());
+        return new Second(this.ri());
     }
 
     void w(Second v) {
-        w(v.i);
+        this.w(v.i);
     }
 
     Timespan rn() {
-        return new Timespan(rj());
+        return new Timespan(this.rj());
     }
 
     void w(Timespan n) {
         if (this.vt < 1) throw new RuntimeException("Timespan not valid pre kdb+2.6");
-        w(n.j);
+        this.w(n.j);
     }
 
     long o(long x) {
@@ -387,46 +385,47 @@ public class C {
     }
 
     long lg(long x) {
-        return x + o(x);
+        return x + this.o(x);
     }
 
     long gl(long x) {
-        return x - o(x - o(x));
+        return x - this.o(x - this.o(x));
     }
 
     Date rd() {
-        int i = ri();
-        return new Date((i == ni) ? nj : gl(k + 86400000L * i));
+        int i = this.ri();
+        return new Date((i == ni) ? nj : this.gl(k + 86400000L * i));
     }
 
     void w(java.util.Date d) {
         long j = d.getTime();
-        w((j == nj) ? ni : (int) (lg(j) / 86400000L - 10957L));
+        this.w((j == nj) ? ni : (int) (this.lg(j) / 86400000L - 10957L));
     }
 
     Time rt() {
-        int i = ri();
-        return new Time((i == ni) ? nj : gl(i));
+        int i = this.ri();
+        return new Time((i == ni) ? nj : this.gl(i));
     }
 
     void w(Time t) {
         long j = t.getTime();
-        w((j == nj) ? ni : (int) (lg(j) % 86400000L));
+        this.w((j == nj) ? ni : (int) (this.lg(j) % 86400000L));
     }
 
     Date rz() {
-        double f = rf();
-        return new Date(Double.isNaN(f) ? nj : gl(k + Math.round(8.64E7D * f)));
+        double f = this.rf();
+        return new Date(Double.isNaN(f) ? nj : this.gl(k + Math.round(8.64E7D * f)));
     }
 
     void w(Date z) {
         long j = z.getTime();
-        w((j == nj) ? nf : ((lg(j) - k) / 8.64E7D));
+        this.w((j == nj) ? nf : ((this.lg(j) - k) / 8.64E7D));
     }
 
     Timestamp rp() {
-        long j = rj(), d = (j < 0L) ? ((j + 1L) / n - 1L) : (j / n);
-        Timestamp p = new Timestamp((j == nj) ? j : gl(k + 1000L * d));
+        long j = this.rj();
+        long d = (j < 0L) ? ((j + 1L) / n - 1L) : (j / n);
+        Timestamp p = new Timestamp((j == nj) ? j : this.gl(k + 1000L * d));
         if (j != nj) p.setNanos((int) (j - n * d));
         return p;
     }
@@ -434,7 +433,7 @@ public class C {
     void w(Timestamp p) {
         long j = p.getTime();
         if (this.vt < 1) throw new RuntimeException("Timestamp not valid pre kdb+2.6");
-        w((j == nj) ? j : (1000000L * (lg(j) - k) + (p.getNanos() % 1000000)));
+        this.w((j == nj) ? j : (1000000L * (this.lg(j) - k) + (p.getNanos() % 1000000)));
     }
 
     String rs() throws UnsupportedEncodingException {
@@ -444,9 +443,10 @@ public class C {
     }
 
     void w(String s) throws UnsupportedEncodingException {
-        int i = 0, n = ns(s);
+        int i = 0;
+        int n = ns(s);
         byte[] b = s.getBytes(e);
-        while (i < n) w(b[i++]);
+        while (i < n) this.w(b[i++]);
         this.B[this.J++] = 0;
     }
 
@@ -470,49 +470,50 @@ public class C {
         Minute[] U;
         Second[] V;
         Time[] T;
-        int i = 0, t = this.b[this.j++];
+        int i = 0;
+        int t = this.b[this.j++];
         if (t < 0) switch (t) {
             case -1:
-                return Boolean.valueOf(rb());
+                return Boolean.valueOf(this.rb());
             case -2:
-                return rg();
+                return this.rg();
             case -4:
                 return Byte.valueOf(this.b[this.j++]);
             case -5:
-                return Short.valueOf(rh());
+                return Short.valueOf(this.rh());
             case -6:
-                return Integer.valueOf(ri());
+                return Integer.valueOf(this.ri());
             case -7:
-                return Long.valueOf(rj());
+                return Long.valueOf(this.rj());
             case -8:
-                return new Float(re());
+                return new Float(this.re());
             case -9:
-                return new Double(rf());
+                return new Double(this.rf());
             case -10:
-                return new Character(rc());
+                return new Character(this.rc());
             case -11:
-                return rs();
+                return this.rs();
             case -12:
-                return rp();
+                return this.rp();
             case -13:
-                return rm();
+                return this.rm();
             case -14:
-                return rd();
+                return this.rd();
             case -15:
-                return rz();
+                return this.rz();
             case -16:
-                return rn();
+                return this.rn();
             case -17:
-                return ru();
+                return this.ru();
             case -18:
-                return rv();
+                return this.rv();
             case -19:
-                return rt();
+                return this.rt();
         }
         if (t > 99) {
             if (t == 100) {
-                rs();
-                return r();
+                this.rs();
+                return this.r();
             }
             if (t == 102 || t == 101) {
                 int p = this.b[this.j];
@@ -523,15 +524,15 @@ public class C {
                 }
             } else if (t >= 106 && t <= 111) {
                 String adverb = ADVERBS[t - 106];
-                Object def = r();
+                Object def = this.r();
                 if (def instanceof char[]) return (new String((char[]) def) + adverb).toCharArray();
                 return null;
             }
             if (t == 104) {
                 String s = "";
                 boolean first = true;
-                for (int j = ri(); i < j; i++) {
-                    Object o = r();
+                for (int j = this.ri(); i < j; i++) {
+                    Object o = this.r();
                     if (o instanceof char[]) o = new String((char[]) o);
                     s = s + o;
                     if (first) {
@@ -551,28 +552,28 @@ public class C {
             }
             if (t < 104) return (this.b[this.j++] == 0 && t == 101) ? null : "func";
             if (t > 105) {
-                r();
+                this.r();
             } else {
-                for (int j = ri(); i < j; i++) r();
+                for (int j = this.ri(); i < j; i++) this.r();
             }
             return "func";
         }
-        if (t == 99) return new Dict(r(), r());
+        if (t == 99) return new Dict(this.r(), this.r());
         this.j++;
-        if (t == 98) return new Flip((Dict) r());
-        int n = ri();
+        if (t == 98) return new Flip((Dict) this.r());
+        int n = this.ri();
         switch (t) {
             case 0:
                 L = new Object[n];
-                for (; i < n; i++) L[i] = r();
+                for (; i < n; i++) L[i] = this.r();
                 return L;
             case 1:
                 B = new boolean[n];
-                for (; i < n; i++) B[i] = rb();
+                for (; i < n; i++) B[i] = this.rb();
                 return B;
             case 2:
                 arrayOfUUID = new UUID[n];
-                for (; i < n; i++) arrayOfUUID[i] = rg();
+                for (; i < n; i++) arrayOfUUID[i] = this.rg();
                 return arrayOfUUID;
             case 4:
                 G = new byte[n];
@@ -580,23 +581,23 @@ public class C {
                 return G;
             case 5:
                 H = new short[n];
-                for (; i < n; i++) H[i] = rh();
+                for (; i < n; i++) H[i] = this.rh();
                 return H;
             case 6:
                 I = new int[n];
-                for (; i < n; i++) I[i] = ri();
+                for (; i < n; i++) I[i] = this.ri();
                 return I;
             case 7:
                 J = new long[n];
-                for (; i < n; i++) J[i] = rj();
+                for (; i < n; i++) J[i] = this.rj();
                 return J;
             case 8:
                 E = new float[n];
-                for (; i < n; i++) E[i] = re();
+                for (; i < n; i++) E[i] = this.re();
                 return E;
             case 9:
                 F = new double[n];
-                for (; i < n; i++) F[i] = rf();
+                for (; i < n; i++) F[i] = this.rf();
                 return F;
             case 10:
                 C = (new String(this.b, this.j, n, e)).toCharArray();
@@ -604,53 +605,54 @@ public class C {
                 return C;
             case 11:
                 S = new String[n];
-                for (; i < n; i++) S[i] = rs();
+                for (; i < n; i++) S[i] = this.rs();
                 return S;
             case 12:
                 P = new Timestamp[n];
-                for (; i < n; i++) P[i] = rp();
+                for (; i < n; i++) P[i] = this.rp();
                 return P;
             case 13:
                 M = new Month[n];
-                for (; i < n; i++) M[i] = rm();
+                for (; i < n; i++) M[i] = this.rm();
                 return M;
             case 14:
                 D = new Date[n];
-                for (; i < n; i++) D[i] = rd();
+                for (; i < n; i++) D[i] = this.rd();
                 return D;
             case 15:
                 Z = new Date[n];
-                for (; i < n; i++) Z[i] = rz();
+                for (; i < n; i++) Z[i] = this.rz();
                 return Z;
             case 16:
                 N = new Timespan[n];
-                for (; i < n; i++) N[i] = rn();
+                for (; i < n; i++) N[i] = this.rn();
                 return N;
             case 17:
                 U = new Minute[n];
-                for (; i < n; i++) U[i] = ru();
+                for (; i < n; i++) U[i] = this.ru();
                 return U;
             case 18:
                 V = new Second[n];
-                for (; i < n; i++) V[i] = rv();
+                for (; i < n; i++) V[i] = this.rv();
                 return V;
             case 19:
                 T = new Time[n];
-                for (; i < n; i++) T[i] = rt();
+                for (; i < n; i++) T[i] = this.rt();
                 return T;
         }
         return null;
     }
 
     public int nx(Object x) throws UnsupportedEncodingException {
-        int i = 0, t = t(x);
-        if (t == 99) return 1 + nx(((Dict) x).x) + nx(((Dict) x).y);
-        if (t == 98) return 3 + nx(((Flip) x).x) + nx(((Flip) x).y);
+        int i = 0;
+        int t = t(x);
+        if (t == 99) return 1 + this.nx(((Dict) x).x) + this.nx(((Dict) x).y);
+        if (t == 98) return 3 + this.nx(((Flip) x).x) + this.nx(((Flip) x).y);
         if (t < 0) return (t == -11) ? (2 + ns((String) x)) : (1 + nt[-t]);
         int j = 6;
         int n = n(x);
         if (t == 0 || t == 11) {
-            for (; i < n; i++) j += (t == 0) ? nx(((Object[]) x)[i]) : (1 + ns(((String[]) x)[i]));
+            for (; i < n; i++) j += (t == 0) ? this.nx(((Object[]) x)[i]) : (1 + ns(((String[]) x)[i]));
         } else {
             j += n * nt[t];
         }
@@ -658,135 +660,136 @@ public class C {
     }
 
     void w(Object x) throws UnsupportedEncodingException {
-        int i = 0, t = t(x);
-        w((byte) t);
+        int i = 0;
+        int t = t(x);
+        this.w((byte) t);
         if (t < 0) switch (t) {
             case -1:
-                w(((Boolean) x).booleanValue());
+                this.w(((Boolean) x).booleanValue());
                 return;
             case -2:
-                w((UUID) x);
+                this.w((UUID) x);
                 return;
             case -4:
-                w(((Byte) x).byteValue());
+                this.w(((Byte) x).byteValue());
                 return;
             case -5:
-                w(((Short) x).shortValue());
+                this.w(((Short) x).shortValue());
                 return;
             case -6:
-                w(((Integer) x).intValue());
+                this.w(((Integer) x).intValue());
                 return;
             case -7:
-                w(((Long) x).longValue());
+                this.w(((Long) x).longValue());
                 return;
             case -8:
-                w(((Float) x).floatValue());
+                this.w(((Float) x).floatValue());
                 return;
             case -9:
-                w(((Double) x).doubleValue());
+                this.w(((Double) x).doubleValue());
                 return;
             case -10:
-                w(((Character) x).charValue());
+                this.w(((Character) x).charValue());
                 return;
             case -11:
-                w((String) x);
+                this.w((String) x);
                 return;
             case -12:
-                w((Timestamp) x);
+                this.w((Timestamp) x);
                 return;
             case -13:
-                w((Month) x);
+                this.w((Month) x);
                 return;
             case -14:
-                w((Date) x);
+                this.w((Date) x);
                 return;
             case -15:
-                w((Date) x);
+                this.w((Date) x);
                 return;
             case -16:
-                w((Timespan) x);
+                this.w((Timespan) x);
                 return;
             case -17:
-                w((Minute) x);
+                this.w((Minute) x);
                 return;
             case -18:
-                w((Second) x);
+                this.w((Second) x);
                 return;
             case -19:
-                w((Time) x);
+                this.w((Time) x);
                 return;
         }
         if (t == 99) {
             Dict r = (Dict) x;
-            w(r.x);
-            w(r.y);
+            this.w(r.x);
+            this.w(r.y);
             return;
         }
         this.B[this.J++] = 0;
         if (t == 98) {
             Flip r = (Flip) x;
             this.B[this.J++] = 99;
-            w(r.x);
-            w(r.y);
+            this.w(r.x);
+            this.w(r.y);
             return;
         }
         int n;
-        w(n = n(x));
+        this.w(n = n(x));
         if (t == 10) {
             byte[] b = (new String((char[]) x)).getBytes(e);
-            while (i < b.length) w(b[i++]);
+            while (i < b.length) this.w(b[i++]);
         } else {
             for (; i < n; i++) {
                 if (t == 0) {
-                    w(((Object[]) x)[i]);
+                    this.w(((Object[]) x)[i]);
                 } else if (t == 1) {
-                    w(((boolean[]) x)[i]);
+                    this.w(((boolean[]) x)[i]);
                 } else if (t == 2) {
-                    w(((UUID[]) x)[i]);
+                    this.w(((UUID[]) x)[i]);
                 } else if (t == 4) {
-                    w(((byte[]) x)[i]);
+                    this.w(((byte[]) x)[i]);
                 } else if (t == 5) {
-                    w(((short[]) x)[i]);
+                    this.w(((short[]) x)[i]);
                 } else if (t == 6) {
-                    w(((int[]) x)[i]);
+                    this.w(((int[]) x)[i]);
                 } else if (t == 7) {
-                    w(((long[]) x)[i]);
+                    this.w(((long[]) x)[i]);
                 } else if (t == 8) {
-                    w(((float[]) x)[i]);
+                    this.w(((float[]) x)[i]);
                 } else if (t == 9) {
-                    w(((double[]) x)[i]);
+                    this.w(((double[]) x)[i]);
                 } else if (t == 11) {
-                    w(((String[]) x)[i]);
+                    this.w(((String[]) x)[i]);
                 } else if (t == 12) {
-                    w(((Timestamp[]) x)[i]);
+                    this.w(((Timestamp[]) x)[i]);
                 } else if (t == 13) {
-                    w(((Month[]) x)[i]);
+                    this.w(((Month[]) x)[i]);
                 } else if (t == 14) {
-                    w(((Date[]) x)[i]);
+                    this.w(((Date[]) x)[i]);
                 } else if (t == 15) {
-                    w(((Date[]) x)[i]);
+                    this.w(((Date[]) x)[i]);
                 } else if (t == 16) {
-                    w(((Timespan[]) x)[i]);
+                    this.w(((Timespan[]) x)[i]);
                 } else if (t == 17) {
-                    w(((Minute[]) x)[i]);
+                    this.w(((Minute[]) x)[i]);
                 } else if (t == 18) {
-                    w(((Second[]) x)[i]);
+                    this.w(((Second[]) x)[i]);
                 } else {
-                    w(((Time[]) x)[i]);
+                    this.w(((Time[]) x)[i]);
                 }
             }
         }
     }
 
     protected void w(int i, Object x) throws IOException {
-        int n = nx(x) + 8;
+        int n = this.nx(x) + 8;
         synchronized (this.o) {
             this.B = new byte[n];
             this.B[0] = 0;
             this.B[1] = (byte) i;
             this.J = 4;
-            w(n);
-            w(x);
+            this.w(n);
+            this.w(x);
             this.o.write(this.B);
         }
     }
@@ -794,7 +797,7 @@ public class C {
     public void kr(Object x) throws IOException {
         if (this.sync == 0) throw new IOException("Unexpected response msg");
         this.sync--;
-        w(2, x);
+        this.w(2, x);
     }
 
     public void ke(String s) throws IOException {
@@ -806,19 +809,19 @@ public class C {
             this.B[0] = 0;
             this.B[1] = 2;
             this.J = 4;
-            w(n);
-            w(-128);
-            w(s);
+            this.w(n);
+            this.w(-128);
+            this.w(s);
             this.o.write(this.B);
         }
     }
 
     public void ks(String s) throws IOException {
-        w(0, cs(s));
+        this.w(0, this.cs(s));
     }
 
     public void ks(Object x) throws IOException {
-        w(0, x);
+        this.w(0, x);
     }
 
     char[] cs(String s) {
@@ -826,18 +829,18 @@ public class C {
     }
 
     public void ks(String s, Object x) throws IOException {
-        Object[] a = {cs(s), x};
-        w(0, a);
+        Object[] a = {this.cs(s), x};
+        this.w(0, a);
     }
 
     public void ks(String s, Object x, Object y) throws IOException {
-        Object[] a = {cs(s), x, y};
-        w(0, a);
+        Object[] a = {this.cs(s), x, y};
+        this.w(0, a);
     }
 
     public void ks(String s, Object x, Object y, Object z) throws IOException {
-        Object[] a = {cs(s), x, y, z};
-        w(0, a);
+        Object[] a = {this.cs(s), x, y, z};
+        this.w(0, a);
     }
 
     public Object k() throws KException, IOException {
@@ -846,48 +849,48 @@ public class C {
             this.a = (this.b[0] == 1);
             byte msgType = this.b[1];
             if (msgType == 1) {
-                close();
+                this.close();
                 throw new IOException("Cannot process sync msg from remote");
             }
             if (this.b[1] == 1) this.sync++;
             boolean bool = (this.b[2] == 1);
             this.j = 4;
-            this.i.readFully(this.b = new byte[ri() - 8]);
+            this.i.readFully(this.b = new byte[this.ri() - 8]);
             if (bool) {
-                u();
+                this.u();
             } else {
                 this.j = 0;
             }
             if (this.b[0] == Byte.MIN_VALUE) {
                 this.j = 1;
-                throw new KException(rs());
+                throw new KException(this.rs());
             }
-            return r();
+            return this.r();
         }
     }
 
     public synchronized Object k(Object x) throws KException, IOException {
-        w(1, x);
-        return k();
+        this.w(1, x);
+        return this.k();
     }
 
     public Object k(String s) throws KException, IOException {
-        return k(cs(s));
+        return this.k(this.cs(s));
     }
 
     public Object k(String s, Object x) throws KException, IOException {
-        Object[] a = {cs(s), x};
-        return k(a);
+        Object[] a = {this.cs(s), x};
+        return this.k(a);
     }
 
     public Object k(String s, Object x, Object y) throws KException, IOException {
-        Object[] a = {cs(s), x, y};
-        return k(a);
+        Object[] a = {this.cs(s), x, y};
+        return this.k(a);
     }
 
     public Object k(String s, Object x, Object y, Object z) throws KException, IOException {
-        Object[] a = {cs(s), x, y, z};
-        return k(a);
+        Object[] a = {this.cs(s), x, y, z};
+        return this.k(a);
     }
 
     public interface IAuthenticate {
@@ -902,8 +905,9 @@ public class C {
         }
 
         public String toString() {
-            int m = this.i + 24000, y = m / 12;
-            return (this.i == C.ni) ? "" : (C.i2(y / 100) + C.i2(y % 100) + "-" + C.i2(1 + m % 12));
+            int m = this.i + 24000;
+            int y = m / 12;
+            return (this.i == ni) ? "" : (i2(y / 100) + i2(y % 100) + "-" + i2(1 + m % 12));
         }
 
         public boolean equals(Object o) {
@@ -927,7 +931,7 @@ public class C {
         }
 
         public String toString() {
-            return (this.i == C.ni) ? "" : (C.i2(this.i / 60) + ":" + C.i2(this.i % 60));
+            return (this.i == ni) ? "" : (i2(this.i / 60) + ":" + i2(this.i % 60));
         }
 
         public boolean equals(Object o) {
@@ -951,7 +955,7 @@ public class C {
         }
 
         public String toString() {
-            return (this.i == C.ni) ? "" : ((new C.Minute(this.i / 60)).toString() + ':' + C.i2(this.i % 60));
+            return (this.i == ni) ? "" : ((new C.Minute(this.i / 60)).toString() + ':' + i2(this.i % 60));
         }
 
         public boolean equals(Object o) {
@@ -975,12 +979,12 @@ public class C {
         }
 
         public String toString() {
-            if (this.j == C.nj) return "";
+            if (this.j == nj) return "";
             String s = (this.j < 0L) ? "-" : "";
             long jj = (this.j < 0L) ? -this.j : this.j;
             int d = (int) (jj / 86400000000000L);
             if (d != 0) s = s + d + "D";
-            return s + C.i2((int) (jj % 86400000000000L / 3600000000000L)) + ":" + C.i2((int) (jj % 3600000000000L / 60000000000L)) + ":" + C.i2((int) (jj % 60000000000L / 1000000000L)) + "." + C.i9((int) (jj % 1000000000L));
+            return s + i2((int) (jj % 86400000000000L / 3600000000000L)) + ":" + i2((int) (jj % 3600000000000L / 60000000000L)) + ":" + i2((int) (jj % 60000000000L / 1000000000L)) + "." + i9((int) (jj % 1000000000L));
         }
 
         public int compareTo(Timespan t) {
@@ -1016,7 +1020,7 @@ public class C {
         }
 
         public Object at(String s) {
-            return this.y[C.find(this.x, s)];
+            return this.y[find(this.x, s)];
         }
     }
 

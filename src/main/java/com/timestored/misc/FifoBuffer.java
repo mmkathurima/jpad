@@ -5,7 +5,6 @@ import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
-
 public class FifoBuffer<E> {
     private final LinkedList<E> linkList;
     private final int limit;
@@ -17,10 +16,9 @@ public class FifoBuffer<E> {
 
     public void addAll(Collection<E> items) {
         for (E e : items) {
-            add(e);
+            this.add(e);
         }
     }
-
 
     public void add(E e) {
         int p = this.linkList.lastIndexOf(e);

@@ -9,7 +9,6 @@ import javax.swing.event.HyperlinkEvent;
 import javax.swing.event.HyperlinkListener;
 import java.awt.BorderLayout;
 
-
 public class ReadOnlyTextPanel
         extends JPanel {
     private final RSyntaxTextArea rTextArea;
@@ -20,8 +19,8 @@ public class ReadOnlyTextPanel
         this.rTextArea.setSyntaxEditingStyle(syntaxConstant);
         this.rTextArea.setEditable(false);
         this.rTextScrollPane = new RTextScrollPane(this.rTextArea, true);
-        setLayout(new BorderLayout());
-        add(this.rTextScrollPane);
+        this.setLayout(new BorderLayout());
+        this.add(this.rTextScrollPane);
         this.rTextArea.addHyperlinkListener(new HyperlinkListener() {
             public void hyperlinkUpdate(HyperlinkEvent e) {
                 HtmlUtils.browse(JPadLtd.getRedirectPage(e.getURL().toString(), "editorHyperlink"));

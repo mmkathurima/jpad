@@ -16,7 +16,6 @@ import java.awt.Component;
 import java.sql.ResultSet;
 import java.util.List;
 
-
 public enum HistogramViewStrategy
         implements ViewStrategy {
     INSTANCE;
@@ -34,8 +33,8 @@ public enum HistogramViewStrategy
     }
 
     public List<ExampleView> getExamples() {
-        String description = "Distribution of Returns and Losses";
-        String name = "Profit Distribution";
+        final String description = "Distribution of Returns and Losses";
+        final String name = "Profit Distribution";
 
         String[] colNames = {"Returns", "Losses"};
         double[] returns = KdbFunctions.cos(KdbFunctions.mul(KdbFunctions.til(500), 0.0015D));
@@ -75,12 +74,10 @@ public enum HistogramViewStrategy
             Preconditions.checkNotNull(theme);
             JFreeChart chart = ChartFactory.createHistogram("", null, "Frequency", null, PlotOrientation.VERTICAL, true, true, false);
 
-
             chart.getXYPlot().getRenderer().setDefaultToolTipGenerator(Tooltip.getXYNumbersGenerator());
 
             this.chartPanel = new ChartPanel(theme.apply(chart));
         }
-
 
         public void update(ResultSet rs, ChartResultSet chartRS) throws ChartFormatException {
             if (chartRS.getNumericColumns().size() < 1) {

@@ -17,17 +17,13 @@ import java.util.*;
 import java.util.logging.Logger;
 import java.util.regex.Pattern;
 
-
 public class StockFetcher {
     private static final String QUOTE_CSV = "http://finance.yahoo.com/d/quotes.csv?s=";
     private static final Logger LOG = Logger.getLogger(StockFetcher.class.getName());
 
-
     private static final String DATE_PATTERN = "yyyy-MM-dd";
 
-
     public static Set<String> packedTickers = Sets.newHashSet("AMZN", "FB", "GOOG", "MSFT", "YHOO");
-
 
     public static List<Stock> getStock(Collection<String> symbols) throws IOException {
         LOG.info("get yahoo finance static data for " + Joiner.on(",").join(symbols));
@@ -51,7 +47,6 @@ public class StockFetcher {
         return res;
     }
 
-
     private static List<BidAsk> readLivePricesCsv(InputStream is) throws IOException {
         List<BidAsk> r = new ArrayList<BidAsk>();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -60,10 +55,8 @@ public class StockFetcher {
 
         while ((line = br.readLine()) != null) {
 
-
             try {
                 String[] ls = line.split(",");
-
 
                 String sym = stripQuotes(ls[0]);
                 double bid = toD(ls[1]);
@@ -73,10 +66,8 @@ public class StockFetcher {
             }
         }
 
-
         return r;
     }
-
 
     public static List<Stock> getHardcodedStocks() {
         InputStream is = StockFetcher.class.getResourceAsStream("static.csv");
@@ -89,7 +80,6 @@ public class StockFetcher {
         }
     }
 
-
     private static List<Stock> readStocksCsv(InputStream is) throws IOException {
         List<Stock> r = new ArrayList<Stock>();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
@@ -98,10 +88,8 @@ public class StockFetcher {
 
         while ((line = br.readLine()) != null) {
 
-
             try {
                 String[] ls = line.split(",");
-
 
                 double price = toD(ls[0]);
                 int volume = toI(ls[1]);
@@ -130,7 +118,6 @@ public class StockFetcher {
 
                 String sym = stripQuotes(ls[10]);
 
-
                 String name = "";
                 for (int i = 11; i < ls.length; i++) {
                     name = name + ls[i];
@@ -138,15 +125,12 @@ public class StockFetcher {
                 name = stripQuotes(name);
 
                 r.add(new Stock(sym, name, price, volume, pe, eps, week52low, week52high, daylow, dayhigh, movingav50day, marketcap));
-
             } catch (NumberFormatException e) {
             }
         }
 
-
         return r;
     }
-
 
     private static String stripQuotes(String sym) {
         if (sym.charAt(0) == '"' && sym.charAt(sym.length() - 1) == '"') {
@@ -155,11 +139,9 @@ public class StockFetcher {
         return sym;
     }
 
-
     public static List<OHLCDataPoint> getOHLC(String symbol) throws IOException {
         return readToList(getHistoricStream(symbol, false));
     }
-
 
     public static Map<String, List<OHLCDataPoint>> getHardcodedOHLC() {
         Map<String, List<OHLCDataPoint>> r = Maps.newHashMap();
@@ -173,7 +155,6 @@ public class StockFetcher {
         }
         return r;
     }
-
 
     private static List<OHLCDataPoint> readToList(InputStream is) throws IOException {
         BufferedReader breader = new BufferedReader(new InputStreamReader(is));
@@ -198,10 +179,8 @@ public class StockFetcher {
             }
         }
 
-
         return d;
     }
-
 
     public static List<DividendDatapoint> getDividends(String symbol) throws IOException {
         BufferedReader breader = new BufferedReader(new InputStreamReader(getHistoricStream(symbol, true)));
@@ -219,10 +198,8 @@ public class StockFetcher {
             }
         }
 
-
         return d;
     }
-
 
     private static InputStream getHistoricStream(String symbol, boolean populateDividends) throws IOException {
         String baseURL = "http://ichart.finance.yahoo.com/table.csv?s=%symbol%&ignore=.csv&g=d";

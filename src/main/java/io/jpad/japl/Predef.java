@@ -1,8 +1,6 @@
 package io.jpad.japl;
 
-
 import java.util.Locale;
-
 
 public class Predef {
 
@@ -14,44 +12,35 @@ public class Predef {
     public static void exit(int status) {
 
         System.exit(status);
-
     }
-
 
     public static void print(boolean b) {
         System.out.print(b);
     }
 
-
     public static void print(int b) {
         System.out.print(b);
     }
-
 
     public static void print(short b) {
         System.out.print(b);
     }
 
-
     public static void print(long b) {
         System.out.print(b);
     }
-
 
     public static void print(double b) {
         System.out.print(b);
     }
 
-
     public static void print(String b) {
         System.out.print(b);
     }
 
-
     public static void print(char[] b) {
         System.out.print(b);
     }
-
 
     public static void print(char b) {
         System.out.print(b);
@@ -60,44 +49,35 @@ public class Predef {
     public static void print(Object b) {
 
         System.out.print(b);
-
     }
-
 
     public static void println(boolean b) {
         System.out.println(b);
     }
 
-
     public static void println(int b) {
         System.out.println(b);
     }
-
 
     public static void println(short b) {
         System.out.println(b);
     }
 
-
     public static void println(long b) {
         System.out.println(b);
     }
-
 
     public static void println(double b) {
         System.out.println(b);
     }
 
-
     public static void println(String b) {
         System.out.println(b);
     }
 
-
     public static void println(char[] b) {
         System.out.println(b);
     }
-
 
     public static void println(char b) {
         System.out.println(b);
@@ -106,9 +86,7 @@ public class Predef {
     public static void println(Object b) {
 
         System.out.println(b);
-
     }
-
 
     public static void println(String format, Object... args) {
         System.out.printf(format, args);
@@ -117,39 +95,31 @@ public class Predef {
     public static void println(Locale l, String format, Object... args) {
 
         System.out.printf(l, format, args);
-
     }
-
 
     public static String readLine() {
         return System.console().readLine();
     }
 
-
     public static String readLine(String fmt, Object... args) {
         return System.console().readLine(fmt, args);
     }
-
 
     public static char[] readPassword() {
         return System.console().readPassword();
     }
 
-
     public static char[] readPassword(String fmt, Object... args) {
         return System.console().readPassword(fmt, args);
     }
 
-
     public static boolean readBoolean() {
         while (true) {
-
 
             try {
                 return Boolean.parseBoolean(readLine());
             } catch (NumberFormatException e) {
             }
-
         }
     }
 
@@ -160,7 +130,6 @@ public class Predef {
             } catch (NumberFormatException e) {
             }
         }
-
     }
 
     public static int readInt() {
@@ -170,7 +139,6 @@ public class Predef {
             } catch (NumberFormatException e) {
             }
         }
-
     }
 
     public static long readLong() {
@@ -180,7 +148,6 @@ public class Predef {
             } catch (NumberFormatException e) {
             }
         }
-
     }
 
     public static float readFloat() {
@@ -190,7 +157,6 @@ public class Predef {
             } catch (NumberFormatException e) {
             }
         }
-
     }
 
     public static double readDouble() {
@@ -200,10 +166,7 @@ public class Predef {
             } catch (NumberFormatException e) {
             }
         }
-
     }
-
-
 }
 
 

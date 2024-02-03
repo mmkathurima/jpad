@@ -11,7 +11,6 @@ import java.awt.Color;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @Immutable
 public class ServerConfig {
     private static final Color DEFAULT_COLOR = Color.WHITE;
@@ -24,7 +23,6 @@ public class ServerConfig {
     private final JdbcTypes jdbcType;
     private final Color color;
 
-
     public ServerConfig(String host, int port, String username, String password, String name, JdbcTypes jdbcType) {
         this(host, port, username, password, name, jdbcType, DEFAULT_COLOR, null, null);
     }
@@ -32,7 +30,6 @@ public class ServerConfig {
     public ServerConfig(String host, int port, String username, String password, String name, JdbcTypes jdbcType, Color color, String database) {
         this(host, port, username, password, name, jdbcType, DEFAULT_COLOR, database, null);
     }
-
 
     public ServerConfig(String host, int port, String username, String password, String name, JdbcTypes jdbcType, Color color, String database, String folder) {
         if (port < 0) {
@@ -49,12 +46,10 @@ public class ServerConfig {
         this.username = username;
         this.password = password;
 
-
         String n = name;
         if (n == null || n.length() == 0) {
             n = host + ":" + port;
         }
-
 
         if (folder != null) {
             if (n.contains("/")) {
@@ -68,10 +63,8 @@ public class ServerConfig {
         }
         this.name = n;
 
-
         this.jdbcType = Preconditions.checkNotNull(jdbcType);
     }
-
 
     public ServerConfig(String host, int port, String username, String password, String name) {
         this(host, port, username, password, name, JdbcTypes.KDB, null, null, null);
@@ -158,28 +151,23 @@ public class ServerConfig {
         return MoreObjects.toStringHelper(this).add("name", this.name).add("username", this.username).add("host", this.host).add("port", this.port).add("cstoreType", this.jdbcType).add("database", this.database).toString();
     }
 
-
     public String getUrl() {
         return this.jdbcType.getURL(this);
     }
-
 
     public Color getColor() {
         return (this.color == null) ? DEFAULT_COLOR : this.color;
     }
 
-
     public int hashCode() {
         return Objects.hashCode(this.name, this.username, this.password, this.host, Integer.valueOf(this.port), this.database, this.jdbcType, this.color);
     }
 
-
     public boolean equals(Object object) {
         if (object instanceof ServerConfig) {
             ServerConfig that = (ServerConfig) object;
-            return (Objects.equal(this.name, that.name) && Objects.equal(this.username, that.username) && Objects.equal(this.password, that.password) && Objects.equal(this.host, that.host) && Objects.equal(Integer.valueOf(this.port), Integer.valueOf(that.port)) && Objects.equal(getDatabase(), that.getDatabase()) && Objects.equal(getFolder(), that.getFolder()) && Objects.equal(this.jdbcType, that.jdbcType) && Objects.equal(this.color, that.color));
+            return (Objects.equal(this.name, that.name) && Objects.equal(this.username, that.username) && Objects.equal(this.password, that.password) && Objects.equal(this.host, that.host) && Objects.equal(Integer.valueOf(this.port), Integer.valueOf(that.port)) && Objects.equal(this.getDatabase(), that.getDatabase()) && Objects.equal(this.getFolder(), that.getFolder()) && Objects.equal(this.jdbcType, that.jdbcType) && Objects.equal(this.color, that.color));
         }
-
 
         return false;
     }

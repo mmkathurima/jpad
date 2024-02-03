@@ -17,7 +17,6 @@ import java.awt.event.*;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class QueryableEditorPanel
         extends JPanel
         implements Queryable.Listener {
@@ -30,22 +29,21 @@ public class QueryableEditorPanel
     private Queryable activeApp;
     private DesktopModel desktopModel;
 
-
     public QueryableEditorPanel(ConnectionManager connectionManager) {
         this.connectionManager = Preconditions.checkNotNull(connectionManager);
-        setLayout(new BorderLayout(0, 0));
-        setBorder(BorderFactory.createTitledBorder("Query"));
+        this.setLayout(new BorderLayout(0, 0));
+        this.setBorder(BorderFactory.createTitledBorder("Query"));
 
         DefaultSyntaxKit.initKit();
         this.codeEditor = new JEditorPane();
 
-        String argsHelpText = "Preview what query is being sent to the server";
+        final String argsHelpText = "Preview what query is being sent to the server";
         this.helpArgsButton = new JButton(argsHelpText, Theme.CIcon.INFO.get16());
         this.helpArgsButton.setAlignmentX(0.0F);
         this.helpArgsButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (QueryableEditorPanel.this.desktopModel != null) {
-                    final JDialog d = new JDialog();
+                    JDialog d = new JDialog();
                     d.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
                     SwingUtils.addEscapeCloseListener(d);
                     d.add(Theme.getTextArea("translatedCode", QueryableEditorPanel.this.codeEditor.getText()));
@@ -64,7 +62,7 @@ public class QueryableEditorPanel
 
         JScrollPane scrPane = new JScrollPane(this.codeEditor);
 
-        doLayout();
+        this.doLayout();
         this.codeEditor.setContentType("text/sql");
         this.codeEditor.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent ke) {
@@ -75,7 +73,6 @@ public class QueryableEditorPanel
             }
         });
 
-
         JButton btnRefresh = new JButton("<html>Set<br/>Query<html>");
         btnRefresh.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
@@ -85,7 +82,6 @@ public class QueryableEditorPanel
             }
         });
         btnRefresh.setPreferredSize(new Dimension(80, 60));
-
 
         this.refreshRateComboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -101,10 +97,9 @@ public class QueryableEditorPanel
         JPanel p = new JPanel();
         p.add(btnRefresh);
 
-        add(scrPane, "Center");
-        add(p, "East");
+        this.add(scrPane, "Center");
+        this.add(p, "East");
     }
-
 
     public void display(Queryable activeApp) {
         if (this.activeApp != activeApp) {
@@ -127,12 +122,10 @@ public class QueryableEditorPanel
         b.add(Box.createHorizontalGlue());
         b.add(Box.createHorizontalGlue());
 
-
         b.add(Box.createHorizontalGlue());
-        add(b, "North");
-        refresh();
+        this.add(b, "North");
+        this.refresh();
     }
-
 
     void setDesktopModel(DesktopModel desktopModel) {
         this.desktopModel = desktopModel;
@@ -153,9 +146,8 @@ public class QueryableEditorPanel
     }
 
     public void configChanged(Queryable queryable) {
-        refresh();
+        this.refresh();
     }
-
 
     private static class RefreshRateComboBoxModel
             extends ListComboBoxModel<String> {
@@ -180,13 +172,13 @@ public class QueryableEditorPanel
             if (idx > -1 && idx < L.size()) {
                 String s = L.get(idx);
                 if (s != null) {
-                    setSelectedItem(s);
+                    this.setSelectedItem(s);
                 }
             }
         }
 
         public int getRefreshRate() {
-            int index = L.indexOf(getSelectedItem());
+            int index = L.indexOf(this.getSelectedItem());
             return VALS.get(index).intValue();
         }
     }

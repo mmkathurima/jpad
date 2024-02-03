@@ -24,7 +24,6 @@ public class JPadParams {
     final File file;
     final String[] programArgs;
 
-
     JPadParams(boolean version, boolean debug, boolean help, String code, File file, String[] programArgs) {
         this.version = version;
         this.debug = debug;
@@ -39,7 +38,6 @@ public class JPadParams {
 
         p.acceptsAll(List.of(new String[]{"e", "execute"}), "Execute the selected code statement.")
                 .withRequiredArg().describedAs("java_code").ofType(String.class);
-
 
         p.acceptsAll(List.of(new String[]{"args"}), "Anything after this flag is treated as an argument to the program itself")
                 .withRequiredArg().describedAs("program_arguments").ofType(String.class);
@@ -79,7 +77,6 @@ public class JPadParams {
             return jpBuilder.help(true).build();
         }
 
-
         String code = null;
         if (o.has("execute")) {
             code = "" + o.valueOf("execute");
@@ -112,7 +109,7 @@ public class JPadParams {
         }
 
         cmd = cmd.trim();
-        String regExp = "\"(\\\"|[^\"])*?\"|[^ ]+";
+        final String regExp = "\"(\\\"|[^\"])*?\"|[^ ]+";
         Pattern pattern = Pattern.compile(regExp, 10);
 
         Matcher matcher = pattern.matcher(cmd);

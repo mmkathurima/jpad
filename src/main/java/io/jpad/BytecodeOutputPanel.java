@@ -7,7 +7,6 @@ import io.jpad.model.RunResult;
 
 import java.awt.BorderLayout;
 
-
 public class BytecodeOutputPanel
         extends PanelResultRenderer {
     public static final String NAME = "bytecodeOut";
@@ -17,8 +16,8 @@ public class BytecodeOutputPanel
 
     public BytecodeOutputPanel() {
         super("bytecodeOut", Theme.CIcon.EDIT_COMMENT.get16());
-        setLayout(new BorderLayout());
-        add(this.javapPanel, "Center");
+        this.setLayout(new BorderLayout());
+        this.add(this.javapPanel, "Center");
     }
 
     public void compiling(JPadCode code) {

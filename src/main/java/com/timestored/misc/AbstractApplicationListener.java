@@ -8,7 +8,6 @@ import javax.swing.JOptionPane;
 import java.awt.Toolkit;
 import java.awt.event.WindowEvent;
 
-
 public abstract class AbstractApplicationListener
         implements ApplicationListener {
     private final JFrame frame;
@@ -16,7 +15,6 @@ public abstract class AbstractApplicationListener
     public AbstractApplicationListener(JFrame frame) {
         this.frame = frame;
     }
-
 
     public void handleReOpenApplication(ApplicationEvent event) {
     }

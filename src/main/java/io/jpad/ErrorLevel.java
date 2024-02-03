@@ -8,7 +8,6 @@ import org.jetbrains.annotations.Nullable;
 import javax.tools.Diagnostic;
 import java.awt.Color;
 
-
 public enum ErrorLevel {
     ERROR(Theme.CIcon.ERROR, new Color(255, 215, 215)),
     WARNING(Theme.CIcon.WARNING, new Color(255, 255, 195)),
@@ -22,7 +21,6 @@ public enum ErrorLevel {
         this.cIcon = Preconditions.checkNotNull(cIcon);
         this.color = color;
     }
-
 
     public static ErrorLevel get(Diagnostic.Kind kind) {
         switch (kind) {
@@ -47,7 +45,6 @@ public enum ErrorLevel {
     Color getColor() {
         return this.color;
     }
-
 }
 
 

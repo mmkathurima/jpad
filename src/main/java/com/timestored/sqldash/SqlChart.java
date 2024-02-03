@@ -19,10 +19,8 @@ import java.sql.SQLException;
 import java.util.logging.Handler;
 import java.util.logging.Logger;
 
-
 public class SqlChart {
     private static final Logger LOG = Logger.getLogger(SqlChart.class.getName());
-
 
     public static void main(String... args) {
         Logger globalLogger = Logger.getLogger("");
@@ -34,10 +32,8 @@ public class SqlChart {
         System.exit(run(args));
     }
 
-
     public static int run(String... args) {
         int exitCode = 0;
-
 
         if (args.length > 0) {
 
@@ -64,7 +60,6 @@ public class SqlChart {
                 ex = e;
             }
 
-
             if (ex != null) {
                 System.err.println(ex.getMessage());
                 exitCode = 1;
@@ -81,11 +76,9 @@ public class SqlChart {
         return exitCode;
     }
 
-
     public static int testGenerate(String arg) {
         return run(CmdRunner.parseCommand(arg));
     }
-
 
     public static void generate(ChartParams chartParams) throws IOException, SQLException {
         Connection conn;
@@ -118,7 +111,6 @@ public class SqlChart {
             conn.close();
         } catch (SQLException e) {
         }
-
 
         System.out.println(file.getAbsolutePath());
     }

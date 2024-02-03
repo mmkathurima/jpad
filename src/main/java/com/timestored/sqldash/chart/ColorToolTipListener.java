@@ -13,25 +13,21 @@ import java.awt.MouseInfo;
 import java.awt.Paint;
 import java.awt.Point;
 
-
 class ColorToolTipListener
         implements ChartMouseListener {
     private static final ColorToolTipListener INSTANCE = new ColorToolTipListener();
     private final Paint[] PAINTS = DefaultDrawingSupplier.DEFAULT_PAINT_SEQUENCE;
     private final int PADDING = 5;
 
-    private XYItemEntity lastSeenEntity = null;
-    private JPopupMenu lastPopupMenu = null;
-
+    private XYItemEntity lastSeenEntity;
+    private JPopupMenu lastPopupMenu;
 
     public static final ColorToolTipListener getInstance() {
         return INSTANCE;
     }
 
-
     public void chartMouseClicked(ChartMouseEvent arg0) {
     }
-
 
     public void chartMouseMoved(ChartMouseEvent cme) {
         if (cme != null && cme.getEntity() instanceof XYItemEntity) {
@@ -59,7 +55,6 @@ class ColorToolTipListener
                 this.lastPopupMenu.setVisible(true);
                 this.lastSeenEntity = xyEntity;
             }
-
         } else if (this.lastPopupMenu != null) {
             this.lastPopupMenu.setVisible(false);
             this.lastPopupMenu = null;

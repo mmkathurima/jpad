@@ -9,7 +9,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
 public class ColorChooserPanel
         extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -17,10 +16,9 @@ public class ColorChooserPanel
 
     private final JButton colorButton;
 
-    public ColorChooserPanel(final Component parent) {
+    public ColorChooserPanel(Component parent) {
         this.colorPreviewLabel.setOpaque(true);
         this.colorPreviewLabel.setBorder(BorderFactory.createLoweredBevelBorder());
-
 
         this.colorButton = new JButton("Choose Color");
         this.colorPreviewLabel.addMouseListener(new MouseAdapter() {
@@ -43,7 +41,7 @@ public class ColorChooserPanel
         JPanel p = new JPanel(new FlowLayout(0));
         p.add(this.colorButton);
         p.add(this.colorPreviewLabel);
-        add(p);
+        this.add(p);
     }
 
     public Color getColor() {

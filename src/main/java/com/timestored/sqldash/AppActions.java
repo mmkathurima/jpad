@@ -33,7 +33,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class AppActions {
     private static final Logger LOG = Logger.getLogger(AppActions.class.getName());
 
@@ -52,17 +51,14 @@ public class AppActions {
     private final FifoBuffer<File> recentOpenPaths = new FifoBuffer(9);
     private final List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
 
-
     private final AppModel appModel;
-
 
     private final Component parent;
     private final List<Action> demoLaunchActions;
     private final AbstractAction mainDashDemoAction;
     private File currentFile;
 
-
-    public AppActions(final AppModel appModel, final Component parent) {
+    public AppActions(AppModel appModel, Component parent) {
         this.appModel = appModel;
         this.parent = parent;
 
@@ -131,14 +127,13 @@ public class AppActions {
         this.renameWorkspaceAction = new ShortcutAction("Rename Worksheet", Theme.CIcon.LAYOUT_EDIT, "Rename the current Worksheet") {
             public void actionPerformed(ActionEvent e) {
                 WorkspaceModel ws = appModel.getSelectedWorkspaceModel();
-                String msg = "Enter the new name:";
+                final String msg = "Enter the new name:";
                 String r = JOptionPane.showInputDialog(parent, msg, ws.getTitle());
                 if (r != null && r.length() > 0) {
                     ws.setTitle(r);
                 }
             }
         };
-
 
         this.openFileAction = new ShortcutAction("Open File...", Theme.CIcon.DOCUMENT_OPEN, 79) {
             public void actionPerformed(ActionEvent e) {
@@ -170,7 +165,6 @@ public class AppActions {
         };
         this.saveAsFileAction.putValue("MnemonicKey", Integer.valueOf(65));
 
-
         this.newFileAction = new ShortcutAction("New File", Theme.CIcon.DOCUMENT_NEW, 78) {
             public void actionPerformed(ActionEvent e) {
                 appModel.newDesktop();
@@ -189,7 +183,6 @@ public class AppActions {
             }
         };
 
-
         this.demoLaunchActions = new ArrayList<Action>();
 
         this.demoLaunchActions.add(new AbstractAction("MySQL Yahoo Finance Dashboard", Theme.CIcon.DAS_FILE.get16()) {
@@ -206,9 +199,7 @@ public class AppActions {
 
                     String msg = "This demo creates tables and insert data onto your MySQL database server:.\r\n" + mySC.getShortName() + "\r\n\r\nAre you sure you want to proceed?";
 
-
                     int choice = JOptionPane.showConfirmDialog(parent, msg, null, 0);
-
 
                     if (choice == 0) {
                         AppActions.this.openDemoDialog(mySC, "stock-watch-h2.das");
@@ -220,12 +211,11 @@ public class AppActions {
             }
         });
 
-
         this.mainDashDemoAction = new AbstractAction("Yahoo Finance SQL Dashboard", Theme.CIcon.DAS_FILE.get16()) {
             public void actionPerformed(ActionEvent e) {
-                String msg = "This demo uses an in-memory H2 database that stays running as long as it's window is open.\r\n";
+                final String msg = "This demo uses an in-memory H2 database that stays running as long as it's window is open.\r\n";
 
-                final DBTestRunner dbRunner = DBTestRunnerFactory.getDbRunner(JdbcTypes.H2);
+                DBTestRunner dbRunner = DBTestRunnerFactory.getDbRunner(JdbcTypes.H2);
                 try {
                     dbRunner.start();
                     ServerConfig sc = dbRunner.getServerConfig();
@@ -242,17 +232,13 @@ public class AppActions {
             }
         };
 
-
         this.demoLaunchActions.add(this.mainDashDemoAction);
-
 
         this.demoLaunchActions.add(new AbstractAction("Yahoo Finance Kdb Dashboard", Theme.CIcon.DAS_FILE.get16()) {
             public void actionPerformed(ActionEvent e) {
-                String msg = "This demo creates tables and insert data onto a kdb database server on the local machine with port 5000.\r\n\r\nHave you started the kdb server on port 5000 and is it ok to proceed?";
-
+                final String msg = "This demo creates tables and insert data onto a kdb database server on the local machine with port 5000.\r\n\r\nHave you started the kdb server on port 5000 and is it ok to proceed?";
 
                 int choice = JOptionPane.showConfirmDialog(parent, msg, null, 0);
-
 
                 if (choice == 0) {
                     ServerConfig sc = new ServerConfig("localhost", 5000);
@@ -261,17 +247,15 @@ public class AppActions {
             }
         });
 
-
         this.demoLaunchActions.add(new AbstractAction("Simple kdb Dashboard", Theme.CIcon.DAS_FILE.get16()) {
             public void actionPerformed(ActionEvent e) {
                 if (AppActions.this.openExample("example.das", new ServerConfig("localhost", 5000))) {
-                    String message = "This example relies on a kdb database server being present on localhost port 5000.\r\nIf you are not running a server on that port, edit the server configuration to point at an existing server.";
+                    final String message = "This example relies on a kdb database server being present on localhost port 5000.\r\nIf you are not running a server on that port, edit the server configuration to point at an existing server.";
 
                     JOptionPane.showMessageDialog(parent, message, "Example Dashboard", -1);
                 }
             }
         });
-
 
         appModel.addListener(new AppModel.Listener() {
             public void desktopChanged(DesktopModel selectedDesktopModel) {
@@ -298,7 +282,6 @@ public class AppActions {
         });
     }
 
-
     private void askUserToChooseFileOpen() {
         JFileChooser fc;
         if (this.currentFile != null) {
@@ -318,16 +301,14 @@ public class AppActions {
                          }
         );
 
-
         fc.setMultiSelectionEnabled(false);
         if (fc.showOpenDialog(null) == 0) {
             File file = fc.getSelectedFile();
-            openFile(file);
+            this.openFile(file);
         } else {
             LOG.info("Open command cancelled by user.");
         }
     }
-
 
     void openFile(File file) {
         try {
@@ -338,8 +319,7 @@ public class AppActions {
             }
             this.recentOpenPaths.add(file);
         } catch (IOException e) {
-            String msg = "Error could not understand the file format.\r\nIf you are sure this is a valid .das file please contact\r\ntech@timestored.com";
-
+            final String msg = "Error could not understand the file format.\r\nIf you are sure this is a valid .das file please contact\r\ntech@timestored.com";
 
             JOptionPane.showMessageDialog(this.parent, msg, "File Open Error", 2);
             LOG.info(msg);
@@ -347,16 +327,14 @@ public class AppActions {
         }
     }
 
-
     private void letUserChooseFileAndSave() {
         File file = SwingUtils.askUserSaveLocation("das", this.currentFile);
         if (file != null) {
-            save(file);
+            this.save(file);
         } else {
             LOG.info("Save command cancelled by user.");
         }
     }
-
 
     private void save(File file) {
         try {
@@ -432,13 +410,12 @@ public class AppActions {
         return this.demoLaunchActions;
     }
 
-
     public List<JMenuItem> getOpenRecentFileActions() {
         List<JMenuItem> l = new ArrayList<JMenuItem>();
         List<File> fps = this.recentOpenPaths.getAll();
 
         for (int i = 0; i < fps.size(); i++) {
-            final File f = fps.get(i);
+            File f = fps.get(i);
             String path = f.getAbsolutePath();
             if (path.length() > 31) {
                 path = path.subSequence(0, 30) + "...";
@@ -460,20 +437,17 @@ public class AppActions {
         return this.listeners.add(appActionslistener);
     }
 
-
     public File getCurrentFile() {
         return this.currentFile;
     }
 
-
-    private FinanceDemoFrame openDemoDialog(final ServerConfig sc, final String exampleFileName) {
+    private FinanceDemoFrame openDemoDialog(ServerConfig sc, String exampleFileName) {
         FinanceDataDemo fdDemo = null;
         FinanceDemoFrame fdDialog = null;
         try {
             fdDemo = DemoFactory.getFinanceDataDemo(sc);
         } catch (IOException e1) {
         }
-
 
         if (fdDemo == null) {
             JOptionPane.showMessageDialog(this.parent, "Could not find demo for the database type you requested.", "Sql Intiialisation Error", 2);
@@ -484,7 +458,6 @@ public class AppActions {
             try {
                 fdDemo.start();
                 fdDialog.setVisible(true);
-
 
                 Runnable runnable = new Runnable() {
                     public void run() {
@@ -506,13 +479,12 @@ public class AppActions {
         return fdDialog;
     }
 
-
     private boolean openExample(String packageFilename, ServerConfig serverConfigToUseForAllQueries) {
         boolean openedExample = false;
         try {
             InputStream is = SqlDashFrame.class.getResourceAsStream(packageFilename);
             File f = IOUtils.createTempCopy(packageFilename, is);
-            openFile(f);
+            this.openFile(f);
             if (serverConfigToUseForAllQueries != null) {
                 this.appModel.setAllQueryServersTo(serverConfigToUseForAllQueries);
             }

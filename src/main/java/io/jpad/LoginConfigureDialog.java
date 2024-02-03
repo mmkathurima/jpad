@@ -13,7 +13,6 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 
-
 class LoginConfigureDialog
         extends JDialog {
     private static final long serialVersionUID = 1L;
@@ -26,20 +25,18 @@ class LoginConfigureDialog
     private Listener listener;
 
     public LoginConfigureDialog() {
-        setTitle("JPad Upload Login Details");
-        setSize(200, 200);
-        setLayout(new BorderLayout());
-        setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
-
+        this.setTitle("JPad Upload Login Details");
+        this.setSize(200, 200);
+        this.setLayout(new BorderLayout());
+        this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
 
         JPanel panel = Theme.getVerticalBoxPanel();
         panel.setBorder(BorderFactory.createBevelBorder(1));
-        String passTooltip = "These jpad.io credentials are used for uploading code etc.";
+        final String passTooltip = "These jpad.io credentials are used for uploading code etc.";
         this.usernameField = new JTextField(20);
         this.passwordField = new JPasswordField(20);
         Action regAction = HtmlUtils.getWWWaction("Register", "http://jpad.io/register");
         this.validLabel = new JLabel("                ");
-
 
         this.usernameField.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
@@ -56,7 +53,6 @@ class LoginConfigureDialog
         panel.add(Theme.getFormRow(this.usernameField, "Username:", passTooltip));
         panel.add(Theme.getFormRow(this.passwordField, "Password:", passTooltip));
         panel.add(this.validLabel);
-
 
         JPanel butPanel = new JPanel(new FlowLayout(10));
         butPanel.add(Theme.makeButton("Save", new ActionListener() {
@@ -84,9 +80,9 @@ class LoginConfigureDialog
             }
         }));
 
-        add(panel, "North");
-        add(butPanel, "South");
-        pack();
+        this.add(panel, "North");
+        this.add(butPanel, "South");
+        this.pack();
     }
 
     public void setListener(Listener listener) {
@@ -94,7 +90,7 @@ class LoginConfigureDialog
     }
 
     private void save() {
-        dispose();
+        this.dispose();
         if (this.listener != null)
             this.listener.onSave();
     }

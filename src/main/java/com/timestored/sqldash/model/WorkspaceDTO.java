@@ -7,7 +7,6 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import java.util.ArrayList;
 import java.util.List;
 
-
 @XStreamAlias("workspace")
 class WorkspaceDTO {
     @XStreamAsAttribute

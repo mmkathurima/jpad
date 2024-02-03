@@ -24,7 +24,6 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public enum PieChartViewStrategy
         implements ViewStrategy {
     INSTANCE;
@@ -35,21 +34,18 @@ public enum PieChartViewStrategy
         FORMATA = new String[]{"Each numerical column represents a pie chart.", "The title of each pie chart will be the column title.", "Each row will be a section of the pie and will use the row title as a label."};
     }
 
-    public UpdateableView getView(final ChartTheme theme) {
+    public UpdateableView getView(ChartTheme theme) {
         Preconditions.checkNotNull(theme);
 
         return new HardRefreshUpdateableView(new HardRefreshUpdateableView.ViewGetter() {
-
 
             public Component getView(ResultSet resultSet, ChartResultSet colResultSet) throws ChartFormatException {
                 if (colResultSet.getNumericColumns().size() < 1) {
                     throw new ChartFormatException("There must be atleast one number column.");
                 }
 
-
                 DefaultCategoryDataset catData = CategoryDatasetUpdateableView.add(colResultSet, new DefaultCategoryDataset());
                 JFreeChart chart = ChartFactory.createMultiplePieChart("", catData, TableOrder.BY_ROW, true, true, false);
-
 
                 if (catData.getRowCount() > 1) {
                     MultiplePiePlot plot = (MultiplePiePlot) chart.getPlot();
@@ -90,7 +86,7 @@ public enum PieChartViewStrategy
     }
 
     public String toString() {
-        return PieChartViewStrategy.class.getSimpleName() + "[" + getDescription() + "]";
+        return PieChartViewStrategy.class.getSimpleName() + "[" + this.getDescription() + "]";
     }
 
     public String getFormatExplainationHtml() {

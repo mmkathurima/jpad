@@ -21,15 +21,14 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.io.FileFilter;
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
-public class FileTreePanel
-        extends JPanel {
+public class FileTreePanel extends JPanel {
     public static final FileFilter IGNORE_SVN_FILTER = new IgnoreGitSvnFileFilter();
     private static final Logger LOG = Logger.getLogger(FileTreePanel.class.getName());
     private static final int MAX_FILES_TO_WATCH = 1000;
@@ -46,24 +45,22 @@ public class FileTreePanel
     private Component noRootsComponent;
     private boolean rightClickMenuShown = true;
 
-
     public FileTreePanel() {
         this.listeners = new CopyOnWriteArrayList<Listener>();
         this.fileFilter = IGNORE_SVN_FILTER;
         this.dirWatch = new DirWatch(30100L, this.fileFilter);
-        setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());
         this.noRootsComponent = new JLabel(" No root folder selected");
         this.noRootsComponent.setName("noRootsComponent");
 
         this.treeMouseListener = new TreeMouseListener();
-        addMouseListener(new RefreshTreeMouseListener());
-        refreshGui();
+        this.addMouseListener(new RefreshTreeMouseListener());
+        this.refreshGui();
         this.dirWatch.addListener(new DirWatch.DirWatchListener() {
             public void changeOccurred() {
                 FileTreePanel.this.refreshGui();
             }
         });
-
 
         this.fileTreeCellRenderer = new FileTreeCellRenderer();
         this.fileTreeCellRenderer.addListener(new FileTreeCellRenderer.Listener() {
@@ -107,8 +104,7 @@ public class FileTreePanel
         if (!f.isDirectory()) {
             f = contextFile.getParentFile();
         }
-        final File nearestDir = f;
-
+        File nearestDir = f;
 
         String openText = contextFile.isDirectory() ? "Open Folder" : "Open Containing Folder";
         popupMenu.add(new AbstractAction(openText) {
@@ -119,14 +115,13 @@ public class FileTreePanel
                     try {
                         Desktop.getDesktop().open(nearestDir);
                     } catch (IOException ioe) {
-                        String msg = "Could not open folder";
-                        FileTreePanel.LOG.log(Level.WARNING, msg, ioe);
+                        final String msg = "Could not open folder";
+                        LOG.log(Level.WARNING, msg, ioe);
                         JOptionPane.showMessageDialog(null, msg);
                     }
                 }
             }
         });
-
 
         popupMenu.add(new AbstractAction(Msg.get(Msg.Key.CREATE_NEW_FOLDER), Theme.CIcon.FOLDER_ADD.get16()) {
             private static final long serialVersionUID = 1L;
@@ -142,13 +137,12 @@ public class FileTreePanel
             }
         });
 
-
         popupMenu.add(new AbstractAction(Msg.get(Msg.Key.CREATE_NEW_FILE), Theme.CIcon.PAGE.get16()) {
             private static final long serialVersionUID = 1L;
 
             public void actionPerformed(ActionEvent e) {
                 String newFileName = JOptionPane.showInputDialog("Enter name for new file:", "New File");
-                String errMsg = "Could not create new File";
+                final String errMsg = "Could not create new File";
                 if (newFileName != null) {
                     File f = new File(nearestDir, newFileName);
                     boolean success = true;
@@ -157,7 +151,7 @@ public class FileTreePanel
                         success = f.createNewFile();
                     } catch (IOException ioe) {
                         success = false;
-                        FileTreePanel.LOG.log(Level.WARNING, errMsg, ioe);
+                        LOG.log(Level.WARNING, errMsg, ioe);
                     }
                     if (!success) {
                         JOptionPane.showMessageDialog(null, errMsg);
@@ -166,7 +160,6 @@ public class FileTreePanel
                 }
             }
         });
-
 
         popupMenu.add(new AbstractAction("Refresh Tree") {
             public void actionPerformed(ActionEvent e) {
@@ -183,18 +176,17 @@ public class FileTreePanel
             this.root = null;
         }
 
-
         LOG.info("FileTreePanel refreshGui");
         if (this.tree != null) {
             this.tree.removeMouseListener(this.treeMouseListener);
         }
         if (this.root == null) {
-            removeAll();
-            add(this.noRootsComponent, "Center");
+            this.removeAll();
+            this.add(this.noRootsComponent, "Center");
         } else {
             File[] files = getFiles(this.fileFilter, this.root);
 
-            this.fileCache.addAll(generateFileCache(files, this.fileFilter));
+            this.fileCache.addAll(this.generateFileCache(files, this.fileFilter));
 
             if (files.length > 0) {
                 FileTreeNode rootTreeNode = new FileTreeNode(files, this.fileFilter);
@@ -207,19 +199,18 @@ public class FileTreePanel
                 JScrollPane jsp = new JScrollPane(this.tree);
                 jsp.setBorder(BorderFactory.createEmptyBorder(5, 5, 5, 5));
 
-                removeAll();
-                add(jsp, "Center");
+                this.removeAll();
+                this.add(jsp, "Center");
             } else {
 
-                removeAll();
+                this.removeAll();
                 this.noRootsComponent = new JLabel(" Selected Folder is Empty");
-                add(this.noRootsComponent, "Center");
+                this.add(this.noRootsComponent, "Center");
             }
-            revalidate();
-            repaint();
+            this.revalidate();
+            this.repaint();
         }
     }
-
 
     private Collection<File> generateFileCache(File[] files, FileFilter fileFilter) {
         if (files != null && files.length > 0) {
@@ -237,7 +228,7 @@ public class FileTreePanel
         this.noRootsComponent = noRootsComponent;
         noRootsComponent.setName("noRootsComponent");
         if (this.root == null) {
-            refreshGui();
+            this.refreshGui();
         }
     }
 
@@ -247,7 +238,6 @@ public class FileTreePanel
         }
 
         boolean rootChanging = ((selectedFolder == null && this.root != null) || (selectedFolder != null && !selectedFolder.equals(this.root)));
-
 
         if (rootChanging) {
             LOG.info("root changing");
@@ -267,7 +257,7 @@ public class FileTreePanel
             }
 
             if (SwingUtilities.isEventDispatchThread()) {
-                refreshGui();
+                this.refreshGui();
             } else {
 
                 try {
@@ -303,11 +293,9 @@ public class FileTreePanel
             extends DefaultTreeCellRenderer {
         private final Map<String, Icon> iconCache = new HashMap<String, Icon>();
 
-
         private final Map<File, String> rootNameCache = new HashMap<File, String>();
 
         private final List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
-
 
         private FileTreeCellRenderer() {
         }
@@ -333,10 +321,9 @@ public class FileTreePanel
 
                         filename = this.rootNameCache.get(file);
                         if (filename == null) {
-                            filename = FileTreePanel.fsv.getSystemDisplayName(file);
+                            filename = fsv.getSystemDisplayName(file);
                             this.rootNameCache.put(file, filename);
                         }
-
                     } else {
 
                         filename = file.getName();
@@ -348,7 +335,7 @@ public class FileTreePanel
                     Icon icon = this.iconCache.get(filename);
                     if (icon == null) {
 
-                        icon = FileTreePanel.fsv.getSystemIcon(file);
+                        icon = fsv.getSystemIcon(file);
                         this.iconCache.put(filename, icon);
                     }
                     result.setIcon(icon);
@@ -357,7 +344,6 @@ public class FileTreePanel
             }
             return super.getTreeCellRendererComponent(tree, value, sel, expanded, leaf, row, hasFocus);
         }
-
 
         private interface Listener {
             void renderedFile(File param2File);
@@ -377,7 +363,7 @@ public class FileTreePanel
             this.isFileSystemRoot = isFileSystemRoot;
             this.fileFilter = fileFilter;
             this.parent = parent;
-            this.children = FileTreePanel.getFiles(fileFilter, file);
+            this.children = getFiles(fileFilter, file);
 
             if (this.children == null) {
                 this.children = new File[0];
@@ -394,15 +380,13 @@ public class FileTreePanel
         }
 
         public Enumeration children() {
-            final int elementCount = this.children.length;
+            int elementCount = this.children.length;
             return new Enumeration<File>() {
-                int count = 0;
-
+                int count;
 
                 public boolean hasMoreElements() {
                     return (this.count < elementCount);
                 }
-
 
                 public File nextElement() {
                     if (this.count < elementCount) {
@@ -439,10 +423,10 @@ public class FileTreePanel
         }
 
         public boolean isLeaf() {
-            return (getChildCount() == 0);
+            return (this.getChildCount() == 0);
         }
 
-        private static class FileFolderNameComparator implements Comparator<File> {
+        private static class FileFolderNameComparator implements Comparator<File>, Serializable {
             private FileFolderNameComparator() {
             }
 
@@ -471,13 +455,11 @@ public class FileTreePanel
         private TreeMouseListener() {
         }
 
-
         public void mouseClicked(MouseEvent e) {
             if (SwingUtilities.isRightMouseButton(e)) {
                 int row = FileTreePanel.this.tree.getClosestRowForLocation(e.getX(), e.getY());
                 FileTreePanel.this.tree.setSelectionRow(row);
             }
-
 
             File f = null;
             TreePath tp = FileTreePanel.this.tree.getSelectionPath();
@@ -486,7 +468,6 @@ public class FileTreePanel
                 f = ((FileTreePanel.FileTreeNode) o).file;
             }
 
-
             if (f != null && !f.canRead()) {
                 FileTreePanel.this.refreshGui();
             } else if (f != null) {
@@ -494,7 +475,7 @@ public class FileTreePanel
                 if (SwingUtilities.isRightMouseButton(e) && FileTreePanel.this.rightClickMenuShown) {
                     FileTreePanel.this.getFileRightClickMenu(f).show(e.getComponent(), e.getX(), e.getY());
                 } else if (SwingUtilities.isLeftMouseButton(e)) {
-                    FileTreePanel.LOG.info("FileTreePanel file selected->" + f);
+                    LOG.info("FileTreePanel file selected->" + f);
                     for (FileTreePanel.Listener l : FileTreePanel.this.listeners)
                         l.fileSelected(f);
                 }

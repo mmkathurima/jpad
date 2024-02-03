@@ -38,7 +38,6 @@ public class StockDBAdapter
             ohlcData.put(s, StockFetcher.getOHLC(s));
         }
 
-
         List<ExampleChartDB> l = Lists.newArrayList();
         for (DBConfig dbConfig : DemoFactory.getDBConfigs()) {
             for (JdbcTypes jdbcType : dbConfig.getSupportedJdbcTypes()) {
@@ -62,13 +61,13 @@ public class StockDBAdapter
 
     public List<String> getInitSQL(boolean withComments) {
         List<String> l = Lists.newArrayList();
-        comment(withComments, l, "Init SQL");
+        this.comment(withComments, l, "Init SQL");
         l.addAll(this.dbConfig.getInitSql());
-        comment(withComments, l, "Stocks");
+        this.comment(withComments, l, "Stocks");
         l.addAll(this.dbConfig.toInserts(stocks));
-        comment(withComments, l, "Live Bids Asks");
+        this.comment(withComments, l, "Live Bids Asks");
         l.addAll(this.dbConfig.toLiveInserts(lps));
-        comment(withComments, l, "OHLC");
+        this.comment(withComments, l, "OHLC");
         for (String s : ohlcData.keySet()) {
             l.addAll(this.dbConfig.toInserts(s, ohlcData.get(s)));
         }
@@ -81,7 +80,6 @@ public class StockDBAdapter
             l.add("\r\n" + this.jdbcTypes.getComment(" " + comment + " ") + "\r\n");
         }
     }
-
 
     public List<ExampleChartQuery> getQueries() {
         List<ExampleChartQuery> qs = new ArrayList<ExampleChartQuery>();

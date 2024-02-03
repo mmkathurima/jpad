@@ -11,17 +11,16 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-
 class WorkspaceComboBox
         extends JComboBox {
     private static final long serialVersionUID = 1L;
     private final AppModel appModel;
 
-    public WorkspaceComboBox(final AppModel appModel) {
+    public WorkspaceComboBox(AppModel appModel) {
         this.appModel = appModel;
-        setEditable(false);
+        this.setEditable(false);
 
-        addActionListener(new ActionListener() {
+        this.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 WorkspaceModel wsm = appModel.getSelectedWorkspaceModel();
                 WorkspaceModel selection = (WorkspaceModel) WorkspaceComboBox.this.getSelectedItem();
@@ -31,7 +30,7 @@ class WorkspaceComboBox
             }
         });
 
-        setRenderer(new ListCellRenderer<>() {
+        this.setRenderer(new ListCellRenderer<>() {
             public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
                 JLabel l = new JLabel();
                 l.setOpaque(true);
@@ -68,8 +67,7 @@ class WorkspaceComboBox
             }
         });
 
-
-        refresh();
+        this.refresh();
     }
 
     private void refresh() {
@@ -80,14 +78,14 @@ class WorkspaceComboBox
         if (dm != null) {
             List<WorkspaceModel> workspaces = dm.getWorkspaces();
             enabled = (workspaces.size() > 0);
-            setModel(new DefaultComboBoxModel<>(workspaces.toArray()));
+            this.setModel(new DefaultComboBoxModel<>(workspaces.toArray()));
             if (selectedWSM != null) {
-                setSelectedItem(selectedWSM);
+                this.setSelectedItem(selectedWSM);
             }
         } else {
-            setModel(new DefaultComboBoxModel<>());
+            this.setModel(new DefaultComboBoxModel<>());
         }
-        setEnabled(enabled);
+        this.setEnabled(enabled);
     }
 }
 

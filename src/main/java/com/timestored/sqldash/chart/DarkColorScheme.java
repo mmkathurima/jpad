@@ -2,7 +2,6 @@ package com.timestored.sqldash.chart;
 
 import java.awt.Color;
 
-
 public class DarkColorScheme
         implements ColorScheme {
     private static final Color TXT_COLOR = Color.decode("#DDDDDD");

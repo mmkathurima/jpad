@@ -1,6 +1,5 @@
 package com.timestored.sqldash;
 
-
 public enum SqldKey {
     SIGNED_LICENSE, RECENT_DOCS
 }

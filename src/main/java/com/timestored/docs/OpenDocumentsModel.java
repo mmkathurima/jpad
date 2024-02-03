@@ -13,7 +13,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
-
 public class OpenDocumentsModel {
     private static final Logger LOG = Logger.getLogger(OpenDocumentsModel.class.getName());
 
@@ -46,7 +45,7 @@ public class OpenDocumentsModel {
             }
         };
 
-        this.selectedDocument = addDocument();
+        this.selectedDocument = this.addDocument();
         this.selectedDocument.addListener(this.selectedDocListener);
     }
 
@@ -56,8 +55,7 @@ public class OpenDocumentsModel {
 
     public void forceKeyboardShortcutOverrides() {
         KeyboardFocusManager.getCurrentKeyboardFocusManager().addKeyEventDispatcher(new KeyEventDispatcher() {
-            boolean down = false;
-
+            boolean down;
 
             public boolean dispatchKeyEvent(KeyEvent e) {
                 int kc = e.getKeyCode();
@@ -84,22 +82,21 @@ public class OpenDocumentsModel {
 
     public Document openDocument(String filepath) throws IOException {
         Preconditions.checkNotNull(filepath);
-        return openDocument(new File(filepath));
+        return this.openDocument(new File(filepath));
     }
-
 
     public void openDocuments(List<String> filepaths) {
         for (String fp : filepaths) {
             try {
-                openDocument(new File(fp));
+                this.openDocument(new File(fp));
             } catch (IOException e) {
                 LOG.warning("Couldn't open previously opened file location:" + fp);
             }
         }
         if (this.documents.size() > 0) {
-            changeSelectedDocTo(this.documents.get(this.documents.size() - 1));
+            this.changeSelectedDocTo(this.documents.get(this.documents.size() - 1));
         } else {
-            changeSelectedDocTo(addDocument());
+            this.changeSelectedDocTo(this.addDocument());
         }
         this.selectedDocument.addListener(this.selectedDocListener);
 
@@ -116,12 +113,11 @@ public class OpenDocumentsModel {
         this.selectedDocument.addListener(this.selectedDocListener);
     }
 
-
     public Document addDocument() {
         Document d = new Document();
         LOG.info("addDocument: " + d.getTitle());
         this.documents.add(d);
-        changeSelectedDocTo(d);
+        this.changeSelectedDocTo(d);
 
         for (Listener l : this.listeners) {
             l.docAdded(d);
@@ -130,10 +126,8 @@ public class OpenDocumentsModel {
         return d;
     }
 
-
     public Document openDocument(File file) throws IOException {
         LOG.info("openDocument: " + file.getName());
-
 
         for (Document document : this.documents) {
             if (document.getFilePath() != null && document.getFilePath().equals(file.getAbsolutePath())) {
@@ -145,30 +139,27 @@ public class OpenDocumentsModel {
             }
         }
 
-
         Document d = new Document(file);
         this.documents.add(d);
         for (Listener l : this.listeners) {
             l.docAdded(d);
         }
-        setSelectedDocument(d);
+        this.setSelectedDocument(d);
         return d;
     }
 
-
     public void closeDocument() {
-        closeDocument(this.selectedDocument);
+        this.closeDocument(this.selectedDocument);
     }
-
 
     public void closeDocument(Document document) {
         LOG.info("closeDocument: " + document.getTitle());
         this.documents.remove(document);
         if (this.selectedDocument == document) {
             if (this.documents.size() > 0) {
-                changeSelectedDocTo(this.documents.get(0));
+                this.changeSelectedDocTo(this.documents.get(0));
             } else {
-                changeSelectedDocTo(addDocument());
+                this.changeSelectedDocTo(this.addDocument());
             }
         }
 
@@ -183,25 +174,22 @@ public class OpenDocumentsModel {
         this.selectedDocument.saveAs(file);
     }
 
-
     public void saveDocument() throws IOException {
         LOG.info("saveDocument: " + this.selectedDocument.getTitle());
         this.selectedDocument.save();
     }
 
-
     public void gotoNextDocument() {
         LOG.info("gotoNextDocument");
         int i = (this.documents.indexOf(this.selectedDocument) + 1) % this.documents.size();
-        setSelectedDocument(this.documents.get(i));
+        this.setSelectedDocument(this.documents.get(i));
     }
-
 
     public void gotoPrevDocument() {
         LOG.info("gotoPrevDocument");
         int i = this.documents.indexOf(this.selectedDocument) - 1;
         i = (i < 0) ? (this.documents.size() - 1) : i;
-        setSelectedDocument(this.documents.get(i));
+        this.setSelectedDocument(this.documents.get(i));
     }
 
     public void setContent(String content) {
@@ -222,7 +210,7 @@ public class OpenDocumentsModel {
 
         if (this.documents.contains(document)) {
             if (!document.equals(this.selectedDocument)) {
-                changeSelectedDocTo(document);
+                this.changeSelectedDocTo(document);
             }
             for (Listener l : this.listeners) {
                 l.docSelected(document);
@@ -242,7 +230,6 @@ public class OpenDocumentsModel {
         LOG.info("setSelectedFolder: " + selectedFolder);
 
         boolean noChange = (java.util.Objects.equals(selectedFolder, this.selectedFolder));
-
 
         if (!noChange) {
             if (selectedFolder == null || selectedFolder.isDirectory()) {
@@ -269,27 +256,23 @@ public class OpenDocumentsModel {
         return false;
     }
 
-
     public String toString() {
         return MoreObjects.toStringHelper(this).add("documentsSize", this.documents.size()).add("selectedDocument", this.selectedDocument).add("listenersSize", this.listeners.size()).toString();
     }
-
 
     public void insertSelectedText(String text) {
         this.selectedDocument.insertSelectedText(text);
     }
 
-
     public void insertText(String text) {
         this.selectedDocument.insertText(text);
     }
-
 
     public void closeAll() {
         List<Document> docs = new ArrayList<Document>(this.documents);
         LOG.info("closeAll");
         this.documents.clear();
-        changeSelectedDocTo(addDocument());
+        this.changeSelectedDocTo(this.addDocument());
 
         for (Listener l : this.listeners) {
             l.docSelected(this.selectedDocument);
@@ -318,7 +301,7 @@ public class OpenDocumentsModel {
         void folderSelected(File param1File);
     }
 
-    public static abstract class Adapter implements Listener {
+    public abstract static class Adapter implements Listener {
         public void docAdded(Document document) {
         }
 

@@ -17,7 +17,6 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 class FadingGrowler {
     private static final Logger LOG = Logger.getLogger(FadingGrowler.class.getName());
     private static ExecutorService executor;
@@ -26,12 +25,10 @@ class FadingGrowler {
     private final List<DisplayedItem> displayedItems = new ArrayList<DisplayedItem>();
     private int lastSeenY;
 
-
     public FadingGrowler(JFrame parentFrame, Theme theme) {
         this.parentFrame = parentFrame;
         this.lastSeenY = parentFrame.getY();
         this.theme = theme;
-
 
         parentFrame.addWindowFocusListener(new WindowFocusListener() {
             public void windowLostFocus(WindowEvent e) {
@@ -41,7 +38,6 @@ class FadingGrowler {
                     }
                 }
             }
-
 
             public void windowGainedFocus(WindowEvent e) {
                 synchronized (FadingGrowler.this.displayedItems) {
@@ -85,7 +81,7 @@ class FadingGrowler {
                                                      }
                                                      //break;
                                                  } catch (InterruptedException ex) {
-                                                     FadingGrowler.LOG.log(Level.SEVERE, null, ex);
+                                                     LOG.log(Level.SEVERE, null, ex);
                                                  }
                                              }
                                          }
@@ -97,17 +93,16 @@ class FadingGrowler {
     }
 
     public synchronized void show(String message, String title, ImageIcon imageIcon, boolean sticky, Level logLevel) {
-        startFadingThread();
+        this.startFadingThread();
 
         LOG.log(logLevel, title + ": " + message);
         if (sticky) {
             throw new UnsupportedOperationException("cant do sticky");
         }
-        addItem(new Growl(message, title, imageIcon, sticky, logLevel));
+        this.addItem(new Growl(message, title, imageIcon, sticky, logLevel));
     }
 
-
-    private void addItem(final Growl message) {
+    private void addItem(Growl message) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 JWindow frame = FadingGrowler.this.theme.getWindow(message, FadingGrowler.this.parentFrame);
@@ -124,7 +119,6 @@ class FadingGrowler {
         });
     }
 
-
     private void updateDisplayItems() {
         int parentTop = this.parentFrame.getY() + this.theme.getTopSpacer();
         int parentYmove = 0;
@@ -133,7 +127,6 @@ class FadingGrowler {
             parentYmove = this.parentFrame.getY() - this.lastSeenY;
             this.lastSeenY = this.parentFrame.getY();
         }
-
 
         Iterator<DisplayedItem> it = this.displayedItems.iterator();
         int prevTop = parentTop;

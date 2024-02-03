@@ -11,7 +11,6 @@ import java.util.EnumSet;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public enum KError {
     Mlim("Mlim", "", "more than 999 nested columns in splayed tables"),
     Q7("Q7", "", "nyi op on file nested array"),
@@ -74,9 +73,8 @@ public enum KError {
     static {
         lookup = new HashMap<String, KError>();
 
-
         for (KError e : EnumSet.allOf(KError.class))
-            lookup.put(e.getSym(), e);
+            lookup.put(e.sym, e);
     }
 
     private final String example;
@@ -98,9 +96,9 @@ public enum KError {
         Box box = Theme.getErrorBox("ERROR: " + ke.getMessage());
         if (kErr != null) {
 
-            String html = "<html>" + kErr.getDesc();
-            if (kErr.getExample().length() > 0) {
-                html = html + "<br /><br />Example of how this could be caused: " + kErr.getExample();
+            String html = "<html>" + kErr.desc;
+            if (kErr.example.length() > 0) {
+                html = html + "<br /><br />Example of how this could be caused: " + kErr.example;
             }
             html = html + "<br /><br />" + TimeStored.getRandomAdvertLink();
 

@@ -11,7 +11,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-
 public class ChartUtils {
     private static final int HEIGHT = 600;
     private static final int WIDTH = 800;
@@ -20,14 +19,12 @@ public class ChartUtils {
         save(viewStrategy, resultSet, file, 800, 600, false);
     }
 
-
     public static void save(ViewStrategy viewStrategy, ResultSet resultSet, File file, int width, int height, boolean watermark) throws IOException {
         save(viewStrategy, resultSet, file, width, height, watermark, null);
     }
 
-
     public static void save(ViewStrategy viewStrategy, ResultSet resultSet, File file, int width, int height, boolean watermark, ChartTheme chartTheme) throws IOException {
-        final JdbcChartPanel jdbcChartPanel = ViewStrategyFactory.getJdbcChartpanel(viewStrategy);
+        JdbcChartPanel jdbcChartPanel = ViewStrategyFactory.getJdbcChartpanel(viewStrategy);
         if (chartTheme != null) {
             jdbcChartPanel.setTheme(chartTheme);
         }
@@ -49,7 +46,6 @@ public class ChartUtils {
         }
         SaveableFrame.saveComponentImage(jdbcChartPanel, width, height, file, watermark);
     }
-
 
     public static void queryKdbAndSave(ViewStrategy viewStrategy, String query, File file, Connection conn) throws IOException {
         try {

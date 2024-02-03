@@ -2,12 +2,10 @@ package com.timestored.jgrowl;
 
 import javax.swing.JFrame;
 
-
 public class GrowlerFactory {
     static Growler getGrowler(JFrame parent, Theme theme) {
         return new GrowlerFacade(new FadingGrowler(parent, theme));
     }
-
 
     public static Growler getGrowler(JFrame parent) {
         return getGrowler(parent, new StandardTheme());

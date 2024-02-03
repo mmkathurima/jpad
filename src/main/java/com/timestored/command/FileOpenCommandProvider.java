@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
-
 public class FileOpenCommandProvider
         implements CommandProvider {
     private static final FileSystemView FSV = FileSystemView.getFileSystemView();
@@ -24,7 +23,6 @@ public class FileOpenCommandProvider
         this.documentActions = documentActions;
         this.fileTreePanel = fileTreePanel;
     }
-
 
     public Collection<Command> getCommands() {
         Collection<File> fcache = this.fileTreePanel.getFileCache();
@@ -47,7 +45,7 @@ public class FileOpenCommandProvider
         }
 
         public Icon getIcon() {
-            return FileOpenCommandProvider.FSV.getSystemIcon(this.f);
+            return FSV.getSystemIcon(this.f);
         }
 
         public String getTitle() {
@@ -63,7 +61,7 @@ public class FileOpenCommandProvider
         }
 
         public String toString() {
-            return getTitle();
+            return this.getTitle();
         }
 
         public String getTitleAdditional() {

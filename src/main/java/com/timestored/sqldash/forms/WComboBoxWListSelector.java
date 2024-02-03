@@ -10,7 +10,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-
 class WComboBoxWListSelector
         extends AbstractWListSelector {
     private static final long serialVersionUID = 1L;
@@ -18,11 +17,10 @@ class WComboBoxWListSelector
 
     public WComboBoxWListSelector(ListSelectionWidget lsw, DesktopModel desktopModel) {
         super(lsw, desktopModel);
-        refresh();
+        this.refresh();
     }
 
-
-    public JComboBox getInputComponent(final DesktopModel desktopModel) {
+    public JComboBox getInputComponent(DesktopModel desktopModel) {
         this.cb = new JComboBox();
         ActionListener al = new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -37,14 +35,12 @@ class WComboBoxWListSelector
         return this.cb;
     }
 
-
     public synchronized void setSelection(List<String> value) {
         Object sel = this.cb.getSelectedItem();
         if (sel != null && value.size() > 0 && !sel.equals(value.get(0))) {
             this.cb.setSelectedItem(value.get(0));
         }
     }
-
 
     public synchronized void setOptionsShown(List<String> v) {
         if (!this.cb.isFocusOwner()) {

@@ -1,6 +1,5 @@
 package io.jpad.model;
 
-
 import com.google.common.collect.Lists;
 
 import javax.swing.Action;
@@ -10,7 +9,6 @@ import java.awt.Component;
 import java.util.Collections;
 import java.util.List;
 
-
 public abstract class PanelResultRenderer
         extends JPanel
         implements ResultRenderer {
@@ -19,7 +17,6 @@ public abstract class PanelResultRenderer
     private final ImageIcon imageIcon;
     private final List<Action> actions = Lists.newArrayList();
 
-
     public PanelResultRenderer(String tabName, ImageIcon imageIcon, Action... actions) {
 
         this.tabName = tabName;
@@ -27,9 +24,7 @@ public abstract class PanelResultRenderer
         this.imageIcon = imageIcon;
 
         Collections.addAll(this.actions, actions);
-
     }
-
 
     public String getTabName() {
 
@@ -39,33 +34,26 @@ public abstract class PanelResultRenderer
     public ImageIcon getImageIcon() {
 
         return this.imageIcon;
-
     }
 
     public List<Action> getActions() {
         return this.actions;
     }
 
-
     public void compiling(JPadCode code) {
     }
-
 
     public void running(JPadCode code) {
     }
 
-
     public void resultReturned(RunResult runResult) {
     }
-
 
     public void compiled(RunResult runResult) {
     }
 
-
     public void displayRequested(Component component, String name) {
     }
-
 
     public String getLatestRendering() {
 
@@ -75,9 +63,7 @@ public abstract class PanelResultRenderer
     public Component getComponent() {
 
         return this;
-
     }
-
 }
 
 

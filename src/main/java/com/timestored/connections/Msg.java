@@ -5,7 +5,6 @@ import com.google.common.collect.Sets;
 
 import java.util.*;
 
-
 class Msg {
     private static final String BUNDLE_NAME = "com.timestored.connections.messages";
     private static ResourceBundle rb;
@@ -42,7 +41,6 @@ class Msg {
         }
         return extraKeys;
     }
-
 
     public enum Key {
         HOST, DATABASE, USERNAME, PASSWORD, ADD, SAVE, DELETE, CANCEL, PORT;

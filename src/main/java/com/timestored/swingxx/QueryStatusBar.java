@@ -8,7 +8,6 @@ import java.awt.Cursor;
 import java.awt.EventQueue;
 import java.util.Date;
 
-
 public class QueryStatusBar
         extends JXStatusBar {
     private static final long serialVersionUID = 1L;
@@ -26,26 +25,24 @@ public class QueryStatusBar
         this.rowCountLabel = new JLabel("Count = 0  ");
         this.timingLabel = new JLabel("Time = 0 ms   ");
 
-        add(this.statusLabel, fillConstraint);
-        add(this.rowCountLabel);
-        add(this.timingLabel);
-        add(this.pbar, fixedWidthConstraint);
+        this.add(this.statusLabel, fillConstraint);
+        this.add(this.rowCountLabel);
+        this.add(this.timingLabel);
+        this.add(this.pbar, fixedWidthConstraint);
     }
 
     public void startQuery(String query) {
         this.startTick = (new Date()).getTime();
-        display("sent query: " + query, true, -1L, -1);
+        this.display("sent query: " + query, true, -1L, -1);
     }
-
 
     public void endQuery(String statusText, int count) {
         long millisTaken = (new Date()).getTime() - this.startTick;
         this.startTick = (new Date()).getTime();
-        display(statusText, false, millisTaken, count);
+        this.display(statusText, false, millisTaken, count);
     }
 
-
-    private void display(final String statusText, final boolean waiting, final long millisTaken, final int count) {
+    private void display(String statusText, boolean waiting, long millisTaken, int count) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 int c = waiting ? 3 : 0;

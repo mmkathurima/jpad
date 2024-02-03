@@ -12,7 +12,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class DirWatch {
     private static final Logger LOG = Logger.getLogger(DirWatch.class.getName());
     private final List<DirWatchListener> listeners = new CopyOnWriteArrayList<DirWatchListener>();
@@ -31,14 +30,13 @@ public class DirWatch {
 
     public void setRoot(File root) throws Exception {
         Preconditions.checkNotNull(root);
-        stop();
+        this.stop();
 
         this.fao = new FileAlterationObserver(root, this.fileFilter);
         this.fao.addListener(this.fileAlterationListener);
         this.monitor = new FileAlterationMonitor(this.refreshTimer, this.fao);
         this.monitor.start();
     }
-
 
     public void stop() {
         if (this.fao != null) {
@@ -55,7 +53,6 @@ public class DirWatch {
             this.monitor = null;
         }
     }
-
 
     public void addListener(DirWatchListener listener) {
         this.listeners.add(listener);
@@ -75,11 +72,11 @@ public class DirWatch {
         }
 
         public void onStart(FileAlterationObserver observer) {
-            DirWatch.LOG.fine("The WindowsFileListener has started on " + observer.getDirectory().getAbsolutePath());
+            LOG.fine("The WindowsFileListener has started on " + observer.getDirectory().getAbsolutePath());
         }
 
         public void onDirectoryCreate(File directory) {
-            n();
+            this.n();
         }
 
         private void n() {
@@ -88,27 +85,27 @@ public class DirWatch {
         }
 
         public void onDirectoryChange(File directory) {
-            n();
+            this.n();
         }
 
         public void onDirectoryDelete(File directory) {
-            n();
+            this.n();
         }
 
         public void onFileCreate(File file) {
-            n();
+            this.n();
         }
 
         public void onFileChange(File file) {
-            n();
+            this.n();
         }
 
         public void onFileDelete(File file) {
-            n();
+            this.n();
         }
 
         public void onStop(FileAlterationObserver observer) {
-            DirWatch.LOG.fine("The WindowsFileListener has stopped on " + observer.getDirectory().getAbsolutePath());
+            LOG.fine("The WindowsFileListener has stopped on " + observer.getDirectory().getAbsolutePath());
         }
     }
 }

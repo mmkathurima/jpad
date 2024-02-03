@@ -35,7 +35,7 @@ class ProductLicense {
     }
 
     boolean addFeature(FeatureLicense fl) {
-        if (getFeatureLicense(fl.getTitle()) != null) {
+        if (this.getFeatureLicense(fl.getTitle()) != null) {
             throw new IllegalArgumentException("Feature of that name already exists");
         }
         return this.featureLicenses.add(fl);
@@ -48,7 +48,6 @@ class ProductLicense {
     boolean isPermitted() {
         return License.validStartEnd(this.startDate, this.endDate);
     }
-
 
     public boolean isExpired() {
         return (this.endDate != null && this.endDate.after(new Date()));
@@ -64,7 +63,7 @@ class ProductLicense {
     }
 
     boolean isPermitted(String feature) {
-        FeatureLicense fl = getFeatureLicense(feature);
+        FeatureLicense fl = this.getFeatureLicense(feature);
         if (fl != null) {
             return fl.isPermitted();
         }
@@ -75,7 +74,6 @@ class ProductLicense {
         return MoreObjects.toStringHelper(this).add("title", this.title).add("startDate", this.startDate).add("endDate", this.endDate).add("featureLicenses", this.featureLicenses).toString();
     }
 
-
     public int hashCode() {
         return Objects.hashCode(this.title, this.startDate, this.endDate, this.featureLicenses);
     }
@@ -85,7 +83,6 @@ class ProductLicense {
             ProductLicense that = (ProductLicense) object;
             return (Objects.equal(this.title, that.title) && Objects.equal(this.startDate, that.startDate) && Objects.equal(this.endDate, that.endDate) && Objects.equal(this.featureLicenses, that.featureLicenses));
         }
-
 
         return false;
     }

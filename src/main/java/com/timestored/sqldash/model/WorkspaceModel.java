@@ -8,7 +8,6 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
-
 public class WorkspaceModel
         implements Widget.Listener {
     private static final Logger LOG = Logger.getLogger(WorkspaceModel.class.getName());
@@ -35,18 +34,16 @@ public class WorkspaceModel
         for (DesktopModelListener l : this.listeners) {
             l.appAdded(this, app);
         }
-        setSelectedApp(app);
+        this.setSelectedApp(app);
     }
-
 
     boolean removeApp(Widget app) {
         Preconditions.checkNotNull(app);
         LOG.info("removeApp: " + app);
         app.removeListener(this);
 
-
         if (app.equals(this.selectedApp)) {
-            setSelectedApp(null);
+            this.setSelectedApp(null);
         }
 
         boolean removed = this.apps.remove(app);
@@ -57,7 +54,7 @@ public class WorkspaceModel
         }
 
         if (this.apps.size() > 0) {
-            setSelectedApp(this.apps.iterator().next());
+            this.setSelectedApp(this.apps.iterator().next());
         }
 
         return removed;
@@ -94,11 +91,9 @@ public class WorkspaceModel
         return this.apps;
     }
 
-
     public String toString() {
         return MoreObjects.toStringHelper(this).add("title", this.title).add("selectedApp", this.selectedApp).add("apps", this.apps).add("hasJavaLayoutXml", (this.javaLayoutXml != null && this.javaLayoutXml.length() > 0)).toString();
     }
-
 
     public void configChanged(Widget app) {
         for (DesktopModelListener l : this.listeners) {
@@ -116,7 +111,6 @@ public class WorkspaceModel
             return (Objects.equal(this.apps, that.apps) && Objects.equal(this.selectedApp, that.selectedApp) && Objects.equal(this.javaLayoutXml, that.javaLayoutXml) && Objects.equal(this.title, that.title));
         }
 
-
         return false;
     }
 
@@ -128,9 +122,8 @@ public class WorkspaceModel
         this.javaLayoutXml = javaLayoutXml;
     }
 
-
     public String getDescription() {
-        StringBuilder sb = new StringBuilder(getTitle());
+        StringBuilder sb = new StringBuilder(this.title);
         sb.append(" containing " + this.apps.size() + " apps: \r\n");
         for (Widget w : this.apps) {
             sb.append(", ").append(w.getTitle());
@@ -140,14 +133,14 @@ public class WorkspaceModel
 
     public Collection<Queryable> getQueryables() {
         List<Queryable> r = new ArrayList<Queryable>();
-        for (Widget w : getApps()) {
+        for (Widget w : this.getApps()) {
             r.addAll(w.getQueryables());
         }
         return r;
     }
 
     public Collection<Queryable> getQueryablesWithArgs(Set<String> keySet) {
-        return QueryTranslator.filterByKeys(getQueryables(), keySet);
+        return QueryTranslator.filterByKeys(this.getQueryables(), keySet);
     }
 }
 

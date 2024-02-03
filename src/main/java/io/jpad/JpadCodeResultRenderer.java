@@ -24,7 +24,6 @@ public class JpadCodeResultRenderer
         this.code = code;
     }
 
-
     public void compiled(RunResult runResult) {
     }
 

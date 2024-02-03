@@ -17,7 +17,6 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class FinanceDataDemo {
     private static final int PAUSE = 10000;
     private static final Logger LOG = Logger.getLogger(FinanceDataDemo.class.getName());
@@ -27,10 +26,9 @@ public class FinanceDataDemo {
     private final DateFormat dateFormat = new SimpleDateFormat("HH:mm:ss");
     private final ServerConfig serverConfig;
     private DemoListener listener;
-    private Connection conn = null;
+    private Connection conn;
     private Thread t;
     private List<BidAsk> latestBidAsk = Collections.emptyList();
-
 
     FinanceDataDemo(DBConfig config, ServerConfig serverConfig) throws ClassNotFoundException {
         this.demoConfig = Preconditions.checkNotNull(config);
@@ -38,32 +36,27 @@ public class FinanceDataDemo {
         Class.forName(serverConfig.getJdbcType().getDriver());
     }
 
-
     public synchronized void start() throws SQLException {
         if (this.t != null) {
             throw new IllegalStateException("already started");
         }
-        if (isStopped()) {
+        if (this.isStopped()) {
             throw new IllegalStateException("already stopped");
         }
 
-
-        send(this.demoConfig.getInitSql());
-
+        this.send(this.demoConfig.getInitSql());
 
         Runnable r = new Runnable() {
             public void run() {
-                Sets.SetView<String> stocks = Sets.union(FinanceDataDemo.myStocks, StockFetcher.packedTickers);
+                Sets.SetView<String> stocks = Sets.union(myStocks, StockFetcher.packedTickers);
                 FinanceDataDemo.this.runn(stocks);
             }
         };
         this.t = new Thread(r);
         this.t.start();
 
-
-        LOG.info(log("Background data fetcher running..."));
+        LOG.info(this.log("Background data fetcher running..."));
     }
-
 
     private synchronized String log(String s) {
         if (this.listener != null) {
@@ -71,7 +64,6 @@ public class FinanceDataDemo {
         }
         return s;
     }
-
 
     private void checkInterrupt() throws InterruptedException {
         if (Thread.interrupted()) {
@@ -83,7 +75,6 @@ public class FinanceDataDemo {
         this.listener = listener;
     }
 
-
     private void runn(Collection<String> stocks) {
         List<String> sl = Lists.newArrayList(stocks);
         Collections.sort(sl);
@@ -92,66 +83,60 @@ public class FinanceDataDemo {
 
         this.latestBidAsk = Lists.newArrayList();
 
-
         try {
             try {
-                log("Fetching stock static data for: " + Joiner.on(',').join(sl));
+                this.log("Fetching stock static data for: " + Joiner.on(',').join(sl));
                 try {
                     rs = StockFetcher.getStock(Lists.newArrayList(sl));
                 } catch (IOException ioe) {
                 }
 
-
                 if (rs.isEmpty()) {
                     rs = StockFetcher.getHardcodedStocks();
                 }
-                log("Sending static data to database server.");
-                send(this.demoConfig.toInserts(rs));
-
+                this.log("Sending static data to database server.");
+                this.send(this.demoConfig.toInserts(rs));
 
                 for (Stock s : rs) {
                     Thread.sleep(50L);
                     String sym = s.getSymbol();
-                    log("Fetching and storing OHLC data for " + sym);
+                    this.log("Fetching and storing OHLC data for " + sym);
                     List<OHLCDataPoint> ohlcPrices = StockFetcher.getOHLC(sym);
-                    sendEach(sym, ohlcPrices);
-                    sendFirstFakeLivePrice(sym, ohlcPrices);
+                    this.sendEach(sym, ohlcPrices);
+                    this.sendFirstFakeLivePrice(sym, ohlcPrices);
                     ohlcSymsFetched.add(sym);
                 }
             } catch (SQLException e1) {
-                LOG.log(Level.SEVERE, log("sql error get/inserting live data"), e1);
+                LOG.log(Level.SEVERE, this.log("sql error get/inserting live data"), e1);
             } catch (IOException e) {
-                LOG.log(Level.SEVERE, log("IO error get/inserting live data"), e);
+                LOG.log(Level.SEVERE, this.log("IO error get/inserting live data"), e);
             }
-
 
             try {
                 if (ohlcSymsFetched.size() < 3) {
-                    log("Sending fake OHLC data to database server");
+                    this.log("Sending fake OHLC data to database server");
                     Map<String, List<OHLCDataPoint>> hardcodedOHLC = StockFetcher.getHardcodedOHLC();
                     hardcodedOHLC.keySet().removeAll(ohlcSymsFetched);
 
                     for (String sym : hardcodedOHLC.keySet()) {
                         List<OHLCDataPoint> ohlcData = hardcodedOHLC.get(sym);
-                        sendEach(sym, ohlcData);
-                        sendFirstFakeLivePrice(sym, ohlcData);
+                        this.sendEach(sym, ohlcData);
+                        this.sendFirstFakeLivePrice(sym, ohlcData);
                     }
                 }
             } catch (SQLException e1) {
-                LOG.log(Level.SEVERE, log("sql error get/inserting live data"), e1);
+                LOG.log(Level.SEVERE, this.log("sql error get/inserting live data"), e1);
             }
 
-
-            log("Sending fake live data");
+            this.log("Sending fake live data");
             while (true) {
-                fakeSendLivePricesUsingRandomWalk();
+                this.fakeSendLivePricesUsingRandomWalk();
                 Thread.sleep(10000L);
             }
         } catch (InterruptedException e) {
-            log("Shutting down.");
+            this.log("Shutting down.");
         }
     }
-
 
     private void sendFirstFakeLivePrice(String sym, List<OHLCDataPoint> ohlcPrices) throws SQLException {
         List<OHLCDataPoint> a = Lists.newArrayList(ohlcPrices);
@@ -162,16 +147,14 @@ public class FinanceDataDemo {
         });
         double val = a.get(a.size() - 1).getClose();
         BidAsk ba = new BidAsk(sym, new Date(), val, val);
-        send(this.demoConfig.toLiveInserts(Lists.newArrayList(ba)));
+        this.send(this.demoConfig.toLiveInserts(Lists.newArrayList(ba)));
         this.latestBidAsk.add(ba);
     }
 
-
     private void fakeSendLivePricesUsingRandomWalk() throws InterruptedException {
         try {
-            log("Fetching live data...");
-            checkInterrupt();
-
+            this.log("Fetching live data...");
+            this.checkInterrupt();
 
             for (int i = 0; i < this.latestBidAsk.size(); i++) {
                 BidAsk ba = this.latestBidAsk.get(i);
@@ -181,10 +164,10 @@ public class FinanceDataDemo {
                 this.latestBidAsk.set(i, newBidAsk);
             }
 
-            log("Sending " + this.latestBidAsk.size() + " records to database server.");
-            send(this.demoConfig.toLiveInserts(this.latestBidAsk));
+            this.log("Sending " + this.latestBidAsk.size() + " records to database server.");
+            this.send(this.demoConfig.toLiveInserts(this.latestBidAsk));
         } catch (SQLException e) {
-            LOG.log(Level.WARNING, log("sql error inserting live prices"), e);
+            LOG.log(Level.WARNING, this.log("sql error inserting live prices"), e);
         }
     }
 
@@ -199,31 +182,29 @@ public class FinanceDataDemo {
             } catch (SQLException e) {
             }
         }
-        LOG.info(log("Background data fetcher stopping..."));
+        LOG.info(this.log("Background data fetcher stopping..."));
     }
 
-
     private void sendEach(String sym, List<OHLCDataPoint> dataPoints) throws SQLException, InterruptedException {
-        int BATCH_SIZE = 20;
+        final int BATCH_SIZE = 20;
 
         List<OHLCDataPoint> t = new ArrayList<OHLCDataPoint>(20);
         for (int i = 1; i <= dataPoints.size(); i++) {
             t.add(dataPoints.get(i - 1));
             if (i % 20 == 0) {
-                send(this.demoConfig.toInserts(sym, t));
+                this.send(this.demoConfig.toInserts(sym, t));
                 t.clear();
-                checkInterrupt();
+                this.checkInterrupt();
             }
         }
-        send(this.demoConfig.toInserts(sym, t));
+        this.send(this.demoConfig.toInserts(sym, t));
     }
 
     private void send(List<String> sqlQueries) throws SQLException {
         for (String sql : sqlQueries) {
-            send(sql);
+            this.send(sql);
         }
     }
-
 
     private void send(String sql) throws SQLException {
         Statement st = null;

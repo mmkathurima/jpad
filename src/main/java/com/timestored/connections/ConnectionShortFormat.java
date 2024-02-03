@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 
 import java.util.*;
 
-
 public class ConnectionShortFormat {
     public static List<ParseResult> parse(String serverEntries, JdbcTypes defaultServerType, JdbcTypes[] permittedJdbcTypes) {
         Preconditions.checkNotNull(defaultServerType);
@@ -44,7 +43,6 @@ public class ConnectionShortFormat {
                 String host = p[0];
                 int port = Integer.parseInt(p[1]);
 
-
                 int lastSlash = host.lastIndexOf("/");
                 if (lastSlash > -1) {
                     name = host + ":" + port;
@@ -54,7 +52,6 @@ public class ConnectionShortFormat {
                 String username = "";
                 String password = "";
                 JdbcTypes jtype = defaultServerType;
-
 
                 int hashPos = host.indexOf("#");
                 if (hashPos > -1) {
@@ -95,7 +92,6 @@ public class ConnectionShortFormat {
             ServerConfig sc = serverConfs.get(i);
             String hp = sc.getHost() + ":" + sc.getPort();
 
-
             if (!sc.getName().equals(hp)) {
                 sb.append(sc.getName()).append("@");
             }
@@ -104,7 +100,6 @@ public class ConnectionShortFormat {
             }
 
             sb.append(hp);
-
 
             if (!sc.getUsername().isEmpty() || !sc.getPassword().isEmpty()) {
                 sb.append(":").append(sc.getUsername());

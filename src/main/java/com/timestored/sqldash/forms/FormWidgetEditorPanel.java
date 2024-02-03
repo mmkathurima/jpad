@@ -16,7 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
 
-
 class FormWidgetEditorPanel
         extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -28,14 +27,13 @@ class FormWidgetEditorPanel
     private final Action moveWidgetDownAction;
     private final JList l;
     private final DesktopModel desktopModel;
-    private boolean ignoreSelectEvents = false;
+    private boolean ignoreSelectEvents;
 
-    public FormWidgetEditorPanel(final FormWidget formWidget, DesktopModel desktopModel) {
+    public FormWidgetEditorPanel(FormWidget formWidget, DesktopModel desktopModel) {
         this.formWidget = formWidget;
         this.desktopModel = desktopModel;
 
-        setLayout(new BorderLayout(20, 4));
-
+        this.setLayout(new BorderLayout(20, 4));
 
         this.deleteAction = new AbstractAction("Delete Form Component", Theme.CIcon.DELETE.get()) {
             public void actionPerformed(ActionEvent e) {
@@ -55,18 +53,16 @@ class FormWidgetEditorPanel
             }
         };
 
-
         JPanel listEditorPanel = new JPanel(new BorderLayout());
         listEditorPanel.setBorder(BorderFactory.createTitledBorder("Form Components"));
         Dimension d = new Dimension(250, 0);
         listEditorPanel.setPreferredSize(d);
         listEditorPanel.setMinimumSize(d);
 
-
         JPanel ep = new JPanel(new BorderLayout());
         Theme.InputLabeller il = Theme.getInputLabeller();
 
-        final JTextField titleTextField = new JTextField(20);
+        JTextField titleTextField = new JTextField(20);
         titleTextField.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 formWidget.setTitle(titleTextField.getText());
@@ -75,8 +71,7 @@ class FormWidgetEditorPanel
 
         ep.add(il.get("Title", titleTextField, "titleField"), "North");
         ep.add(il.get("Layout", getLayoutComboBox(formWidget), "layoutCB"), "Center");
-        ep.add(il.get("Add Component", createAddToolBar(), "addComToolbar"), "South");
-
+        ep.add(il.get("Add Component", this.createAddToolBar(), "addComToolbar"), "South");
 
         JToolBar rightToolbar = new JToolBar(1);
         rightToolbar.add(this.moveWidgetUpAction);
@@ -89,15 +84,13 @@ class FormWidgetEditorPanel
         listEditorPanel.add(new JScrollPane(this.l), "Center");
         listEditorPanel.add(rightToolbar, "East");
 
-
         Color fgColor = new Color(242, 242, 242);
         Color bgColor = new Color(133, 133, 170);
-        add(Theme.getSubHeader("Form Editor", fgColor, bgColor), "North");
-        add(listEditorPanel, "West");
+        this.add(Theme.getSubHeader("Form Editor", fgColor, bgColor), "North");
+        this.add(listEditorPanel, "West");
         this.subEditorPanel = new JPanel(new GridLayout(1, 1));
         this.subEditorPanel.setBorder(BorderFactory.createTitledBorder("Component Editor"));
-        add(this.subEditorPanel, "Center");
-
+        this.add(this.subEditorPanel, "Center");
 
         this.l.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
@@ -112,11 +105,11 @@ class FormWidgetEditorPanel
                 FormWidgetEditorPanel.this.refresh(true);
             }
         });
-        refresh(true);
+        this.refresh(true);
     }
 
-    private static JComboBox getLayoutComboBox(final FormWidget formWidget) {
-        final JComboBox<String> layoutCB = new JComboBox<String>(new String[]{"Horizontal", "Vertical"});
+    private static JComboBox getLayoutComboBox(FormWidget formWidget) {
+        JComboBox<String> layoutCB = new JComboBox<String>(new String[]{"Horizontal", "Vertical"});
         layoutCB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (layoutCB.getSelectedItem().equals("Horizontal")) {
@@ -129,18 +122,17 @@ class FormWidgetEditorPanel
         return layoutCB;
     }
 
-
     private JToolBar createAddToolBar() {
         JToolBar tb = new JToolBar(0);
-        tb.add(mkListAction("Add ComboBox", ListSelectionWidget.SELECTOR_TYPE.COMBOBOX));
-        tb.add(mkListAction("Add Radio Buttons", ListSelectionWidget.SELECTOR_TYPE.RADIOBUTTON));
-        tb.add(mkListAction("Add Checkboxes", ListSelectionWidget.SELECTOR_TYPE.CHECKBOX));
-        tb.add(mkListAction("Add List", ListSelectionWidget.SELECTOR_TYPE.LIST));
+        tb.add(this.mkListAction("Add ComboBox", ListSelectionWidget.SELECTOR_TYPE.COMBOBOX));
+        tb.add(this.mkListAction("Add Radio Buttons", ListSelectionWidget.SELECTOR_TYPE.RADIOBUTTON));
+        tb.add(this.mkListAction("Add Checkboxes", ListSelectionWidget.SELECTOR_TYPE.CHECKBOX));
+        tb.add(this.mkListAction("Add List", ListSelectionWidget.SELECTOR_TYPE.LIST));
         tb.setFloatable(false);
         return tb;
     }
 
-    private Action mkListAction(String txt, final ListSelectionWidget.SELECTOR_TYPE selType) {
+    private Action mkListAction(String txt, ListSelectionWidget.SELECTOR_TYPE selType) {
         return new AbstractAction(txt, selType.getImageIcon()) {
             private static final long serialVersionUID = 1L;
 

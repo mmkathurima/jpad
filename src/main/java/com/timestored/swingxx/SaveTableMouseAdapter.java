@@ -16,7 +16,6 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class SaveTableMouseAdapter
         extends MouseAdapter {
     private static final Logger LOG = Logger.getLogger(SaveTableMouseAdapter.class.getName());
@@ -30,12 +29,10 @@ public class SaveTableMouseAdapter
         this(table, csvIcon, null);
     }
 
-
-    public SaveTableMouseAdapter(final JTable table, ImageIcon csvIcon, StringValue stringValue) {
+    public SaveTableMouseAdapter(JTable table, ImageIcon csvIcon, StringValue stringValue) {
         this.table = table;
         this.stringValue = stringValue;
         this.csvIcon = csvIcon;
-
 
         String property = (stringValue != null) ? stringValue.toString() : null;
         table.setTransferHandler(new TransferHandler(property) {
@@ -44,14 +41,13 @@ public class SaveTableMouseAdapter
                     boolean areaSelected = (table.getSelectedRow() != -1);
                     StringSelection selection = new StringSelection(SaveTableMouseAdapter.this.getTable(areaSelected, false, "\t"));
                     clip.setContents(selection, selection);
-                    exportDone(comp, selection, action);
+                    this.exportDone(comp, selection, action);
                 } else {
                     super.exportToClipboard(comp, clip, action);
                 }
             }
         });
     }
-
 
     public void mouseReleased(MouseEvent e) {
         if (SwingUtilities.isRightMouseButton(e)) {
@@ -78,7 +74,6 @@ public class SaveTableMouseAdapter
         int cEnd = this.table.getColumnCount();
         int rEnd = this.table.getRowCount();
 
-
         if (selectedAreaOnly) {
             c = this.table.getSelectedColumn();
             cEnd = c + this.table.getSelectedColumnCount();
@@ -91,7 +86,6 @@ public class SaveTableMouseAdapter
 
         StringBuffer sb = new StringBuffer();
 
-
         if (includeHeaders) {
             for (int ci = c; ci < cEnd; ci++) {
                 sb.append(this.table.getColumnName(ci));
@@ -102,7 +96,6 @@ public class SaveTableMouseAdapter
             sb.append("\r\n");
         }
 
-
         for (int ri = r; ri < rEnd; ri++) {
             for (int ci = c; ci < cEnd; ci++) {
 
@@ -112,7 +105,6 @@ public class SaveTableMouseAdapter
                 String s = "";
                 if (o != null) {
                     s = (this.stringValue == null) ? o.toString() : this.stringValue.getString(o);
-
 
                     if (o instanceof Number && !s.trim().isEmpty()) {
                         s = "" + o;
@@ -145,14 +137,14 @@ public class SaveTableMouseAdapter
         public void actionPerformed(ActionEvent arg0) {
             try {
                 File f = File.createTempFile("document", ".csv");
-                SaveTableMouseAdapter.LOG.info("writing out to: " + f);
+                LOG.info("writing out to: " + f);
                 FileWriter out = new FileWriter(f);
                 out.write(SaveTableMouseAdapter.this.getTable(this.selectedAreaOnly, this.includeHeaders, ","));
                 out.close();
                 Desktop.getDesktop().open(f);
             } catch (IOException e) {
-                String msg = "Error saving file: ";
-                SaveTableMouseAdapter.LOG.log(Level.INFO, msg, e);
+                final String msg = "Error saving file: ";
+                LOG.log(Level.INFO, msg, e);
                 JOptionPane.showMessageDialog(null, msg, "Error Saving", 0);
             }
         }
@@ -169,7 +161,6 @@ public class SaveTableMouseAdapter
             this.selectedAreaOnly = selectedAreaOnly;
             this.includeHeaders = includeHeaders;
         }
-
 
         public void actionPerformed(ActionEvent arg0) {
             StringSelection selection = new StringSelection(SaveTableMouseAdapter.this.getTable(this.selectedAreaOnly, this.includeHeaders, "\t"));

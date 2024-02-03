@@ -6,14 +6,12 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.Collection;
 
-
 public class DemoFactory {
     private static final Collection<DBConfig> DB_CONFIGS = Arrays.asList(KdbConfig.INSTANCE, H2DBConfig.INSTANCE);
 
     public static Collection<DBConfig> getDBConfigs() {
         return DB_CONFIGS;
     }
-
 
     public static FinanceDataDemo getFinanceDataDemo(ServerConfig serverConfig) throws IOException {
         try {
@@ -22,7 +20,6 @@ public class DemoFactory {
             switch (serverConfig.getJdbcType()) {
                 case KDB:
                     dbConfig = KdbConfig.INSTANCE;
-
 
                     return new FinanceDataDemo(dbConfig, serverConfig);
                 case H2:

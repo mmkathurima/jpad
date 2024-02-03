@@ -11,7 +11,6 @@ import javax.swing.JPanel;
 import java.awt.GridLayout;
 import java.util.List;
 
-
 class ColumnConfigPanel
         extends JPanel
         implements Widget.Listener {
@@ -24,20 +23,19 @@ class ColumnConfigPanel
         this.dataModel = dataModel;
         dataModel.addListener(this);
 
-        setBorder(BorderFactory.createTitledBorder("Column Configuration"));
-        setLayout(new BoxLayout(this, 1));
+        this.setBorder(BorderFactory.createTitledBorder("Column Configuration"));
+        this.setLayout(new BoxLayout(this, 1));
 
-        add(new JLabel("Domain Names"));
+        this.add(new JLabel("Domain Names"));
         this.domPanel = new JPanel();
         this.domPanel.setLayout(new BoxLayout(this.domPanel, 1));
-        add(this.domPanel);
+        this.add(this.domPanel);
 
-        add(new JLabel("Col Names"));
+        this.add(new JLabel("Col Names"));
         this.colPanel = new JPanel();
         this.colPanel.setLayout(new BoxLayout(this.colPanel, 1));
-        add(this.colPanel);
+        this.add(this.colPanel);
     }
-
 
     public void display(ChartViewConfiguration chartViewConfig) {
         List<String> configCols = chartViewConfig.getAllColumnNames();
@@ -54,7 +52,7 @@ class ColumnConfigPanel
     }
 
     public void configChanged(Widget w) {
-        display(this.dataModel.getChartViewConfig());
+        this.display(this.dataModel.getChartViewConfig());
     }
 }
 

@@ -10,7 +10,6 @@ import java.awt.event.MouseEvent;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 class StandardTheme
         implements Theme {
     private static final Logger LOG = Logger.getLogger(Theme.class.getName());
@@ -36,7 +35,6 @@ class StandardTheme
             c = c.darker();
         }
 
-
         Border b = BorderFactory.createLineBorder(c, 1);
         if (growl.getTitle() != null) {
             b = BorderFactory.createTitledBorder(b, growl.getTitle());
@@ -48,54 +46,46 @@ class StandardTheme
         return 50L;
     }
 
-
     public int getSpaceBetweenItems() {
         return 5;
     }
-
 
     public int getMoveSpeed() {
         return 10;
     }
 
-
     public float getFadeRate() {
         return 0.01F;
     }
-
 
     public int getTopSpacer() {
         return 45;
     }
 
-
     public int getFadeRangeMinimum() {
         return 200;
     }
-
 
     public int getLeftRuler(JFrame parentFrame) {
         return Math.max(0, parentFrame.getX() + parentFrame.getWidth() - 211);
     }
 
-    public JWindow getWindow(Growl message, final JFrame parentFrame) {
+    public JWindow getWindow(Growl message, JFrame parentFrame) {
         JWindow frame = new JWindow();
         new BoxLayout(frame, 3);
         frame.setAlwaysOnTop(parentFrame.isFocused());
         frame.setMaximumSize(new Dimension(200, 2147483647));
 
-        final JPanel panel = new JPanel();
+        JPanel panel = new JPanel();
         new BoxLayout(panel, 3);
         JLabel label = new JLabel("<html><body style='width:124px'>" + message.getMessage() + "</body></html>");
-
 
         label.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));
         label.setMaximumSize(new Dimension(199, 2147483647));
 
-        final Border border = getBorder(message, false);
-        final Border hoverBorder = getBorder(message, true);
+        Border border = getBorder(message, false);
+        Border hoverBorder = getBorder(message, true);
         panel.setBorder(border);
-
 
         frame.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
@@ -123,7 +113,6 @@ class StandardTheme
         return frame;
     }
 
-
     public enum Icon {
         INFO("dialog-information.png"),
         WARNING("dialog-warning.png"),
@@ -143,7 +132,7 @@ class StandardTheme
                 ii16 = new ImageIcon(i.getScaledInstance(16, 16, 16));
                 ii32 = new ImageIcon(i.getScaledInstance(32, 32, 16));
             } catch (Exception e) {
-                StandardTheme.LOG.log(Level.WARNING, "missing icon image", e);
+                LOG.log(Level.WARNING, "missing icon image", e);
             }
             this.imageIcon = ii;
             this.imageIcon16 = ii16;

@@ -6,7 +6,6 @@ import com.timestored.theme.IconHelper;
 import javax.swing.ImageIcon;
 import java.awt.image.BufferedImage;
 
-
 public enum DBIcons
         implements Icon {
     TEXTFIELD("textfield.png"),

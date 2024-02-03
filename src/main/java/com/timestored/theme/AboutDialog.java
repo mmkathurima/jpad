@@ -6,15 +6,13 @@ import javax.swing.*;
 import java.awt.Container;
 import java.awt.Dimension;
 
-
 public class AboutDialog
         extends JDialog {
     private static final long serialVersionUID = 1L;
 
     public AboutDialog(JFrame parentFrame, String title, Icon icon, String htmlTitle, String version, String licenseText) {
         super(parentFrame, title);
-        setIconImage(icon.get().getImage());
-
+        this.setIconImage(icon.get().getImage());
 
         JPanel logoPanel = new JPanel();
         logoPanel.add(new JLabel(icon.get()));
@@ -23,14 +21,14 @@ public class AboutDialog
 
         JLabel label = new JLabel("<html><h4>Version: " + version + "</h4></html>");
         label.setHorizontalAlignment(0);
-        String txt = "Homepage: TimeStored.com";
+        final String txt = "Homepage: TimeStored.com";
 
         JPanel timestoredLinkPanel = Theme.getVerticalBoxPanel();
         timestoredLinkPanel.add(label);
         timestoredLinkPanel.add(InfoLink.getLabel(txt, txt, "http://www.timestored.com", true));
         timestoredLinkPanel.setAlignmentX(0.5F);
 
-        Container cp = getContentPane();
+        Container cp = this.getContentPane();
 
         cp.setLayout(new BoxLayout(cp, 3));
         cp.add(logoPanel);
@@ -47,8 +45,8 @@ public class AboutDialog
             sp.setHorizontalScrollBarPolicy(31);
             cp.add(sp);
         }
-        pack();
-        setLocationRelativeTo(parentFrame);
+        this.pack();
+        this.setLocationRelativeTo(parentFrame);
     }
 }
 

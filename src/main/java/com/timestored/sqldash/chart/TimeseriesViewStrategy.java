@@ -21,7 +21,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-
 public enum TimeseriesViewStrategy
         implements ViewStrategy {
     INSTANCE;
@@ -32,7 +31,6 @@ public enum TimeseriesViewStrategy
 
     static {
         DEC_FORMAT = new DecimalFormat("#,###.##");
-
 
         FORMATA = new String[]{"The first date/time column found will be used for the x-axis.", "Each numerical column represents one time series line on the chart."};
     }
@@ -47,20 +45,20 @@ public enum TimeseriesViewStrategy
         return dateFormat;
     }
 
-    public UpdateableView getView(final ChartTheme theme) {
+    public UpdateableView getView(ChartTheme theme) {
         return new HardRefreshUpdateableView(new HardRefreshUpdateableView.ViewGetter() {
             public Component getView(ResultSet rs, ChartResultSet colResultSet) throws ChartFormatException {
                 if (colResultSet == null) throw new ChartFormatException("Could not create chart result set.");
                 TimeSeriesCollection dataset = new TimeSeriesCollection();
                 ChartResultSet.TimeCol timeCol = colResultSet.getTimeCol();
                 if (timeCol == null) throw new ChartFormatException("No Time Column Found.");
-                add(colResultSet, dataset);
+                this.add(colResultSet, dataset);
                 JFreeChart chart = ChartFactory.createTimeSeriesChart("", "Time", "Value", dataset, true, true, false);
                 ChartPanel cp = new ChartPanel(theme.apply(chart), false, true, true, false, true);
                 XYItemRenderer renderer = cp.getChart().getXYPlot().getRenderer();
-                SimpleDateFormat dateFormat = TimeseriesViewStrategy.getDateFormat(timeCol.getType());
+                SimpleDateFormat dateFormat = getDateFormat(timeCol.getType());
                 if (dateFormat != null) {
-                    StandardXYToolTipGenerator ttg = new StandardXYToolTipGenerator("<html><b>{0}:</b><br>{1}<br>{2}</html>", dateFormat, TimeseriesViewStrategy.DEC_FORMAT);
+                    StandardXYToolTipGenerator ttg = new StandardXYToolTipGenerator("<html><b>{0}:</b><br>{1}<br>{2}</html>", dateFormat, DEC_FORMAT);
                     renderer.setDefaultToolTipGenerator(ttg);
                 }
                 return cp;
@@ -99,12 +97,12 @@ public enum TimeseriesViewStrategy
     }
 
     public String toString() {
-        return TimeseriesViewStrategy.class.getSimpleName() + "[" + getDescription() + "]";
+        return TimeseriesViewStrategy.class.getSimpleName() + "[" + this.getDescription() + "]";
     }
 
     public List<ExampleView> getExamples() {
-        String description = "A sine/cosine wave over a period of days.";
-        String name = "Day Sines";
+        final String description = "A sine/cosine wave over a period of days.";
+        final String name = "Day Sines";
         String[] colNames = {"dt", "cosineWave", "sineWave"};
         double[] a = KdbFunctions.mul(KdbFunctions.til(21), 0.6D);
         Date[] dt = ExampleTestCases.getDays(2013, 1, 1, 21);
@@ -117,7 +115,6 @@ public enum TimeseriesViewStrategy
     public String getFormatExplaination() {
         return Joiner.on("\r\n").join(FORMATA);
     }
-
 
     public Component getControlPanel() {
         return null;

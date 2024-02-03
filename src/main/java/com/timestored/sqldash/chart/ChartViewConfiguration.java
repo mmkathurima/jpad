@@ -3,7 +3,6 @@ package com.timestored.sqldash.chart;
 import java.sql.ResultSet;
 import java.util.*;
 
-
 public class ChartViewConfiguration {
     private static final ColumnConfiguration DEFAULT_COLUMN_CONFIG = new ColumnConfiguration(Shape.LINE, Axis.LEFT);
     private final Set<String> domainColumnNames = new HashSet<String>();

@@ -13,7 +13,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.logging.Logger;
 
-
 public class Document {
     private static final Logger LOG = Logger.getLogger(Document.class.getName());
     private static final AtomicInteger counter = new AtomicInteger(0);
@@ -21,12 +20,12 @@ public class Document {
     private final List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
 
     private String title;
-    private File file = null;
+    private File file;
     private String savedContent = "";
     private String content = "";
-    private int selectionStart = 0;
-    private int selectionEnd = 0;
-    private int caretPosition = 0;
+    private int selectionStart;
+    private int selectionEnd;
+    private int caretPosition;
 
     public Document() {
         int v = counter.incrementAndGet();
@@ -48,11 +47,9 @@ public class Document {
         return !this.savedContent.equals(this.content);
     }
 
-
     public boolean isReadOnly() {
         return (this.file != null && !this.file.canWrite());
     }
-
 
     public String getFilePath() {
         return (this.file == null) ? null : this.file.getAbsolutePath();
@@ -67,9 +64,8 @@ public class Document {
     }
 
     public String toString() {
-        return MoreObjects.toStringHelper(this).add("title", this.title).add("file", this.file).add("selectionStart", this.selectionStart).add("selectionEnd", this.selectionEnd).add("unsavedChanges", hasUnsavedChanges()).toString();
+        return MoreObjects.toStringHelper(this).add("title", this.title).add("file", this.file).add("selectionStart", this.selectionStart).add("selectionEnd", this.selectionEnd).add("unsavedChanges", this.hasUnsavedChanges()).toString();
     }
-
 
     public boolean isQKfileSuffix() {
         if (this.file != null) {
@@ -92,7 +88,7 @@ public class Document {
         if (this.selectionStart > l) {
             this.selectionStart = l;
         }
-        notifyListenersContentModified();
+        this.notifyListenersContentModified();
     }
 
     public int getSelectionEnd() {
@@ -112,7 +108,7 @@ public class Document {
     }
 
     public String getCurrentLine() {
-        char LS = '\n';
+        final char LS = '\n';
 
         int i = Math.max(this.caretPosition - 1, 0);
         while (i > 0 && i < this.content.length() && this.content.charAt(i) != '\n') {
@@ -128,7 +124,7 @@ public class Document {
     }
 
     public String getTextBeforeCarat() {
-        char LS = '\n';
+        final char LS = '\n';
         int i = Math.max(this.caretPosition - 1, 0);
 
         while (i > 0 && i < this.content.length() && this.content.charAt(i) != '\n' && this.content.charAt(i) != ' ') {
@@ -141,7 +137,7 @@ public class Document {
     public void saveAs(File file) throws IOException {
         try {
             BufferedWriter bw = new BufferedWriter(new FileWriter(file));
-            if (isWindows()) {
+            if (this.isWindows()) {
                 bw.write(this.content.replace("\n", "\r\n"));
             } else {
                 bw.write(this.content);
@@ -166,7 +162,7 @@ public class Document {
         try {
             OutputStreamWriter osw = new OutputStreamWriter(new FileOutputStream(this.file), StandardCharsets.UTF_8);
             BufferedWriter bw = new BufferedWriter(osw);
-            if (isWindows()) {
+            if (this.isWindows()) {
                 bw.write(this.content.replace("\n", "\r\n"));
             } else {
                 bw.write(this.content);
@@ -182,7 +178,6 @@ public class Document {
         }
     }
 
-
     public void setSelection(int selectionStart, int selectionEnd, int caretPosition) {
         Preconditions.checkArgument((selectionStart >= 0 && selectionEnd >= selectionStart));
 
@@ -192,8 +187,8 @@ public class Document {
         this.selectionEnd = selectionEnd;
         this.caretPosition = caretPosition;
         LOG.finest("(selectionStart - selectionEnd) -> " + selectionStart + " - " + selectionEnd);
-        LOG.finest("setSelection -> getSelectedText() = " + getSelectedText());
-        notifyListenersCaratMoved();
+        LOG.finest("setSelection -> getSelectedText() = " + this.getSelectedText());
+        this.notifyListenersCaratMoved();
     }
 
     public int getCaratPosition() {
@@ -204,7 +199,7 @@ public class Document {
         Preconditions.checkArgument((caratPosition <= this.content.length()));
         this.caretPosition = caratPosition;
         LOG.finest("caratPosition = " + caratPosition);
-        notifyListenersCaratMoved();
+        this.notifyListenersCaratMoved();
     }
 
     public void insertSelectedText(String text) {
@@ -214,18 +209,15 @@ public class Document {
             this.caretPosition = this.content.length();
         }
         int pos = this.selectionStart + text.length() + 1;
-        notifyListenersContentModified();
-        setCaratPosition(pos);
+        this.notifyListenersContentModified();
+        this.setCaratPosition(pos);
     }
-
 
     public void insertText(String text) {
         this.content = this.content.substring(0, this.selectionEnd) + text + this.content.substring(this.selectionEnd);
 
-
-        notifyListenersContentModified();
+        this.notifyListenersContentModified();
     }
-
 
     public void gotoNextLine() {
         int i = this.caretPosition;
@@ -238,10 +230,9 @@ public class Document {
             i++;
         }
         if (found) {
-            setCaratPosition(i + 1);
+            this.setCaratPosition(i + 1);
         }
     }
-
 
     public void addListener(Listener listener) {
         this.listeners.add(listener);
@@ -265,11 +256,11 @@ public class Document {
 
     public Icon getIcon() {
         Theme.CIcon cIcon = Theme.CIcon.PAGE;
-        if (isReadOnly()) {
+        if (this.isReadOnly()) {
             cIcon = Theme.CIcon.PAGE_WHITE_ZIP;
-        } else if (hasUnsavedChanges()) {
+        } else if (this.hasUnsavedChanges()) {
             cIcon = Theme.CIcon.PAGE_RED;
-        } else if (isQKfileSuffix()) {
+        } else if (this.isQKfileSuffix()) {
             cIcon = Theme.CIcon.PAGE_CODE;
         }
         return cIcon;

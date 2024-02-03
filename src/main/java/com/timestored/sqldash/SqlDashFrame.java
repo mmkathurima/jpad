@@ -30,7 +30,6 @@ import java.io.File;
 import java.util.List;
 import java.util.logging.Logger;
 
-
 public class SqlDashFrame
         extends JFrame {
     public static final String APP_TITLE = "sqlDashboards";
@@ -53,7 +52,6 @@ public class SqlDashFrame
         this.appActions = new AppActions(appModel, this);
         this.dockingAppPanel = new DockingAppPanel("DbVisFrame", this, appModel, this.appActions);
 
-
         Mac.configureIfMac(new SqlDashFrameAppListener(), Theme.CIcon.SQLDASH_LOGO);
 
         this.appActions.addListener(new AppActions.Listener() {
@@ -75,20 +73,19 @@ public class SqlDashFrame
             }
         });
 
-        setLayout(new BorderLayout());
-        setIconImage(Theme.CIcon.SQLDASH_LOGO.get().getImage());
-        setDefaultCloseOperation(3);
-
+        this.setLayout(new BorderLayout());
+        this.setIconImage(Theme.CIcon.SQLDASH_LOGO.get().getImage());
+        this.setDefaultCloseOperation(3);
 
         this.toolbar = getToolbar(this.appActions, appModel);
-        add(this.toolbar, "North");
-        setJMenuBar(getMenuBar(this.appActions));
+        this.add(this.toolbar, "North");
+        this.setJMenuBar(this.getMenuBar(this.appActions));
 
-        add(this.dockingAppPanel, "Center");
+        this.add(this.dockingAppPanel, "Center");
 
-        setSize(new Dimension(640, 480));
-        setLocationRelativeTo(null);
-        updateTitle();
+        this.setSize(new Dimension(640, 480));
+        this.setLocationRelativeTo(null);
+        this.updateTitle();
     }
 
     private static JToolBar getToolbar(AppActions aa, AppModel appModel) {
@@ -103,7 +100,6 @@ public class SqlDashFrame
         t.addSeparator();
         t.addSeparator(SEP_DIST);
         t.add(getBut(aa.getAddFormAction(), "tool-getAddFormAction", true));
-
 
         t.addSeparator();
         t.addSeparator(SEP_DIST);
@@ -147,11 +143,11 @@ public class SqlDashFrame
     private void updateTitle() {
         File f = this.appActions.getCurrentFile();
         if (this.appModel.getTitle().length() > 0) {
-            setTitle(this.appModel.getTitle() + " - " + "sqlDashboards");
+            this.setTitle(this.appModel.getTitle() + " - " + "sqlDashboards");
         } else if (this.appActions.getCurrentFile() != null) {
-            setTitle(f.getName() + " - " + "sqlDashboards");
+            this.setTitle(f.getName() + " - " + "sqlDashboards");
         } else {
-            setTitle("sqlDashboards");
+            this.setTitle("sqlDashboards");
         }
     }
 
@@ -159,9 +155,8 @@ public class SqlDashFrame
         return this.appModel;
     }
 
-
-    private JMenuBar getMenuBar(final AppActions appActions) {
-        final JMenu fileMenu = getJMenu("File", 70);
+    private JMenuBar getMenuBar(AppActions appActions) {
+        JMenu fileMenu = getJMenu("File", 70);
         fileMenu.addMenuListener(new MenuListener() {
             public void menuSelected(MenuEvent e) {
                 SqlDashFrame.this.rebuildFileMenu(appActions, fileMenu);
@@ -173,12 +168,11 @@ public class SqlDashFrame
             public void menuDeselected(MenuEvent e) {
             }
         });
-        rebuildFileMenu(appActions, fileMenu);
+        this.rebuildFileMenu(appActions, fileMenu);
 
-        JMenu viewMenu = getViewMenu();
+        JMenu viewMenu = this.getViewMenu();
 
-
-        final JMenu serverMenu = getJMenu("Server", 83);
+        JMenu serverMenu = getJMenu("Server", 83);
         serverMenu.addMenuListener(new MenuListener() {
             public void menuSelected(MenuEvent e) {
                 ConnectionManager connMan = SqlDashFrame.this.appModel.getConnectionManager();
@@ -207,8 +201,7 @@ public class SqlDashFrame
         appMenu.add(appActions.getRemoveWorkspaceAction());
         appMenu.add(appActions.getRenameWorkspaceAction());
 
-
-        final JMenu workspaceMenu = getJMenu("Workspace", 87);
+        JMenu workspaceMenu = getJMenu("Workspace", 87);
         workspaceMenu.addMenuListener(new MenuListener() {
             public void menuSelected(MenuEvent e) {
                 workspaceMenu.removeAll();
@@ -231,10 +224,8 @@ public class SqlDashFrame
                 }
             }
 
-
             public void menuCanceled(MenuEvent e) {
             }
-
 
             public void menuDeselected(MenuEvent e) {
             }
@@ -252,7 +243,6 @@ public class SqlDashFrame
         }
         helpMenu.add(demosMenu);
 
-
         helpMenu.addSeparator();
         helpMenu.add(HtmlUtils.getWWWaction("Launch TimeStored.com", "http://www.timestored.com"));
         String bugUrl = TimeStored.getContactUrl("sqlDashboards Bug Report");
@@ -262,7 +252,7 @@ public class SqlDashFrame
         helpMenu.add(HtmlUtils.getWWWaction("Purchase sqlDashboards Pro", TimeStored.Page.SQLDASH_BUY.url()));
         helpMenu.add(new AbstractAction("Enter License Key") {
             public void actionPerformed(ActionEvent e) {
-                String helpMsg = "Please enter your license key: ";
+                final String helpMsg = "Please enter your license key: ";
                 String txt = Theme.getTextFromDialog(SqlDashFrame.this, "License Key", "", helpMsg);
                 if (txt != null) {
                     String msg = "Sorry that license doesn't appear to be a valid signed license. \r\nPlease contact tech@timestored.com for help";
@@ -281,7 +271,6 @@ public class SqlDashFrame
             }
         });
 
-
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(fileMenu);
         menuBar.add(viewMenu);
@@ -291,7 +280,6 @@ public class SqlDashFrame
         menuBar.add(helpMenu);
         return menuBar;
     }
-
 
     public JMenu getViewMenu() {
         JMenu viewMenu = getJMenu("View", 86);
@@ -334,7 +322,6 @@ public class SqlDashFrame
         return viewMenu;
     }
 
-
     public void rebuildFileMenu(AppActions appActions, JMenu fileMenu) {
         fileMenu.removeAll();
         fileMenu.add(appActions.getNewFileAction());
@@ -347,7 +334,6 @@ public class SqlDashFrame
             fileMenu.add(m);
         }
         fileMenu.addSeparator();
-
 
         JMenuItem exit = new JMenuItem("Exit");
         exit.setMnemonic('x');
@@ -366,8 +352,8 @@ public class SqlDashFrame
     }
 
     public void showAboutDialog(String licenseTxt) {
-        String htmlTitle = "<h1><font color='#2580A2'>sql</font><font color='#25A230'>Dashboards</font></h1>";
-        Theme.CIcon cIcon = Theme.CIcon.SQLDASH_LOGO;
+        final String htmlTitle = "<h1><font color='#2580A2'>sql</font><font color='#25A230'>Dashboards</font></h1>";
+        final Theme.CIcon cIcon = Theme.CIcon.SQLDASH_LOGO;
         (new AboutDialog(this, "sqlDashboards", cIcon, htmlTitle, "1.41", licenseTxt)).setVisible(true);
     }
 
@@ -390,14 +376,12 @@ public class SqlDashFrame
             extends AbstractAction {
         private static final long serialVersionUID = 1L;
 
-
         public AddServerAction() {
             super("Add Server...", Theme.CIcon.SERVER_ADD.get());
-            putValue("ShortDescription", "Add a server to the list of possible connections");
+            this.putValue("ShortDescription", "Add a server to the list of possible connections");
 
-            putValue("MnemonicKey", Integer.valueOf(65));
+            this.putValue("MnemonicKey", Integer.valueOf(65));
         }
-
 
         public void actionPerformed(ActionEvent arg0) {
             (new ConnectionManagerDialog(SqlDashFrame.this.appModel.getConnectionManager(), SqlDashFrame.this, null, SqlDashFrame.this.jdbcTypesSupported)).setVisible(true);
@@ -416,14 +400,13 @@ public class SqlDashFrame
             this.connMan = connMan;
 
             if (connMan.isConnected(sc)) {
-                putValue("SmallIcon", Theme.CIcon.SERVER_CONNECT.get());
-                putValue("SwingLargeIconKey", Theme.CIcon.SERVER_CONNECT.get());
+                this.putValue("SmallIcon", Theme.CIcon.SERVER_CONNECT.get());
+                this.putValue("SwingLargeIconKey", Theme.CIcon.SERVER_CONNECT.get());
             }
             this.sc = sc;
 
-            putValue("ShortDescription", "Edit the server connection " + sc.getName());
+            this.putValue("ShortDescription", "Edit the server connection " + sc.getName());
         }
-
 
         public void actionPerformed(ActionEvent arg0) {
             (new ConnectionManagerDialog(this.connMan, SqlDashFrame.this, this.sc.getName(), SqlDashFrame.this.jdbcTypesSupported)).setVisible(true);

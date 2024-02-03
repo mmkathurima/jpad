@@ -11,7 +11,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
-
 public class DesktopModel {
     private static final Logger LOG = Logger.getLogger(DesktopModel.class.getName());
 
@@ -26,7 +25,6 @@ public class DesktopModel {
     private WorkspaceModel selectedWorkspace;
     private String title = "Untitled";
 
-
     DesktopModel(DesktopDTO desktopDTO, ConnectionManager connMan) {
         Preconditions.checkNotNull(desktopDTO);
         this.connMan = Preconditions.checkNotNull(connMan);
@@ -36,7 +34,7 @@ public class DesktopModel {
         Preconditions.checkArgument((desktopDTO.workspaces != null && desktopDTO.workspaces.size() > 0));
         for (WorkspaceDTO w : desktopDTO.workspaces) {
             String wsTitle = (w.title == null) ? "Untitled Workspace" : w.title;
-            WorkspaceModel ws = addWorkspace(wsTitle);
+            WorkspaceModel ws = this.addWorkspace(wsTitle);
             ws.setJavaLayoutXml(w.jlayout);
             for (WidgetDTO a : w.widgets) {
                 ws.addApp(a.newInstance(this));
@@ -46,7 +44,7 @@ public class DesktopModel {
     }
 
     public DesktopModel(ConnectionManager connMan) {
-        this.selectedWorkspace = addWorkspace("Untitled");
+        this.selectedWorkspace = this.addWorkspace("Untitled");
         this.connMan = Preconditions.checkNotNull(connMan);
     }
 
@@ -75,7 +73,6 @@ public class DesktopModel {
         return this.title;
     }
 
-
     public void setTitle(String title) {
         LOG.info("setTitle: " + title);
         this.title = title;
@@ -99,7 +96,6 @@ public class DesktopModel {
         }
     }
 
-
     public Object getArg(String key) {
         return this.argMap.get(key);
     }
@@ -108,11 +104,9 @@ public class DesktopModel {
         return this.argMap.keySet();
     }
 
-
     public Collection<Queryable> getQueryableWidgets() {
         return this.selectedWorkspace.getQueryables();
     }
-
 
     public List<Widget> getApps() {
         List<Widget> r = Lists.newArrayList();
@@ -122,7 +116,6 @@ public class DesktopModel {
         return Collections.unmodifiableList(r);
     }
 
-
     public void setSelectedApp(WorkspaceModel workspaceModel, Widget selectedApp) {
         Preconditions.checkNotNull(workspaceModel);
         Preconditions.checkArgument(this.workspaces.contains(workspaceModel));
@@ -130,7 +123,7 @@ public class DesktopModel {
         LOG.info("setSelectedApp: " + selectedApp);
 
         if (!workspaceModel.equals(this.selectedWorkspace)) {
-            setSelectedWorkspace(workspaceModel);
+            this.setSelectedWorkspace(workspaceModel);
         }
         this.selectedWorkspace.setSelectedApp(selectedApp);
 
@@ -139,19 +132,16 @@ public class DesktopModel {
         }
     }
 
-
     public WorkspaceModel addWorkspace(String title) {
         WorkspaceModel workspaceModel = new WorkspaceModel(title, this.listeners);
         this.workspaces.add(workspaceModel);
-        setSelectedWorkspace(workspaceModel);
+        this.setSelectedWorkspace(workspaceModel);
         return workspaceModel;
     }
 
-
     public WorkspaceModel addWorkspace() {
-        return addWorkspace("Untitled " + workspaceCounter++);
+        return this.addWorkspace("Untitled " + workspaceCounter++);
     }
-
 
     public boolean remove(WorkspaceModel workspaceModel) {
         boolean removed = this.workspaces.remove(workspaceModel);
@@ -159,23 +149,20 @@ public class DesktopModel {
             if (this.workspaces.size() == 0) {
                 this.workspaces.add(new WorkspaceModel("Untitled " + workspaceCounter++, this.listeners));
             }
-            setSelectedWorkspace(this.workspaces.get(0));
+            this.setSelectedWorkspace(this.workspaces.get(0));
         }
 
         return removed;
     }
 
-
     public void add(Widget widget) {
         this.selectedWorkspace.addApp(widget);
     }
-
 
     public boolean remove(Widget widget) {
         LOG.info("remove: " + widget);
         return this.selectedWorkspace.removeApp(widget);
     }
-
 
     public void addListener(DesktopModelListener listener) {
         this.listeners.add(listener);
@@ -189,11 +176,9 @@ public class DesktopModel {
         return this.workspaces;
     }
 
-
     public String toString() {
         return MoreObjects.toStringHelper(this).add("title", this.title).add("selectedWorkspace", this.selectedWorkspace).add("workspaces", this.workspaces).toString();
     }
-
 
     public int hashCode() {
         return Objects.hashCode(this.argMap, this.listeners, this.workspaces, this.selectedWorkspace, this.title);
@@ -205,12 +190,11 @@ public class DesktopModel {
             return (Objects.equal(this.argMap, that.argMap) && Objects.equal(this.listeners, that.listeners) && Objects.equal(this.workspaces, that.workspaces) && Objects.equal(this.selectedWorkspace, that.selectedWorkspace) && Objects.equal(this.title, that.title));
         }
 
-
         return false;
     }
 
     public String getArgS(String argKey) {
-        Object o = getArg(argKey);
+        Object o = this.getArg(argKey);
         return (o == null) ? "" : (String) o;
     }
 

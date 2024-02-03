@@ -5,7 +5,6 @@ import com.timestored.theme.AboutDialog;
 
 import javax.swing.JFrame;
 
-
 public class TSApp {
     private static final int MINS_BETWEEN = 720;
     private final AppDescription appDescription;
@@ -17,7 +16,6 @@ public class TSApp {
     public void showAboutDialog(JFrame frame, String licenseTxt) {
         (new AboutDialog(frame, this.appDescription.getAppTitle(), this.appDescription.getIcon(), this.appDescription.getHtmlTitle(), this.appDescription.getVersion(), licenseTxt)).setVisible(true);
     }
-
 
     public ErrorReporter getErrorReporter() {
         return new ErrorReporter(this.appDescription.getErrorURL(), this.appDescription.getTechEmail(), this.appDescription.getAppTitle() + " Bug Report " + this.appDescription.getVersion(), 720);

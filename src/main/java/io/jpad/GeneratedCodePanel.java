@@ -14,7 +14,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.util.logging.Logger;
 
-
 public class GeneratedCodePanel
         extends PanelResultRenderer {
     private static final Logger log = Logger.getLogger(GeneratedCodePanel.class.getName());
@@ -25,13 +24,13 @@ public class GeneratedCodePanel
 
     public GeneratedCodePanel() {
         super("generatedCode", Theme.CIcon.TEXT_HTML.get16());
-        setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());
 
         this.textArea = new RSyntaxTextArea(20, 60);
         this.textArea.setSyntaxEditingStyle("text/java");
         this.textArea.setCodeFoldingEnabled(true);
         RTextScrollPane sp = new RTextScrollPane(this.textArea);
-        add(sp, "Center");
+        this.add(sp, "Center");
     }
 
     public void compiling(JPadCode code) {

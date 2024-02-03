@@ -6,7 +6,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.logging.Level;
 
-
 public class Demo
         implements Runnable {
     private Growler growler;
@@ -29,9 +28,9 @@ public class Demo
         this.titleField = new JTextField("growler title");
 
         JPanel buttonPanel = new JPanel(new GridLayout(1, 0));
-        buttonPanel.add(getButton(Level.INFO));
-        buttonPanel.add(getButton(Level.WARNING));
-        buttonPanel.add(getButton(Level.SEVERE));
+        buttonPanel.add(this.getButton(Level.INFO));
+        buttonPanel.add(this.getButton(Level.WARNING));
+        buttonPanel.add(this.getButton(Level.SEVERE));
 
         JPanel p = new JPanel(new GridLayout(0, 1));
         p.add(buttonPanel);
@@ -41,12 +40,11 @@ public class Demo
         c.add(panel, "North");
         c.add(this.textArea, "Center");
 
-
         frame.pack();
         frame.setVisible(true);
     }
 
-    private JButton getButton(final Level l) {
+    private JButton getButton(Level l) {
         JButton addButton = new JButton(l.getName());
         addButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {

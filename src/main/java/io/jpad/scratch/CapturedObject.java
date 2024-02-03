@@ -1,13 +1,11 @@
 package io.jpad.scratch;
 
-
 import io.jpad.resultset.KeyedResultSet;
 import io.jpad.resultset.ResultSetAdapter;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
-
 
 public class CapturedObject {
 
@@ -18,7 +16,6 @@ public class CapturedObject {
     @Nullable
     private final KeyedResultSet resultSet;
 
-
     public CapturedObject(String name, Object object) {
 
         this.name = (name == null) ? "" : name;
@@ -26,20 +23,21 @@ public class CapturedObject {
         this.object = object;
 
         this.resultSet = ResultSetAdapter.get(object);
-
     }
-
 
     public boolean equals(Object o) {
         if (o == this) return true;
         if (!(o instanceof CapturedObject)) return false;
         CapturedObject other = (CapturedObject) o;
         if (!other.canEqual(this)) return false;
-        Object this$name = getName(), other$name = other.getName();
+        Object this$name = this.name;
+        Object other$name = other.name;
         if (!Objects.equals(this$name, other$name)) return false;
-        Object this$object = getObject(), other$object = other.getObject();
+        Object this$object = this.object;
+        Object other$object = other.object;
         if (!Objects.equals(this$object, other$object)) return false;
-        Object this$resultSet = getResultSet(), other$resultSet = other.getResultSet();
+        Object this$resultSet = this.resultSet;
+        Object other$resultSet = other.resultSet;
         return Objects.equals(this$resultSet, other$resultSet);
     }
 
@@ -48,16 +46,15 @@ public class CapturedObject {
     }
 
     public int hashCode() {
-        int PRIME = 59;
+        final int PRIME = 59;
         int result = 1;
-        Object $name = getName();
+        Object $name = this.name;
         result = result * 59 + (($name == null) ? 0 : $name.hashCode());
-        Object $object = getObject();
+        Object $object = this.object;
         result = result * 59 + (($object == null) ? 0 : $object.hashCode());
-        Object $resultSet = getResultSet();
+        Object $resultSet = this.resultSet;
         return result * 59 + (($resultSet == null) ? 0 : $resultSet.hashCode());
     }
-
 
     @NotNull
     public String getName() {
@@ -74,7 +71,6 @@ public class CapturedObject {
         return this.resultSet;
     }
 
-
     public String toString() {
 
         String s = "";
@@ -82,13 +78,10 @@ public class CapturedObject {
         if (this.name.trim().length() > 0) {
 
             s = this.name + " = ";
-
         }
 
         return s + ((this.object == null) ? "null" : this.object.toString());
-
     }
-
 }
 
 

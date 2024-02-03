@@ -6,7 +6,6 @@ import com.timestored.license.LicenseBuilder;
 import com.timestored.misc.InfoLink;
 import com.timestored.misc.MessageSigner;
 
-
 public class SDLicenser {
     public static final String PROD_NAME = "sqlDashboards";
     private static License license = LicenseBuilder.getInstance("free version").build();
@@ -32,8 +31,7 @@ public class SDLicenser {
     public static void warnUserThisIsOnlyDemo() {
         String msg = "<html>That functionality is not available in this restricted version.<br />For more information on the benefits of the full version,<br />please see the website:<br />" + TimeStored.Page.SQLDASH_BUY.toAnchor() + "</html>";
 
-
-        String title = "qStudio Version";
+        final String title = "qStudio Version";
         InfoLink.showMessageDialog(null, msg, title);
     }
 

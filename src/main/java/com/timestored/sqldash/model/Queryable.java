@@ -6,7 +6,6 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
-
 public class Queryable {
     private static final Logger LOG = Logger.getLogger(Queryable.class.getName());
 
@@ -30,9 +29,9 @@ public class Queryable {
     }
 
     Queryable(Queryable app) {
-        this.serverName = app.getServerName();
-        this.query = app.getQuery();
-        this.refreshPeriod = app.getRefreshPeriod();
+        this.serverName = app.serverName;
+        this.query = app.query;
+        this.refreshPeriod = app.refreshPeriod;
     }
 
     public String getServerName() {
@@ -41,7 +40,7 @@ public class Queryable {
 
     public void setServerName(String serverName) {
         this.serverName = Preconditions.checkNotNull(serverName);
-        cc();
+        this.cc();
     }
 
     public String getQuery() {
@@ -50,7 +49,7 @@ public class Queryable {
 
     public void setQuery(String query) {
         this.query = Preconditions.checkNotNull(query);
-        cc();
+        this.cc();
     }
 
     public int getRefreshPeriod() {
@@ -62,7 +61,7 @@ public class Queryable {
             throw new IllegalArgumentException("refresh period must be >=-1");
         }
         this.refreshPeriod = milliseconds;
-        cc();
+        this.cc();
     }
 
     private void cc() {

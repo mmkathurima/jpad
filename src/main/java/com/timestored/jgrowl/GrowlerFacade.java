@@ -5,7 +5,6 @@ import javax.swing.UIManager;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 class GrowlerFacade
         extends AbstractGrowler {
     private static final ImageIcon INFO_ICON;
@@ -45,11 +44,9 @@ class GrowlerFacade
 
     private final FadingGrowler gc;
 
-
     public GrowlerFacade(FadingGrowler growlerCore) {
         this.gc = growlerCore;
     }
-
 
     public void show(Level logLevel, String message, String title, ImageIcon imageIcon, boolean sticky) {
         ImageIcon ii = null;
@@ -60,7 +57,6 @@ class GrowlerFacade
         } else if (logLevel.equals(Level.INFO)) {
             ii = INFO_ICON;
         }
-
 
         this.gc.show(message, title, ii, sticky, logLevel);
     }

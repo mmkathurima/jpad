@@ -3,7 +3,7 @@ package com.timestored.tscore.persistance;
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
-public interface PersistanceInterface {
+public interface PersistenceInterface {
     String PATH_SPLIT = ";";
 
     void put(KeyInterface paramKeyInterface, String paramString);

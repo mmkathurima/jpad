@@ -19,7 +19,6 @@ import java.awt.event.MouseEvent;
 import java.io.File;
 import java.util.List;
 
-
 class DocumentTabbedPane
         extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -30,20 +29,16 @@ class DocumentTabbedPane
     private final JFrame parentFrame;
     private final List<MyEditor> displayedEditors = Lists.newArrayList();
 
+    private boolean iAmChangingSelection;
 
-    private boolean iAmChangingSelection = false;
-
-
-    DocumentTabbedPane(final DocumentActions documentActions, final OpenDocumentsModel openDocumentsModel, JFrame parentFrame) {
+    DocumentTabbedPane(DocumentActions documentActions, OpenDocumentsModel openDocumentsModel, JFrame parentFrame) {
         this.openDocumentsModel = openDocumentsModel;
         this.documentActions = documentActions;
         this.parentFrame = parentFrame;
 
-
         FileDropDocumentHandler fileDropHandler = new FileDropDocumentHandler();
         fileDropHandler.addListener(documentActions);
-        setTransferHandler(fileDropHandler);
-
+        this.setTransferHandler(fileDropHandler);
 
         this.tabbedPane = new JTabbedPane();
         this.tabbedPane.setName("serverDocsTabbedPane");
@@ -51,19 +46,18 @@ class DocumentTabbedPane
         this.tabbedPane.setMaximumSize(new Dimension(2147483647, 2147483647));
 
         for (Document document : openDocumentsModel.getDocuments()) {
-            addDocToTabs(document);
+            this.addDocToTabs(document);
         }
-
 
         TabbedPaneRightClickBlocker.install(this.tabbedPane);
 
         this.tabbedPane.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {
-                maybeHandleClick(e);
+                this.maybeHandleClick(e);
             }
 
             public void mouseReleased(MouseEvent e) {
-                maybeHandleClick(e);
+                this.maybeHandleClick(e);
             }
 
             private void maybeHandleClick(MouseEvent e) {
@@ -73,10 +67,9 @@ class DocumentTabbedPane
             }
         });
 
-
-        setLayout(new BorderLayout());
-        add(this.tabbedPane);
-        refreshTabAppearance();
+        this.setLayout(new BorderLayout());
+        this.add(this.tabbedPane);
+        this.refreshTabAppearance();
         openDocumentsModel.addListener(new UpdateTabsListener());
 
         this.tabbedPane.addChangeListener(new ChangeListener() {
@@ -92,22 +85,18 @@ class DocumentTabbedPane
         });
     }
 
-
-    private void addDocToTabs(final Document document) {
+    private void addDocToTabs(Document document) {
         MyEditor myEditor = MyEditor.getEditorComponent(document);
-        final JTextArea textArea = myEditor.getJTextArea();
+        JTextArea textArea = myEditor.getJTextArea();
 
         FileDropDocumentHandler fileDropHandler = new FileDropDocumentHandler(textArea.getTransferHandler());
         fileDropHandler.addListener(this.documentActions);
         textArea.setTransferHandler(fileDropHandler);
 
-
         this.documentActions.addActionsToEditor(textArea, document);
-
 
         textArea.addCaretListener(new CaretListener() {
             private boolean modifyingSelf;
-
 
             public void caretUpdate(CaretEvent e) {
                 if (!this.modifyingSelf) {
@@ -128,39 +117,32 @@ class DocumentTabbedPane
         this.tabbedPane.add(myEditor.getP());
     }
 
-
     public boolean requestFocusInWindow() {
         Component c = this.tabbedPane.getSelectedComponent();
-        if (c != null) {
+        if (c != null)
             return c.requestFocusInWindow();
-        }
         return false;
     }
 
     public void requestFocus() {
         Component c = this.tabbedPane.getSelectedComponent();
-        if (c != null) {
+        if (c != null)
             c.requestFocus();
-        }
     }
 
     private int indexOfDocument(Document d) {
         for (int i = 0; i < this.displayedEditors.size(); i++) {
             MyEditor m = this.displayedEditors.get(i);
-            if (m.getDocument().equals(d)) {
+            if (m.getDocument().equals(d))
                 return i;
-            }
         }
         return -1;
     }
 
-
     private void refreshTabAppearance() {
         List<Document> documents = this.openDocumentsModel.getDocuments();
 
-
         int i;
-
 
         for (i = this.displayedEditors.size() - 1; i >= 0; i--) {
             Document d = this.displayedEditors.get(i).getDocument();
@@ -170,14 +152,12 @@ class DocumentTabbedPane
             }
         }
 
-
         for (i = documents.size() - 1; i >= 0; i--) {
             Document d = documents.get(i);
-            if (indexOfDocument(d) == -1) {
-                addDocToTabs(d);
+            if (this.indexOfDocument(d) == -1) {
+                this.addDocToTabs(d);
             }
         }
-
 
         for (i = this.displayedEditors.size() - 1; i >= 0; i--) {
             MyEditor me = this.displayedEditors.get(i);
@@ -185,13 +165,12 @@ class DocumentTabbedPane
             if (!t.equals(me.getJTextArea().getText())) {
                 me.getJTextArea().setText(t);
             }
-            JPanel p = getTabComponent(me.getDocument());
+            JPanel p = this.getTabComponent(me.getDocument());
             this.tabbedPane.setTabComponentAt(i, p);
         }
     }
 
-
-    private JPanel getTabComponent(final Document doc) {
+    private JPanel getTabComponent(Document doc) {
         JPanel p = new JPanel(new FlowLayout(0, 2, 0));
         p.setName("tab-" + doc.getTitle());
 
@@ -203,7 +182,7 @@ class DocumentTabbedPane
                 } else if (SwingUtilities.isMiddleMouseButton(e)) {
                     DocumentTabbedPane.this.documentActions.getCloseFileAction(doc).actionPerformed(null);
                 }
-                mouseClicked(e);
+                this.mouseClicked(e);
             }
 
             public void mouseReleased(MouseEvent e) {
@@ -221,7 +200,7 @@ class DocumentTabbedPane
         int r = 192 + h % 64;
         int g = 192 + h / 64 % 64;
         int b = 192 + h / 64 * 64 % 64;
-        p.setBackground(new Color(r, g, b,0));
+        p.setBackground(new Color(r, g, b, 0));
 
         if (doc.equals(this.openDocumentsModel.getSelectedDocument())) {
             JButton closeButton = new JButton("x");
@@ -241,7 +220,7 @@ class DocumentTabbedPane
     }
 
     public String getText() {
-        int idx = indexOfDocument(this.openDocumentsModel.getSelectedDocument());
+        int idx = this.indexOfDocument(this.openDocumentsModel.getSelectedDocument());
         JTextArea ta = this.displayedEditors.get(idx).getJTextArea();
         String selText = ta.getSelectedText();
         if (selText == null || selText.length() == 0) {
@@ -251,7 +230,7 @@ class DocumentTabbedPane
     }
 
     public void updateErrorDisplay(String code, List<Diagnostic<? extends JavaFileObject>> diagnostics) {
-        int idx = indexOfDocument(this.openDocumentsModel.getSelectedDocument());
+        int idx = this.indexOfDocument(this.openDocumentsModel.getSelectedDocument());
         if (idx != -1) {
             MyEditor myEditor = this.displayedEditors.get(idx);
             myEditor.removeAllErrorHighlights();
@@ -268,7 +247,7 @@ class DocumentTabbedPane
         private UpdateTabsListener() {
         }
 
-        public void docClosed(final Document document) {
+        public void docClosed(Document document) {
             EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     DocumentTabbedPane.this.iAmChangingSelection = true;
@@ -282,7 +261,7 @@ class DocumentTabbedPane
             });
         }
 
-        public void docSelected(final Document document) {
+        public void docSelected(Document document) {
             EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     int index = DocumentTabbedPane.this.indexOfDocument(document);
@@ -307,11 +286,11 @@ class DocumentTabbedPane
         }
 
         public void docSaved() {
-            refresh();
+            this.refresh();
         }
 
         public void docContentModified() {
-            refresh();
+            this.refresh();
         }
 
         private void refresh() {

@@ -1,6 +1,5 @@
 package io.jpad.model;
 
-
 import io.jpad.resultset.KeyedResultSet;
 import io.jpad.scratch.CapturedObject;
 import org.jetbrains.annotations.NotNull;
@@ -15,13 +14,10 @@ import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class CsvConverter {
     private static final Logger log = Logger.getLogger(CsvConverter.class.getName());
 
-
     private static final String NL = "\r\n";
-
 
     static String convert(List<CapturedObject> dumps) {
 
@@ -32,7 +28,6 @@ public class CsvConverter {
             if (!co.getName().isEmpty()) {
 
                 s.append(escapeCommas(co.getName())).append("\r\n");
-
             }
 
             try {
@@ -42,34 +37,25 @@ public class CsvConverter {
                 if (keyedResultSet == null) {
 
                     s.append(escapeCommas(co.getObject().toString()));
-
                 } else {
 
                     appendAsCsv(s, keyedResultSet);
-
                 }
-
             } catch (SQLException | IOException e) {
 
                 log.log(Level.WARNING, "problem appending resultset", e);
-
             }
 
             s.append("\r\n");
-
         }
 
         return s.toString();
-
     }
-
 
     public static void writeTo(Writer writer, @NotNull ResultSet rs) throws SQLException, IOException {
 
         appendAsCsv(writer, rs);
-
     }
-
 
     private static void appendAsCsv(Writer sb, ResultSet rs) throws SQLException, IOException {
 
@@ -83,13 +69,10 @@ public class CsvConverter {
             if (c != md.getColumnCount()) {
 
                 sb.append(",");
-
             }
-
         }
 
         sb.append("\r\n");
-
 
         rs.beforeFirst();
 
@@ -106,30 +89,22 @@ public class CsvConverter {
                 if (c != md.getColumnCount()) {
 
                     sb.append(",");
-
                 }
-
             }
 
             sb.append("\r\n");
-
         }
-
     }
-
 
     private static String escapeCommas(String s) {
 
         if (s.contains(",")) {
 
             return "\"" + s.replace("\"", "\"\"") + "\"";
-
         }
 
         return s;
-
     }
-
 }
 
 

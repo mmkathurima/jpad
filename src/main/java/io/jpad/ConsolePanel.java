@@ -16,7 +16,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.MouseWheelListener;
 import java.util.List;
 
-
 class ConsolePanel
         extends PanelResultRenderer {
     public static final String NAME = "consoleOut";
@@ -37,11 +36,11 @@ class ConsolePanel
 
     public ConsolePanel() {
         super("consoleOut", Theme.CIcon.TERMINAL.get16());
-        setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());
 
         this.scText = new ScrollingTextArea(FG_COLOR, Color.BLACK);
         this.scText.setTextareaFont(new Font("Monospaced", 0, 12));
-        add(this.scText, "Center");
+        this.add(this.scText, "Center");
     }
 
     private void app(String msg) {
@@ -62,7 +61,7 @@ class ConsolePanel
     }
 
     public void running(JPadCode code) {
-        app("### Running.");
+        this.app("### Running.");
     }
 
     public String getLatestRendering() {
@@ -74,32 +73,32 @@ class ConsolePanel
     }
 
     public void compiled(RunResult runResult) {
-        app("### " + (runResult.isCompileSuccessful() ? "compiled." : "compilation Failed"));
+        this.app("### " + (runResult.isCompileSuccessful() ? "compiled." : "compilation Failed"));
         String compileResult = runResult.getCompileResult();
         if (!compileResult.trim().isEmpty()) {
-            app(compileResult);
+            this.app(compileResult);
         }
     }
 
     public void compiling(JPadCode code) {
         this.latestResult.setLength(0);
-        app("");
-        app("###### Compiling. ######");
+        this.app("");
+        this.app("###### Compiling. ######");
     }
 
     public void resultReturned(RunResult runResult) {
         if (runResult.isCompletedOk()) {
-            app("### Run Complete.");
+            this.app("### Run Complete.");
             String o = runResult.getOutput();
             if (o != null) {
 
                 this.latestResult.setLength(0);
 
-                app(runResult.getOutput());
+                this.app(runResult.getOutput());
             }
         } else {
-            app("### Runtime Error.");
-            app(runResult.getError());
+            this.app("### Runtime Error.");
+            this.app(runResult.getError());
         }
     }
 }

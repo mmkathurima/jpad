@@ -5,7 +5,6 @@ import org.jetbrains.annotations.NotNull;
 import java.util.Objects;
 import java.util.Optional;
 
-
 public class JpadHeader {
     private static final String PREFIX = "http://jpad.io/example/";
     private static final String STARTER = "/*";
@@ -62,8 +61,6 @@ public class JpadHeader {
                             aUrl = val;
                             break;
                     }
-
-
                 }
             }
         }
@@ -105,14 +102,18 @@ public class JpadHeader {
         if (!(o instanceof JpadHeader)) return false;
         JpadHeader other = (JpadHeader) o;
         if (!other.canEqual(this)) return false;
-        Object this$title = getTitle(), other$title = other.getTitle();
+        Object this$title = this.title;
+        Object other$title = other.title;
         if (!Objects.equals(this$title, other$title)) return false;
-        Object this$description = getDescription(), other$description = other.getDescription();
+        Object this$description = this.description;
+        Object other$description = other.description;
         if (!Objects.equals(this$description, other$description))
             return false;
-        Object this$tags = getTags(), other$tags = other.getTags();
+        Object this$tags = this.tags;
+        Object other$tags = other.tags;
         if (!Objects.equals(this$tags, other$tags)) return false;
-        Object this$url = getUrl(), other$url = other.getUrl();
+        Object this$url = this.url;
+        Object other$url = other.url;
         return Objects.equals(this$url, other$url);
     }
 
@@ -121,20 +122,20 @@ public class JpadHeader {
     }
 
     public int hashCode() {
-        int PRIME = 59;
+        final int PRIME = 59;
         int result = 1;
-        Object $title = getTitle();
+        Object $title = this.title;
         result = result * 59 + (($title == null) ? 0 : $title.hashCode());
-        Object $description = getDescription();
+        Object $description = this.description;
         result = result * 59 + (($description == null) ? 0 : $description.hashCode());
-        Object $tags = getTags();
+        Object $tags = this.tags;
         result = result * 59 + (($tags == null) ? 0 : $tags.hashCode());
-        Object $url = getUrl();
+        Object $url = this.url;
         return result * 59 + (($url == null) ? 0 : $url.hashCode());
     }
 
     public String toString() {
-        return "JpadHeader(title=" + getTitle() + ", description=" + getDescription() + ", tags=" + getTags() + ", url=" + getUrl() + ")";
+        return "JpadHeader(title=" + this.title + ", description=" + this.description + ", tags=" + this.tags + ", url=" + this.url + ")";
     }
 
     @NotNull
@@ -170,7 +171,7 @@ public class JpadHeader {
     }
 
     String getAsComment() {
-        String N = "\n";
+        final String N = "\n";
         String sb = "/**" + "\n" +
                 getTag("title", this.title) +
                 getTag("description", this.description) +
@@ -185,17 +186,16 @@ public class JpadHeader {
         if (s.startsWith("/*")) {
             int end = s.indexOf("*/");
             if (end > -1) {
-                return getAsComment() + s.substring(end + "*/".length());
+                return this.getAsComment() + s.substring(end + "*/".length());
             }
         }
-
 
         String space = "";
         if (s.charAt(0) != '\n' && s.charAt(1) != '\n') {
             space = "\n";
         }
 
-        return getAsComment() + space + s;
+        return this.getAsComment() + space + s;
     }
 }
 

@@ -33,7 +33,6 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
-
 public enum CandleStickViewStrategy
         implements ViewStrategy {
     INSTANCE;
@@ -59,7 +58,6 @@ public enum CandleStickViewStrategy
         timeAxis.setTimeline(SegmentedTimeline.newMondayThroughFridayTimeline());
         timeAxis.setLowerMargin(0.02D);
         timeAxis.setUpperMargin(0.02D);
-
 
         timeAxis.setAutoTickUnitSelection(false);
 
@@ -103,7 +101,6 @@ public enum CandleStickViewStrategy
         ChartResultSet.TimeCol timeCol = colResultSet.getTimeCol();
         ChartResultSet.NumericCol nc = colResultSet.getNumericalColumn("volume");
 
-
         if (timeCol != null && nc != null) {
             TimeSeriesCollection dataset = new TimeSeriesCollection();
             RegularTimePeriod[] timePeriods = timeCol.getRegularTimePeriods();
@@ -132,7 +129,6 @@ public enum CandleStickViewStrategy
             hlocvIndices[i++] = chartResultSet.getNumericalColumn(columnLabel);
         }
 
-
         boolean noOpen = (hlocvIndices[2] == null);
         boolean noClose = (hlocvIndices[3] == null);
         if (noOpen && noClose) {
@@ -145,7 +141,6 @@ public enum CandleStickViewStrategy
             hlocvIndices[3] = hlocvIndices[2];
         }
 
-
         double[][] doubArray = new double[COL_TITLES.length][];
         for (int j = 0; j < COL_TITLES.length; j++) {
             if (hlocvIndices[j] != null) {
@@ -153,13 +148,12 @@ public enum CandleStickViewStrategy
             }
         }
 
-
         java.util.Date[] arrayOfDate = timeCol.getDates();
         double[] vol = new double[chartResultSet.getRowCount()];
         return new DefaultHighLowDataset("Series 1", arrayOfDate, doubArray[0], doubArray[1], doubArray[2], doubArray[3], vol);
     }
 
-    public UpdateableView getView(final ChartTheme theme) {
+    public UpdateableView getView(ChartTheme theme) {
         Preconditions.checkNotNull(theme);
 
         return new HardRefreshUpdateableView(new HardRefreshUpdateableView.ViewGetter() {
@@ -168,9 +162,9 @@ public enum CandleStickViewStrategy
                 if (chartResultSet == null) {
                     throw new ChartFormatException("Could not construct ResultSet.");
                 }
-                OHLCDataset dataset = CandleStickViewStrategy.createOHLCDataset(chartResultSet);
+                OHLCDataset dataset = createOHLCDataset(chartResultSet);
 
-                DateAxis timeAxis = CandleStickViewStrategy.getTimeAxis(chartResultSet);
+                DateAxis timeAxis = getTimeAxis(chartResultSet);
 
                 NumberAxis valueAxis1 = new NumberAxis("Price");
                 valueAxis1.setAutoRangeIncludesZero(false);
@@ -179,15 +173,13 @@ public enum CandleStickViewStrategy
                 valueAxis2.setAutoRangeIncludesZero(false);
                 valueAxis2.setNumberFormatOverride(new DecimalFormat("0"));
 
-
                 CandlestickRenderer candle = new CandlestickRenderer(4.0D, false, new HighLowItemLabelGenerator());
 
                 CombinedDomainXYPlot plot = new CombinedDomainXYPlot(timeAxis);
                 XYPlot subplot1 = new XYPlot(dataset, timeAxis, valueAxis1, candle);
                 plot.add(subplot1, 3);
 
-
-                TimeSeriesCollection dataset2 = CandleStickViewStrategy.createVolumeDataset(chartResultSet);
+                TimeSeriesCollection dataset2 = createVolumeDataset(chartResultSet);
                 if (dataset2 != null) {
                     XYBarRenderer rr2 = new XYBarRenderer();
                     rr2.setDefaultToolTipGenerator(new StandardXYToolTipGenerator("<html><b>{0}:</b><br>{1}<br>{2}</html>", new SimpleDateFormat("yyyy-MM-dd"), new DecimalFormat("#,###.00")));
@@ -215,9 +207,8 @@ public enum CandleStickViewStrategy
     }
 
     public String toString() {
-        return CandleStickViewStrategy.class.getSimpleName() + "[" + getDescription() + "]";
+        return CandleStickViewStrategy.class.getSimpleName() + "[" + this.getDescription() + "]";
     }
-
 
     public List<ExampleView> getExamples() {
         String description = "A Candlestick showing price movements and fluctuating volume over a period of 6 weeks";
@@ -232,28 +223,22 @@ public enum CandleStickViewStrategy
 
         ResultSet resultSet = new SimpleResultSet(new String[]{"t", "high", "low", "open", "close", "volume"}, new Object[]{arrayOfDate, high, low, open, close, volume});
 
-
         TestCase testCase = new TestCase(name, resultSet, "{ c:55+2*til 30; ([] t:raze 2014.03.17+(7*til 6)+\\:til 5; high:c+30; low:c-20; open:60+til 30; close:c; volume:30#3 9 6 5 4 7 8 2 13) }[]");
         ExampleView fullColEV = new ExampleView(name, description, testCase);
 
-
         ResultSet resultSetNoVol = new SimpleResultSet(new String[]{"t", "high", "low", "open", "close"}, new Object[]{arrayOfDate, high, low, open, close});
-
 
         name = "Rising Prices, No Volume";
         description = "A candlestick showing only price movements, no volume column.";
         testCase = new TestCase(name, resultSetNoVol, "{ c:55+2*til 30; ([] t:raze 2014.03.17+(7*til 6)+\\:til 5; high:c+30; low:c-20; open:60+til 30; close:c) }[]");
         ExampleView noVolColEV = new ExampleView(name, description, testCase);
 
-
         ResultSet resultSetOnlyHighLow = new SimpleResultSet(new String[]{"t", "high", "low"}, new Object[]{arrayOfDate, high, low});
-
 
         name = "Rising Prices, Only High Low Columns Shown";
         description = "A candlestick showing only high low prices.";
         testCase = new TestCase(name, resultSetOnlyHighLow, "{ c:55+2*til 30; ([] t:raze 2014.03.17+(7*til 6)+\\:til 5; high:c+30; low:c-20) }[]");
         ExampleView onlyHighLowEV = new ExampleView(name, description, testCase);
-
 
         return ImmutableList.of(fullColEV, noVolColEV, onlyHighLowEV);
     }
@@ -269,7 +254,6 @@ public enum CandleStickViewStrategy
     public String getFormatExplaination() {
         return Joiner.on("\r\n").join(FORMATA);
     }
-
 
     public Component getControlPanel() {
         return null;

@@ -18,7 +18,6 @@ import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 import java.awt.image.BufferedImage;
 
-
 public class Theme {
     public static final Color SUB_HEADER_FG_COLOR = new Color(242, 242, 242);
     public static final Color SUB_HEADER_BG_COLOR = new Color(174, 185, 210);
@@ -229,13 +228,12 @@ public class Theme {
 
     public static String getTextFromDialog(Component parent, String title, String defaultText, String helpMsg) {
         JPanel p = new JPanel(new BorderLayout());
-        final JTextArea textArea = new JTextArea(defaultText);
+        JTextArea textArea = new JTextArea(defaultText);
         textArea.selectAll();
         JScrollPane scrPane = new JScrollPane(textArea);
         scrPane.setVerticalScrollBarPolicy(22);
 
         p.add(getHtmlText(helpMsg), "North");
-
 
         p.add(scrPane, "Center");
         String[] options = {"ok", "cancel"};
@@ -245,7 +243,6 @@ public class Theme {
         d.setSize(new Dimension(560, 400));
         d.setPreferredSize(new Dimension(560, 400));
         d.pack();
-
 
         d.addWindowListener(new WindowAdapter() {
             public void windowActivated(WindowEvent e) {
@@ -375,7 +372,7 @@ public class Theme {
     public static class BoxyPanel
             extends JPanel {
         public BoxyPanel() {
-            setLayout(new BoxLayout(this, 3));
+            this.setLayout(new BoxLayout(this, 3));
         }
 
         public Component add(Component c) {
@@ -389,7 +386,6 @@ public class Theme {
     public static class InputLabeller {
         private final Dimension labelDimension;
 
-
         private InputLabeller(int labelWidth, int labelHeight) {
             this.labelDimension = new Dimension(labelWidth, labelHeight);
         }
@@ -398,11 +394,9 @@ public class Theme {
             this.labelDimension = null;
         }
 
-
         public JPanel get(String labelText, Component inputComp, String inputName) {
-            return get(labelText, inputComp, inputName, null, null);
+            return this.get(labelText, inputComp, inputName, null, null);
         }
-
 
         public JPanel get(String labelText, Component inputComp, String inputName, Component helpComponent, String lblTooltip) {
             JPanel p = new JPanel();
@@ -428,13 +422,12 @@ public class Theme {
             return p;
         }
 
-
         public JPanel get(String labelText, Component inputComp, String inputName, Component helpComponent) {
-            return get(labelText, inputComp, inputName, helpComponent, null);
+            return this.get(labelText, inputComp, inputName, helpComponent, null);
         }
 
         public JPanel get(String labelText, Component inputComp, String inputName, String toolltip) {
-            return get(labelText, inputComp, inputName, null, toolltip);
+            return this.get(labelText, inputComp, inputName, null, toolltip);
         }
     }
 
@@ -447,7 +440,6 @@ public class Theme {
 
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
 
             if (value instanceof Action) {
                 Action a = (Action) value;

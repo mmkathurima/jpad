@@ -12,7 +12,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-
 class H2DBConfig
         implements DBConfig {
     public static final DBConfig INSTANCE = new H2DBConfig();
@@ -48,7 +47,6 @@ class H2DBConfig
             sb.append("INSERT INTO ohlc(sym,date,open,high,low,close,volume,adjClose) VALUES(");
             Joiner.on(",").appendTo(sb, "'" + sym + "'", "'" + df.format(dp.getDate()) + "'", toS(dp.getOpen()), toS(dp.getHigh()), toS(dp.getLow()), toS(dp.getClose()), toS(dp.getVol()), toS(dp.getAdjClose()));
 
-
             r.add(sb.append(");").toString());
             sb.setLength(0);
         }
@@ -61,7 +59,6 @@ class H2DBConfig
         for (Stock s : stocks) {
             sb.append("INSERT INTO stock(sym,name,price,volume,pe,eps,week52low,week52high,daylow,dayhigh,movingav50day,marketcap) VALUES(");
             Joiner.on(",").appendTo(sb, "'" + s.getSymbol() + "'", "'" + s.getName().replace("'", "''") + "'", toS(s.getPrice().doubleValue()), toS(s.getVolume()), toS(s.getPe()), toS(s.getEps()), toS(s.getWeek52low()), toS(s.getWeek52high()), toS(s.getDaylow()), toS(s.getDayhigh()), toS(s.getMovingav50day()), toS(s.getMarketcap()));
-
 
             r.add(sb.append(");").toString());
             sb.setLength(0);
@@ -76,7 +73,6 @@ class H2DBConfig
         for (BidAsk ba : quotes) {
             sb.append("INSERT INTO quote(sym,time,bid,ask) VALUES(");
             Joiner.on(",").appendTo(sb, "'" + ba.getSym() + "'", "'" + df.format(ba.getTime()) + "'", toS(ba.getBid()), toS(ba.getAsk()));
-
 
             r.add(sb.append(");").toString());
             sb.setLength(0);
@@ -94,20 +90,20 @@ class H2DBConfig
 
     public List<String> getInitSql() {
         ArrayList<String> r = Lists.newArrayList();
-        String NN = " NOT NULL,\r\n\t";
+        final String NN = " NOT NULL,\r\n\t";
 
         r.add(getDropTab("ohlc"));
-        String q = "sym VARCHAR(10)" + NN + "date DATE NOT NULL" + getDoubleCols("open,high,low,close,volume,adjClose".split(","));
+        String q = "sym VARCHAR(10)" + NN + "date DATE NOT NULL" + this.getDoubleCols("open,high,low,close,volume,adjClose".split(","));
 
         r.add(getCreateTabPre("ohlc", q));
 
         r.add(getDropTab("stock"));
-        q = "sym VARCHAR(10)" + NN + "name VARCHAR(80) NOT NULL" + getDoubleCols("price,volume,pe,eps,week52low,week52high,daylow,dayhigh,movingav50day,marketcap".split(","));
+        q = "sym VARCHAR(10)" + NN + "name VARCHAR(80) NOT NULL" + this.getDoubleCols("price,volume,pe,eps,week52low,week52high,daylow,dayhigh,movingav50day,marketcap".split(","));
 
         r.add(getCreateTabPre("stock", q));
 
         r.add(getDropTab("quote"));
-        q = "sym VARCHAR(10)" + NN + "time TIME NOT NULL" + getDoubleCols("bid,ask".split(","));
+        q = "sym VARCHAR(10)" + NN + "time TIME NOT NULL" + this.getDoubleCols("bid,ask".split(","));
 
         r.add(getCreateTabPre("quote", q));
 
@@ -141,7 +137,6 @@ class H2DBConfig
     public String getWeeklyMonthlyVolume() {
         return "SELECT * FROM (SELECT SYM,SUM(VOLUME) AS WEEK FROM OHLC     WHERE date>CURDATE()-7 GROUP BY SYM ORDER BY SUM(VOLUME)  LIMIT 5) a LEFT JOIN  (SELECT SYM,SUM(VOLUME) AS MONTH FROM OHLC   WHERE date>CURDATE()-30 GROUP BY SYM) b ON a.SYM=b.SYM";
     }
-
 
     public Set<JdbcTypes> getSupportedJdbcTypes() {
         return Sets.newHashSet(JdbcTypes.H2);

@@ -5,7 +5,6 @@ import javax.swing.plaf.basic.BasicButtonUI;
 import java.awt.*;
 import java.awt.event.*;
 
-
 class ButtonTabComponent
         extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -18,7 +17,6 @@ class ButtonTabComponent
             }
         }
 
-
         public void mouseExited(MouseEvent e) {
             Component component = e.getComponent();
             if (component instanceof AbstractButton) {
@@ -29,18 +27,16 @@ class ButtonTabComponent
     };
     private final JTabbedPane pane;
 
-    public ButtonTabComponent(final JTabbedPane pane) {
+    public ButtonTabComponent(JTabbedPane pane) {
         super(new FlowLayout(0, 0, 0));
         if (pane == null) {
             throw new NullPointerException("TabbedPane is null");
         }
         this.pane = pane;
-        setOpaque(false);
-
+        this.setOpaque(false);
 
         JLabel label = new JLabel() {
             private static final long serialVersionUID = 1L;
-
 
             public String getText() {
                 int i = pane.indexOfTabComponent(ButtonTabComponent.this);
@@ -51,14 +47,14 @@ class ButtonTabComponent
             }
         };
 
-        add(label);
+        this.add(label);
 
         label.setBorder(BorderFactory.createEmptyBorder(0, 0, 0, 5));
 
         JButton button = new TabButton();
-        add(button);
+        this.add(button);
 
-        setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
+        this.setBorder(BorderFactory.createEmptyBorder(2, 0, 0, 0));
     }
 
     private class TabButton
@@ -66,25 +62,23 @@ class ButtonTabComponent
         private static final long serialVersionUID = 1L;
 
         public TabButton() {
-            int size = 17;
-            setPreferredSize(new Dimension(size, size));
-            setToolTipText("close this tab");
+            final int size = 17;
+            this.setPreferredSize(new Dimension(size, size));
+            this.setToolTipText("close this tab");
 
-            setUI(new BasicButtonUI());
+            this.setUI(new BasicButtonUI());
 
-            setContentAreaFilled(false);
+            this.setContentAreaFilled(false);
 
-            setFocusable(false);
-            setBorder(BorderFactory.createEtchedBorder());
-            setBorderPainted(false);
+            this.setFocusable(false);
+            this.setBorder(BorderFactory.createEtchedBorder());
+            this.setBorderPainted(false);
 
+            this.addMouseListener(buttonMouseListener);
+            this.setRolloverEnabled(true);
 
-            addMouseListener(ButtonTabComponent.buttonMouseListener);
-            setRolloverEnabled(true);
-
-            addActionListener(this);
+            this.addActionListener(this);
         }
-
 
         public void actionPerformed(ActionEvent e) {
             int i = ButtonTabComponent.this.pane.indexOfTabComponent(ButtonTabComponent.this);
@@ -93,26 +87,24 @@ class ButtonTabComponent
             }
         }
 
-
         public void updateUI() {
         }
-
 
         protected void paintComponent(Graphics g) {
             super.paintComponent(g);
             Graphics2D g2 = (Graphics2D) g.create();
 
-            if (getModel().isPressed()) {
+            if (this.getModel().isPressed()) {
                 g2.translate(1, 1);
             }
             g2.setStroke(new BasicStroke(2.0F));
             g2.setColor(Color.BLACK);
-            if (getModel().isRollover()) {
+            if (this.getModel().isRollover()) {
                 g2.setColor(Color.MAGENTA);
             }
-            int delta = 6;
-            g2.drawLine(delta, delta, getWidth() - delta - 1, getHeight() - delta - 1);
-            g2.drawLine(getWidth() - delta - 1, delta, delta, getHeight() - delta - 1);
+            final int delta = 6;
+            g2.drawLine(delta, delta, this.getWidth() - delta - 1, this.getHeight() - delta - 1);
+            g2.drawLine(this.getWidth() - delta - 1, delta, delta, this.getHeight() - delta - 1);
             g2.dispose();
         }
     }

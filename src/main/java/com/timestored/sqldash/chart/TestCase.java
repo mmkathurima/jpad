@@ -5,7 +5,6 @@ import com.google.common.base.MoreObjects;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-
 class TestCase {
     private final String kdbQuery;
     private final String name;
@@ -17,21 +16,17 @@ class TestCase {
         this.name = name;
     }
 
-
     public String toString() {
         return MoreObjects.toStringHelper(this).add("kdbQuery", this.kdbQuery).add("name", this.name).add("resultSet", this.resultSet).toString();
     }
-
 
     public String getName() {
         return this.name;
     }
 
-
     public String getKdbQuery() {
         return this.kdbQuery;
     }
-
 
     public ResultSet getResultSet() {
         return this.resultSet;

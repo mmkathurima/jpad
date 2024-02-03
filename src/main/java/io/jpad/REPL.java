@@ -8,21 +8,19 @@ import io.jpad.model.RunResult;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-
 class REPL {
     private static final String PROMPT = "j>";
     private final ArrayList<String> history = Lists.newArrayList();
     private final JEngine jEngine = new JEngine();
-    private boolean debugMode = false;
+    private boolean debugMode;
 
     public REPL() {
         this.jEngine.runJPadsFromFolder(JPadConfig.PLUGINS_FOLDER);
     }
 
-
     public void run() {
-        displayLogo();
-        displayHelp();
+        this.displayLogo();
+        this.displayHelp();
 
         try (Scanner scanner = new Scanner(System.in)) {
             System.out.print("j>");
@@ -40,7 +38,7 @@ class REPL {
                     } else if (slashCmd.equals("\\exit") || slashCmd.equals("\\\\")) {
                         System.exit(0);
                     } else if (slashCmd.equals("\\help") || slashCmd.equals("\\?")) {
-                        displayHelp();
+                        this.displayHelp();
                     } else if (slashCmd.equals("\\clear")) {
                         String[] st = s.split(" ");
                         if (st.length < 2) {
@@ -75,11 +73,10 @@ class REPL {
                             }
                         }
                         this.history.add(cmd);
-                        RunResult rr = evalAll();
+                        RunResult rr = this.evalAll();
                         if (rr.isErrorOccurred()) {
                             System.err.println(rr.getError());
                         }
-
 
                         if (rr.getExitCode() != 0 || debugRun) {
                             this.history.remove(this.history.size() - 1);
@@ -90,7 +87,6 @@ class REPL {
             }
         }
     }
-
 
     private void displayLogo() {
         System.out.println();
@@ -115,7 +111,6 @@ class REPL {
         System.out.println("\\help - display this help");
         System.out.println();
     }
-
 
     private synchronized RunResult evalAll() {
         StringBuilder sb = new StringBuilder();

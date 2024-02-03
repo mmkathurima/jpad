@@ -3,7 +3,6 @@ package com.timestored.sqldash;
 import com.timestored.sqldash.chart.ChartTheme;
 import com.timestored.sqldash.chart.ViewStrategyFactory;
 
-
 public class DefaultStyleScheme
         implements StyleScheme {
     private static final ChartTheme vsTheme = ViewStrategyFactory.getThemes().get(0);

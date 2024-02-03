@@ -14,7 +14,6 @@ import java.awt.BorderLayout;
 import java.io.IOException;
 import java.util.List;
 
-
 public class ChartResultPanel
         extends PanelResultRenderer {
     private static final long serialVersionUID = 1L;
@@ -24,30 +23,28 @@ public class ChartResultPanel
     public ChartResultPanel() {
         super("chartResult", Theme.CIcon.CHART_CURVE.get16());
         this.app = new ChartWidget();
-        resetContent();
+        this.resetContent();
     }
 
     private void resetContent() {
-        removeAll();
+        this.removeAll();
         JPanel configPanel = Theme.getVerticalBoxPanel();
         configPanel.add(new ChartControlPanel(this.app));
 
-        setLayout(new BorderLayout());
-        add(configPanel, "West");
+        this.setLayout(new BorderLayout());
+        this.add(configPanel, "West");
 
         JPanel p = new JPanel(new BorderLayout(10, 10));
         p.add(this.app.getPanel(), "Center");
-        add(p, "Center");
-        repaint();
+        this.add(p, "Center");
+        this.repaint();
     }
-
 
     public void resultReturned(RunResult runResult) {
         this.app.setIgnoreConfigChanges(true);
         Queryable q = new Queryable("", "");
         this.app.setQueryable(q);
         this.app.setIgnoreConfigChanges(false);
-
 
         List<CapturedObject> dumps = runResult.getDumps();
         if (dumps.size() > 0) {

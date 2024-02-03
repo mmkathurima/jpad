@@ -15,7 +15,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-
 public class InfoLink
         extends JLabel {
     private static final long serialVersionUID = 1L;
@@ -30,18 +29,15 @@ public class InfoLink
         return actualUrl;
     }
 
-
     public static JLabel getLabel(String title, String text, TimeStored.Page webPage, boolean showTitleText) {
         return getLabel(title, text, webPage.niceUrl(), webPage.url(), true);
     }
 
-
-    private static JLabel getLabel(String title, String text, String niceWebUrl, final String actualWebUrl, boolean showTitleText) {
+    private static JLabel getLabel(String title, String text, String niceWebUrl, String actualWebUrl, boolean showTitleText) {
         JLabel l = new JLabel(Theme.CIcon.INFO.get());
         if (text != null && text.length() > 0) {
             l.setToolTipText("<html><b>" + title + "</b>" + "<br><br>" + text + "<br><br><a href='" + actualWebUrl + "' >" + niceWebUrl + "</a></html>");
         }
-
 
         if (showTitleText) {
             l.setText(title);
@@ -58,21 +54,17 @@ public class InfoLink
         return l;
     }
 
-
     public static JButton getButton(String title, String text, TimeStored.Page webPage) {
         return getButton(title, text, webPage.niceUrl(), webPage.url());
     }
 
-
-    private static JButton getButton(String title, String text, String niceWebUrl, final String actualWebUrl) {
+    private static JButton getButton(String title, String text, String niceWebUrl, String actualWebUrl) {
         JButton b = new JButton(Theme.CIcon.INFO.get());
         if (text != null && text.length() > 0) {
             b.setToolTipText("<html><b>" + title + "</b>" + "<br><br>" + text + "<br><br><a href='" + actualWebUrl + "' >" + niceWebUrl + "</a></html>");
         }
 
-
         b.setText(title);
-
 
         if (HtmlUtils.isBrowseSupported()) {
             b.setCursor(Cursor.getPredefinedCursor(12));
@@ -85,11 +77,9 @@ public class InfoLink
         return b;
     }
 
-
     public static void showMessageDialog(Component parent, String htmlBody, String title) {
         JLabel label = new JLabel();
         Font font = label.getFont();
-
 
         String style = "font-family:" + font.getFamily() + ";" + "font-weight:" + (font.isBold() ? "bold" : "normal") + ";" +
                 "font-size:" + font.getSize() + "pt;";

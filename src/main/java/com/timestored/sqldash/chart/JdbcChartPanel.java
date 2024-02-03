@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class JdbcChartPanel
         extends JPanel {
     private static final Logger LOG = Logger.getLogger(JdbcChartPanel.class.getName());
@@ -26,26 +25,24 @@ public class JdbcChartPanel
 
     private UpdateableView updateableView;
 
-    private ResultSet prevRS = null;
-    private Exception e = null;
+    private ResultSet prevRS;
+    private Exception e;
 
-    private ChartFormatException lastChartFormatException = null;
-    private ChartResultSet prevCRS = null;
-
+    private ChartFormatException lastChartFormatException;
+    private ChartResultSet prevCRS;
 
     JdbcChartPanel(ViewStrategy viewCreator, ChartTheme theme) {
         this.viewCreator = Preconditions.checkNotNull(viewCreator);
         this.theme = Preconditions.checkNotNull(theme);
         this.updateableView = viewCreator.getView(theme);
 
-        setLayout(new GridLayout(1, 0));
-        add(this.updateableView.getComponent());
+        this.setLayout(new GridLayout(1, 0));
+        this.add(this.updateableView.getComponent());
     }
 
     private static Component getChartFormatExplaination(ViewStrategy viewStrategy, ChartFormatException cfe) {
         String text = viewStrategy.getFormatExplainationHtml();
         JEditorPane editPane = new JEditorPane("text/html", "<html>" + text + "</html>");
-
 
         JPanel wrapPanel = Theme.getVerticalBoxPanel();
         wrapPanel.add(Theme.getHeader(viewStrategy.getDescription()));
@@ -67,23 +64,22 @@ public class JdbcChartPanel
     public void setTheme(ChartTheme theme) {
         if (!this.theme.equals(theme)) {
             this.theme = Preconditions.checkNotNull(theme);
-            refreshGUI();
+            this.refreshGUI();
         }
     }
 
     public void setViewStrategy(ViewStrategy viewCreator) {
         if (!this.viewCreator.equals(viewCreator)) {
             this.viewCreator = Preconditions.checkNotNull(viewCreator);
-            refreshGUI();
+            this.refreshGUI();
         }
     }
 
     private void refreshGUI() {
         LOG.fine("JdbcChartPanel refreshGUI()");
 
-
         if (EventQueue.isDispatchThread()) {
-            runn();
+            this.runn();
         } else {
 
             try {
@@ -104,7 +100,6 @@ public class JdbcChartPanel
             this.updateableView = this.viewCreator.getView(this.theme);
             if (this.prevRS != null) {
 
-
                 this.lastChartFormatException = null;
                 this.updateableView.update(this.prevRS, this.prevCRS);
                 c = this.updateableView.getComponent();
@@ -120,23 +115,22 @@ public class JdbcChartPanel
             } else {
                 c = Theme.getTextArea("noRes", "No table returned.");
             }
-
         } catch (ChartFormatException cfe) {
             this.lastChartFormatException = cfe;
             c = getChartFormatExplaination(this.viewCreator, cfe);
         } catch (IllegalArgumentException iae) {
-            String txt = "Problem updating view from RecordSet";
+            final String txt = "Problem updating view from RecordSet";
             LOG.log(Level.SEVERE, txt, iae);
             c = Theme.getErrorBox("RS Error", Theme.getTextArea("errTxt", txt));
         } catch (NullPointerException npe) {
-            String txt = "Problem updating view from RecordSet";
+            final String txt = "Problem updating view from RecordSet";
             LOG.log(Level.SEVERE, txt, npe);
             c = Theme.getErrorBox("RS Error", Theme.getTextArea("errTxt", txt));
         }
 
-        removeAll();
-        add(c);
-        revalidate();
+        this.removeAll();
+        this.add(c);
+        this.revalidate();
     }
 
     public void update(ResultSet resultSet) {
@@ -154,15 +148,14 @@ public class JdbcChartPanel
                 LOG.log(Level.WARNING, "could not create chartResultSet ", e);
             }
         }
-        refreshGUI();
+        this.refreshGUI();
     }
-
 
     public void update(Exception e) {
         this.prevRS = null;
         this.e = Preconditions.checkNotNull(e);
         this.prevCRS = null;
-        refreshGUI();
+        this.refreshGUI();
     }
 
     public ChartFormatException getLastChartFormatException() {

@@ -1,6 +1,5 @@
 package io.jpad.model;
 
-
 import javax.swing.JButton;
 import javax.swing.JInternalFrame;
 import javax.swing.JScrollPane;
@@ -17,7 +16,6 @@ import java.io.PipedInputStream;
 import java.io.PipedOutputStream;
 import java.io.PrintStream;
 
-
 public class Console
         extends JInternalFrame
         implements InternalFrameListener, ActionListener, Runnable {
@@ -29,10 +27,9 @@ public class Console
     private Thread reader2;
     private boolean quit;
 
-
     public Console() {
 
-        setTitle("Console");
+        this.setTitle("Console");
 
         this.textArea = new JTextArea();
 
@@ -42,34 +39,32 @@ public class Console
 
         JButton button = new JButton("Effacer");
 
-        getContentPane().setLayout(new BorderLayout());
+        this.getContentPane().setLayout(new BorderLayout());
 
-        getContentPane().add(new JScrollPane(this.textArea), "Center");
+        this.getContentPane().add(new JScrollPane(this.textArea), "Center");
 
-        getContentPane().add(button, "South");
+        this.getContentPane().add(button, "South");
 
-        setVisible(true);
+        this.setVisible(true);
 
-        addInternalFrameListener(this);
+        this.addInternalFrameListener(this);
 
         button.addActionListener(this);
 
-        redirect();
+        this.redirect();
 
-        setDefaultCloseOperation(1);
+        this.setDefaultCloseOperation(1);
 
-        setSize(300, 200);
+        this.setSize(300, 200);
 
-        setClosable(true);
+        this.setClosable(true);
 
-        setIconifiable(true);
+        this.setIconifiable(true);
 
-        setMaximizable(true);
+        this.setMaximizable(true);
 
-        setResizable(true);
-
+        this.setResizable(true);
     }
-
 
     private void redirect() {
 
@@ -78,41 +73,32 @@ public class Console
             PipedOutputStream pout = new PipedOutputStream(this.pin);
 
             System.setOut(new PrintStream(pout, true));
-
         } catch (IOException io) {
 
             this.textArea.append("Couldn't redirect STDOUT to this console\n" + io
                     .getMessage());
-
         } catch (SecurityException se) {
 
             this.textArea.append("Couldn't redirect STDOUT to this console\n" + se
                     .getMessage());
-
         }
-
 
         try {
 
             PipedOutputStream pout2 = new PipedOutputStream(this.pin2);
 
             System.setErr(new PrintStream(pout2, true));
-
         } catch (IOException io) {
 
             this.textArea.append("Couldn't redirect STDERR to this console\n" + io
                     .getMessage());
-
         } catch (SecurityException se) {
 
             this.textArea.append("Couldn't redirect STDERR to this console\n" + se
                     .getMessage());
-
         }
 
-
         this.quit = false;
-
 
         this.reader = new Thread(this);
 
@@ -131,16 +117,12 @@ public class Console
         this.errorThrower.setDaemon(true);
 
         this.errorThrower.start();
-
     }
-
 
     public synchronized void actionPerformed(ActionEvent evt) {
 
         this.textArea.setText("");
-
     }
-
 
     public synchronized void run() {
 
@@ -150,61 +132,48 @@ public class Console
 
                 try {
 
-                    wait(100L);
-
+                    this.wait(100L);
                 } catch (InterruptedException ie) {
                 }
 
-
                 if (this.pin.available() != 0) {
 
-                    String input = readLine(this.pin);
+                    String input = this.readLine(this.pin);
 
                     this.textArea.append(input);
-
                 }
 
                 if (this.quit) {
 
                     return;
-
                 }
-
             }
 
             while (Thread.currentThread() == this.reader2) {
 
                 try {
 
-                    wait(100L);
-
+                    this.wait(100L);
                 } catch (InterruptedException ie) {
                 }
 
-
                 if (this.pin2.available() != 0) {
 
-                    String input = readLine(this.pin2);
+                    String input = this.readLine(this.pin2);
 
                     this.textArea.append(input);
-
                 }
 
                 if (this.quit)
                     return;
-
             }
-
         } catch (Exception e) {
 
             this.textArea.append("\nConsole reports an Internal error.");
 
             this.textArea.append("The error is: " + e);
-
         }
-
     }
-
 
     protected synchronized String readLine(PipedInputStream in) throws IOException {
 
@@ -222,88 +191,68 @@ public class Console
             in.read(b);
 
             input = input + new String(b, 0, b.length);
-
         } while (!input.endsWith("\n") && !input.endsWith("\r\n") && !this.quit);
 
         return input;
-
     }
-
 
     public void windowOpened(WindowEvent e) {
     }
 
-
     public void windowIconified(WindowEvent e) {
     }
-
 
     public void windowDeiconified(WindowEvent e) {
     }
 
-
     public void windowActivated(WindowEvent e) {
     }
-
 
     public void windowDeactivated(WindowEvent e) {
     }
 
-
     public void internalFrameOpened(InternalFrameEvent e) {
     }
 
-
     public void internalFrameClosing(InternalFrameEvent e) {
 
-        setVisible(false);
-
+        this.setVisible(false);
     }
-
 
     public void internalFrameClosed(InternalFrameEvent e) {
 
         this.quit = true;
 
-        notifyAll();
+        this.notifyAll();
 
         try {
 
             this.reader.join(1000L);
 
             this.pin.close();
-
         } catch (Exception ex) {
         }
-
 
         try {
 
             this.reader2.join(1000L);
 
             this.pin2.close();
-
         } catch (Exception ex) {
         }
-
     }
-
 
     public void internalFrameIconified(InternalFrameEvent e) {
     }
 
-
     public void internalFrameDeiconified(InternalFrameEvent e) {
     }
-
 
     public void internalFrameActivated(InternalFrameEvent e) {
     }
 
-
     public void internalFrameDeactivated(InternalFrameEvent e) {
     }
-
 }
 
 

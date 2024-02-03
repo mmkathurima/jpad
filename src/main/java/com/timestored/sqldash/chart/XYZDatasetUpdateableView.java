@@ -9,7 +9,6 @@ import java.awt.Component;
 import java.sql.ResultSet;
 import java.util.List;
 
-
 class XYZDatasetUpdateableView
         implements UpdateableView {
     private final ChartPanel chartPanel;
@@ -32,7 +31,6 @@ class XYZDatasetUpdateableView
         }
         dataset.addSeries("", vals);
 
-
         return dataset;
     }
 
@@ -47,7 +45,6 @@ class XYZDatasetUpdateableView
 
         add(chartResultSet, this.dataset);
 
-
         XYPlot xyplot = this.chartPanel.getChart().getXYPlot();
         if (xyplot != null) {
 
@@ -55,7 +52,6 @@ class XYZDatasetUpdateableView
             double maxY = 0.0D;
             double minX = 0.0D;
             double maxX = 0.0D;
-
 
             for (int series = 0; series < this.dataset.getSeriesCount(); series++) {
                 for (int item = 0; item < this.dataset.getItemCount(series); item++) {

@@ -33,7 +33,7 @@ class ActionCommand
     }
 
     public String toString() {
-        return getTitle();
+        return this.getTitle();
     }
 
     public String getTitleAdditional() {

@@ -11,7 +11,6 @@ import java.awt.EventQueue;
 import java.awt.Font;
 import java.awt.event.MouseWheelListener;
 
-
 public class ScrollingTextArea
         extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -20,9 +19,8 @@ public class ScrollingTextArea
     private final JScrollPane scrollpane;
     private int maxLength = 8000;
 
-
     public ScrollingTextArea(Color fgColor, Color bgColor) {
-        setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());
         this.textArea = new JTextArea();
         this.textArea.setName("consolePanel-textArea");
         this.textArea.setEditable(false);
@@ -31,7 +29,7 @@ public class ScrollingTextArea
         caret.setUpdatePolicy(2);
         this.textArea.setForeground(fgColor);
         this.scrollpane = new JScrollPane(this.textArea);
-        add(this.scrollpane, "Center");
+        this.add(this.scrollpane, "Center");
     }
 
     public Font getTextareaFont() {
@@ -45,7 +43,6 @@ public class ScrollingTextArea
     public String getText() {
         return this.textArea.getText();
     }
-
 
     public void setMaxLength(int maxLength) {
         this.maxLength = maxLength;
@@ -63,7 +60,7 @@ public class ScrollingTextArea
         this.textArea.addMouseWheelListener(l);
     }
 
-    public void appendMessage(final String msg) {
+    public void appendMessage(String msg) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 String t = ScrollingTextArea.this.textArea.getText();

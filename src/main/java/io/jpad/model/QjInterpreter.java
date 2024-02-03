@@ -1,6 +1,5 @@
 package io.jpad.model;
 
-
 import javax.tools.*;
 import java.io.File;
 import java.io.IOException;
@@ -12,46 +11,36 @@ import java.net.URLClassLoader;
 import java.util.Arrays;
 import java.util.Locale;
 
-
 class QjInterpreter {
     public static String classOutputFolder = "tt";
-
 
     public static boolean compile(Iterable<? extends JavaFileObject> files) {
 
         JavaCompiler compiler = ToolProvider.getSystemJavaCompiler();
 
-
         MyDiagnosticListener c = new MyDiagnosticListener();
 
         StandardJavaFileManager fileManager = compiler.getStandardFileManager(c, Locale.ENGLISH, null);
-
 
         Iterable<String> options = Arrays.asList("-d", classOutputFolder);
 
         JavaCompiler.CompilationTask task = compiler.getTask(null, fileManager, c, options, null, files);
 
         return task.call().booleanValue();
-
     }
-
 
     public static void runIt(String classname, String methodName) {
 
         File file = new File(classOutputFolder);
-
 
         try {
             URL url = file.toURL();
 
             URL[] urls = {url};
 
-
             ClassLoader loader = new URLClassLoader(urls);
 
-
             Class<?> thisClass = loader.loadClass(classname);
-
 
             Class[] params = new Class[0];
 
@@ -61,17 +50,13 @@ class QjInterpreter {
 
             Method thisMethod = thisClass.getDeclaredMethod(methodName, params);
 
-
             thisMethod.invoke(instance, paramsObj);
         } catch (MalformedURLException e) {
         } catch (ClassNotFoundException e) {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
-
-
     }
-
 
     public static boolean deleteDir(File dir) {
 
@@ -86,18 +71,12 @@ class QjInterpreter {
                 if (!success) {
 
                     return false;
-
                 }
-
             }
-
         }
 
-
         return dir.delete();
-
     }
-
 
     public static class MyDiagnosticListener
             implements DiagnosticListener<JavaFileObject> {
@@ -106,35 +85,25 @@ class QjInterpreter {
 
             System.out.println("Message->" + diagnostic
                     .getMessage(Locale.ENGLISH));
-
         }
-
     }
-
 
     public static class InMemoryJavaFileObject
             extends SimpleJavaFileObject {
-        private String contents = null;
-
+        private final String contents;
 
         public InMemoryJavaFileObject(String className, String contents) throws Exception {
 
             super(URI.create("string:///" + className.replace('.', '/') + JavaFileObject.Kind.SOURCE.extension), JavaFileObject.Kind.SOURCE);
 
-
             this.contents = contents;
-
         }
-
 
         public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException {
 
             return this.contents;
-
         }
-
     }
-
 }
 
 

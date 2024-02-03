@@ -21,7 +21,6 @@ import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class ConnectionManagerDialog
         extends JDialog
         implements ActionListener {
@@ -59,13 +58,12 @@ public class ConnectionManagerDialog
     private final JComboBox folderComboBox;
     private ServerConfig serverConfig;
 
-    public ConnectionManagerDialog(ConnectionManager connectionManager, JFrame parent, String serverName, final List<JdbcTypes> jdbcTypesShown) {
+    public ConnectionManagerDialog(ConnectionManager connectionManager, JFrame parent, String serverName, List<JdbcTypes> jdbcTypesShown) {
         super(parent, "Server Properties");
-        setIconImage(Theme.CIcon.SERVER_EDIT.get().getImage());
+        this.setIconImage(Theme.CIcon.SERVER_EDIT.get().getImage());
         this.serverName = serverName;
         this.conMan = Preconditions.checkNotNull(connectionManager);
         this.jdbcTypesShown = jdbcTypesShown;
-
 
         this.serverConfig = null;
         if (serverName != null) {
@@ -75,16 +73,14 @@ public class ConnectionManagerDialog
             }
         }
 
-
-        setResizable(false);
-        setSize(400, 450);
-        setLocationRelativeTo(parent);
-        setLayout(new BorderLayout());
-        setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
+        this.setResizable(false);
+        this.setSize(400, 450);
+        this.setLocationRelativeTo(parent);
+        this.setLayout(new BorderLayout());
+        this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         JPanel cp = new JPanel();
         cp.setLayout(new BoxLayout(cp, 3));
         SwingUtils.addEscapeCloseListener(this);
-
 
         JPanel connPanel = new JPanel();
         connPanel.setBorder(new TitledBorder(null, "Connection", 4, 2, null, null));
@@ -110,10 +106,8 @@ public class ConnectionManagerDialog
         }
         this.serverTypeComboBox = new JComboBox<String>(names);
 
-
-        String stLbl = "Server Type:";
+        final String stLbl = "Server Type:";
         connPanel.add(INPUT_LABELLER.get(stLbl, this.serverTypeComboBox, "serverTypeDropdown"));
-
 
         this.databasePanel = new JPanel(new FlowLayout(0));
         this.serverTypeComboBox.addActionListener(new ActionListener() {
@@ -126,12 +120,10 @@ public class ConnectionManagerDialog
         JdbcTypes t = jdbcTypesShown.get(this.serverTypeComboBox.getSelectedIndex());
         this.databasePanel.setVisible(t.isDatabaseRequired());
 
-
         connPanel.add(this.databasePanel);
 
         this.databaseTextField = new HighlightTextField("");
         this.databasePanel.add(INPUT_LABELLER.get(Msg.get(Msg.Key.DATABASE) + ":", this.databaseTextField, "dbField"));
-
 
         JPanel loginPanel = new JPanel();
         loginPanel.setBorder(new TitledBorder(null, "Login", 4, 2, null, null));
@@ -144,19 +136,16 @@ public class ConnectionManagerDialog
         loginPanel.add(INPUT_LABELLER.get(Msg.get(Msg.Key.PASSWORD) + ":", this.passwordTextField, "passwordField"));
         this.passwordTextField.setColumns(20);
 
-
         JPanel nameColorPanel = new JPanel();
         nameColorPanel.setBorder(new EtchedBorder(1, null, null));
         nameColorPanel.setLayout(new BoxLayout(nameColorPanel, 3));
 
-
         this.nameTextField = new HighlightTextField("");
-        String nameLbl = "<html><b>Name:</b></html>";
+        final String nameLbl = "<html><b>Name:</b></html>";
         nameColorPanel.add(INPUT_LABELLER.get(nameLbl, this.nameTextField, "serverNameField"));
 
         this.colorChooserPanel = new ColorChooserPanel(this);
         nameColorPanel.add(INPUT_LABELLER.get("Background:", this.colorChooserPanel, "colorButton"));
-
 
         this.folderComboBox = new JComboBox();
         this.folderComboBox.setEditable(true);
@@ -164,7 +153,6 @@ public class ConnectionManagerDialog
         JPanel buttonPanel = new JPanel();
 
         buttonPanel.add(Theme.makeButton((this.serverConfig == null) ? Msg.get(Msg.Key.ADD) : Msg.get(Msg.Key.SAVE), this));
-
 
         if (this.serverConfig != null) {
             ActionListener deleteListener = new ActionListener() {
@@ -178,16 +166,15 @@ public class ConnectionManagerDialog
                             ConnectionManagerDialog.this.closeDialog();
                         }
                     } catch (Exception e) {
-                        String msg = "Possible problem deleting server.";
+                        final String msg = "Possible problem deleting server.";
                         JOptionPane.showMessageDialog(parent, msg, "Delete error", 0);
 
-                        ConnectionManagerDialog.LOG.log(Level.SEVERE, msg, e);
+                        LOG.log(Level.SEVERE, msg, e);
                     }
                 }
             };
             buttonPanel.add(Theme.makeButton(Msg.get(Msg.Key.DELETE), deleteListener));
         }
-
 
         Action dispatchTest = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
@@ -195,21 +182,19 @@ public class ConnectionManagerDialog
 
                 try {
                     ConnectionManagerDialog.this.conMan.testConnection(ConnectionManagerDialog.this.getServerConfig());
-                    String message = "Connection works";
+                    final String message = "Connection works";
                     JOptionPane.showMessageDialog(parent, message);
                 } catch (IOException ioe) {
-                    String message = "Connection does not work.";
+                    final String message = "Connection does not work.";
                     String fullMsg = TextWrapper.forWidth(80).hard().wrap(message + " " + ioe);
-
 
                     JOptionPane.showMessageDialog(parent, fullMsg, message, 2);
 
-                    ConnectionManagerDialog.LOG.log(Level.INFO, message);
+                    LOG.log(Level.INFO, message);
                 }
             }
         };
         buttonPanel.add(Theme.makeButton("Test", dispatchTest));
-
 
         Action dispatchClose = new AbstractAction() {
             public void actionPerformed(ActionEvent e) {
@@ -218,7 +203,6 @@ public class ConnectionManagerDialog
             }
         };
 
-
         buttonPanel.add(Theme.makeButton(Msg.get(Msg.Key.CANCEL), dispatchClose));
 
         cp.add(connPanel);
@@ -226,14 +210,12 @@ public class ConnectionManagerDialog
         cp.add(nameColorPanel);
         cp.add(INPUT_LABELLER.get("Folder:", this.folderComboBox, "folderComboBox"));
 
-
-        add(cp, "Center");
+        this.add(cp, "Center");
         buttonPanel.setAlignmentX(0.5F);
-        add(buttonPanel, "South");
-
+        this.add(buttonPanel, "South");
 
         SwingUtils.addEscapeCloseListener(this);
-        showConnection(this.serverConfig);
+        this.showConnection(this.serverConfig);
     }
 
     protected void closeDialog() {
@@ -243,7 +225,6 @@ public class ConnectionManagerDialog
 
     private void showConnection(ServerConfig sc) {
         if (sc != null) {
-
 
             int idx = this.jdbcTypesShown.indexOf(sc.getJdbcType());
             if (idx >= 0) {
@@ -258,7 +239,7 @@ public class ConnectionManagerDialog
             this.databaseTextField.setText(sc.getDatabase());
             this.colorChooserPanel.setColor(sc.getColor());
             this.databasePanel.setVisible(sc.getJdbcType().isDatabaseRequired());
-            setFolder(sc.getFolder());
+            this.setFolder(sc.getFolder());
         } else {
 
             this.folderComboBox.setSelectedItem("");
@@ -275,7 +256,6 @@ public class ConnectionManagerDialog
         String folder = (this.folderComboBox != null) ? (String) this.folderComboBox.getSelectedItem() : "";
         String name = this.nameTextField.getText();
 
-
         String database = this.databaseTextField.getText();
         Color c = this.colorChooserPanel.getColor();
 
@@ -285,11 +265,11 @@ public class ConnectionManagerDialog
     public void actionPerformed(ActionEvent e) {
         try {
             if (this.serverConfig != null) {
-                this.conMan.updateServer(this.serverName, getServerConfig());
+                this.conMan.updateServer(this.serverName, this.getServerConfig());
             } else {
-                this.conMan.addServer(getServerConfig());
+                this.conMan.addServer(this.getServerConfig());
             }
-            closeDialog();
+            this.closeDialog();
         } catch (IllegalArgumentException ex) {
             String msg = "Error saving server changes. \r\n" + ex.getMessage();
             JOptionPane.showMessageDialog(this, msg, "Save error", 0);
@@ -311,14 +291,14 @@ public class ConnectionManagerDialog
     private static class HighlightTextField
             extends JTextField {
         public HighlightTextField(String text) {
-            setText(text);
-            setColumns(20);
+            this.setText(text);
+            this.setColumns(20);
         }
 
         protected void processFocusEvent(FocusEvent e) {
             super.processFocusEvent(e);
             if (e.getID() == 1004)
-                selectAll();
+                this.selectAll();
         }
     }
 }

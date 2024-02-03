@@ -5,7 +5,6 @@ import javax.swing.KeyStroke;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 
-
 public abstract class ShortcutAction
         extends AbstractAction {
     private static final long serialVersionUID = 1L;
@@ -18,18 +17,17 @@ public abstract class ShortcutAction
         this(text, icon, desc, null, 0);
     }
 
-
     public ShortcutAction(String text, Icon icon, String desc, Integer mnemonic, int acceleratorKey) {
         super(text, (icon != null) ? icon.get16() : null);
-        putValue("ShortDescription", desc);
+        this.putValue("ShortDescription", desc);
         if (mnemonic != null) {
-            putValue("MnemonicKey", mnemonic);
+            this.putValue("MnemonicKey", mnemonic);
         }
 
         if (0 != acceleratorKey) {
             KeyStroke k = KeyStroke.getKeyStroke(acceleratorKey, Toolkit.getDefaultToolkit().getMenuShortcutKeyMask());
 
-            putValue("AcceleratorKey", k);
+            this.putValue("AcceleratorKey", k);
         }
     }
 

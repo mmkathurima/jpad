@@ -4,7 +4,6 @@ import com.google.common.base.MoreObjects;
 
 import java.util.Date;
 
-
 public class DividendDatapoint {
     private final Date date;
     private final double div;

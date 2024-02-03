@@ -27,8 +27,9 @@ import com.timestored.theme.AboutDialog;
 import com.timestored.theme.Theme;
 import com.timestored.tscore.persistance.KeyInterface;
 import com.timestored.tscore.persistance.OpenDocumentPersister;
-import com.timestored.tscore.persistance.PersistanceInterface;
+import com.timestored.tscore.persistance.PersistenceInterface;
 import io.jpad.model.*;
+import org.fife.ui.rtextarea.RTextArea;
 import org.simplericity.macify.eawt.ApplicationEvent;
 
 import javax.swing.*;
@@ -54,7 +55,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.BackingStoreException;
 
-
 public class JPadFrame
         extends JFrame {
     static final com.timestored.theme.Icon APP_ICON = Theme.CIcon.JPAD;
@@ -73,36 +73,32 @@ public class JPadFrame
     private OpenDocumentPersister persistDocListener;
     private JMenu fileMenu;
 
-    public JPadFrame(final OpenDocumentsModel openDocumentsModel, JEngine jEngine) {
+    public JPadFrame(OpenDocumentsModel openDocumentsModel, JEngine jEngine) {
         LOG.info("Starting JPadFrame Constructor");
         this.openDocumentsModel = Preconditions.checkNotNull(openDocumentsModel);
         this.jEngine = Preconditions.checkNotNull(jEngine);
         this.documentActions = new DocumentActions(openDocumentsModel, "jpad");
 
-
         Mac.configureIfMac(new JavaNotepadAppListener(), APP_ICON);
-        setTransferHandler((new FileDropDocumentHandler()).addListener(this.documentActions));
+        this.setTransferHandler((new FileDropDocumentHandler()).addListener(this.documentActions));
         openDocumentsModel.addListener(new OpenDocumentsModel.Adapter() {
             public void docSelected(Document document) {
                 JPadFrame.this.setFrameTitle();
             }
         });
-        final JPPersistance persistance = JPPersistance.INSTANCE;
+        final JPPersistence persistance = JPPersistence.INSTANCE;
 
-        final boolean firstEverOpen = persistance.getBoolean(JPPersistance.Key.FIRST_OPEN, true);
+        boolean firstEverOpen = persistance.getBoolean(JPPersistence.Key.FIRST_OPEN, true);
         if (firstEverOpen) {
-            persistance.putBoolean(JPPersistance.Key.FIRST_OPEN, false);
+            persistance.putBoolean(JPPersistence.Key.FIRST_OPEN, false);
         }
 
-
-        setTitle("JPad");
-        setLayout(new BorderLayout(4, 4));
-        setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
-        setIconImage(APP_ICON.get().getImage());
-
+        this.setTitle("JPad");
+        this.setLayout(new BorderLayout(4, 4));
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
+        this.setIconImage(APP_ICON.get().getImage());
 
         openDocumentsModel.forceKeyboardShortcutOverrides();
-
 
         this.frontend = new DockFrontend(this);
         SplitDockStation station = new SplitDockStation();
@@ -110,7 +106,7 @@ public class JPadFrame
         this.frontend.setShowHideAction(true);
 
         JPanel codeEditorPanel = new JPanel(new BorderLayout());
-        final DocumentTabbedPane documentTabbedPane = new DocumentTabbedPane(this.documentActions, openDocumentsModel, this);
+        DocumentTabbedPane documentTabbedPane = new DocumentTabbedPane(this.documentActions, openDocumentsModel, this);
         codeEditorPanel.add(documentTabbedPane, "Center");
 
         jEngine.addListener(new JEngineAdapter() {
@@ -119,16 +115,14 @@ public class JPadFrame
             }
         });
 
-
-        DefaultDockable documentsDockable = createDockable(Msg.get(Msg.Key.DOCUMENTS), Theme.CIcon.PAGE_CODE
+        DefaultDockable documentsDockable = this.createDockable(Msg.get(Msg.Key.DOCUMENTS), Theme.CIcon.PAGE_CODE
                 .get16(), codeEditorPanel);
 
-
         File egDir = new File("examples");
-        if (!egDir.exists() && isWindows()) {
+        if (!egDir.exists() && this.isWindows()) {
             egDir = new File("C:\\Program Files (x86)\\TimeStored.com\\JPad\\examples");
         }
-        DefaultDockable egFileTreeDockable = getFilePanel(egDir, Msg.get(Msg.Key.EXAMPLE_SCRIPTS), false);
+        DefaultDockable egFileTreeDockable = this.getFilePanel(egDir, Msg.get(Msg.Key.EXAMPLE_SCRIPTS), false);
         JPadConfig.SCRIPTS_FOLDER = Path.of(FileSystemView.getFileSystemView().getDefaultDirectory().getPath(), "EspressoPad").toFile();
         if (!JPadConfig.SCRIPTS_FOLDER.exists()) {
             try {
@@ -137,24 +131,21 @@ public class JPadFrame
                 throw new RuntimeException(e);
             }
         }
-        DefaultDockable myDocsFileTreeDockable = getFilePanel(JPadConfig.SCRIPTS_FOLDER, Msg.get(Msg.Key.MY_SCRIPTS), true);
+        DefaultDockable myDocsFileTreeDockable = this.getFilePanel(JPadConfig.SCRIPTS_FOLDER, Msg.get(Msg.Key.MY_SCRIPTS), true);
 
-
-        DefaultDockable consoleDockable = addRenderer(Msg.get(Msg.Key.CONSOLE), new ConsolePanel());
-        DefaultDockable javapDockable = addRenderer(Msg.get(Msg.Key.BYTE_CODE), new BytecodeOutputPanel());
-        DefaultDockable htmlDockable = addRenderer(Msg.get(Msg.Key.RESULT), new HtmlResultPanel());
-        DefaultDockable chartResultDockable = addRenderer(Msg.get(Msg.Key.CHART), new ChartResultPanel());
-
+        DefaultDockable consoleDockable = this.addRenderer(Msg.get(Msg.Key.CONSOLE), new ConsolePanel());
+        DefaultDockable javapDockable = this.addRenderer(Msg.get(Msg.Key.BYTE_CODE), new BytecodeOutputPanel());
+        DefaultDockable htmlDockable = this.addRenderer(Msg.get(Msg.Key.RESULT), new HtmlResultPanel());
+        DefaultDockable chartResultDockable = this.addRenderer(Msg.get(Msg.Key.CHART), new ChartResultPanel());
 
         jEngine.registerResultRenderer(new JpadCodeResultRenderer());
-
 
         List<Class<ResultRenderer>> pluggedinRenderers = ClassFinder.findClasses(clsName -> clsName.endsWith("JPadPlugin"), ResultRenderer.class);
         List<DefaultDockable> pluggedinDockables = Lists.newArrayListWithExpectedSize(pluggedinRenderers.size());
         for (Class<ResultRenderer> cls : pluggedinRenderers) {
             try {
                 ResultRenderer rr = cls.newInstance();
-                pluggedinDockables.add(addRenderer(rr.getTabName(), rr));
+                pluggedinDockables.add(this.addRenderer(rr.getTabName(), rr));
             } catch (InstantiationException | IllegalAccessException e) {
                 LOG.log(Level.SEVERE, "Could not load plugin from class: " + cls.getName(), e);
             }
@@ -162,8 +153,7 @@ public class JPadFrame
 
         DefaultDockable generatedCodeDockable = null;
 
-        generatedCodeDockable = addRenderer(Msg.get(Msg.Key.FILE), new GeneratedCodePanel());
-
+        generatedCodeDockable = this.addRenderer(Msg.get(Msg.Key.FILE), new GeneratedCodePanel());
 
         JPadActions commonActions = new JPadActions(jEngine, documentTabbedPane, persistance, this, openDocumentsModel, this.runConfig);
 
@@ -190,27 +180,23 @@ public class JPadFrame
                        }
         );
 
-        this.menuBar = getBasicMenuBar(commonActions, this.documentActions);
+        this.menuBar = this.getBasicMenuBar(commonActions, this.documentActions);
         this.menuBar.add(panelsMenu);
-        this.menuBar.add(getHelpMenu());
-        setJMenuBar(this.menuBar);
-
+        this.menuBar.add(this.getHelpMenu());
+        this.setJMenuBar(this.menuBar);
 
         DockableSplitDockTree tree = new DockableSplitDockTree();
 
-
-        SplitDockTree<Dockable>.Key docsGroup = putTree(tree, documentsDockable);
+        SplitDockTree<Dockable>.Key docsGroup = this.putTree(tree, documentsDockable);
 
         List<Dockable> outputGrp = Lists.newArrayList(new Dockable[]{htmlDockable, consoleDockable, chartResultDockable, javapDockable, generatedCodeDockable});
         outputGrp.addAll(pluggedinDockables);
-        SplitDockTree<Dockable>.Key consoleGroup = putTree(tree, outputGrp.toArray(new Dockable[outputGrp.size()]));
+        SplitDockTree<Dockable>.Key consoleGroup = this.putTree(tree, outputGrp.toArray(new Dockable[outputGrp.size()]));
         SplitDockTree<Dockable>.Key editorTree = tree.vertical(docsGroup, consoleGroup, 0.75D);
-
 
         SplitDockTree<Dockable>.Key root = editorTree;
 
-
-        SplitDockTree<Dockable>.Key sourceBrowserTree = putTree(tree, myDocsFileTreeDockable, egFileTreeDockable);
+        SplitDockTree<Dockable>.Key sourceBrowserTree = this.putTree(tree, myDocsFileTreeDockable, egFileTreeDockable);
         if (sourceBrowserTree != null) {
             root = tree.horizontal(sourceBrowserTree, editorTree, 0.25D);
         }
@@ -218,44 +204,38 @@ public class JPadFrame
         tree.root(root);
         station.dropTree(tree);
 
-
         this.defaultLayoutXml = DockerHelper.getLayout(this.frontend);
 
+        this.setLayout(new BorderLayout());
+        this.add(this.getToolbar(commonActions, this.documentActions), "North");
+        this.add(station, "Center");
+        this.add(getStatusBar(jEngine), "South");
 
-        setLayout(new BorderLayout());
-        add(getToolbar(commonActions, this.documentActions), "North");
-        add(station, "Center");
-        add(getStatusBar(jEngine), "South");
+        this.restoreBounds(persistance, JPPersistence.Key.FRAME_WIDTH, JPPersistence.Key.FRAME_HEIGHT);
 
-        restoreBounds(persistance, JPPersistance.Key.FRAME_WIDTH, JPPersistance.Key.FRAME_HEIGHT);
-
-        addWindowListener(new WindowAdapter() {
+        this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 JPadFrame.this.persistDocListener.storeDocumentsScratch();
-                persistance.putInt(JPPersistance.Key.FRAME_WIDTH, JPadFrame.this.getWidth());
-                persistance.putInt(JPPersistance.Key.FRAME_HEIGHT, JPadFrame.this.getHeight());
+                persistance.putInt(JPPersistence.Key.FRAME_WIDTH, JPadFrame.this.getWidth());
+                persistance.putInt(JPPersistence.Key.FRAME_HEIGHT, JPadFrame.this.getHeight());
                 try {
                     persistance.getPref().flush();
                 } catch (BackingStoreException e1) {
-                    JPadFrame.LOG.severe("problem flushing to persistanct");
+                    LOG.severe("problem flushing to persistanct");
                 }
 
                 System.exit(0);
             }
         });
 
-
         EXECUTOR.execute(new Runnable() {
             public void run() {
-                JPadFrame.this.persistDocListener = new OpenDocumentPersister(openDocumentsModel, persistance, JPadFrame
-                        .SCRATCH_DIR, JPPersistance.Key.RECENT_DOCS, JPPersistance.Key.LAST_OPENED_FOLDER);
+                JPadFrame.this.persistDocListener = new OpenDocumentPersister(openDocumentsModel, persistance, SCRATCH_DIR, JPPersistence.Key.RECENT_DOCS, JPPersistence.Key.LAST_OPENED_FOLDER);
 
                 File folder = JPadFrame.this.persistDocListener.getOpenFolder(persistance);
                 openDocumentsModel.setSelectedFolder(folder);
 
-
                 if (!firstEverOpen) {
-
 
                     JPadFrame.this.persistDocListener.restoreDocuments();
                 }
@@ -278,7 +258,7 @@ public class JPadFrame
     }
 
     private static QueryStatusBar getStatusBar(JEngine jEngine) {
-        final QueryStatusBar queryStatusBar = new QueryStatusBar();
+        QueryStatusBar queryStatusBar = new QueryStatusBar();
         jEngine.addListener(new JEngineAdapter() {
             public void compiling(JPadCode code) {
                 queryStatusBar.startQuery(code.getRawCode());
@@ -318,7 +298,7 @@ public class JPadFrame
     }
 
     public static void resetDefaults(boolean wipeLicense) throws BackingStoreException {
-        JPPersistance.INSTANCE.clear(wipeLicense);
+        JPPersistence.INSTANCE.clear(wipeLicense);
     }
 
     private SplitDockTree<Dockable>.Key putTree(DockableSplitDockTree tree, Dockable... dockables) {
@@ -335,14 +315,14 @@ public class JPadFrame
         return null;
     }
 
-    private void restoreBounds(PersistanceInterface persistance, KeyInterface frameWidthKey, KeyInterface frameHeightKey) {
+    private void restoreBounds(PersistenceInterface persistance, KeyInterface frameWidthKey, KeyInterface frameHeightKey) {
         Toolkit tk = Toolkit.getDefaultToolkit();
-        Insets si = tk.getScreenInsets(getGraphicsConfiguration());
+        Insets si = tk.getScreenInsets(this.getGraphicsConfiguration());
         int defWidth = ((tk.getScreenSize()).width - si.left - si.right) * 4 / 5;
         int defHeight = ((tk.getScreenSize()).height - si.top - si.bottom) * 4 / 5;
         int w = persistance.getInt(frameWidthKey, defWidth);
         int h = persistance.getInt(frameHeightKey, defHeight);
-        setBounds(0, 0, w, h);
+        this.setBounds(0, 0, w, h);
     }
 
     private boolean isWindows() {
@@ -351,11 +331,11 @@ public class JPadFrame
 
     private DefaultDockable getFilePanel(File exampleRoot, String uniqTitle, boolean rightClickMenuShown) {
         if (exampleRoot.exists() && exampleRoot.isDirectory()) {
-            final FileTreePanel ftp = new FileTreePanel();
-            ftp.setRightClickMenuShown(rightClickMenuShown);
-            ftp.setName(uniqTitle);
-            ftp.setRoot(exampleRoot);
-            ftp.addListener(new FileTreePanel.Listener() {
+            FileTreePanel fileTreePanel = new FileTreePanel();
+            fileTreePanel.setRightClickMenuShown(rightClickMenuShown);
+            fileTreePanel.setName(uniqTitle);
+            fileTreePanel.setRoot(exampleRoot);
+            fileTreePanel.addListener(new FileTreePanel.Listener() {
                 public void fileSelected(File selectedFile) {
                     if (selectedFile != null && selectedFile.isFile()) {
                         JPadFrame.this.documentActions.openFile(selectedFile);
@@ -367,10 +347,10 @@ public class JPadFrame
                 private static final long serialVersionUID = 1L;
 
                 public void actionPerformed(ActionEvent e) {
-                    ftp.refreshGui();
+                    fileTreePanel.refreshGui();
                 }
             };
-            return createDockable(uniqTitle, Theme.CIcon.DOCUMENT_OPEN.get16(), ftp, refreshAction);
+            return this.createDockable(uniqTitle, Theme.CIcon.DOCUMENT_OPEN.get16(), fileTreePanel, refreshAction);
         }
         return null;
     }
@@ -378,16 +358,14 @@ public class JPadFrame
     private DefaultDockable addRenderer(String uniqueTitle, ResultRenderer renderer) {
         this.jEngine.registerResultRenderer(renderer);
         Action[] actions = renderer.getActions().toArray(new Action[0]);
-        return createDockable(uniqueTitle, renderer.getImageIcon(), renderer.getComponent(), actions);
+        return this.createDockable(uniqueTitle, renderer.getImageIcon(), renderer.getComponent(), actions);
     }
 
     private DefaultDockable createDockable(String uniqueTitle, ImageIcon icon, Component component, Action... dockerActions) {
         DefaultDockable d = new DefaultDockable(component, uniqueTitle, icon);
 
-
         this.frontend.addDockable(uniqueTitle, d);
         this.frontend.setHideable(d, true);
-
 
         DefaultDockActionSource actions = new DefaultDockActionSource();
 
@@ -406,9 +384,8 @@ public class JPadFrame
 
     private void setFrameTitle() {
         String docTitle = this.openDocumentsModel.getSelectedDocument().getTitle();
-        setTitle(docTitle + " - " + "JPad");
+        this.setTitle(docTitle + " - " + "JPad");
     }
-
 
     private JToolBar getToolbar(JPadActions commonActions, DocumentActions dh) {
         JToolBarWithBetterTooltips jToolBarWithBetterTooltips = new JToolBarWithBetterTooltips("Common Actions");
@@ -422,24 +399,22 @@ public class JPadFrame
         return jToolBarWithBetterTooltips;
     }
 
-
     private JMenuBar getBasicMenuBar(JPadActions commonActions, DocumentActions dh) {
-        final JMenu editMenu = getJMenu(Msg.get(Msg.Key.EDIT), 69);
+        JMenu editMenu = getJMenu(Msg.get(Msg.Key.EDIT), 69);
         editMenu.addMenuListener(new MenuListener() {
             public void menuSelected(MenuEvent e) {
                 editMenu.removeAll();
-                editMenu.add(JPadFrame.this.documentActions.getUndoAction());
-                editMenu.add(JPadFrame.this.documentActions.getRedoAction());
+                editMenu.add(new JMenuItem(RTextArea.getAction(RTextArea.UNDO_ACTION)));
+                editMenu.add(new JMenuItem(RTextArea.getAction(RTextArea.REDO_ACTION)));
                 editMenu.addSeparator();
-                for (Action a : JPadFrame.this.documentActions.getEditorActions()) {
+                for (Action a : JPadFrame.this.documentActions.getEditorActions())
                     editMenu.add(new JMenuItem(a));
-                }
+                editMenu.add(new JMenuItem(RTextArea.getAction(RTextArea.DELETE_ACTION)));
+                editMenu.add(new JMenuItem(RTextArea.getAction(RTextArea.SELECT_ALL_ACTION)));
             }
-
 
             public void menuCanceled(MenuEvent e) {
             }
-
 
             public void menuDeselected(MenuEvent e) {
             }
@@ -456,8 +431,7 @@ public class JPadFrame
             public void menuDeselected(MenuEvent e) {
             }
         });
-        rebuildFileMenu();
-
+        this.rebuildFileMenu();
 
         JMenuBar menuBar = new JMenuBar();
         menuBar.add(this.fileMenu);
@@ -473,7 +447,7 @@ public class JPadFrame
     private JMenu getHelpMenu() {
         JMenu helpMenu = getJMenu("Help", 72);
         Action a = HtmlUtils.getWWWaction("Welcome", JPadLtd.Page.HELP.url());
-        a.putValue("MnemonicKey", Integer.valueOf(72));
+        a.putValue("MnemonicKey", 72);
         a.putValue("AcceleratorKey", KeyStroke.getKeyStroke("F1"));
         helpMenu.add(a);
         String bugUrl = JPadLtd.getContactUrl("JPad Bug Report");
@@ -487,13 +461,11 @@ public class JPadFrame
         return helpMenu;
     }
 
-
     private void rebuildFileMenu() {
         this.fileMenu.removeAll();
         for (Action a : this.documentActions.getFileActions()) {
             this.fileMenu.add(new JMenuItem(a));
         }
-
 
         if (this.persistDocListener != null) {
             List<String> filePaths = this.persistDocListener.getRecentFilePaths();
@@ -519,8 +491,8 @@ public class JPadFrame
     }
 
     private void showAboutDialog(String licenseTxt) {
-        Theme.CIcon cIcon = Theme.CIcon.JPAD;
-        String htmlTitle = "<h1><font color='#2580A2'>J</font><font color='#25A230'>Pad</font></h1>";
+        final Theme.CIcon cIcon = Theme.CIcon.JPAD;
+        final String htmlTitle = "<h1><font color='#2580A2'>J</font><font color='#25A230'>Pad</font></h1>";
         (new AboutDialog(this, "JPad", cIcon, htmlTitle, "1.07", licenseTxt))
                 .setVisible(true);
     }

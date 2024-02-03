@@ -14,7 +14,6 @@ import java.util.concurrent.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class QueryEngine {
     private static final Logger LOG = Logger.getLogger(QueryEngine.class.getName());
     private final List<QueryEngineListener> listeners = new CopyOnWriteArrayList<QueryEngineListener>();
@@ -22,7 +21,7 @@ public class QueryEngine {
     private final ConcurrentLinkedQueue<Queryable> priorityQueue = new ConcurrentLinkedQueue<Queryable>();
     private final Map<Queryable, ResultSet> queryablesResultCache = Maps.newConcurrentMap();
     private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
-    private int counter = 0;
+    private int counter;
     private ConnectionManager connMan;
     private Collection<Queryable> queryables = new CopyOnWriteArrayList<Queryable>();
     private QueryTranslator queryTranslator;
@@ -43,7 +42,6 @@ public class QueryEngine {
         LOG.info("startUp");
         this.scheduler = Executors.newSingleThreadScheduledExecutor();
 
-
         this.scheduler.scheduleWithFixedDelay(new Runnable() {
             public void run() {
                 try {
@@ -51,7 +49,7 @@ public class QueryEngine {
 
                     Queryable w = null;
                     while ((w = QueryEngine.this.priorityQueue.poll()) != null) {
-                        QueryEngine.LOG.info("priorityQueueing");
+                        LOG.info("priorityQueueing");
                         QueryEngine.this.requery(w, cm);
                     }
 
@@ -60,17 +58,15 @@ public class QueryEngine {
                             cm != null && !cm.isEmpty()) {
                         for (Queryable app : QueryEngine.this.queryables) {
 
-
                             int refRate = app.getRefreshPeriod();
                             int m = refRate / 100;
                             if (refRate != -1 && (m == 0 || QueryEngine.this.counter % m == 0)) {
                                 QueryEngine.this.requery(app, cm);
                             }
                         }
-
                     }
                 } catch (Exception e) {
-                    QueryEngine.LOG.log(Level.SEVERE, "big loopy scheduled problems", e);
+                    LOG.log(Level.SEVERE, "big loopy scheduled problems", e);
                 }
             }
         }, 50L, 50L, TimeUnit.MILLISECONDS);
@@ -80,11 +76,9 @@ public class QueryEngine {
         String qry = w.getQuery();
         LOG.info("requery -> " + w.getServerName() + " : " + qry);
 
-
         if (qry == null || qry.length() < 1 || w.getServerName() == null || connMan.isEmpty()) {
             return;
         }
-
 
         ResultSet crs = null;
         Exception e = null;
@@ -101,7 +95,6 @@ public class QueryEngine {
                 throw new IllegalStateException("Could not find server:" + srv);
             }
 
-
             String query = qry;
             if (this.queryTranslator != null) {
                 query = this.queryTranslator.translate(qry, sc.getJdbcType());
@@ -115,7 +108,6 @@ public class QueryEngine {
             e = ee;
             LOG.log(Level.WARNING, "app update error for query:" + qry);
         }
-
 
         if (crs != null) {
 
@@ -165,7 +157,6 @@ public class QueryEngine {
 
     public interface QueryEngineListener {
         void tabChanged(Queryable param1Queryable, ResultSet param1ResultSet);
-
 
         void queryError(Queryable param1Queryable, Exception param1Exception);
     }

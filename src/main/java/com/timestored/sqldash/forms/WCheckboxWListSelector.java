@@ -13,7 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-
 class WCheckboxWListSelector
         extends AbstractWListSelector {
     private static final long serialVersionUID = 1L;
@@ -22,9 +21,8 @@ class WCheckboxWListSelector
 
     public WCheckboxWListSelector(ListSelectionWidget lsw, DesktopModel desktopModel) {
         super(lsw, desktopModel);
-        refresh();
+        this.refresh();
     }
-
 
     public JPanel getInputComponent(DesktopModel desktopModel) {
         this.p = new JPanel();
@@ -32,13 +30,11 @@ class WCheckboxWListSelector
         return this.p;
     }
 
-
     public synchronized void setSelection(List<String> selections) {
         for (JCheckBox c : this.checkboxes) {
             c.setSelected(selections.contains(c.getText()));
         }
     }
-
 
     public synchronized void setOptionsShown(List<String> options) {
         boolean equals = false;

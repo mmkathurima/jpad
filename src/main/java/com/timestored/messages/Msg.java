@@ -5,7 +5,6 @@ import com.google.common.collect.Sets;
 
 import java.util.*;
 
-
 public class Msg {
     private static final String BUNDLE_NAME = "com.timestored.messages.messages";
     private static ResourceBundle rb;
@@ -42,7 +41,6 @@ public class Msg {
         }
         return extraKeys;
     }
-
 
     public enum Key {
         BYTE_CODE,

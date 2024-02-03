@@ -7,7 +7,6 @@ import com.timestored.sqldash.chart.ChartTheme;
 import com.timestored.sqldash.chart.ViewStrategy;
 import com.timestored.sqldash.chart.ViewStrategyFactory;
 
-
 @XStreamAlias("chart")
 class ChartWidgetDTO
         implements WidgetDTO {
@@ -47,7 +46,6 @@ class ChartWidgetDTO
         }
         return ViewStrategyFactory.getStrategies().get(0);
     }
-
 
     public Queryable getQueryable() {
         return new Queryable(this.server, this.query, this.refresh);

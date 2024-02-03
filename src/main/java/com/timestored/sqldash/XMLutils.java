@@ -1,6 +1,5 @@
 package com.timestored.sqldash;
 
-
 public class XMLutils {
     public static final String HEADER = "<?xml version='1.0'?>";
 

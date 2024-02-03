@@ -2,7 +2,6 @@ package com.timestored.jgrowl;
 
 import javax.swing.JWindow;
 
-
 class DisplayedItem {
     public final Growl message;
     public final JWindow frame;

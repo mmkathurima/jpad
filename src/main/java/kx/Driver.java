@@ -16,9 +16,9 @@ import java.util.logging.Logger;
 
 public class Driver implements java.sql.Driver {
     static int V = 2;
-    static int v = 0;
-    static int[] SQLTYPE = new int[]{0, 16, 0, 0, -2, 5, 4, -5, 7, 8, 0, 12, 93, 91, 91, 93, 93, 92, 92, 92};
-    static String[] TYPE = new String[]{"", "boolean", "", "", "byte", "short", "int", "long", "real", "float", "char", "symbol", "timestamp", "month", "date", "timestamp", "timespan", "minute", "second", "time"};
+    static int v;
+    static int[] SQLTYPE = {0, 16, 0, 0, -2, 5, 4, -5, 7, 8, 0, 12, 93, 91, 91, 93, 93, 92, 92, 92};
+    static String[] TYPE = {"", "boolean", "", "", "byte", "short", "int", "long", "real", "float", "char", "symbol", "timestamp", "month", "date", "timestamp", "timespan", "minute", "second", "time"};
 
     static {
         try {
@@ -80,7 +80,7 @@ public class Driver implements java.sql.Driver {
     }
 
     public java.sql.Connection connect(String s, Properties p) throws SQLException {
-        return !acceptsURL(s) ? null : new Connection(s.substring(7), (p != null) ? p.get("user") : p, (p != null) ? p.get("password") : p);
+        return !this.acceptsURL(s) ? null : new Connection(s.substring(7), (p != null) ? p.get("user") : p, (p != null) ? p.get("password") : p);
     }
 
     public DriverPropertyInfo[] getPropertyInfo(String s, Properties p) throws SQLException {
@@ -114,7 +114,7 @@ public class Driver implements java.sql.Driver {
         }
 
         public int findColumn(String s) throws SQLException {
-            return 1 + Driver.find(this.f, s);
+            return 1 + find(this.f, s);
         }
 
         public boolean next() throws SQLException {
@@ -144,146 +144,146 @@ public class Driver implements java.sql.Driver {
         }
 
         public boolean getBoolean(int i) throws SQLException {
-            return ((Boolean) getObject(i)).booleanValue();
+            return ((Boolean) this.getObject(i)).booleanValue();
         }
 
         public byte getByte(int i) throws SQLException {
-            return ((Byte) getObject(i)).byteValue();
+            return ((Byte) this.getObject(i)).byteValue();
         }
 
         public short getShort(int i) throws SQLException {
-            Object x = getObject(i);
+            Object x = this.getObject(i);
             return (x == null) ? 0 : ((Short) x).shortValue();
         }
 
         public int getInt(int i) throws SQLException {
-            Object x = getObject(i);
+            Object x = this.getObject(i);
             return (x == null) ? 0 : ((Integer) x).intValue();
         }
 
         public long getLong(int i) throws SQLException {
-            Object x = getObject(i);
+            Object x = this.getObject(i);
             return (x == null) ? 0L : ((Long) x).longValue();
         }
 
         public float getFloat(int i) throws SQLException {
-            Object x = getObject(i);
+            Object x = this.getObject(i);
             return (x == null) ? 0.0F : ((Float) x).floatValue();
         }
 
         public double getDouble(int i) throws SQLException {
-            Object x = getObject(i);
+            Object x = this.getObject(i);
             return (x == null) ? 0.0D : ((Double) x).doubleValue();
         }
 
         public String getString(int i) throws SQLException {
-            Object x = getObject(i);
+            Object x = this.getObject(i);
             return (x == null) ? null : x.toString();
         }
 
         public Date getDate(int i) throws SQLException {
-            return (Date) getObject(i);
+            return (Date) this.getObject(i);
         }
 
         public Time getTime(int i) throws SQLException {
-            return (Time) getObject(i);
+            return (Time) this.getObject(i);
         }
 
         public Timestamp getTimestamp(int i) throws SQLException {
-            return (Timestamp) getObject(i);
+            return (Timestamp) this.getObject(i);
         }
 
         public byte[] getBytes(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public BigDecimal getBigDecimal(int i, int scale) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public InputStream getAsciiStream(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public InputStream getUnicodeStream(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public InputStream getBinaryStream(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Object getObject(String s) throws SQLException {
-            return getObject(findColumn(s));
+            return this.getObject(this.findColumn(s));
         }
 
         public boolean getBoolean(String s) throws SQLException {
-            return getBoolean(findColumn(s));
+            return this.getBoolean(this.findColumn(s));
         }
 
         public byte getByte(String s) throws SQLException {
-            return getByte(findColumn(s));
+            return this.getByte(this.findColumn(s));
         }
 
         public short getShort(String s) throws SQLException {
-            return getShort(findColumn(s));
+            return this.getShort(this.findColumn(s));
         }
 
         public int getInt(String s) throws SQLException {
-            return getInt(findColumn(s));
+            return this.getInt(this.findColumn(s));
         }
 
         public long getLong(String s) throws SQLException {
-            return getLong(findColumn(s));
+            return this.getLong(this.findColumn(s));
         }
 
         public float getFloat(String s) throws SQLException {
-            return getFloat(findColumn(s));
+            return this.getFloat(this.findColumn(s));
         }
 
         public double getDouble(String s) throws SQLException {
-            return getDouble(findColumn(s));
+            return this.getDouble(this.findColumn(s));
         }
 
         public String getString(String s) throws SQLException {
-            return getString(findColumn(s));
+            return this.getString(this.findColumn(s));
         }
 
         public Date getDate(String s) throws SQLException {
-            return getDate(findColumn(s));
+            return this.getDate(this.findColumn(s));
         }
 
         public Time getTime(String s) throws SQLException {
-            return getTime(findColumn(s));
+            return this.getTime(this.findColumn(s));
         }
 
         public Timestamp getTimestamp(String s) throws SQLException {
-            return getTimestamp(findColumn(s));
+            return this.getTimestamp(this.findColumn(s));
         }
 
         public byte[] getBytes(String s) throws SQLException {
-            return getBytes(findColumn(s));
+            return this.getBytes(this.findColumn(s));
         }
 
         public BigDecimal getBigDecimal(String s, int scale) throws SQLException {
-            return getBigDecimal(findColumn(s), scale);
+            return this.getBigDecimal(this.findColumn(s), scale);
         }
 
         public InputStream getAsciiStream(String s) throws SQLException {
-            return getAsciiStream(findColumn(s));
+            return this.getAsciiStream(this.findColumn(s));
         }
 
         public InputStream getUnicodeStream(String s) throws SQLException {
-            return getUnicodeStream(findColumn(s));
+            return this.getUnicodeStream(this.findColumn(s));
         }
 
         public InputStream getBinaryStream(String s) throws SQLException {
-            return getBinaryStream(findColumn(s));
+            return this.getBinaryStream(this.findColumn(s));
         }
 
         public SQLWarning getWarnings() throws SQLException {
@@ -294,7 +294,7 @@ public class Driver implements java.sql.Driver {
         }
 
         public String getCursorName() throws SQLException {
-            Driver.q("cur");
+            q("cur");
             return "";
         }
 
@@ -303,22 +303,22 @@ public class Driver implements java.sql.Driver {
         }
 
         public Reader getCharacterStream(int columnIndex) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Reader getCharacterStream(String columnName) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public BigDecimal getBigDecimal(int columnIndex) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public BigDecimal getBigDecimal(String columnName) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
@@ -380,7 +380,7 @@ public class Driver implements java.sql.Driver {
         }
 
         public void setFetchDirection(int direction) throws SQLException {
-            Driver.q("fd");
+            q("fd");
         }
 
         public int getFetchSize() throws SQLException {
@@ -399,198 +399,198 @@ public class Driver implements java.sql.Driver {
         }
 
         public boolean rowUpdated() throws SQLException {
-            Driver.q();
+            q();
             return false;
         }
 
         public boolean rowInserted() throws SQLException {
-            Driver.q();
+            q();
             return false;
         }
 
         public boolean rowDeleted() throws SQLException {
-            Driver.q();
+            q();
             return false;
         }
 
         public void updateNull(int columnIndex) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBoolean(int columnIndex, boolean x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateByte(int columnIndex, byte x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateShort(int columnIndex, short x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateInt(int columnIndex, int x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateLong(int columnIndex, long x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateFloat(int columnIndex, float x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateDouble(int columnIndex, double x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBigDecimal(int columnIndex, BigDecimal x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateString(int columnIndex, String x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBytes(int columnIndex, byte[] x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateDate(int columnIndex, Date x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateTime(int columnIndex, Time x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateTimestamp(int columnIndex, Timestamp x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateAsciiStream(int columnIndex, InputStream x, int length) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBinaryStream(int columnIndex, InputStream x, int length) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateCharacterStream(int columnIndex, Reader x, int length) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateObject(int columnIndex, Object x, int scale) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateObject(int columnIndex, Object x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateNull(String columnName) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBoolean(String columnName, boolean x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateByte(String columnName, byte x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateShort(String columnName, short x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateInt(String columnName, int x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateLong(String columnName, long x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateFloat(String columnName, float x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateDouble(String columnName, double x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBigDecimal(String columnName, BigDecimal x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateString(String columnName, String x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBytes(String columnName, byte[] x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateDate(String columnName, Date x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateTime(String columnName, Time x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateTimestamp(String columnName, Timestamp x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateAsciiStream(String columnName, InputStream x, int length) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBinaryStream(String columnName, InputStream x, int length) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateCharacterStream(String columnName, Reader reader, int length) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateObject(String columnName, Object x, int scale) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateObject(String columnName, Object x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void insertRow() throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateRow() throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void deleteRow() throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void refreshRow() throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void cancelRowUpdates() throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void moveToInsertRow() throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void moveToCurrentRow() throws SQLException {
-            Driver.q();
+            q();
         }
 
         public java.sql.Statement getStatement() throws SQLException {
@@ -598,147 +598,147 @@ public class Driver implements java.sql.Driver {
         }
 
         public Object getObject(int i, Map map) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Ref getRef(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Blob getBlob(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Clob getClob(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Array getArray(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Object getObject(String colName, Map map) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Ref getRef(String colName) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Blob getBlob(String colName) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Clob getClob(String colName) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Array getArray(String colName) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Date getDate(int columnIndex, Calendar cal) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Date getDate(String columnName, Calendar cal) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Time getTime(int columnIndex, Calendar cal) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Time getTime(String columnName, Calendar cal) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Timestamp getTimestamp(int columnIndex, Calendar cal) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Timestamp getTimestamp(String columnName, Calendar cal) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public URL getURL(int columnIndex) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public URL getURL(String columnName) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public void updateRef(int columnIndex, Ref x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateRef(String columnName, Ref x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBlob(int columnIndex, Blob x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBlob(String columnName, Blob x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateClob(int columnIndex, Clob x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateClob(String columnName, Clob x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateArray(int columnIndex, Array x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateArray(String columnName, Array x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public RowId getRowId(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public RowId getRowId(String string) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public void updateRowId(int i, RowId rowid) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateRowId(String string, RowId rowid) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public int getHoldability() throws SQLException {
-            Driver.q();
+            q();
             return 0;
         }
 
@@ -747,200 +747,200 @@ public class Driver implements java.sql.Driver {
         }
 
         public void updateNString(int i, String string) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateNString(String string, String string1) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateNClob(int i, NClob nclob) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateNClob(String string, NClob nclob) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public NClob getNClob(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public NClob getNClob(String string) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public SQLXML getSQLXML(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public SQLXML getSQLXML(String string) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public void updateSQLXML(int i, SQLXML sqlxml) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateSQLXML(String string, SQLXML sqlxml) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public String getNString(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public String getNString(String string) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Reader getNCharacterStream(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Reader getNCharacterStream(String string) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public void updateNCharacterStream(int i, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateNCharacterStream(String string, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateAsciiStream(int i, InputStream in, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBinaryStream(int i, InputStream in, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateCharacterStream(int i, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateAsciiStream(String string, InputStream in, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBinaryStream(String string, InputStream in, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateCharacterStream(String string, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBlob(int i, InputStream in, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBlob(String string, InputStream in, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateClob(int i, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateClob(String string, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateNClob(int i, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateNClob(String string, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateNCharacterStream(int i, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateNCharacterStream(String string, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateAsciiStream(int i, InputStream in) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBinaryStream(int i, InputStream in) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateCharacterStream(int i, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateAsciiStream(String string, InputStream in) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBinaryStream(String string, InputStream in) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateCharacterStream(String string, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBlob(int i, InputStream in) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateBlob(String string, InputStream in) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateClob(int i, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateClob(String string, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateNClob(int i, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void updateNClob(String string, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
 
         @Override
         public <T> T getObject(int columnIndex, Class<T> type) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         @Override
         public <T> T getObject(String columnLabel, Class<T> type) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public <T> T unwrap(Class<T> type) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public boolean isWrapperFor(Class<?> type) throws SQLException {
-            Driver.q();
+            q();
             return false;
         }
 
@@ -948,10 +948,9 @@ public class Driver implements java.sql.Driver {
                 extends Timestamp {
             private final C.Timespan t;
 
-
             public TimespanTimestamp(C.Timespan t) {
                 super(t.j / 1000000L - TimeZone.getDefault().getOffset(0L));
-                setNanos((int) (t.j % 1000000000L));
+                this.setNanos((int) (t.j % 1000000000L));
                 this.t = t;
             }
 
@@ -1027,7 +1026,7 @@ public class Driver implements java.sql.Driver {
         }
 
         public String getColumnTypeName(int i) throws SQLException {
-            return Driver.TYPE[C.t(this.d[i - 1])];
+            return TYPE[C.t(this.d[i - 1])];
         }
 
         public int getColumnDisplaySize(int i) throws SQLException {
@@ -1043,11 +1042,11 @@ public class Driver implements java.sql.Driver {
         }
 
         public String getColumnLabel(int i) throws SQLException {
-            return getColumnName(i);
+            return this.getColumnName(i);
         }
 
         public int getColumnType(int i) throws SQLException {
-            return Driver.SQLTYPE[C.t(this.d[i - 1])];
+            return SQLTYPE[C.t(this.d[i - 1])];
         }
 
         public int getPrecision(int i) throws SQLException {
@@ -1099,18 +1098,17 @@ public class Driver implements java.sql.Driver {
         }
 
         public String getColumnClassName(int column) throws SQLException {
-            Driver.q("col");
+            q("col");
             return null;
         }
 
-
         public <T> T unwrap(Class<T> type) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public boolean isWrapperFor(Class<?> type) throws SQLException {
-            Driver.q();
+            q();
             return false;
         }
     }
@@ -1130,7 +1128,7 @@ public class Driver implements java.sql.Driver {
             try {
                 this.c = new C(s.substring(0, i), Integer.parseInt(s.substring(i + 1)), (u == null) ? "" : (u + ":" + p));
             } catch (Exception e) {
-                Driver.q(e);
+                q(e);
             }
         }
 
@@ -1141,11 +1139,11 @@ public class Driver implements java.sql.Driver {
 
                 if (e.getMessage().contains("Connection reset by peer")) {
                     try {
-                        close();
+                        this.close();
                     } catch (SQLException e1) {
                     }
                 }
-                Driver.q(e);
+                q(e);
                 return null;
             }
         }
@@ -1154,7 +1152,7 @@ public class Driver implements java.sql.Driver {
             try {
                 return new ResultSet(null, this.c.k(s));
             } catch (Exception e) {
-                Driver.q(e);
+                q(e);
                 return null;
             }
         }
@@ -1163,7 +1161,7 @@ public class Driver implements java.sql.Driver {
             try {
                 return new ResultSet(null, this.c.k(s, x));
             } catch (Exception e) {
-                Driver.q(e);
+                q(e);
                 return null;
             }
         }
@@ -1215,12 +1213,12 @@ public class Driver implements java.sql.Driver {
         }
 
         public String getCatalog() throws SQLException {
-            Driver.q("cat");
+            q("cat");
             return null;
         }
 
         public void setCatalog(String s) throws SQLException {
-            Driver.q("cat");
+            q("cat");
         }
 
         public int getTransactionIsolation() throws SQLException {
@@ -1239,11 +1237,11 @@ public class Driver implements java.sql.Driver {
         }
 
         public void close() throws SQLException {
-            if (!isClosed()) {
+            if (!this.isClosed()) {
                 try {
                     this.c.close();
                 } catch (IOException e) {
-                    Driver.q(e);
+                    q(e);
                 } finally {
                     this.c = null;
                 }
@@ -1278,12 +1276,12 @@ public class Driver implements java.sql.Driver {
         }
 
         public Savepoint setSavepoint() throws SQLException {
-            Driver.q("sav");
+            q("sav");
             return null;
         }
 
         public Savepoint setSavepoint(String name) throws SQLException {
-            Driver.q("sav");
+            q("sav");
             return null;
         }
 
@@ -1318,28 +1316,28 @@ public class Driver implements java.sql.Driver {
         }
 
         public Clob createClob() throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Blob createBlob() throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public NClob createNClob() throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public SQLXML createSQLXML() throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public boolean isValid(int i) throws SQLException {
             if (i < 0)
-                Driver.q();
+                q();
             return (this.c != null);
         }
 
@@ -1360,12 +1358,12 @@ public class Driver implements java.sql.Driver {
         }
 
         public Array createArrayOf(String string, Object[] os) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Struct createStruct(String string, Object[] os) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
@@ -1395,12 +1393,12 @@ public class Driver implements java.sql.Driver {
         }
 
         public <T> T unwrap(Class<T> type) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public boolean isWrapperFor(Class<?> type) throws SQLException {
-            Driver.q();
+            q();
             return false;
         }
     }
@@ -1412,7 +1410,6 @@ public class Driver implements java.sql.Driver {
         private Object r;
         private int R;
         private int T;
-
 
         public Statement(Connection x) {
             this.poolable = false;
@@ -1477,7 +1474,7 @@ public class Driver implements java.sql.Driver {
         }
 
         public void setCursorName(String name) throws SQLException {
-            Driver.q("cur");
+            q("cur");
         }
 
         public boolean getMoreResults() throws SQLException {
@@ -1493,7 +1490,7 @@ public class Driver implements java.sql.Driver {
         }
 
         public void setFetchDirection(int direction) throws SQLException {
-            Driver.q("fd");
+            q("fd");
         }
 
         public int getFetchSize() throws SQLException {
@@ -1512,7 +1509,7 @@ public class Driver implements java.sql.Driver {
         }
 
         public void addBatch(String sql) throws SQLException {
-            Driver.q("bat");
+            q("bat");
         }
 
         public void clearBatch() throws SQLException {
@@ -1535,32 +1532,32 @@ public class Driver implements java.sql.Driver {
         }
 
         public int executeUpdate(String sql, int autoGeneratedKeys) throws SQLException {
-            Driver.q("a");
+            q("a");
             return 0;
         }
 
         public int executeUpdate(String sql, int[] columnIndexes) throws SQLException {
-            Driver.q("a");
+            q("a");
             return 0;
         }
 
         public int executeUpdate(String sql, String[] columnNames) throws SQLException {
-            Driver.q("a");
+            q("a");
             return 0;
         }
 
         public boolean execute(String sql, int autoGeneratedKeys) throws SQLException {
-            Driver.q("a");
+            q("a");
             return false;
         }
 
         public boolean execute(String sql, int[] columnIndexes) throws SQLException {
-            Driver.q("a");
+            q("a");
             return false;
         }
 
         public boolean execute(String sql, String[] columnNames) throws SQLException {
-            Driver.q("a");
+            q("a");
             return false;
         }
 
@@ -1573,13 +1570,13 @@ public class Driver implements java.sql.Driver {
         }
 
         public boolean isPoolable() throws SQLException {
-            if (isClosed())
+            if (this.isClosed())
                 throw new SQLException("Closed");
             return this.poolable;
         }
 
         public void setPoolable(boolean b) throws SQLException {
-            if (isClosed())
+            if (this.isClosed())
                 throw new SQLException("Closed");
             this.poolable = b;
         }
@@ -1595,12 +1592,12 @@ public class Driver implements java.sql.Driver {
         }
 
         public <T> T unwrap(Class<T> type) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public boolean isWrapperFor(Class<?> type) throws SQLException {
-            Driver.q();
+            q();
             return false;
         }
     }
@@ -1615,15 +1612,15 @@ public class Driver implements java.sql.Driver {
         }
 
         public java.sql.ResultSet executeQuery() throws SQLException {
-            return executeQuery(this.s);
+            return this.executeQuery(this.s);
         }
 
         public int executeUpdate() throws SQLException {
-            return executeUpdate(this.s);
+            return this.executeUpdate(this.s);
         }
 
         public boolean execute() throws SQLException {
-            return execute(this.s);
+            return this.execute(this.s);
         }
 
         public void clearParameters() throws SQLException {
@@ -1653,206 +1650,204 @@ public class Driver implements java.sql.Driver {
         }
 
         public void setObject(int i, Object x, int targetSqlType) throws SQLException {
-            setObject(i, x);
+            this.setObject(i, x);
         }
 
         public void setObject(int i, Object x, int targetSqlType, int scale) throws SQLException {
-            setObject(i, x);
+            this.setObject(i, x);
         }
 
         public void setNull(int i, int t) throws SQLException {
-            setObject(i, C.NULL[Driver.find(Driver.SQLTYPE, t)]);
+            this.setObject(i, C.NULL[find(SQLTYPE, t)]);
         }
 
         public void setBoolean(int i, boolean x) throws SQLException {
-            setObject(i, Boolean.valueOf(x));
+            this.setObject(i, Boolean.valueOf(x));
         }
 
         public void setByte(int i, byte x) throws SQLException {
-            setObject(i, Byte.valueOf(x));
+            this.setObject(i, Byte.valueOf(x));
         }
 
         public void setShort(int i, short x) throws SQLException {
-            setObject(i, Short.valueOf(x));
+            this.setObject(i, Short.valueOf(x));
         }
 
         public void setInt(int i, int x) throws SQLException {
-            setObject(i, Integer.valueOf(x));
+            this.setObject(i, Integer.valueOf(x));
         }
 
         public void setLong(int i, long x) throws SQLException {
-            setObject(i, Long.valueOf(x));
+            this.setObject(i, Long.valueOf(x));
         }
 
         public void setFloat(int i, float x) throws SQLException {
-            setObject(i, new Float(x));
+            this.setObject(i, new Float(x));
         }
 
         public void setDouble(int i, double x) throws SQLException {
-            setObject(i, new Double(x));
+            this.setObject(i, new Double(x));
         }
 
         public void setString(int i, String x) throws SQLException {
-            setObject(i, x);
+            this.setObject(i, x);
         }
 
         public void setDate(int i, Date x) throws SQLException {
-            setObject(i, x);
+            this.setObject(i, x);
         }
 
         public void setTime(int i, Time x) throws SQLException {
-            setObject(i, x);
+            this.setObject(i, x);
         }
 
         public void setTimestamp(int i, Timestamp x) throws SQLException {
-            setObject(i, x);
+            this.setObject(i, x);
         }
 
         public void setBytes(int i, byte[] x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setBigDecimal(int i, BigDecimal x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setAsciiStream(int i, InputStream x, int length) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setUnicodeStream(int i, InputStream x, int length) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setBinaryStream(int i, InputStream x, int length) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void addBatch() throws SQLException {
         }
 
         public void setCharacterStream(int parameterIndex, Reader reader, int length) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setRef(int i, Ref x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setBlob(int i, Blob x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setClob(int i, Clob x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setArray(int i, Array x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public java.sql.ResultSetMetaData getMetaData() throws SQLException {
-            Driver.q("m");
+            q("m");
             return null;
         }
 
         public void setDate(int parameterIndex, Date x, Calendar cal) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setTime(int parameterIndex, Time x, Calendar cal) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setTimestamp(int parameterIndex, Timestamp x, Calendar cal) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setNull(int paramIndex, int sqlType, String typeName) throws SQLException {
-            Driver.q();
+            q();
         }
 
-
         public void setURL(int parameterIndex, URL x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public ParameterMetaData getParameterMetaData() throws SQLException {
-            Driver.q("m");
+            q("m");
             return null;
         }
 
-
         public void setRowId(int i, RowId rowid) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setNString(int i, String string) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setNCharacterStream(int i, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setNClob(int i, NClob nclob) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setClob(int i, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setBlob(int i, InputStream in, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setNClob(int i, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setSQLXML(int i, SQLXML sqlxml) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setAsciiStream(int i, InputStream in, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setBinaryStream(int i, InputStream in, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setCharacterStream(int i, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setAsciiStream(int i, InputStream in) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setBinaryStream(int i, InputStream in) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setCharacterStream(int i, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setNCharacterStream(int i, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setClob(int i, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setBlob(int i, InputStream in) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setNClob(int i, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
     }
 
@@ -1929,170 +1924,169 @@ public class Driver implements java.sql.Driver {
         }
 
         public BigDecimal getBigDecimal(int parameterIndex) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Object getObject(int i, Map map) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Ref getRef(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Blob getBlob(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Clob getClob(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Array getArray(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Date getDate(int parameterIndex, Calendar cal) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Time getTime(int parameterIndex, Calendar cal) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Timestamp getTimestamp(int parameterIndex, Calendar cal) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public void registerOutParameter(int paramIndex, int sqlType, String typeName) throws SQLException {
-            Driver.q();
+            q();
         }
 
-
         public void registerOutParameter(String parameterName, int sqlType) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void registerOutParameter(String parameterName, int sqlType, int scale) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void registerOutParameter(String parameterName, int sqlType, String typeName) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public URL getURL(int parameterIndex) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public void setURL(String parameterName, URL val) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setNull(String parameterName, int sqlType) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setBoolean(String parameterName, boolean x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setByte(String parameterName, byte x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setShort(String parameterName, short x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setInt(String parameterName, int x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setLong(String parameterName, long x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setFloat(String parameterName, float x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setDouble(String parameterName, double x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setBigDecimal(String parameterName, BigDecimal x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setString(String parameterName, String x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setBytes(String parameterName, byte[] x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setDate(String parameterName, Date x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setTime(String parameterName, Time x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setTimestamp(String parameterName, Timestamp x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setAsciiStream(String parameterName, InputStream x, int length) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setBinaryStream(String parameterName, InputStream x, int length) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setObject(String parameterName, Object x, int targetSqlType, int scale) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setObject(String parameterName, Object x, int targetSqlType) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setObject(String parameterName, Object x) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setCharacterStream(String parameterName, Reader reader, int length) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setDate(String parameterName, Date x, Calendar cal) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setTime(String parameterName, Time x, Calendar cal) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setTimestamp(String parameterName, Timestamp x, Calendar cal) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setNull(String parameterName, int sqlType, String typeName) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public String getString(String parameterName) throws SQLException {
@@ -2187,156 +2181,155 @@ public class Driver implements java.sql.Driver {
             return null;
         }
 
-
         public RowId getRowId(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public RowId getRowId(String string) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public void setRowId(String string, RowId rowid) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setNString(String string, String string1) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setNCharacterStream(String string, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setNClob(String string, NClob nclob) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setClob(String string, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setBlob(String string, InputStream in, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setNClob(String string, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public NClob getNClob(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public NClob getNClob(String string) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public void setSQLXML(String string, SQLXML sqlxml) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public SQLXML getSQLXML(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public SQLXML getSQLXML(String string) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public String getNString(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public String getNString(String string) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Reader getNCharacterStream(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Reader getNCharacterStream(String string) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Reader getCharacterStream(int i) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public Reader getCharacterStream(String string) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public void setBlob(String string, Blob blob) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setClob(String string, Clob clob) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setAsciiStream(String string, InputStream in, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setBinaryStream(String string, InputStream in, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setCharacterStream(String string, Reader reader, long l) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setAsciiStream(String string, InputStream in) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setBinaryStream(String string, InputStream in) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setCharacterStream(String string, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setNCharacterStream(String string, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setClob(String string, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setBlob(String string, InputStream in) throws SQLException {
-            Driver.q();
+            q();
         }
 
         public void setNClob(String string, Reader reader) throws SQLException {
-            Driver.q();
+            q();
         }
 
         @Override
         public <T> T getObject(int parameterIndex, Class<T> type) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         @Override
         public <T> T getObject(String parameterName, Class<T> type) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
     }
@@ -2361,9 +2354,8 @@ public class Driver implements java.sql.Driver {
             return this.Connection.qx("([]TABLE_TYPE:`TABLE`VIEW)");
         }
 
-
         public java.sql.ResultSet getTables(String a, String b, String t, String[] x) throws SQLException {
-            String getMetaInf = "raze{([]TABLE_CAT:`;TABLE_SCHEM:`;TABLE_NAME:system string`a`b x=`VIEW;TABLE_TYPE:x)} each";
+            final String getMetaInf = "raze{([]TABLE_CAT:`;TABLE_SCHEM:`;TABLE_NAME:system string`a`b x=`VIEW;TABLE_TYPE:x)} each";
             if (x == null) {
                 return this.Connection.qx(getMetaInf + " enlist `");
             }
@@ -2374,75 +2366,66 @@ public class Driver implements java.sql.Driver {
             return this.Connection.qx("`DATA_TYPE xasc([]TYPE_NAME:`boolean`byte`short`int`long`real`float`symbol`date`time`timestamp;DATA_TYPE:16 -2 5 4 -5 7 8 12 91 92 93;PRECISION:11;LITERAL_PREFIX:`;LITERAL_SUFFIX:`;CREATE_PARAMS:`;NULLABLE:1h;CASE_SENSITIVE:1b;SEARCHABLE:1h;UNSIGNED_ATTRIBUTE:0b;FIXED_PREC_SCALE:0b;AUTO_INCREMENT:0b;LOCAL_TYPE_NAME:`;MINIMUM_SCALE:0h;MAXIMUM_SCALE:0h;SQL_DATA_TYPE:0;SQL_DATETIME_SUB:0;NUM_PREC_RADIX:10)");
         }
 
-
         public java.sql.ResultSet getColumns(String a, String b, String t, String c) throws SQLException {
             if (t.startsWith("%"))
                 t = "";
             return this.Connection.qx("select TABLE_CAT:`,TABLE_SCHEM:`,TABLE_NAME:n,COLUMN_NAME:c,DATA_TYPE:0,TYPE_NAME:t,COLUMN_SIZE:2000000000,BUFFER_LENGTH:0,DECIMAL_DIGITS:16,NUM_PREC_RADIX:10,NULLABLE:1,REMARKS:`,COLUMN_DEF:`,SQL_DATA_TYPE:0,SQL_DATETIME_SUB:0,CHAR_OCTET_LENGTH:2000000000,ORDINAL_POSITION:1+til count n,NULLABLE:`YES from .Q.nct`" + t);
         }
 
-
         public java.sql.ResultSet getPrimaryKeys(String a, String b, String t) throws SQLException {
-            Driver.q("pk");
+            q("pk");
             return this.Connection.qx("");
         }
 
         public java.sql.ResultSet getImportedKeys(String a, String b, String t) throws SQLException {
-            Driver.q("imp");
+            q("imp");
             return this.Connection.qx("");
         }
 
         public java.sql.ResultSet getProcedures(String a, String b, String p) throws SQLException {
-            Driver.q("pr");
+            q("pr");
             return this.Connection.qx("");
         }
 
         public java.sql.ResultSet getExportedKeys(String a, String b, String t) throws SQLException {
-            Driver.q("exp");
+            q("exp");
             return null;
         }
-
 
         public java.sql.ResultSet getCrossReference(String pa, String pb, String pt, String fa, String fb, String ft) throws SQLException {
-            Driver.q("cr");
+            q("cr");
             return null;
         }
 
-
         public java.sql.ResultSet getIndexInfo(String a, String b, String t, boolean unique, boolean approximate) throws SQLException {
-            Driver.q("ii");
+            q("ii");
             return null;
         }
 
         public java.sql.ResultSet getProcedureColumns(String a, String b, String p, String c) throws SQLException {
-            Driver.q("pc");
+            q("pc");
             return null;
         }
-
 
         public java.sql.ResultSet getColumnPrivileges(String a, String b, String table, String columnNamePattern) throws SQLException {
-            Driver.q("cp");
+            q("cp");
             return null;
         }
-
 
         public java.sql.ResultSet getTablePrivileges(String a, String b, String t) throws SQLException {
-            Driver.q("tp");
+            q("tp");
             return null;
         }
-
 
         public java.sql.ResultSet getBestRowIdentifier(String a, String b, String t, int scope, boolean nullable) throws SQLException {
-            Driver.q("br");
+            q("br");
             return null;
         }
-
 
         public java.sql.ResultSet getVersionColumns(String a, String b, String t) throws SQLException {
-            Driver.q("vc");
+            q("vc");
             return null;
         }
-
 
         public boolean allProceduresAreCallable() throws SQLException {
             return true;
@@ -2617,15 +2600,15 @@ public class Driver implements java.sql.Driver {
         }
 
         public String getDriverVersion() throws SQLException {
-            return Driver.V + "." + Driver.v;
+            return V + "." + v;
         }
 
         public int getDriverMajorVersion() {
-            return Driver.V;
+            return V;
         }
 
         public int getDriverMinorVersion() {
-            return Driver.v;
+            return v;
         }
 
         public boolean isCatalogAtStart() throws SQLException {
@@ -2964,7 +2947,6 @@ public class Driver implements java.sql.Driver {
             return false;
         }
 
-
         public java.sql.ResultSet getUDTs(String catalog, String schemaPattern, String typeNamePattern, int[] types) throws SQLException {
             return null;
         }
@@ -2972,7 +2954,6 @@ public class Driver implements java.sql.Driver {
         public java.sql.Connection getConnection() throws SQLException {
             return this.Connection;
         }
-
 
         public boolean supportsSavepoints() throws SQLException {
             return false;
@@ -2990,16 +2971,13 @@ public class Driver implements java.sql.Driver {
             return false;
         }
 
-
         public java.sql.ResultSet getSuperTypes(String catalog, String schemaPattern, String typeNamePattern) throws SQLException {
             return null;
         }
 
-
         public java.sql.ResultSet getSuperTables(String catalog, String schemaPattern, String tableNamePattern) throws SQLException {
             return null;
         }
-
 
         public java.sql.ResultSet getAttributes(String catalog, String schemaPattern, String typeNamePattern, String attributeNamePattern) throws SQLException {
             return null;
@@ -3041,62 +3019,60 @@ public class Driver implements java.sql.Driver {
             return false;
         }
 
-
         public RowIdLifetime getRowIdLifetime() throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public java.sql.ResultSet getSchemas(String string, String string1) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public boolean supportsStoredFunctionsUsingCallSyntax() throws SQLException {
-            Driver.q();
+            q();
             return false;
         }
 
         public boolean autoCommitFailureClosesAllResultSets() throws SQLException {
-            Driver.q();
+            q();
             return false;
         }
 
         public java.sql.ResultSet getClientInfoProperties() throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public java.sql.ResultSet getFunctions(String string, String string1, String string2) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
-
         public java.sql.ResultSet getFunctionColumns(String string, String string1, String string2, String string3) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         @Override
         public java.sql.ResultSet getPseudoColumns(String catalog, String schemaPattern, String tableNamePattern, String columnNamePattern) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         @Override
         public boolean generatedKeyAlwaysReturned() throws SQLException {
-            Driver.q();
+            q();
             return false;
         }
 
         public <T> T unwrap(Class<T> type) throws SQLException {
-            Driver.q();
+            q();
             return null;
         }
 
         public boolean isWrapperFor(Class<?> type) throws SQLException {
-            Driver.q();
+            q();
             return false;
         }
     }

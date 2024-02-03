@@ -4,7 +4,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-
 class SqlHelper {
     private static final Set<Integer> NUMBERS;
     private static final Set<Integer> TEMPORALS;
@@ -40,11 +39,9 @@ class SqlHelper {
         STRINGYS = Collections.unmodifiableSet(stringys);
     }
 
-
     public static boolean isNumeric(int type) {
         return NUMBERS.contains(Integer.valueOf(type));
     }
-
 
     public static boolean isTemporal(int type) {
         return TEMPORALS.contains(Integer.valueOf(type));

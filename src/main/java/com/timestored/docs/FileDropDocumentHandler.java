@@ -11,14 +11,12 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
-
 public class FileDropDocumentHandler
         extends TransferHandler {
     private static final long serialVersionUID = 1L;
     private static final DataFlavor MY_DATA_FLAVOR = DataFlavor.javaFileListFlavor;
     private final TransferHandler fallbackHandler;
     private final List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
-
 
     public FileDropDocumentHandler() {
         this(null);
@@ -38,14 +36,12 @@ public class FileDropDocumentHandler
         return this;
     }
 
-
     public boolean canImport(TransferHandler.TransferSupport tSupp) {
         return ((this.fallbackHandler != null && this.fallbackHandler.canImport(tSupp)) || (tSupp.isDrop() && tSupp.isDataFlavorSupported(MY_DATA_FLAVOR)));
     }
 
-
     public boolean importData(TransferHandler.TransferSupport tSupp) {
-        if (!canImport(tSupp)) {
+        if (!this.canImport(tSupp)) {
             return false;
         }
 
@@ -69,7 +65,6 @@ public class FileDropDocumentHandler
 
         return true;
     }
-
 
     public void exportToClipboard(JComponent comp, Clipboard clip, int action) throws IllegalStateException {
         if (this.fallbackHandler != null)

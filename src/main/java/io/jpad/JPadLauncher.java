@@ -11,21 +11,15 @@ import io.jpad.model.JEngine;
 import io.jpad.scratch.JPad;
 
 import javax.swing.JDialog;
-import javax.swing.JOptionPane;
 import javax.swing.SwingUtilities;
-import java.awt.Color;
-import java.awt.EventQueue;
-import java.awt.SplashScreen;
+import java.awt.*;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.StreamTokenizer;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Logger;
-
 
 public class JPadLauncher {
     private static final Logger LOG = Logger.getLogger(JPadLauncher.class.getName());
@@ -38,7 +32,6 @@ public class JPadLauncher {
 
     public static void main(String... args) throws InterruptedException, InvocationTargetException {
         JPad.isGUI = true;
-
 
         boolean firstInstance = ApplicationInstanceManager.registerInstance(args);
         if (!firstInstance) {
@@ -53,15 +46,14 @@ public class JPadLauncher {
         }
         openDocumentsModel = OpenDocumentsModel.newInstance();
 
-
         ApplicationInstanceManager.setApplicationInstanceListener(new ApplicationInstanceListener() {
             public void newInstanceCreated(List<String> args) {
                 System.out.println("New instance detected...");
-                if (args.size() > 0 && JPadLauncher.appFrame != null) {
-                    JPadLauncher.handleArgs(args);
+                if (args.size() > 0 && appFrame != null) {
+                    handleArgs(args);
                     EventQueue.invokeLater(new Runnable() {
                         public void run() {
-                            SwingUtils.forceToFront(JPadLauncher.appFrame);
+                            SwingUtils.forceToFront(appFrame);
                         }
                     });
                 }
@@ -71,7 +63,7 @@ public class JPadLauncher {
         SwingUtilities.invokeAndWait(new Runnable() {
             public void run() {
                 try {
-                    JPadLauncher.launch(args);
+                    launch(args);
                 } catch (IOException e) {
                     throw new RuntimeException(e);
                 }
@@ -79,9 +71,8 @@ public class JPadLauncher {
         });
     }
 
-
     private static void launch(String... args) throws IOException {
-        String title = "JPad";
+        final String title = "JPad";
 
         AppLaunchHelper.setMacAndWindowsAppearance(title);
         AppLaunchHelper.logToUsersFolder("JPad" + File.separator + "logs");
@@ -89,11 +80,10 @@ public class JPadLauncher {
 
         Thread.setDefaultUncaughtExceptionHandler(ERR_REPORTER.getUncaughtExceptionHandler());
 
-
         JDialog dialog = null;
         if (SplashScreen.getSplashScreen() == null) {
             URL r = JPadLauncher.class.getResource("splash.png");
-            String u = JPPersistance.INSTANCE.get(JPPersistance.Key.USERNAME, "");
+            String u = JPPersistence.INSTANCE.get(JPPersistence.Key.USERNAME, "");
             dialog = SwingUtils.showSplashDialog(r, BLUE_LOGO_BG, "http://jpad.io   " + u);
         }
 
@@ -102,7 +92,11 @@ public class JPadLauncher {
         appFrame = new JPadFrame(openDocumentsModel, jEngine);
         appFrame.setExtendedState(6);
         appFrame.setVisible(true);
-
+        appFrame.setSize(new Dimension(900, 650));
+        Dimension screenSize = Toolkit.getDefaultToolkit().getScreenSize();
+        double width = screenSize.getWidth();
+        double height = screenSize.getHeight();
+        appFrame.setLocation(new Point((int) width / 4, (int) height / 8));
 
         if (dialog != null) {
             dialog.setVisible(false);
@@ -110,25 +104,9 @@ public class JPadLauncher {
         }
 
         handleArgs(Arrays.asList(args));
-        /*System.setIn(new InputStream() {
-            private final StringBuilder buffer = new StringBuilder();
 
-            @Override
-            public int read() {
-                if (this.buffer.length() == 0) {
-                    this.buffer.append(JOptionPane.showInputDialog("User input:"));
-                    this.buffer.append("\n");
-                } else return -1;
-
-                char charToRead = this.buffer.charAt(0);
-                this.buffer.deleteCharAt(0);
-                System.out.print(charToRead);
-                return charToRead;
-            }
-        });*/
         LOG.info("Finished JPadLauncher  launch()");
     }
-
 
     private static void handleArgs(List<String> args) {
         openDocumentsModel.openDocuments(args);

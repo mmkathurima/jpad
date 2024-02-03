@@ -1,6 +1,5 @@
 package com.timestored.plugins;
 
-
 public class ConnectionDetails {
     private final String host;
     private final int port;

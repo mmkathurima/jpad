@@ -25,6 +25,12 @@
             <artifactId>rsyntaxtextarea</artifactId>
             <version>3.3.1</version>
         </dependency>
+        <!-- https://mvnrepository.com/artifact/com.fifesoft/languagesupport -->
+        <dependency>
+            <groupId>com.fifesoft</groupId>
+            <artifactId>languagesupport</artifactId>
+            <version>3.3.0</version>
+        </dependency>
         <dependency>
             <groupId>com.google.guava</groupId>
             <artifactId>guava</artifactId>
@@ -147,7 +153,6 @@
                 <configuration>
                     <fork>true</fork>
                     <compilerVersion>11</compilerVersion>
-                    <executable>C:\Users\Admin\.jdks\corretto-11.0.20.1\bin\javac.exe</executable>
                     <source>11</source>
                     <target>11</target>
                     <compilerArgs>
@@ -155,6 +160,8 @@
                         <arg>1000</arg>
                         <arg>-Xmaxwarns</arg>
                         <arg>2000</arg>
+                        <arg>--add-exports</arg>
+                        <arg>java.base/sun.security.provider=ALL-UNNAMED</arg>
                     </compilerArgs>
                 </configuration>
             </plugin>

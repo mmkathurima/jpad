@@ -14,7 +14,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class ErrorReporter {
     private static final Logger LOG = Logger.getLogger(ErrorReporter.class.getName());
 
@@ -23,8 +22,7 @@ public class ErrorReporter {
     private final String email;
     private final String emailTitle;
     private final long timeDelayBetweenReports;
-    private long lastErrTime = 0L;
-
+    private long lastErrTime;
 
     public ErrorReporter(String websiteUrl, String email, String emailTitle, int delayBetweenReports) {
         Preconditions.checkNotNull(websiteUrl);
@@ -50,9 +48,8 @@ public class ErrorReporter {
     }
 
     public void showReportErrorDialog(Throwable e, String description) {
-        showReportErrorDialog(getErrDetails(e, description));
+        this.showReportErrorDialog(this.getErrDetails(e, description));
     }
-
 
     private String getErrDetails(Throwable e, String description) {
         String stackTrace = "..";
@@ -69,7 +66,6 @@ public class ErrorReporter {
         return "\r\n\r\nDetails:\r\n\r\nOS=" + ((os == null) ? "unknown" : os) + "\r\nJava=" + ((version == null) ? "unknown" : version) + "\r\nDes=" + ((description == null) ? "unknown" : description) + "\r\nStack=" + stackTrace;
     }
 
-
     public void showReportErrorDialog(String errDetails) {
         boolean enoughTimeDelay = (System.currentTimeMillis() - this.lastErrTime > this.timeDelayBetweenReports);
 
@@ -78,11 +74,9 @@ public class ErrorReporter {
 
             String msg = "An error occurred, to allow us to fix the problem please click report below which will contact us via the website or email  " + this.email + "\r\n\r\nTechnical Details:\r\n";
 
-
             JPanel b = new JPanel(new BorderLayout());
 
             b.add(Theme.getTextArea("repError", msg), "North");
-
 
             JTextArea errTA = Theme.getTextArea("errDetails", errDetails);
             errTA.setFont(new Font("Verdana", 1, 12));
@@ -97,7 +91,6 @@ public class ErrorReporter {
 
             int choice = JOptionPane.showOptionDialog(null, b, "Error", 2, 0, Theme.CIcon.ERROR.get(), options, options[0]);
 
-
             if (choice == 0) {
                 HtmlUtils.browse(this.websiteUrl + "&details=" + URLEncoder.encode(errDetails, StandardCharsets.UTF_8));
             }
@@ -106,15 +99,14 @@ public class ErrorReporter {
 
     public Component getErrorReportLink(Throwable e, String description) {
         String txt = "" + description + "<br /><font color='red'>" + e.toString() + "<br /></font>";
-        return getErrorReportLink(txt, getErrDetails(e, description));
+        return this.getErrorReportLink(txt, this.getErrDetails(e, description));
     }
 
     public Component getErrorReportLink(String shortDescription, String errDetails) {
         String encodedSubject = getEncoded(this.emailTitle, 30);
-        final String encodedDetails = getEncoded(errDetails, 435);
+        String encodedDetails = getEncoded(errDetails, 435);
 
         JEditorPane editPane = Theme.getHtmlText("<html>" + shortDescription + "<br />If you believe this is a bug contact:" + "<br /><a href='mailto:" + this.email + "?Subject=" + encodedSubject + "&Body=" + encodedDetails + "'>" + this.email + "</a> to report the problem please.</html>");
-
 
         JButton reportButton = new JButton("Report via Website", Theme.CIcon.TEXT_HTML.get16());
 
@@ -123,7 +115,6 @@ public class ErrorReporter {
                 HtmlUtils.browse(ErrorReporter.this.websiteUrl + "&details=" + encodedDetails);
             }
         });
-
 
         JPanel p = new JPanel(new BorderLayout());
         p.add(editPane, "Center");
@@ -138,7 +129,7 @@ public class ErrorReporter {
         }
 
         public void uncaughtException(Thread t, Throwable e) {
-            ErrorReporter.LOG.log(Level.WARNING, "uncaught error", e);
+            LOG.log(Level.WARNING, "uncaught error", e);
             ErrorReporter.this.showReportErrorDialog(e, null);
         }
     }

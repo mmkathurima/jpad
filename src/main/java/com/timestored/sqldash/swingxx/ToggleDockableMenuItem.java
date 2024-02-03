@@ -8,15 +8,13 @@ import javax.swing.JCheckBoxMenuItem;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-
 public class ToggleDockableMenuItem
         extends JCheckBoxMenuItem {
     private static final long serialVersionUID = 1L;
 
-    public ToggleDockableMenuItem(final Dockable observed, final DockFrontend frontend, String name) {
+    public ToggleDockableMenuItem(Dockable observed, DockFrontend frontend, String name) {
         super(observed.getTitleText(), observed.getTitleIcon());
-        setName(name);
-
+        this.setName(name);
 
         frontend.addFrontendListener(new DockFrontendAdapter() {
             public void shown(DockFrontend f, Dockable dockable) {
@@ -32,8 +30,7 @@ public class ToggleDockableMenuItem
             }
         });
 
-
-        addActionListener(new ActionListener() {
+        this.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 if (ToggleDockableMenuItem.this.isSelected()) {
                     frontend.show(observed);
@@ -43,8 +40,7 @@ public class ToggleDockableMenuItem
             }
         });
 
-
-        setSelected(frontend.isShown(observed));
+        this.setSelected(frontend.isShown(observed));
     }
 }
 

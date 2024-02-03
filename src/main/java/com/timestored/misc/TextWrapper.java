@@ -40,7 +40,6 @@ public final class TextWrapper {
             }
         },
 
-
         SOFT {
             public String wrap(Iterable<String> words, int width) {
                 StringBuilder sb = new StringBuilder();
@@ -66,7 +65,6 @@ public final class TextWrapper {
             }
         }
     }
-
 
     interface WrapStrategy {
         String wrap(Iterable<String> param1Iterable, int param1Int);

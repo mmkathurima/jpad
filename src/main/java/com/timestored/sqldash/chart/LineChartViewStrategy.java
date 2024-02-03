@@ -7,7 +7,6 @@ import org.jfree.chart.plot.PlotOrientation;
 
 import java.awt.Color;
 
-
 public class LineChartViewStrategy
         extends AbstractCategoryViewStrategy {
     public static final ViewStrategy INSTANCE = new LineChartViewStrategy();

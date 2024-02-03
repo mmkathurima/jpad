@@ -8,10 +8,8 @@ import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class DBHelper {
     private static final Logger LOG = Logger.getLogger(DBHelper.class.getName());
-
 
     public static boolean isEqual(ResultSet rsA, ResultSet rsB) {
         if (rsB == null) {
@@ -34,7 +32,6 @@ public class DBHelper {
             }
             rsA.beforeFirst();
             rsB.beforeFirst();
-
 
             while (rsA.next() & rsB.next()) {
                 for (c = 1; c <= cols; c++) {

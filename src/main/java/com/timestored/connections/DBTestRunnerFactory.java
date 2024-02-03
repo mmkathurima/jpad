@@ -6,7 +6,6 @@ import com.timestored.kdb.KdbTestHelper;
 import java.io.IOException;
 import java.sql.SQLException;
 
-
 public class DBTestRunnerFactory {
     public static DBTestRunner getDbRunner(JdbcTypes jdbcType) {
         Preconditions.checkNotNull(jdbcType);

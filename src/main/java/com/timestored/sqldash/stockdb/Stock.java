@@ -3,7 +3,6 @@ package com.timestored.sqldash.stockdb;
 import com.google.common.base.MoreObjects;
 import net.jcip.annotations.Immutable;
 
-
 @Immutable
 public class Stock {
     private final String symbol;

@@ -14,7 +14,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
-
 public class WebsiteUploader {
     private static final String UPLOAD_URL = "http://jpad.io/upload";
     private static final String PASSWORD_CHECK_URL = "http://jpad.io/login-check";
@@ -32,7 +31,6 @@ public class WebsiteUploader {
         }
     }
 
-
     static UploadResult post(String username, String password, Snip snip) throws IOException {
         Map<String, Object> m = snip.toMap();
         m.put("username", username);
@@ -42,7 +40,6 @@ public class WebsiteUploader {
         System.out.println(json);
         return gson.fromJson(json, UploadResult.class);
     }
-
 
     private static String post(String websiteUrl, Map<String, Object> params) throws IOException {
         URL url = new URL(websiteUrl);

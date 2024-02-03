@@ -3,7 +3,6 @@ package com.timestored.sqldash.chart;
 import com.google.common.base.MoreObjects;
 import net.jcip.annotations.Immutable;
 
-
 @Immutable
 class ExampleView {
     private final TestCase testCase;
@@ -20,11 +19,9 @@ class ExampleView {
         return this.name;
     }
 
-
     public String getDescription() {
         return this.description;
     }
-
 
     public TestCase getTestCase() {
         return this.testCase;

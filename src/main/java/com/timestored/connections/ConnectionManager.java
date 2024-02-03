@@ -30,7 +30,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.prefs.Preferences;
 
-
 @ThreadSafe
 public class ConnectionManager {
     private static final Logger LOG = Logger.getLogger(ConnectionManager.class.getName());
@@ -129,7 +128,7 @@ public class ConnectionManager {
     public void setPreferenceStore(Preferences preferences, String prefKeyPrefix) {
         this.preferences = preferences;
         this.prefKey = prefKeyPrefix;
-        reloadFromPreferences();
+        this.reloadFromPreferences();
     }
 
     public List<ServerConfig> getServerConnections() {
@@ -145,7 +144,7 @@ public class ConnectionManager {
 
     public List<String> getServerNames() {
         List<String> s = Lists.newArrayList();
-        for (ServerConfig sc : getServerConnections()) {
+        for (ServerConfig sc : this.getServerConnections()) {
             s.add(sc.getName());
         }
         return Collections.unmodifiableList(s);
@@ -154,7 +153,7 @@ public class ConnectionManager {
     private void addServerSilently(ServerConfig serverConnection) {
         Preconditions.checkNotNull(serverConnection);
         String name = serverConnection.getName();
-        ServerConfig existingSC = getServer(name);
+        ServerConfig existingSC = this.getServer(name);
         if (existingSC != null) {
             if (existingSC.equals(serverConnection)) {
                 return;
@@ -162,58 +161,57 @@ public class ConnectionManager {
             throw new IllegalArgumentException("Server name must be unique. Cant use this call to update settings.");
         }
 
-
         this.serverConns.add(serverConnection);
         this.serverConnected.put(serverConnection, Boolean.FALSE);
         LOG.info("added server: " + serverConnection);
     }
 
     public void addServer(ServerConfig serverConnection) {
-        reloadFromPreferences();
-        addServerSilently(serverConnection);
-        save();
-        notifyListeners();
+        this.reloadFromPreferences();
+        this.addServerSilently(serverConnection);
+        this.save();
+        this.notifyListeners();
     }
 
     public List<ServerConfig> addServer(List<ServerConfig> connections) {
-        reloadFromPreferences();
+        this.reloadFromPreferences();
         Preconditions.checkNotNull(connections);
         List<ServerConfig> failedConfigs = new ArrayList<ServerConfig>();
         for (ServerConfig sc : connections) {
             try {
-                addServerSilently(sc);
+                this.addServerSilently(sc);
             } catch (IllegalArgumentException iae) {
                 LOG.log(Level.WARNING, "Could not add sc: " + sc.toString(), iae);
                 failedConfigs.add(sc);
             }
         }
 
-        save();
-        notifyListeners();
+        this.save();
+        this.notifyListeners();
         return failedConfigs;
     }
 
     public void updateServer(String oldServerName, ServerConfig serverConnection) {
         String newName = serverConnection.getName();
-        if (!newName.equals(oldServerName) && getServer(newName) != null) {
+        if (!newName.equals(oldServerName) && this.getServer(newName) != null) {
             throw new IllegalArgumentException("That server name is already taken.");
         }
         LOG.info("updateServer(" + oldServerName + " -> " + serverConnection + ")");
 
         ServerConfig existingSC = null;
         synchronized (this.serverConns) {
-            reloadFromPreferences();
-            existingSC = getServer(oldServerName);
+            this.reloadFromPreferences();
+            existingSC = this.getServer(oldServerName);
             if (existingSC != null) {
                 this.serverConns.remove(existingSC);
-                statusUpdate(existingSC, false);
+                this.statusUpdate(existingSC, false);
                 this.serverConns.add(serverConnection);
-                statusUpdate(serverConnection, false);
+                this.statusUpdate(serverConnection, false);
             }
-            save();
+            this.save();
         }
         LOG.info("updated server: " + serverConnection);
-        notifyListeners();
+        this.notifyListeners();
         if (existingSC == null) {
             throw new IllegalArgumentException("server does not exist already, so can't remove");
         }
@@ -225,18 +223,18 @@ public class ConnectionManager {
         String f = (folderName == null) ? "" : folderName;
         if (!serverConfig.getFolder().equals(f)) {
             ServerConfig sc = (new ServerConfigBuilder(serverConfig)).setFolder(folderName).build();
-            updateServer(serverConfig.getName(), sc);
+            this.updateServer(serverConfig.getName(), sc);
         }
     }
 
     public boolean removeServer(String name) {
-        ServerConfig sc = getServer(name);
-        return sc != null && removeServer(sc);
+        ServerConfig sc = this.getServer(name);
+        return sc != null && this.removeServer(sc);
     }
 
     private boolean[] removeServers(List<ServerConfig> serverConfigs) {
         if (serverConfigs.size() > 0) {
-            reloadFromPreferences();
+            this.reloadFromPreferences();
             boolean[] goners = new boolean[serverConfigs.size()];
             for (int i = 0; i < serverConfigs.size(); i++) {
                 goners[i] = this.serverConns.remove(serverConfigs.get(i));
@@ -244,39 +242,39 @@ public class ConnectionManager {
                     LOG.info("removed server: " + serverConfigs);
                 }
             }
-            save();
-            notifyListeners();
+            this.save();
+            this.notifyListeners();
             return goners;
         }
         return new boolean[0];
     }
 
     public boolean removeServer(ServerConfig serverConfig) {
-        return removeServers(Lists.newArrayList(serverConfig))[0];
+        return this.removeServers(Lists.newArrayList(serverConfig))[0];
     }
 
     public void removeServers() {
         this.serverConns.clear();
-        save();
+        this.save();
         LOG.info("removed all servers");
-        notifyListeners();
+        this.notifyListeners();
     }
 
     public Connection getConnection(String serverName) throws IOException {
-        ServerConfig sc = getServer(serverName);
+        ServerConfig sc = this.getServer(serverName);
         if (sc != null) {
-            return getConnection(getServer(serverName));
+            return this.getConnection(this.getServer(serverName));
         }
         return null;
     }
 
     public boolean isConnected(String serverName) {
-        return isConnected(getServer(serverName));
+        return this.isConnected(this.getServer(serverName));
     }
 
     public Connection getConnection(ServerConfig serverConfig) throws IOException {
         if (this.serverConns.contains(serverConfig)) {
-            return getConn(serverConfig);
+            return this.getConn(serverConfig);
         }
         return null;
     }
@@ -305,17 +303,14 @@ public class ConnectionManager {
 
             genericObjectPool = new GenericObjectPool();
             Class.forName(serverConfig.getJdbcType().getDriver());
-            ServerConfig sc = overrideServerConfig(serverConfig);
-
+            ServerConfig sc = this.overrideServerConfig(serverConfig);
 
             DriverManagerConnectionFactory driverManagerConnectionFactory = new DriverManagerConnectionFactory(sc.getUrl(), sc.getUsername(), sc.getPassword());
 
-
             PoolableConnectionFactory poolableConnectionFactory = new PoolableConnectionFactory(driverManagerConnectionFactory, genericObjectPool, null, null, false, true);
 
-
             this.serverConnPool.put(serverConfig, genericObjectPool);
-            statusUpdate(serverConfig, true);
+            this.statusUpdate(serverConfig, true);
 
             Connection c = (Connection) genericObjectPool.borrowObject();
             if (c.isClosed()) {
@@ -326,7 +321,7 @@ public class ConnectionManager {
             return c;
         } catch (Exception e) {
             if (this.serverConnected.containsKey(serverConfig)) {
-                statusUpdate(serverConfig, false);
+                this.statusUpdate(serverConfig, false);
             }
             LOG.info("getConn Exception server: " + serverConfig.toString());
             throw new IOException(e);
@@ -336,18 +331,15 @@ public class ConnectionManager {
     private ServerConfig overrideServerConfig(ServerConfig serverConfig) {
         ServerConfig sc = serverConfig;
 
-
         if (!serverConfig.hasLogin() && (this.defaultLoginPassword != null || this.defaultLoginUsername != null)) {
             sc = (new ServerConfigBuilder(serverConfig)).setUsername(this.defaultLoginUsername).setPassword(this.defaultLoginPassword).build();
         }
-
 
         DatabaseAuthenticationService dps = serverConfig.getJdbcType().getAuthenticator();
         if (dps != null) {
             ConnectionDetails connDetails = dps.getonConnectionDetails(sc.getConnectionDetails());
             sc = (new ServerConfigBuilder(serverConfig)).setHost(connDetails.getHost()).setPort(connDetails.getPort()).setDatabase(connDetails.getDatabase()).setUsername(connDetails.getUsername()).setPassword(connDetails.getPassword()).build();
         }
-
 
         return sc;
     }
@@ -390,17 +382,17 @@ public class ConnectionManager {
     public void testConnection(ServerConfig serverConfig) throws IOException {
         boolean connected = false;
 
-        Connection conn = getConn(serverConfig);
+        Connection conn = this.getConn(serverConfig);
         try {
             connected = !conn.isClosed();
         } catch (SQLException e) {
             connected = false;
         } finally {
-            returnConn(serverConfig, conn);
+            this.returnConn(serverConfig, conn);
         }
 
         if (this.serverConns.contains(serverConfig)) {
-            statusUpdate(serverConfig, connected);
+            this.statusUpdate(serverConfig, connected);
         }
 
         if (!connected) {
@@ -412,10 +404,10 @@ public class ConnectionManager {
         CConnection kdbConn = null;
         if (serverConfig.isKDB()) {
             try {
-                kdbConn = new CConnection(overrideServerConfig(serverConfig));
-                statusUpdate(serverConfig, true);
+                kdbConn = new CConnection(this.overrideServerConfig(serverConfig));
+                this.statusUpdate(serverConfig, true);
             } catch (Exception e) {
-                statusUpdate(serverConfig, false);
+                this.statusUpdate(serverConfig, false);
             }
         }
         return kdbConn;
@@ -433,8 +425,8 @@ public class ConnectionManager {
     }
 
     public KdbConnection getKdbConnection(String serverName) {
-        ServerConfig sc = getServer(serverName);
-        return (sc != null) ? getKdbConnection(sc) : null;
+        ServerConfig sc = this.getServer(serverName);
+        return (sc != null) ? this.getKdbConnection(sc) : null;
     }
 
     public boolean isConnected(ServerConfig sc) {
@@ -454,8 +446,8 @@ public class ConnectionManager {
     }
 
     public void refreshFromPreferences() {
-        if (reloadFromPreferences()) {
-            notifyListeners();
+        if (this.reloadFromPreferences()) {
+            this.notifyListeners();
         }
     }
 
@@ -465,7 +457,7 @@ public class ConnectionManager {
             this.defaultLoginUsername = username;
             this.defaultLoginPassword = password;
             this.serverConnPool.clear();
-            notifyListeners();
+            this.notifyListeners();
         }
     }
 
@@ -502,7 +494,6 @@ public class ConnectionManager {
                 LOG.info("txt.length = " + txt.length() + " maxLength = " + 73728);
                 throw new IllegalArgumentException("Too many connections to save");
             }
-
 
             if (txt.length() <= 8192) {
                 this.preferences.put(this.prefKey, txt);
@@ -541,12 +532,12 @@ public class ConnectionManager {
     public boolean execute(ServerConfig serverConfig, String sql) {
         boolean b = false;
         try {
-            Connection conn = getConnection(serverConfig);
+            Connection conn = this.getConnection(serverConfig);
             if (conn == null) {
                 throw new IOException("cant find server");
             }
             b = execute(sql, conn);
-            returnConn(serverConfig, conn);
+            this.returnConn(serverConfig, conn);
         } catch (IOException e) {
             LOG.log(Level.WARNING, "error getting connection:\r\n", e);
         }
@@ -557,26 +548,26 @@ public class ConnectionManager {
     public boolean execute(ServerConfig sc, List<String> sqlQueries) {
         boolean success = true;
         for (String sql : sqlQueries) {
-            success = (success && execute(sc, sql));
+            success = (success && this.execute(sc, sql));
         }
         return success;
     }
 
     public CachedRowSet executeQuery(ServerConfig serverConfig, String sql) throws SQLException, IOException {
-        Connection conn = getConnection(serverConfig);
+        Connection conn = this.getConnection(serverConfig);
         if (conn == null) {
             throw new IOException("Could not find server");
         }
         try {
             return executeQuery(serverConfig, sql, conn);
         } finally {
-            returnConn(serverConfig, conn);
+            this.returnConn(serverConfig, conn);
         }
     }
 
     public int removeFolder(String folder) {
-        List<ServerConfig> removedServers = getServersInFolder(folder);
-        boolean[] r = removeServers(removedServers);
+        List<ServerConfig> removedServers = this.getServersInFolder(folder);
+        boolean[] r = this.removeServers(removedServers);
         int c = 0;
         for (boolean b : r) {
             if (b) c++;
@@ -593,21 +584,21 @@ public class ConnectionManager {
         LOG.info("renameFolder(" + from + " -> " + to + ")");
 
         synchronized (this.serverConns) {
-            reloadFromPreferences();
-            Collection<ServerConfig> fromSCs = getServersInFolder(from);
+            this.reloadFromPreferences();
+            Collection<ServerConfig> fromSCs = this.getServersInFolder(from);
             if (fromSCs.isEmpty()) {
                 return 0;
             }
             for (ServerConfig existingSC : fromSCs) {
                 this.serverConns.remove(existingSC);
-                statusUpdate(existingSC, false);
+                this.statusUpdate(existingSC, false);
                 String newFolder = to + existingSC.getFolder().substring(from.length());
                 ServerConfig sc = (new ServerConfigBuilder(existingSC)).setFolder(newFolder).build();
                 this.serverConns.add(sc);
-                statusUpdate(sc, false);
+                this.statusUpdate(sc, false);
             }
-            save();
-            notifyListeners();
+            this.save();
+            this.notifyListeners();
             return fromSCs.size();
         }
     }
@@ -626,7 +617,6 @@ public class ConnectionManager {
         }
         return (r == null) ? Collections.emptyList() : r;
     }
-
 
     public interface Listener {
         void prefChange();

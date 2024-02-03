@@ -13,7 +13,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-
 public class FormWidget
         extends AbstractWidget
         implements Widget {
@@ -27,16 +26,14 @@ public class FormWidget
         }
     };
     private JPanel e;
-    private Widget selectedWidget = null;
+    private Widget selectedWidget;
 
     private int counter = 1;
-
 
     public FormWidget(DesktopModel desktopModel) {
         super(desktopModel);
         this.title = "";
     }
-
 
     public FormWidget(DesktopModel desktopModel, FormWidgetDTO formWidgetDTO) {
         super(desktopModel, formWidgetDTO.id);
@@ -61,11 +58,11 @@ public class FormWidget
         } else if (layout == 3) {
             this.layout = 3;
         }
-        configChanged();
+        this.configChanged();
     }
 
     protected void configChanged() {
-        refresh();
+        this.refresh();
         super.configChanged();
     }
 
@@ -93,7 +90,7 @@ public class FormWidget
             this.p.setBorder(BorderFactory.createTitledBorder(""));
             this.b = new JPanel();
             this.p.add(new JScrollPane(this.b), "Center");
-            refresh();
+            this.refresh();
         }
         return this.p;
     }
@@ -130,7 +127,7 @@ public class FormWidget
         this.ws.add(w);
         w.addListener(this.refeshListener);
         this.selectedWidget = w;
-        configChanged();
+        this.configChanged();
     }
 
     void removeWidget(Widget w) {
@@ -145,15 +142,15 @@ public class FormWidget
             this.selectedWidget = this.ws.get(idx);
         }
         w.removeListener(this.refeshListener);
-        configChanged();
+        this.configChanged();
     }
 
     void moveWidgetUp(Widget w) {
-        moveWidget(w, -1);
+        this.moveWidget(w, -1);
     }
 
     void moveWidgetDown(Widget w) {
-        moveWidget(w, 1);
+        this.moveWidget(w, 1);
     }
 
     private void moveWidget(Widget w, int direction) {
@@ -166,13 +163,13 @@ public class FormWidget
             Widget temp = this.ws.get(destI);
             this.ws.set(destI, w);
             this.ws.set(curI, temp);
-            configChanged();
+            this.configChanged();
         }
     }
 
     public synchronized JPanel getEditorPanel() {
         if (this.e == null) {
-            this.e = new FormWidgetEditorPanel(this, getDesktopModel());
+            this.e = new FormWidgetEditorPanel(this, this.getDesktopModel());
         }
         return this.e;
     }
@@ -203,7 +200,7 @@ public class FormWidget
         Preconditions.checkArgument((selectedWidget == null || this.ws.contains(selectedWidget)));
         if (selectedWidget != this.selectedWidget) {
             this.selectedWidget = selectedWidget;
-            configChanged();
+            this.configChanged();
         }
     }
 
@@ -222,7 +219,6 @@ public class FormWidget
 
         public Component getListCellRendererComponent(JList<?> list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
             JLabel label = (JLabel) super.getListCellRendererComponent(list, value, index, isSelected, cellHasFocus);
-
 
             if (value instanceof Widget) {
                 Widget w = (Widget) value;

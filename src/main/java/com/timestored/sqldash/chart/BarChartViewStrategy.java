@@ -6,7 +6,6 @@ import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
 import org.jfree.chart.plot.PlotOrientation;
 
-
 @Immutable
 public class BarChartViewStrategy
         extends AbstractCategoryViewStrategy {
@@ -19,12 +18,11 @@ public class BarChartViewStrategy
     public UpdateableView getView(ChartTheme theme) {
         JFreeChart chart = ChartFactory.createBarChart("", "", "values", null, PlotOrientation.VERTICAL, theme.showChartLegend(), true, false);
 
-
         return new CategoryDatasetUpdateableView(theme, chart);
     }
 
     public String toString() {
-        return BarChartViewStrategy.class.getSimpleName() + "[" + getDescription() + "]";
+        return BarChartViewStrategy.class.getSimpleName() + "[" + this.getDescription() + "]";
     }
 }
 

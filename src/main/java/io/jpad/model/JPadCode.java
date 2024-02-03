@@ -1,6 +1,5 @@
 package io.jpad.model;
 
-
 import com.google.common.base.Preconditions;
 import com.google.common.collect.Sets;
 
@@ -10,7 +9,6 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.logging.Logger;
-
 
 public class JPadCode {
     public static final String FULL_CLASS_NAME = "io.jpad.scratch.RunnContainer";
@@ -24,11 +22,8 @@ public class JPadCode {
     private static final Logger log = Logger.getLogger(JPadCode.class.getName());
     private static final String IMP = "import ";
     private final String rawCode;
-
     private final String gradleCode;
-
     private final Set<String> userImports;
-
     private final Set<String> smartImports;
     private final String userImportString;
     private final int offsetToOriginalUserImports;
@@ -36,206 +31,112 @@ public class JPadCode {
     private final String mainCode;
     private final GenerateResult generateResult;
 
-
     private JPadCode(String rawCode) {
-
         this.rawCode = Preconditions.checkNotNull(rawCode);
-
-
         int p = rawCode.indexOf("// JAVA");
-
         if (p == -1) {
-
             if (rawCode.startsWith("import ")) {
-
                 p = 0;
-
             } else {
-
                 p = rawCode.indexOf("\nimport ") + 1;
-
                 p = Math.min(p, rawCode.indexOf("\timport ") + 1);
-
                 p = Math.min(p, rawCode.indexOf("\rimport ") + 1);
-
                 p = Math.min(p, rawCode.indexOf(" import ") + 1);
-
                 p = Math.min(p, rawCode.indexOf(";import ") + 1);
-
                 p = Math.max(0, p);
-
             }
-
         }
-
         String jCode = rawCode.substring(p);
-
         this.offsetToOriginalUserImports = p;
-
         int offsetToMainCode = p;
-
-
         String mCode = jCode;
-
         this.gradleCode = rawCode.substring(0, p);
-
-
         Set<String> userImports = Sets.newHashSet();
-
         String userImportString = "";
-
         if (jCode.contains("import ")) {
-
             int lastImportPos = jCode.lastIndexOf("import ");
-
             int breakPos = jCode.indexOf(";", lastImportPos);
-
             mCode = jCode.substring(breakPos + 1);
-
             offsetToMainCode += breakPos + 1;
-
-
             userImportString = jCode.substring(0, breakPos + 1);
-
             String[] importStrings = userImportString.split(";");
-
             for (String s : importStrings) {
-
                 userImports.add(s.trim().replace("import ", ""));
-
             }
-
         }
-
-
         this.mainCode = mCode;
-
         this.userImportString = userImportString;
-
         this.userImports = userImports;
-
         this.offsetToOriginalMainCode = offsetToMainCode;
-
-
         this.smartImports = guessImports(jCode, userImports);
-
-
-        this.generateResult = generateJavaFileSource();
-
+        this.generateResult = this.generateJavaFileSource();
     }
-
 
     public static JPadCode generate(String jpadCode) {
-
         return new JPadCode(jpadCode);
-
     }
-
 
     private static Set<String> guessImports(String javaCode, Set<String> userImports) {
-
         JreClassGrabber jreClassGrabber = JreClassGrabber.getInstance();
-
-
         Set<String> smartImports = new HashSet<>();
-
         Set<String> classNames = JavaTokeniser.getCodeWords(javaCode);
-
         for (String cn : classNames) {
-
-
             boolean userAlreadyImported = false;
-
             for (String uimp : userImports) {
-
                 if (uimp.endsWith("." + cn)) {
-
                     userAlreadyImported = true;
-
                     break;
-
                 }
-
             }
-
             if (!userAlreadyImported) {
-
                 String fullClassName = jreClassGrabber.getOneToOneMappings().get(cn);
-
                 if (fullClassName == null) {
-
                     fullClassName = jreClassGrabber.getGuesses().get(cn);
-
                 }
-
                 if (fullClassName != null) {
-
                     try {
-
                         Class<?> cls = Class.forName(fullClassName);
-
                         if (!Modifier.isPublic(cls.getModifiers())) {
-
                             fullClassName = null;
-
                         }
-
                     } catch (ClassNotFoundException e) {
-
                         fullClassName = null;
-
                     } catch (NoClassDefFoundError e) {
-
                         fullClassName = null;
-
                     }
-
                 }
-
-
                 if (fullClassName == null) {
-
                     log.fine("Couldn't find import for " + cn);
                     continue;
-
                 }
-
                 int p = fullClassName.lastIndexOf(".");
-
                 String packageName = fullClassName.substring(0, p);
-
-
                 if (!packageName.equals("java.lang")) {
-
                     smartImports.add(fullClassName);
-
                 }
-
             }
-
         }
-
-
         return smartImports;
-
     }
 
-
     public boolean equals(Object o) {
-
         if (o == this) return true;
         if (!(o instanceof JPadCode)) return false;
         JPadCode other = (JPadCode) o;
         if (!other.canEqual(this)) return false;
-        Object this$rawCode = getRawCode(), other$rawCode = other.getRawCode();
+        Object this$rawCode = this.rawCode;
+        Object other$rawCode = other.rawCode;
         if (!Objects.equals(this$rawCode, other$rawCode)) return false;
-        Object this$gradleCode = getGradleCode(), other$gradleCode = other.getGradleCode();
+        Object this$gradleCode = this.gradleCode;
+        Object other$gradleCode = other.gradleCode;
         if (!Objects.equals(this$gradleCode, other$gradleCode))
             return false;
-        Set<String> this$userImports = getUserImports(), other$userImports = other.getUserImports();
+        Set<String> this$userImports = this.userImports;
+        Set<String> other$userImports = other.userImports;
         if (!Objects.equals(this$userImports, other$userImports))
             return false;
-        Set<String> this$smartImports = getSmartImports(), other$smartImports = other.getSmartImports();
+        Set<String> this$smartImports = this.smartImports;
+        Set<String> other$smartImports = other.smartImports;
         if (!Objects.equals(this$smartImports, other$smartImports))
             return false;
         if (!Objects.equals(this.userImportString, other.userImportString))
@@ -251,15 +152,15 @@ public class JPadCode {
     }
 
     public int hashCode() {
-        int PRIME = 59;
+        final int PRIME = 59;
         int result = 1;
-        Object $rawCode = getRawCode();
+        Object $rawCode = this.rawCode;
         result = result * 59 + (($rawCode == null) ? 0 : $rawCode.hashCode());
-        Object $gradleCode = getGradleCode();
+        Object $gradleCode = this.gradleCode;
         result = result * 59 + (($gradleCode == null) ? 0 : $gradleCode.hashCode());
-        Set<String> $userImports = getUserImports();
+        Set<String> $userImports = this.userImports;
         result = result * 59 + (($userImports == null) ? 0 : $userImports.hashCode());
-        Set<String> $smartImports = getSmartImports();
+        Set<String> $smartImports = this.smartImports;
         result = result * 59 + (($smartImports == null) ? 0 : $smartImports.hashCode());
         Object $userImportString = this.userImportString;
         result = result * 59 + (($userImportString == null) ? 0 : $userImportString.hashCode());
@@ -272,147 +173,84 @@ public class JPadCode {
     }
 
     public String toString() {
-        return "JPadCode(rawCode=" + getRawCode() + ", gradleCode=" + getGradleCode() + ", userImports=" + getUserImports() + ", smartImports=" + getSmartImports() + ", userImportString=" + this.userImportString + ", offsetToOriginalUserImports=" + this.offsetToOriginalUserImports + ", offsetToOriginalMainCode=" + this.offsetToOriginalMainCode + ", mainCode=" + this.mainCode + ", generateResult=" + this.generateResult + ")";
+        return "JPadCode(rawCode=" + this.rawCode + ", gradleCode=" + this.gradleCode + ", userImports=" + this.userImports + ", smartImports=" + this.smartImports + ", userImportString=" + this.userImportString + ", offsetToOriginalUserImports=" + this.offsetToOriginalUserImports + ", offsetToOriginalMainCode=" + this.offsetToOriginalMainCode + ", mainCode=" + this.mainCode + ", generateResult=" + this.generateResult + ")";
     }
-
 
     public String getRawCode() {
-
         return this.rawCode;
     }
-
 
     public String getGradleCode() {
         return this.gradleCode;
     }
-
 
     public Set<String> getUserImports() {
         return this.userImports;
     }
 
     public Set<String> getSmartImports() {
-
         return this.smartImports;
-
     }
-
 
     public String getGeneratedCode() {
-
         return this.generateResult.getGeneratedCode();
-
     }
-
 
     public int translateOffset(int newOffsetPosition) {
-
         int newMainO = this.generateResult.getOffsetToMainInGeneratedCode();
-
         int newImportO = this.generateResult.getOffsetToNewUserImports();
-
         int nop = newOffsetPosition;
-
         if (nop >= newMainO && nop < newMainO + this.mainCode.length())
             return nop - newMainO - this.offsetToOriginalMainCode;
-
         if (nop >= newImportO && nop < newImportO + this.userImportString.length()) {
-
             return nop - newImportO - this.offsetToOriginalUserImports;
-
         }
-
         throw new IllegalArgumentException("position is before any original import location");
-
     }
 
-
     private GenerateResult generateJavaFileSource() {
-
         StringBuilder s = new StringBuilder();
-
-
         s.append("package io.jpad.scratch;").append("\r\n");
-
-
         if (!this.smartImports.isEmpty()) {
-
             s.append("// Smart Imports").append("\r\n");
-
             this.smartImports.forEach(imp -> s.append("import ").append(imp).append(";").append("\r\n"));
-
         }
-
-
         int offsetToNewUserImports = s.length();
-
         if (this.userImports.isEmpty()) {
-
             s.append("import static io.jpad.japl.Japl.*; import static io.jpad.japl.Predef.*;");
-
             offsetToNewUserImports = s.length();
-
         } else {
-
             s.append("// User Imports").append("\r\n");
-
             offsetToNewUserImports = s.length();
-
             s.append(this.userImportString);
-
         }
-
         s.append("\r\n");
-
         s.append("import static io.jpad.scratch.Dumper.*;");
-
         s.append("\r\n");
-
         s.append("public class RunnContainer {");
-
-
         int newOffsetToMainCode = s.length();
-
-
         if (this.mainCode.contains("void main(String")) {
-
             s.append(this.mainCode).append("\r\n");
-
         } else {
-
             s.append("public static void main(String... args) throws Exception {").append("\r\n");
-
             newOffsetToMainCode = s.length();
-
             if (this.mainCode.contains(";")) {
-
                 s.append(this.mainCode);
-
             } else {
-
                 s.append("Dump(");
-
                 newOffsetToMainCode = s.length();
-
                 s.append(this.mainCode + ");");
-
             }
-
             s.append("\r\n").append("}");
-
         }
-
         s.append("}");
-
         return new GenerateResult(s.toString(), newOffsetToMainCode, offsetToNewUserImports);
-
     }
 
     private static class GenerateResult {
         private final String generatedCode;
         private final int offsetToMainInGeneratedCode;
         private final int offsetToNewUserImports;
-
 
         @ConstructorProperties({"generatedCode", "offsetToMainInGeneratedCode", "offsetToNewUserImports"})
         public GenerateResult(String generatedCode, int offsetToMainInGeneratedCode, int offsetToNewUserImports) {
@@ -426,8 +264,9 @@ public class JPadCode {
             if (!(o instanceof GenerateResult)) return false;
             GenerateResult other = (GenerateResult) o;
             if (!other.canEqual(this)) return false;
-            Object this$generatedCode = getGeneratedCode(), other$generatedCode = other.getGeneratedCode();
-            return Objects.equals(this$generatedCode, other$generatedCode) && (getOffsetToMainInGeneratedCode() == other.getOffsetToMainInGeneratedCode() && (getOffsetToNewUserImports() == other.getOffsetToNewUserImports()));
+            Object this$generatedCode = this.generatedCode;
+            Object other$generatedCode = other.generatedCode;
+            return Objects.equals(this$generatedCode, other$generatedCode) && (this.offsetToMainInGeneratedCode == other.offsetToMainInGeneratedCode && (this.offsetToNewUserImports == other.offsetToNewUserImports));
         }
 
         protected boolean canEqual(Object other) {
@@ -435,38 +274,31 @@ public class JPadCode {
         }
 
         public int hashCode() {
-            int PRIME = 59;
+            final int PRIME = 59;
             int result = 1;
-            Object $generatedCode = getGeneratedCode();
+            Object $generatedCode = this.generatedCode;
             result = result * 59 + (($generatedCode == null) ? 0 : $generatedCode.hashCode());
-            result = result * 59 + getOffsetToMainInGeneratedCode();
-            return result * 59 + getOffsetToNewUserImports();
+            result = result * 59 + this.offsetToMainInGeneratedCode;
+            return result * 59 + this.offsetToNewUserImports;
         }
 
         public String toString() {
-            return "JPadCode.GenerateResult(generatedCode=" + getGeneratedCode() + ", offsetToMainInGeneratedCode=" + getOffsetToMainInGeneratedCode() + ", offsetToNewUserImports=" + getOffsetToNewUserImports() + ")";
+            return "JPadCode.GenerateResult(generatedCode=" + this.generatedCode + ", offsetToMainInGeneratedCode=" + this.offsetToMainInGeneratedCode + ", offsetToNewUserImports=" + this.offsetToNewUserImports + ")";
         }
-
 
         public String getGeneratedCode() {
             return this.generatedCode;
         }
-
 
         public int getOffsetToMainInGeneratedCode() {
             return this.offsetToMainInGeneratedCode;
         }
 
         public int getOffsetToNewUserImports() {
-
             return this.offsetToNewUserImports;
-
         }
     }
-
 }
-
-
 /* Location:              C:\Users\Admin\Downloads\jpad\jpad.jar!\io\jpad\model\JPadCode.class
  * Java compiler version: 8 (52.0)
  * JD-Core Version:       1.1.3

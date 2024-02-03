@@ -11,18 +11,17 @@ import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-
 public class ServerNameComboBox
         extends JComboBox {
     private static final long serialVersionUID = 1L;
     private final ConnectionManager connMan;
     private final Queryable app;
-    private boolean modelChanging = false;
+    private boolean modelChanging;
 
     public ServerNameComboBox(ConnectionManager connMan, Queryable app) {
         this.connMan = Preconditions.checkNotNull(connMan);
         this.app = app;
-        addActionListener(this);
+        this.addActionListener(this);
 
         connMan.addListener(new ConnectionManager.Listener() {
             public void statusChange(ServerConfig serverConfig, boolean connected) {
@@ -34,7 +33,7 @@ public class ServerNameComboBox
             }
         });
 
-        refresh();
+        this.refresh();
     }
 
     private void refresh() {
@@ -47,17 +46,17 @@ public class ServerNameComboBox
                 displayedNames.add(this.app.getServerName());
             }
             String[] items = displayedNames.toArray(new String[0]);
-            setModel(new DefaultComboBoxModel(items));
-            setSelectedItem(this.app.getServerName());
+            this.setModel(new DefaultComboBoxModel(items));
+            this.setSelectedItem(this.app.getServerName());
         } else {
-            setEnabled(false);
+            this.setEnabled(false);
         }
         this.modelChanging = false;
     }
 
     public void actionPerformed(ActionEvent e) {
         if (!this.modelChanging && this.app != null)
-            this.app.setServerName((String) getSelectedItem());
+            this.app.setServerName((String) this.getSelectedItem());
     }
 }
 

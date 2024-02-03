@@ -12,10 +12,8 @@ import java.util.logging.Logger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-
 public class CmdRunner {
     private static final Logger LOG = Logger.getLogger(CmdRunner.class.getName());
-
 
     private static final String REG_EXP = "\"(\\\"|[^\"])*?\"|[^ ]+";
     private static final Pattern PATTERN = Pattern.compile("\"(\\\"|[^\"])*?\"|[^ ]+", 10);

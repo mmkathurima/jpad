@@ -9,7 +9,6 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.security.*;
 
-
 public class MessageSigner {
     private static final String ALGO = "DSA";
     private static final int KEYSIZE = 1024;
@@ -43,7 +42,6 @@ public class MessageSigner {
         } catch (IllegalArgumentException e) {
         }
 
-
         return null;
     }
 
@@ -54,7 +52,6 @@ public class MessageSigner {
     private static int fromByteArray(byte[] bytes) {
         return bytes[0] << 24 | (bytes[1] & 0xFF) << 16 | (bytes[2] & 0xFF) << 8 | bytes[3] & 0xFF;
     }
-
 
     public static String createSignedMessage(String b64PrivateKey, String message) throws IOException, GeneralSecurityException {
         byte[] privKey = Base64.decode(b64PrivateKey);
@@ -69,7 +66,6 @@ public class MessageSigner {
         return Base64.encodeBytes(outputStream.toByteArray(), 2);
     }
 
-
     private static boolean verify(byte[] pubKey, byte[] message, byte[] signature) throws NoSuchAlgorithmException, InvalidKeyException, SignatureException {
         Signature verifyalg = Signature.getInstance("DSA");
         verifyalg.initVerify(new DSAPublicKey(pubKey));
@@ -77,14 +73,12 @@ public class MessageSigner {
         return verifyalg.verify(signature);
     }
 
-
     private static byte[] signMessage(byte[] privKey, byte[] message) throws GeneralSecurityException {
         Signature signalg = Signature.getInstance("DSA");
         signalg.initSign(new DSAPrivateKey(privKey));
         signalg.update(message);
         return signalg.sign();
     }
-
 
     public static String[] generateKeys() throws NoSuchAlgorithmException {
         KeyPairGenerator pairgen = KeyPairGenerator.getInstance("DSA");

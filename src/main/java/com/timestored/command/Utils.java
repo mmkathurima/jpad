@@ -14,7 +14,6 @@ import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 class Utils {
     private static final Logger LOG = Logger.getLogger(Utils.class.getName());
     private static final boolean browseSupported;
@@ -32,7 +31,7 @@ class Utils {
         browseSupported = browsey;
     }
 
-    public static void addEscapeCloseListener(final JDialog dialog) {
+    public static void addEscapeCloseListener(JDialog dialog) {
         dialog.addKeyListener(new KeyAdapter() {
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == 27) {
@@ -45,14 +44,12 @@ class Utils {
         });
     }
 
-
     public static void putEscapeAction(JComponent searchTextField, Action action) {
         ActionMap am = searchTextField.getActionMap();
         InputMap im = searchTextField.getInputMap(1);
         am.put("escapeAction", action);
         im.put(SwingUtils.ESC_KEYSTROKE, "escapeAction");
     }
-
 
     public static boolean browse(String url) {
         if (browseSupported) {
@@ -67,7 +64,6 @@ class Utils {
         }
         return false;
     }
-
 
     public static JPanel getSubHeader(String title, Color foregroundColor, Color backgroundColor) {
         JPanel outPanel = new JPanel(new BorderLayout());

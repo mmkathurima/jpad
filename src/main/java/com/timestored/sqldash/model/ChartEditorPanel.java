@@ -10,7 +10,6 @@ import javax.swing.JPanel;
 import java.awt.BorderLayout;
 import java.awt.Color;
 
-
 class ChartEditorPanel
         extends JPanel {
     private static final long serialVersionUID = 1L;
@@ -18,12 +17,11 @@ class ChartEditorPanel
 
     public ChartEditorPanel(ConnectionManager connectionManager) {
         this.connectionManager = Preconditions.checkNotNull(connectionManager);
-        setLayout(new BorderLayout(4, 4));
+        this.setLayout(new BorderLayout(4, 4));
     }
 
-
     public void display(ChartWidget app) {
-        removeAll();
+        this.removeAll();
         QueryableEditorPanel appQueryEditorPanel = new QueryableEditorPanel(this.connectionManager);
         appQueryEditorPanel.setDesktopModel(app.getDesktopModel());
         appQueryEditorPanel.display(app.getQ());
@@ -32,9 +30,9 @@ class ChartEditorPanel
 
         Color fgColor = new Color(242, 242, 242);
         Color bgColor = new Color(133, 133, 170);
-        add(Theme.getSubHeader("Control Panel", fgColor, bgColor), "North");
-        add(b, "West");
-        add(appQueryEditorPanel, "Center");
+        this.add(Theme.getSubHeader("Control Panel", fgColor, bgColor), "North");
+        this.add(b, "West");
+        this.add(appQueryEditorPanel, "Center");
     }
 }
 

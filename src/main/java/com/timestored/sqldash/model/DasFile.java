@@ -19,7 +19,6 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 import java.util.zip.ZipOutputStream;
 
-
 public class DasFile {
     private static final Logger LOG = Logger.getLogger(DasFile.class.getName());
     private static final String XML_FILENAME = "app.xml";
@@ -38,7 +37,7 @@ public class DasFile {
     List<ServerConfig> connections;
 
     public DasFile(String xml) {
-        setFromXml(xml);
+        this.setFromXml(xml);
     }
 
     public DasFile(DesktopDTO desktopDTO, List<ServerConfig> connections) {
@@ -62,7 +61,7 @@ public class DasFile {
                     xml = CharStreams.toString(new InputStreamReader(zin, StandardCharsets.UTF_8));
                 }
             }
-            setFromXml(xml);
+            this.setFromXml(xml);
         } finally {
             if (zin != null) {
                 zin.close();
@@ -91,7 +90,6 @@ public class DasFile {
         this.connections = c;
     }
 
-
     private String getXML() {
         String s = "<" + XML_ROOT + ">";
         s = s + ConnectionManager.getConnectionsXml(this.connections);
@@ -99,13 +97,12 @@ public class DasFile {
         return s + "</" + XML_ROOT + ">";
     }
 
-
     public void save(File file) throws IOException {
         Preconditions.checkNotNull(file);
         ZipOutputStream zout = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(file)));
 
         ZipEntry entry = new ZipEntry("app.xml");
-        byte[] data = getXML().getBytes(StandardCharsets.UTF_8);
+        byte[] data = this.getXML().getBytes(StandardCharsets.UTF_8);
         entry.setSize(data.length);
         zout.putNextEntry(entry);
         zout.write(data);

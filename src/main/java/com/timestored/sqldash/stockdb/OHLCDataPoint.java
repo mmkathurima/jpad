@@ -5,7 +5,6 @@ import net.jcip.annotations.Immutable;
 
 import java.util.Date;
 
-
 @Immutable
 public class OHLCDataPoint {
     private final Date date;

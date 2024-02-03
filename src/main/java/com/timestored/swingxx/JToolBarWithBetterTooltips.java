@@ -5,7 +5,6 @@ import javax.swing.JButton;
 import javax.swing.JToolBar;
 import javax.swing.KeyStroke;
 
-
 public class JToolBarWithBetterTooltips
         extends JToolBar {
     private static final long serialVersionUID = 1L;

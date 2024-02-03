@@ -1,6 +1,5 @@
 package io.jpad.scratch;
 
-
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import io.jpad.display.ToStringer;
@@ -19,10 +18,8 @@ import java.util.logging.Logger;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-
 public class Dumper {
     private static final Logger log = Logger.getLogger(Dumper.class.getName());
-
 
     private static final ArrayList<CapturedObject> dumps = new ArrayList<>();
     private static final boolean printDumps = true;
@@ -51,53 +48,40 @@ public class Dumper {
         Dumper.maxCols = maxCols;
     }
 
-
     public static <T> T Dump(T val) {
 
         return Dump(val, "");
-
     }
-
 
     private static void displayDontCapture(String s) {
 
         originalOut.append(s);
 
         sb.append(s);
-
     }
-
 
     public static <T> T Dump(T val, String title) {
 
         flushStandardOut();
 
-
         CapturedObject co = new CapturedObject(title, val);
 
-
         String t = toString(co);
-
 
         if (t.contains("\n") && title.trim().length() > 0) {
 
             displayDontCapture("________" + title + "________\r\n");
-
         } else if (title.trim().length() > 0) {
 
             displayDontCapture(title + " => ");
-
         }
 
         displayDontCapture(t + "\r\n");
 
-
         dumps.add(co);
 
         return val;
-
     }
-
 
     private static String toString(CapturedObject co) {
 
@@ -108,16 +92,12 @@ public class Dumper {
         if (s != null) {
 
             return s;
-
         }
-
 
         if (isToStringPreferred(o)) {
 
             return o.toString();
-
         }
-
 
         if (o instanceof java.util.Collection) {
 
@@ -130,32 +110,24 @@ public class Dumper {
                 if (c != null && c.trim().length() > 0) {
 
                     s = krs.getCaption() + "\r\n";
-
                 }
 
                 return s + ResultSetPrinter.toString(krs, krs.getNumberOfKeyColumns(), maxRows, maxCols);
-
             }
-
         } else if (o instanceof ResultSet) {
 
             KeyedResultSet krs = co.getResultSet();
 
             return ResultSetPrinter.toString(krs, krs.getNumberOfKeyColumns(), maxRows, maxCols);
-
         }
 
         return (o == null) ? "null" : o.toString();
-
     }
-
 
     private static boolean isToStringPreferred(Object o) {
 
         return (o instanceof List || o instanceof java.util.Set || o instanceof com.google.common.collect.Multiset);
-
     }
-
 
     private static void flushStandardOut() {
 
@@ -172,24 +144,17 @@ public class Dumper {
                 dumps.add(new CapturedObject("", outTxt));
 
                 baos.reset();
-
             }
-
         } catch (IOException e) {
 
             log.log(Level.WARNING, "Could not record system output", e);
-
         }
-
     }
-
 
     public static <T> Stream<T> Dump(Stream<T> val) {
 
         return Dump(val, "");
-
     }
-
 
     public static <T> Stream<T> Dump(Stream<T> val, String title) {
 
@@ -198,9 +163,7 @@ public class Dumper {
         Dump(l, title);
 
         return l.stream();
-
     }
-
 
     public static List<CapturedObject> GetDumps() {
         return ImmutableList.copyOf(dumps);
@@ -209,18 +172,14 @@ public class Dumper {
     public static void Clear() {
 
         dumps.clear();
-
     }
-
 
     static void clear() {
 
         baos.reset();
 
         sb.setLength(0);
-
     }
-
 
     public static void captureSystemOutput() {
 
@@ -234,80 +193,60 @@ public class Dumper {
 
         PrintStream errPs = new PrintStream(errCombiner);
 
-
         originalOut = System.out;
 
         originalErr = System.err;
 
-
         System.setOut(outPs);
 
         System.setErr(errPs);
-
     }
-
 
     public static void restoreSystemOut() {
 
         System.setOut(originalOut);
 
         System.setErr(originalErr);
-
     }
-
 
     public static String getOutput() {
 
         flushStandardOut();
 
         return sb.toString();
-
     }
-
 
     private static class OutputStreamCombiner extends OutputStream {
         private final List<OutputStream> outputStreams;
 
-
         public OutputStreamCombiner(List<OutputStream> outputStreams) {
 
             this.outputStreams = outputStreams;
-
         }
-
 
         public void write(int b) throws IOException {
 
             for (OutputStream os : this.outputStreams) {
 
                 os.write(b);
-
             }
-
         }
-
 
         public void flush() throws IOException {
 
             for (OutputStream os : this.outputStreams) {
 
                 os.flush();
-
             }
-
         }
-
 
         public void close() throws IOException {
 
             for (OutputStream os : this.outputStreams)
 
                 os.close();
-
         }
-
     }
-
 }
 
 

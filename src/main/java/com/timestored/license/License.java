@@ -12,7 +12,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-
 @XStreamAlias("license")
 public class License {
     @XStreamAsAttribute
@@ -77,27 +76,24 @@ public class License {
         return null;
     }
 
-
     public boolean isPermitted(String product, String feature) {
-        ProductLicense pl = getPermittedProductLicense(product);
+        ProductLicense pl = this.getPermittedProductLicense(product);
         if (pl != null) {
             return pl.isPermitted(feature);
         }
         return false;
     }
 
-
     public boolean isExpired(String product) {
-        ProductLicense pl = getPermittedProductLicense(product);
+        ProductLicense pl = this.getPermittedProductLicense(product);
         if (pl != null) {
             return pl.isExpired();
         }
         return false;
     }
 
-
     public boolean isPermitted(String product) {
-        return (getPermittedProductLicense(product) != null);
+        return (this.getPermittedProductLicense(product) != null);
     }
 
     public String getOwner() {
@@ -134,7 +130,7 @@ public class License {
 
     public String getShortDescription() {
         StringBuilder sb = new StringBuilder();
-        sb.append("License for " + getOwner());
+        sb.append("License for " + this.owner);
         appDates(sb, this.startDate, this.endDate);
 
         for (ProductLicense pl : this.productLicense) {
@@ -158,7 +154,6 @@ public class License {
             License that = (License) object;
             return (Objects.equal(this.startDate, that.startDate) && Objects.equal(this.endDate, that.endDate) && Objects.equal(this.owner, that.owner) && Objects.equal(this.company, that.company) && Objects.equal(this.productLicense, that.productLicense));
         }
-
 
         return false;
     }

@@ -15,7 +15,6 @@ import java.sql.SQLException;
 import java.text.NumberFormat;
 import java.util.*;
 
-
 class ListSelectionWidget
         extends AbstractWidget
         implements Widget {
@@ -23,8 +22,8 @@ class ListSelectionWidget
     private final Collection<Queryable> qs = new ArrayList<Queryable>(1);
     private String argKey = "";
     private String tooltip = "";
-    private String hardcodedOptionsCsv = null;
-    private boolean firstNonEmptyTabSeen = false;
+    private String hardcodedOptionsCsv;
+    private boolean firstNonEmptyTabSeen;
     private List<String> hardcodedOptions = Collections.emptyList();
     private List<String> RSoptions = Collections.emptyList();
     private List<String> selections = Collections.emptyList();
@@ -59,22 +58,20 @@ class ListSelectionWidget
             this.hardcodedOptions = Arrays.asList(this.hardcodedOptionsCsv.trim().split(","));
         }
 
-
         this.q.addListener(new Queryable.Listener() {
             public void configChanged(Queryable queryable) {
                 ListSelectionWidget.this.configChanged();
             }
         });
 
-
-        Object val = desktopModel.getArg(getArgKey());
+        Object val = desktopModel.getArg(this.argKey);
         if (val == null && this.hardcodedOptions != null && this.hardcodedOptions.size() > 0) {
             if (this.selectorType.allowsMultipleChoices()) {
                 this.selections = this.hardcodedOptions;
-                desktopModel.setArg(getArgKey(), this.hardcodedOptions);
+                desktopModel.setArg(this.argKey, this.hardcodedOptions);
             } else {
                 this.selections = Collections.singletonList(this.hardcodedOptions.get(0));
-                desktopModel.setArg(getArgKey(), this.hardcodedOptions.get(0));
+                desktopModel.setArg(this.argKey, this.hardcodedOptions.get(0));
             }
         }
     }
@@ -83,7 +80,7 @@ class ListSelectionWidget
         synchronized (this) {
             if (this.wListSelector == null) {
                 this.p = new JPanel(new BorderLayout());
-                this.wListSelector = this.selectorType.get(this, getDesktopModel());
+                this.wListSelector = this.selectorType.get(this, this.getDesktopModel());
                 this.p.add(this.wListSelector.getDisplay(), "Center");
                 this.wListSelector.refresh();
             }
@@ -122,8 +119,8 @@ class ListSelectionWidget
     }
 
     public void argChange(Map<String, Object> changes) {
-        if (changes.containsKey(getArgKey())) {
-            Object value = changes.get(getArgKey());
+        if (changes.containsKey(this.argKey)) {
+            Object value = changes.get(this.argKey);
             List<String> r = new ArrayList<String>();
             if (value instanceof List) {
                 for (String o : (List<String>) value) {
@@ -157,7 +154,7 @@ class ListSelectionWidget
             int colCount = rs.getMetaData().getColumnCount();
             if (queryable == this.q && colCount > 0) {
                 if (this.title == null) {
-                    setTitle(rs.getMetaData().getColumnLabel(1));
+                    this.setTitle(rs.getMetaData().getColumnLabel(1));
                 }
                 List<String> v = new ArrayList<String>();
                 rs.beforeFirst();
@@ -167,14 +164,13 @@ class ListSelectionWidget
 
                 this.RSoptions = v;
 
-
                 if (!this.firstNonEmptyTabSeen && v.size() > 0) {
-                    Object val = this.desktopModel.getArg(getArgKey());
+                    Object val = this.desktopModel.getArg(this.argKey);
                     if (val == null && this.hardcodedOptions.isEmpty()) {
                         if (this.selectorType.allowsMultipleChoices()) {
-                            this.desktopModel.setArg(getArgKey(), v);
+                            this.desktopModel.setArg(this.argKey, v);
                         } else {
-                            this.desktopModel.setArg(getArgKey(), v.get(0));
+                            this.desktopModel.setArg(this.argKey, v.get(0));
                         }
                     }
                     this.firstNonEmptyTabSeen = true;
@@ -198,7 +194,7 @@ class ListSelectionWidget
 
     void setArgKey(String argKey) {
         this.argKey = argKey;
-        configChanged();
+        this.configChanged();
     }
 
     String getTooltip() {
@@ -207,7 +203,7 @@ class ListSelectionWidget
 
     void setTooltip(String tooltip) {
         this.tooltip = tooltip;
-        configChanged();
+        this.configChanged();
     }
 
     String getHardcodedOptionsCsv() {
@@ -223,10 +219,9 @@ class ListSelectionWidget
                 this.hardcodedOptions = Collections.emptyList();
             }
             this.hardcodedOptionsCsv = hardcodedOptionsCsv;
-            configChanged();
+            this.configChanged();
         }
     }
-
 
     public SELECTOR_TYPE getSelectorType() {
         return this.selectorType;
@@ -236,7 +231,7 @@ class ListSelectionWidget
         if (!selectorType.equals(this.selectorType)) {
 
             this.selectorType = selectorType;
-            this.wListSelector = selectorType.get(this, getDesktopModel());
+            this.wListSelector = selectorType.get(this, this.getDesktopModel());
             synchronized (this) {
                 if (this.p != null) {
                     this.p.removeAll();
@@ -245,7 +240,7 @@ class ListSelectionWidget
                     this.p.repaint();
                 }
             }
-            configChanged();
+            this.configChanged();
         }
     }
 
@@ -276,7 +271,6 @@ class ListSelectionWidget
     public WidgetDTO getDTO() {
         return new ListSelectionWidgetDTO(this);
     }
-
 
     public enum SELECTOR_TYPE {
         COMBOBOX(DBIcons.COMBOBOX.get16(), false) {
@@ -324,12 +318,11 @@ class ListSelectionWidget
         private static final long serialVersionUID = 1L;
         private final QueryableEditorPanel appQueryEditorPanel;
 
-        public ListEditorPanel(final ListSelectionWidget listWidget) {
+        public ListEditorPanel(ListSelectionWidget listWidget) {
             this.appQueryEditorPanel = new QueryableEditorPanel(listWidget.desktopModel.getConnectionManager());
             this.appQueryEditorPanel.display(listWidget.q);
 
-
-            final JComboBox<ListSelectionWidget.SELECTOR_TYPE> typeCB = new JComboBox<ListSelectionWidget.SELECTOR_TYPE>(ListSelectionWidget.SELECTOR_TYPE.values());
+            JComboBox<ListSelectionWidget.SELECTOR_TYPE> typeCB = new JComboBox<ListSelectionWidget.SELECTOR_TYPE>(ListSelectionWidget.SELECTOR_TYPE.values());
             typeCB.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     listWidget.setSelectorType((ListSelectionWidget.SELECTOR_TYPE) typeCB.getSelectedItem());
@@ -337,7 +330,7 @@ class ListSelectionWidget
             });
             typeCB.setSelectedItem(listWidget.selectorType);
 
-            final JTextField keyTF = new JTextField(20);
+            JTextField keyTF = new JTextField(20);
             keyTF.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     listWidget.setArgKey(keyTF.getText());
@@ -345,8 +338,7 @@ class ListSelectionWidget
             });
             keyTF.setText(listWidget.getArgKey());
 
-
-            final JTextField optionsTF = new JTextField(40);
+            JTextField optionsTF = new JTextField(40);
             optionsTF.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     listWidget.setHardcodedOptions(optionsTF.getText());
@@ -354,7 +346,7 @@ class ListSelectionWidget
             });
             optionsTF.setText(listWidget.getHardcodedOptionsCsv());
 
-            final JTextField labelTF = new JTextField(20);
+            JTextField labelTF = new JTextField(20);
             labelTF.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     listWidget.setTitle(labelTF.getText());
@@ -365,10 +357,9 @@ class ListSelectionWidget
             NumberFormat intNF = NumberFormat.getIntegerInstance();
             intNF.setMaximumFractionDigits(0);
 
-
             Box cbp = Box.createVerticalBox();
 
-            setLayout(new BorderLayout());
+            this.setLayout(new BorderLayout());
             Theme.InputLabeller il = Theme.getInputLabeller(50, 20);
 
             cbp.add(il.get("GUI Type:", typeCB, "typeCB", "Specify the appearance of this selection."));
@@ -378,10 +369,9 @@ class ListSelectionWidget
             cbp.setBorder(BorderFactory.createEtchedBorder());
             cbp.add(Box.createVerticalGlue());
 
-            add(new JScrollPane(cbp), "West");
-            add(this.appQueryEditorPanel, "Center");
+            this.add(new JScrollPane(cbp), "West");
+            this.add(this.appQueryEditorPanel, "Center");
         }
-
 
         public void removeMyListeners() {
             this.appQueryEditorPanel.display(null);

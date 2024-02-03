@@ -20,7 +20,6 @@ import java.awt.event.MouseEvent;
 import java.util.List;
 import java.util.Map;
 
-
 public class ChartControlPanel
         extends JPanel
         implements Widget.Listener {
@@ -28,27 +27,20 @@ public class ChartControlPanel
     private static final TimeStored.Page helpPage = TimeStored.Page.SQLDASH_HELP_EG;
     private static final String DEFAULT_TOOLTIP = "<html><div width='350px'><b>Charts</b><br><a href='" + helpPage.url() + "'>" + helpPage.niceUrl() + "</a></div></html>";
 
-
     private final JComboBox chartComboBox;
-
 
     private final MapComboBoxModel<String, ViewStrategy> chartStratComboBoxModel;
 
-
     private final MapComboBoxModel<String, ChartTheme> chartThemeComboBoxModel;
 
-
     private final ChartWidget app;
-
 
     private final JTextField titleTextField;
 
     private final JComboBox chartThemeComboBox;
 
-
-    public ChartControlPanel(final ChartWidget app) {
+    public ChartControlPanel(ChartWidget app) {
         this.app = app;
-
 
         List<ViewStrategy> chartStrats = ViewStrategyFactory.getStrategies();
         Map<String, ViewStrategy> descToChartStrat = Maps.newLinkedHashMap();
@@ -57,7 +49,6 @@ public class ChartControlPanel
         }
         this.chartStratComboBoxModel = new MapComboBoxModel(descToChartStrat);
 
-
         List<ChartTheme> chartThemes = ViewStrategyFactory.getThemes();
         Map<String, ChartTheme> descToChartTheme = Maps.newLinkedHashMap();
         for (ChartTheme ct : chartThemes) {
@@ -65,18 +56,15 @@ public class ChartControlPanel
         }
         this.chartThemeComboBoxModel = new MapComboBoxModel(descToChartTheme);
 
-        setBorder(BorderFactory.createTitledBorder("Control Panel"));
-        setLayout(new BoxLayout(this, 1));
-
+        this.setBorder(BorderFactory.createTitledBorder("Control Panel"));
+        this.setLayout(new BoxLayout(this, 1));
 
         Theme.InputLabeller IL = Theme.getInputLabeller();
         this.chartComboBox = new JComboBox<String>(this.chartStratComboBoxModel);
 
-
         this.chartThemeComboBox = new JComboBox<String>(this.chartThemeComboBoxModel);
 
         this.titleTextField = new JTextField(15);
-
 
         if (app != null) {
             this.chartComboBox.setSelectedItem(app.getViewStrategy().getDescription());
@@ -97,7 +85,6 @@ public class ChartControlPanel
                 }
             });
 
-
             this.chartThemeComboBox.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent arg0) {
                     int i = ChartControlPanel.this.chartThemeComboBox.getSelectedIndex();
@@ -114,16 +101,15 @@ public class ChartControlPanel
             this.titleTextField.setEnabled(false);
         }
 
-        add(IL.get("Type:", this.chartComboBox, "chartComboBox", new CurrentViewInfoLinkLabel()));
-        add(IL.get("Theme:", this.chartThemeComboBox, "chartThemeComboBox"));
-        add(IL.get("Title:", this.titleTextField, "titleTextField"));
+        this.add(IL.get("Type:", this.chartComboBox, "chartComboBox", new CurrentViewInfoLinkLabel()));
+        this.add(IL.get("Theme:", this.chartThemeComboBox, "chartThemeComboBox"));
+        this.add(IL.get("Title:", this.titleTextField, "titleTextField"));
 
         if (app != null) {
             app.addListener(this);
         }
-        refreshGui();
+        this.refreshGui();
     }
-
 
     private void refreshGui() {
         boolean enabled = (this.app != null);
@@ -131,7 +117,6 @@ public class ChartControlPanel
         this.chartThemeComboBox.setEnabled(enabled);
 
         if (enabled) {
-
 
             if (!this.titleTextField.isFocusOwner()) {
                 this.titleTextField.setText("" + this.app.getTitle());
@@ -157,7 +142,6 @@ public class ChartControlPanel
         });
     }
 
-
     public class CurrentViewInfoLinkLabel
             extends JLabel {
         private static final long serialVersionUID = 1L;
@@ -168,23 +152,21 @@ public class ChartControlPanel
             ToolTipManager.sharedInstance().registerComponent(this);
 
             if (HtmlUtils.isBrowseSupported()) {
-                setCursor(Cursor.getPredefinedCursor(12));
-                addMouseListener(new MouseAdapter() {
+                this.setCursor(Cursor.getPredefinedCursor(12));
+                this.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
-                        HtmlUtils.browse(ChartControlPanel.helpPage.url());
+                        HtmlUtils.browse(helpPage.url());
                     }
                 });
             }
         }
 
-
         public String getToolTipText() {
-            String tooltip = ChartControlPanel.DEFAULT_TOOLTIP;
+            String tooltip = DEFAULT_TOOLTIP;
             if (ChartControlPanel.this.app != null) {
                 ViewStrategy vs = ChartControlPanel.this.app.getViewStrategy();
-                tooltip = "<html><div width='350px'><b>" + vs.getDescription() + "</b>" + "<br>" + vs.getFormatExplainationHtml() + "<br><a href='" + ChartControlPanel.helpPage.url() + "'>" + ChartControlPanel.helpPage.niceUrl() + "</a></div></html>";
+                tooltip = "<html><div width='350px'><b>" + vs.getDescription() + "</b>" + "<br>" + vs.getFormatExplainationHtml() + "<br><a href='" + helpPage.url() + "'>" + helpPage.niceUrl() + "</a></div></html>";
             }
-
 
             return tooltip;
         }

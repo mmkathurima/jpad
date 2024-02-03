@@ -20,7 +20,6 @@ import java.sql.ResultSet;
 import java.text.NumberFormat;
 import java.util.List;
 
-
 public enum ScatterPlotViewStrategy
         implements ViewStrategy {
     INSTANCE;
@@ -38,7 +37,6 @@ public enum ScatterPlotViewStrategy
             throw new ChartFormatException("There must be atleast two numeric columns.");
         }
 
-
         DefaultXYDataset dataset = new DefaultXYDataset();
         double[] xAxis = numCols.get(0).getDoubles();
         for (int i = 1; i < numCols.size(); i++) {
@@ -49,7 +47,7 @@ public enum ScatterPlotViewStrategy
         return dataset;
     }
 
-    public UpdateableView getView(final ChartTheme theme) {
+    public UpdateableView getView(ChartTheme theme) {
         Preconditions.checkNotNull(theme);
 
         return new HardRefreshUpdateableView(new HardRefreshUpdateableView.ViewGetter() {
@@ -58,14 +56,13 @@ public enum ScatterPlotViewStrategy
                 if (colResultSet == null) {
                     throw new ChartFormatException("Could not create Result Set.");
                 }
-                XYDataset dataset = ScatterPlotViewStrategy.createScatterDataset(colResultSet);
+                XYDataset dataset = createScatterDataset(colResultSet);
 
                 String xAxisLabel = colResultSet.getNumericColumns().get(0).getLabel();
                 JFreeChart chart = ChartFactory.createScatterPlot("", xAxisLabel, "", dataset, PlotOrientation.VERTICAL, true, true, false);
 
                 XYItemRenderer renderer = chart.getXYPlot().getRenderer();
                 StandardXYToolTipGenerator toolTipGenie = new StandardXYToolTipGenerator("<html><b>{0}:</b><br>{1}<br>{2}</html>", NumberFormat.getInstance(), NumberFormat.getInstance());
-
 
                 renderer.setDefaultToolTipGenerator(toolTipGenie);
 
@@ -90,12 +87,11 @@ public enum ScatterPlotViewStrategy
     }
 
     public String toString() {
-        return ScatterPlotViewStrategy.class.getSimpleName() + "[" + getDescription() + "]";
+        return ScatterPlotViewStrategy.class.getSimpleName() + "[" + this.getDescription() + "]";
     }
 
     public List<ExampleView> getExamples() {
         ExampleView ev = new ExampleView("Country Population and GDP", "The first column GDP is used for the x-axis. The subsequent columns are then plotted against that x axis as separate colored series.", ExampleTestCases.COUNTRY_STATS_ADJUSTED_POP);
-
 
         return ImmutableList.of(ev);
     }
@@ -107,7 +103,6 @@ public enum ScatterPlotViewStrategy
     public String getFormatExplaination() {
         return Joiner.on("\r\n").join(FORMATA);
     }
-
 
     public Component getControlPanel() {
         return null;

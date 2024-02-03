@@ -1,26 +1,19 @@
 package io.jpad.model;
 
-
 import java.util.ArrayList;
-
 
 public class Instrumenter {
     private final ArrayList<Object> r = new ArrayList<>();
 
-
     public <T> T Dump(T val) {
 
         return val;
-
     }
-
 
     public <T> T Dump(String s, T val) {
 
         return val;
-
     }
-
 }
 
 

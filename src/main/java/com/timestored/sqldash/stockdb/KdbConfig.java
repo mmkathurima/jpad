@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
-
 class KdbConfig
         implements DBConfig {
     public static final DBConfig INSTANCE = new KdbConfig();
@@ -24,25 +23,24 @@ class KdbConfig
         }
         DateFormat dateDF = new SimpleDateFormat("yyyy.MM.dd");
 
-
         StringBuilder sb = new StringBuilder("q)`ohlc insert ([] sym:(),");
         for (OHLCDataPoint dp : d) sb.append("`" + sym);
         sb.append(";\r\n\t date:");
         for (OHLCDataPoint dp : d) sb.append(" ").append(dateDF.format(dp.getDate()));
         sb.append(";\r\n\t open:");
-        for (OHLCDataPoint dp : d) appendNumL(sb, dp.getOpen());
+        for (OHLCDataPoint dp : d) this.appendNumL(sb, dp.getOpen());
         sb.append("f;\r\n\t high:");
-        for (OHLCDataPoint dp : d) appendNumL(sb, dp.getHigh());
+        for (OHLCDataPoint dp : d) this.appendNumL(sb, dp.getHigh());
         sb.append("f;\r\n\t low:");
-        for (OHLCDataPoint dp : d) appendNumL(sb, dp.getLow());
+        for (OHLCDataPoint dp : d) this.appendNumL(sb, dp.getLow());
         sb.append("f;\r\n\t close:");
-        for (OHLCDataPoint dp : d) appendNumL(sb, dp.getClose());
+        for (OHLCDataPoint dp : d) this.appendNumL(sb, dp.getClose());
         sb.append("f;\r\n\t volume:");
-        for (OHLCDataPoint dp : d) appendNumL(sb, dp.getVol());
+        for (OHLCDataPoint dp : d) this.appendNumL(sb, dp.getVol());
         sb.append("f;\r\n\t adjClose:");
-        for (OHLCDataPoint dp : d) appendNumL(sb, dp.getAdjClose());
+        for (OHLCDataPoint dp : d) this.appendNumL(sb, dp.getAdjClose());
         sb.append("f);");
-        return toList(sb);
+        return this.toList(sb);
     }
 
     public Set<JdbcTypes> getSupportedJdbcTypes() {
@@ -57,17 +55,14 @@ class KdbConfig
         return "([] c:enlist `long$count " + tab + ")";
     }
 
-
     public List<String> toInserts(List<Stock> stocks) {
         if (stocks.isEmpty()) {
             return Collections.emptyList();
         }
 
-
         StringBuilder sb = new StringBuilder("q)`stock insert ([] sym:(),");
         for (Stock s : stocks) sb.append("`").append(s.getSymbol());
         sb.append(";\r\n\t name:(");
-
 
         if (stocks.size() <= 1) {
             sb.append("enlist ");
@@ -84,48 +79,46 @@ class KdbConfig
         sb.append(")");
 
         sb.append(";\r\n\t price:");
-        for (Stock s : stocks) appendNumL(sb, s.getPrice().doubleValue());
+        for (Stock s : stocks) this.appendNumL(sb, s.getPrice().doubleValue());
         sb.append("f;\r\n\t volume:");
-        for (Stock s : stocks) appendNumL(sb, s.getVolume());
+        for (Stock s : stocks) this.appendNumL(sb, s.getVolume());
         sb.append("f;\r\n\t pe:");
-        for (Stock s : stocks) appendNumL(sb, s.getPe());
+        for (Stock s : stocks) this.appendNumL(sb, s.getPe());
         sb.append("f;\r\n\t eps:");
-        for (Stock s : stocks) appendNumL(sb, s.getEps());
+        for (Stock s : stocks) this.appendNumL(sb, s.getEps());
         sb.append("f;\r\n\t week52low:");
-        for (Stock s : stocks) appendNumL(sb, s.getWeek52low());
+        for (Stock s : stocks) this.appendNumL(sb, s.getWeek52low());
         sb.append("f;\r\n\t week52high:");
-        for (Stock s : stocks) appendNumL(sb, s.getWeek52high());
+        for (Stock s : stocks) this.appendNumL(sb, s.getWeek52high());
         sb.append("f;\r\n\t daylow:");
-        for (Stock s : stocks) appendNumL(sb, s.getDaylow());
+        for (Stock s : stocks) this.appendNumL(sb, s.getDaylow());
         sb.append("f;\r\n\t dayhigh:");
-        for (Stock s : stocks) appendNumL(sb, s.getDayhigh());
+        for (Stock s : stocks) this.appendNumL(sb, s.getDayhigh());
         sb.append("f;\r\n\t movingav50day:");
-        for (Stock s : stocks) appendNumL(sb, s.getMovingav50day());
+        for (Stock s : stocks) this.appendNumL(sb, s.getMovingav50day());
         sb.append("f;\r\n\t marketcap:");
-        for (Stock s : stocks) appendNumL(sb, s.getMarketcap());
+        for (Stock s : stocks) this.appendNumL(sb, s.getMarketcap());
         sb.append("f);");
-        return toList(sb);
+        return this.toList(sb);
     }
-
 
     private void appendNumL(StringBuilder sb, double v) {
         sb.append(" ").append(Double.isNaN(v) ? "0n" : Double.valueOf(v));
     }
 
-
     public List<String> getInitSql() {
         StringBuilder sb = new StringBuilder("q)ohlc:([] sym:`$(); date:`date$()");
-        appendDoubleCols(sb, new String[]{"open", "high", "low", "close", "volume", "adjClose"});
+        this.appendDoubleCols(sb, new String[]{"open", "high", "low", "close", "volume", "adjClose"});
         sb.append(");\r\n");
 
         sb.append("stock:([] sym:`$(); name:()");
-        appendDoubleCols(sb, new String[]{"price", "volume", "pe", "eps", "week52low", "week52high", "daylow", "dayhigh", "movingav50day", "marketcap"});
+        this.appendDoubleCols(sb, new String[]{"price", "volume", "pe", "eps", "week52low", "week52high", "daylow", "dayhigh", "movingav50day", "marketcap"});
 
         sb.append(");\r\n");
         sb.append("quote:([] sym:`$(); time:`time$()");
-        appendDoubleCols(sb, new String[]{"bid", "ask"});
+        this.appendDoubleCols(sb, new String[]{"bid", "ask"});
         sb.append(");\r\n");
-        return toList(sb);
+        return this.toList(sb);
     }
 
     private ArrayList<String> toList(StringBuilder sb) {
@@ -151,11 +144,11 @@ class KdbConfig
         sb.append(";\r\n\t time:");
         for (BidAsk dp : lps) sb.append(" ").append(timeDF.format(dp.getTime()));
         sb.append(";\r\n\t bid:");
-        for (BidAsk dp : lps) appendNumL(sb, dp.getBid());
+        for (BidAsk dp : lps) this.appendNumL(sb, dp.getBid());
         sb.append("f;\r\n\t ask:");
-        for (BidAsk dp : lps) appendNumL(sb, dp.getAsk());
+        for (BidAsk dp : lps) this.appendNumL(sb, dp.getAsk());
         sb.append("f);");
-        return toList(sb);
+        return this.toList(sb);
     }
 
     public String getSelectAdjPriceHistorySql(String sym) {

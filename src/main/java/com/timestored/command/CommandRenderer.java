@@ -5,7 +5,6 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Component;
 
-
 class CommandRenderer
         extends JLabel
         implements ListCellRenderer {
@@ -17,26 +16,23 @@ class CommandRenderer
         return INSTANCE;
     }
 
-
     public Component getListCellRendererComponent(JList list, Object value, int index, boolean isSelected, boolean cellHasFocus) {
         JPanel p = new JPanel(new BorderLayout());
         p.add(this, "West");
-
 
         if (value instanceof Command) {
             Command c = (Command) value;
 
             if (c.getIcon() != null) {
-                setIcon(c.getIcon());
+                this.setIcon(c.getIcon());
             }
-
 
             String t = c.getTitle();
             String ta = c.getTitleAdditional();
             if (ta != null && ta.length() > 0 && ta.length() < 60) {
                 t = "<html>" + c.getTitle() + "<font color='#666666'> - " + ta + "</font></html>";
             }
-            setText(t);
+            this.setText(t);
 
             KeyStroke ks = c.getKeyStroke();
             if (ks != null) {
@@ -48,25 +44,24 @@ class CommandRenderer
             }
         } else {
 
-            setText(value.toString());
+            this.setText(value.toString());
         }
-
 
         if (isSelected) {
             p.setBackground(list.getSelectionBackground());
             p.setForeground(list.getSelectionForeground());
-            setBackground(list.getSelectionBackground());
-            setForeground(list.getSelectionForeground());
+            this.setBackground(list.getSelectionBackground());
+            this.setForeground(list.getSelectionForeground());
         } else {
             p.setBackground(list.getBackground());
             p.setForeground(list.getForeground());
-            setBackground(list.getBackground());
-            setForeground(list.getForeground());
+            this.setBackground(list.getBackground());
+            this.setForeground(list.getForeground());
         }
 
-        setEnabled(list.isEnabled());
-        setFont(list.getFont());
-        setOpaque(true);
+        this.setEnabled(list.isEnabled());
+        this.setFont(list.getFont());
+        this.setOpaque(true);
 
         return p;
     }

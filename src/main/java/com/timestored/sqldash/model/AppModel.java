@@ -11,7 +11,6 @@ import java.util.*;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Logger;
 
-
 public class AppModel {
     private static final Logger LOG = Logger.getLogger(AppModel.class.getName());
     private static int desktopCounter = 1;
@@ -21,15 +20,13 @@ public class AppModel {
     private DesktopModel selectedDesktopModel;
     private ConnectionManager connMan;
 
-
     public AppModel(ConnectionManager connectionManager) {
         this.connMan = connectionManager;
         this.selectedDesktopModel = new DesktopModel(this.connMan);
         this.queryEngine = QueryEngine.newQueryEngine(this.connMan);
         this.queryEngine.setQueryTranslator(new QueryTranslator(this.selectedDesktopModel.getArgMap()));
 
-
-        addOpenedDesktopListener(new DesktopModelAdapter() {
+        this.addOpenedDesktopListener(new DesktopModelAdapter() {
             public void argChange(Map<String, Object> changes) {
                 WorkspaceModel wsm = AppModel.this.getSelectedWorkspaceModel();
                 Collection<Queryable> qs = wsm.getQueryablesWithArgs(changes.keySet());
@@ -55,7 +52,6 @@ public class AppModel {
                 AppModel.this.setQueryablesToSelectedWorkspace();
             }
         });
-
 
         this.queryEngine.addListener(new QueryEngine.QueryEngineListener() {
             public void tabChanged(Queryable queryable, ResultSet qTab) {
@@ -84,7 +80,6 @@ public class AppModel {
         this.queryEngine.addToPriorityQueue(widget.getQueryables());
     }
 
-
     private void changeDesktop(DesktopModel newDesktop) {
         this.queryEngine.setQueryTranslator(new QueryTranslator(newDesktop.getArgMap()));
 
@@ -93,7 +88,6 @@ public class AppModel {
                 this.selectedDesktopModel.removeListener(dl);
             }
         }
-
 
         if (newDesktop != null) {
             for (DesktopModelListener dl : this.openDeskListeners) {
@@ -106,22 +100,19 @@ public class AppModel {
             l.desktopChanged(newDesktop);
         }
 
-        setQueryablesToSelectedWorkspace();
+        this.setQueryablesToSelectedWorkspace();
     }
-
 
     public DesktopModel newDesktop() {
         DesktopModel dm = new DesktopModel(this.connMan);
         dm.setTitle("Unknown Desktop " + desktopCounter++);
-        changeDesktop(dm);
+        this.changeDesktop(dm);
         return dm;
     }
-
 
     public DesktopModel getSelectedDesktopModel() {
         return this.selectedDesktopModel;
     }
-
 
     public WorkspaceModel getSelectedWorkspaceModel() {
         if (this.selectedDesktopModel != null) {
@@ -148,14 +139,12 @@ public class AppModel {
         this.listeners.remove(listener);
     }
 
-
     public String getTitle() {
         if (this.selectedDesktopModel != null) {
             return this.selectedDesktopModel.getTitle();
         }
         return "";
     }
-
 
     public void addOpenedDesktopListener(DesktopModelListener desktopModelListener) {
         if (this.selectedDesktopModel != null) {
@@ -164,7 +153,6 @@ public class AppModel {
         this.openDeskListeners.add(desktopModelListener);
     }
 
-
     public void removeOpenedDesktopListener(DesktopModelListener desktopModelListener) {
         if (this.selectedDesktopModel != null) {
             this.selectedDesktopModel.addListener(desktopModelListener);
@@ -172,9 +160,8 @@ public class AppModel {
         this.openDeskListeners.remove(desktopModelListener);
     }
 
-
     public Widget getApp(int id) {
-        for (Widget w : getSelectedDesktopModel().getApps()) {
+        for (Widget w : this.selectedDesktopModel.getApps()) {
             if (w.getId() == id) {
                 return w;
             }
@@ -182,17 +169,15 @@ public class AppModel {
         return null;
     }
 
-
     public boolean changeToDesktop(DasFile desFileDTO, boolean addConnections) {
         if (addConnections) {
             this.connMan.removeServers();
             this.connMan.addServer(desFileDTO.getConnections());
         }
-        changeDesktop(new DesktopModel(desFileDTO.getDesktopDTO(), this.connMan));
+        this.changeDesktop(new DesktopModel(desFileDTO.getDesktopDTO(), this.connMan));
 
         return true;
     }
-
 
     public void startQueryEngine() {
         this.queryEngine.startUp();
@@ -202,18 +187,15 @@ public class AppModel {
         this.queryEngine.shutDown();
     }
 
-
     public void openFile(File dasFile) throws IOException {
         DasFile desFile = new DasFile(dasFile);
-        changeToDesktop(desFile, true);
+        this.changeToDesktop(desFile, true);
     }
-
 
     public void saveToFile(File file) throws IOException {
         DasFile desFile = new DasFile(new DesktopDTO(this.selectedDesktopModel), this.connMan.getServerConnections());
         desFile.save(file);
     }
-
 
     public void setAllQueryServersTo(ServerConfig sc) {
         this.connMan.addServer(sc);

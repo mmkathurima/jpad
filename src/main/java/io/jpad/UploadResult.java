@@ -28,12 +28,15 @@ class UploadResult {
         if (!(o instanceof UploadResult)) return false;
         UploadResult other = (UploadResult) o;
         if (!other.canEqual(this)) return false;
-        Object this$type = getType(), other$type = other.getType();
+        Object this$type = this.type;
+        Object other$type = other.type;
         if (!Objects.equals(this$type, other$type)) return false;
-        Object this$message = getMessage(), other$message = other.getMessage();
+        Object this$message = this.message;
+        Object other$message = other.message;
         if (!Objects.equals(this$message, other$message)) return false;
-        Object this$url = getUrl(), other$url = other.getUrl();
-        return Objects.equals(this$url, other$url) && (getRevisionId() == other.getRevisionId());
+        Object this$url = this.url;
+        Object other$url = other.url;
+        return Objects.equals(this$url, other$url) && (this.revisionId == other.revisionId);
     }
 
     protected boolean canEqual(Object other) {
@@ -41,20 +44,20 @@ class UploadResult {
     }
 
     public int hashCode() {
-        int PRIME = 59;
+        final int PRIME = 59;
         int result = 1;
-        Object $type = getType();
+        Object $type = this.type;
         result = result * 59 + (($type == null) ? 0 : $type.hashCode());
-        Object $message = getMessage();
+        Object $message = this.message;
         result = result * 59 + (($message == null) ? 0 : $message.hashCode());
-        Object $url = getUrl();
+        Object $url = this.url;
         result = result * 59 + (($url == null) ? 0 : $url.hashCode());
-        long $revisionId = getRevisionId();
+        long $revisionId = this.revisionId;
         return result * 59 + (int) ($revisionId >>> 32L ^ $revisionId);
     }
 
     public String toString() {
-        return "UploadResult(type=" + getType() + ", message=" + getMessage() + ", url=" + getUrl() + ", revisionId=" + getRevisionId() + ")";
+        return "UploadResult(type=" + this.type + ", message=" + this.message + ", url=" + this.url + ", revisionId=" + this.revisionId + ")";
     }
 
     @NotNull

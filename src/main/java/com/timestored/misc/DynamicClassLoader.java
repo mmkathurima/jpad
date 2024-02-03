@@ -18,10 +18,8 @@ import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 import java.util.logging.Logger;
 
-
 public class DynamicClassLoader {
     private static final Logger log = Logger.getLogger(DynamicClassLoader.class.getName());
-
 
     public static <T> List<T> loadInstances(File dir, Class<T> interfaceWanted, boolean onlyLoadFirstMatch) {
         log.info("Searching for plugins in folder: " + dir.getAbsolutePath());
@@ -95,7 +93,7 @@ public class DynamicClassLoader {
                     Class[] interfaces = c.getInterfaces();
                     for (int i = 0; i < interfaces.length; i++) {
                         if (this.interfaceWanted == interfaces[i]) {
-                            DynamicClassLoader.log.info("Found Plugin with correct interface: " + classDetails.className);
+                            log.info("Found Plugin with correct interface: " + classDetails.className);
                             Method addURL = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
                             addURL.setAccessible(true);
                             ClassLoader cl = ClassLoader.getSystemClassLoader();
@@ -118,7 +116,6 @@ public class DynamicClassLoader {
             } catch (ClassNotFoundException e) {
             }
 
-
             return true;
         }
     }
@@ -138,10 +135,12 @@ public class DynamicClassLoader {
             if (!(o instanceof ClassDetails)) return false;
             ClassDetails other = (ClassDetails) o;
             if (!other.canEqual(this)) return false;
-            Object this$className = getClassName(), other$className = other.getClassName();
+            Object this$className = this.className;
+            Object other$className = other.className;
             if (!Objects.equals(this$className, other$className))
                 return false;
-            Object this$classUrl = getClassUrl(), other$classUrl = other.getClassUrl();
+            Object this$classUrl = this.classUrl;
+            Object other$classUrl = other.classUrl;
             return Objects.equals(this$classUrl, other$classUrl);
         }
 
@@ -150,16 +149,16 @@ public class DynamicClassLoader {
         }
 
         public int hashCode() {
-            int PRIME = 59;
+            final int PRIME = 59;
             int result = 1;
-            Object $className = getClassName();
+            Object $className = this.className;
             result = result * 59 + (($className == null) ? 0 : $className.hashCode());
-            Object $classUrl = getClassUrl();
+            Object $classUrl = this.classUrl;
             return result * 59 + (($classUrl == null) ? 0 : $classUrl.hashCode());
         }
 
         public String toString() {
-            return "DynamicClassLoader.ClassDetails(className=" + getClassName() + ", classUrl=" + getClassUrl() + ")";
+            return "DynamicClassLoader.ClassDetails(className=" + this.className + ", classUrl=" + this.classUrl + ")";
         }
 
         public String getClassName() {

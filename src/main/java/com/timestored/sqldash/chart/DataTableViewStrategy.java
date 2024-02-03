@@ -24,7 +24,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
 
-
 public class DataTableViewStrategy
         implements ViewStrategy {
     private static final List<ExampleView> EXAMPLES;
@@ -36,17 +35,14 @@ public class DataTableViewStrategy
     static {
         ExampleView ev3 = new ExampleView("Many Columned Table", "All rows/columns will be shown as a plain table.", ExampleTestCases.COUNTRY_STATS);
 
-
         EXAMPLES = ImmutableList.of(ev3);
     }
 
     private final boolean debugView;
 
-
     private DataTableViewStrategy(boolean debugView) {
         this.debugView = debugView;
     }
-
 
     public static ViewStrategy getInstance(boolean debugView) {
         if (debugView) {
@@ -91,7 +87,7 @@ public class DataTableViewStrategy
     }
 
     public int hashCode() {
-        int prime = 31;
+        final int prime = 31;
         int result = 1;
         result = 31 * result + (this.debugView ? 1231 : 1237);
         return result;
@@ -102,7 +98,7 @@ public class DataTableViewStrategy
             return true;
         if (obj == null)
             return false;
-        if (getClass() != obj.getClass())
+        if (this.getClass() != obj.getClass())
             return false;
         DataTableViewStrategy other = (DataTableViewStrategy) obj;
         return this.debugView == other.debugView;
@@ -117,23 +113,20 @@ public class DataTableViewStrategy
         private final JXTable table;
         private final JPanel p;
         private final boolean debugView;
-        private List<Color> rowBgColors = null;
-        private List<Color> rowFgColors = null;
+        private List<Color> rowBgColors;
+        private List<Color> rowFgColors;
 
-
-        public DataTableUpdateableView(final ChartTheme theme, boolean debugView) {
+        public DataTableUpdateableView(ChartTheme theme, boolean debugView) {
             this.tableModel = new DefaultTableModel();
             this.debugView = debugView;
             this.table = new JXTable(this.tableModel);
             this.table.addMouseListener(new SaveTableMouseAdapter(this.table, Theme.CIcon.CSV.get()));
             this.table.setEditable(false);
 
-
-            DefaultTableRenderer defaultTabRenderer = new DefaultTableRenderer(DataTableViewStrategy.TIME_STRINGVAL, 4) {
+            DefaultTableRenderer defaultTabRenderer = new DefaultTableRenderer(TIME_STRINGVAL, 4) {
 
                 public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
                     Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
-
 
                     synchronized (this) {
                         Color bcol = theme.getBackgroundColor();
@@ -168,11 +161,9 @@ public class DataTableViewStrategy
             };
             this.table.setDefaultRenderer(Object.class, defaultTabRenderer);
 
-
             this.table.packAll();
             this.table.setAutoResizeMode(0);
             JScrollPane scrollPane = new JScrollPane(this.table, 20, 31);
-
 
             JTableHeader thead = this.table.getTableHeader();
             scrollPane.setColumnHeaderView(thead);
@@ -206,13 +197,12 @@ public class DataTableViewStrategy
             } catch (NumberFormatException e) {
             }
 
-
             return cl;
         }
 
         public void update(ResultSet rs, ChartResultSet chartResultSet) throws ChartFormatException {
             try {
-                rebuildTableModel(rs);
+                this.rebuildTableModel(rs);
             } catch (SQLException e) {
                 throw new ChartFormatException("Could not create ResultSet.");
             }
@@ -225,7 +215,6 @@ public class DataTableViewStrategy
         private void rebuildTableModel(ResultSet rs) throws SQLException {
             rs.beforeFirst();
             ResultSetMetaData metaData = rs.getMetaData();
-
 
             Vector<String> columnNames = new Vector<String>();
             Vector<String> cleanNames = new Vector<String>();
@@ -240,7 +229,6 @@ public class DataTableViewStrategy
 
             List<Color> rowBgColorsNew = new ArrayList<Color>();
             List<Color> rowFgColorsNew = new ArrayList<Color>();
-
 
             Vector<Vector<Object>> data = new Vector<Vector<Object>>();
             while (rs.next()) {

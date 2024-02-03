@@ -17,12 +17,12 @@ public class SaveableFrame
     private static final long serialVersionUID = 1L;
 
     public SaveableFrame(Component cp, int width, int height) {
-        setLayout(new BorderLayout());
+        this.setLayout(new BorderLayout());
         if (cp != null) {
-            add(cp, "Center");
+            this.add(cp, "Center");
         }
-        setSize(new Dimension(width, height));
-        setVisible(true);
+        this.setSize(new Dimension(width, height));
+        this.setVisible(true);
     }
 
     public static void saveComponentImage(Component a, int width, int height, File file, boolean includeWatermark) throws IOException {
@@ -37,7 +37,6 @@ public class SaveableFrame
 
         if (includeWatermark) {
             BufferedImage waterMark = ImageIO.read(SaveableFrame.class.getResourceAsStream("/com/timestored/swingxx/timestored-small.png"));
-
 
             g.setComposite(AlphaComposite.getInstance(3, 0.5F));
             g.drawImage(waterMark, 50, 10, null);
@@ -64,16 +63,16 @@ public class SaveableFrame
         saveFrame(f, file, false);
     }
 
-    public static void saveFrame(final SaveableFrame f, final File file, boolean includeWatermark) {
-        final AtomicBoolean finished = new AtomicBoolean(false);
+    public static void saveFrame(SaveableFrame f, File file, boolean includeWatermark) {
+        AtomicBoolean finished = new AtomicBoolean(false);
 
         EventQueue.invokeLater(new Runnable() {
             public void run() {
                 f.requestFocus();
                 try {
-                    SaveableFrame.saveComponentImage(f, (f.getSize()).width, (f.getSize()).height, file, false);
+                    saveComponentImage(f, (f.getSize()).width, (f.getSize()).height, file, false);
                 } catch (IOException e) {
-                    SaveableFrame.LOG.log(Level.SEVERE, "eframe.saveToFile(filepath)", e);
+                    LOG.log(Level.SEVERE, "eframe.saveToFile(filepath)", e);
                 }
                 f.close();
                 synchronized (finished) {

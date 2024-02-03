@@ -12,21 +12,19 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-
 class WListWListSelector
         extends AbstractWListSelector {
     private static final long serialVersionUID = 1L;
-    private boolean ignoreChanges = false;
+    private boolean ignoreChanges;
     private JPanel p;
     private JList l;
 
     public WListWListSelector(ListSelectionWidget lsw, DesktopModel desktopModel) {
         super(lsw, desktopModel);
-        refresh();
+        this.refresh();
     }
 
-
-    public JPanel getInputComponent(final DesktopModel desktopModel) {
+    public JPanel getInputComponent(DesktopModel desktopModel) {
         this.p = new JPanel(new BorderLayout());
         this.l = new JList();
         this.l.addListSelectionListener(new ListSelectionListener() {
@@ -43,7 +41,6 @@ class WListWListSelector
         this.p.add(new JScrollPane(this.l));
         return this.p;
     }
-
 
     public synchronized void setSelection(List<String> selections) {
         List<Integer> indices = new ArrayList<Integer>();
@@ -62,7 +59,6 @@ class WListWListSelector
         }
         this.ignoreChanges = false;
     }
-
 
     public synchronized void setOptionsShown(List<String> options) {
         ListModel m = this.l.getModel();

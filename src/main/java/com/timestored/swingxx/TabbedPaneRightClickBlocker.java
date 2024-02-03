@@ -4,7 +4,6 @@ import javax.swing.JComponent;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 
-
 public class TabbedPaneRightClickBlocker {
     public static void install(JComponent tabbedPane) {
         MouseListener handler = findUIMouseListener(tabbedPane);
@@ -13,7 +12,6 @@ public class TabbedPaneRightClickBlocker {
             tabbedPane.addMouseListener(new MouseListenerWrapper(handler));
         }
     }
-
 
     private static MouseListener findUIMouseListener(JComponent tabbedPane) {
         MouseListener[] listeners = tabbedPane.getMouseListeners();
@@ -25,11 +23,9 @@ public class TabbedPaneRightClickBlocker {
         return null;
     }
 
-
     private static class MouseListenerWrapper
             implements MouseListener {
         private final MouseListener delegate;
-
 
         public MouseListenerWrapper(MouseListener delegate) {
             this.delegate = delegate;
@@ -61,7 +57,6 @@ public class TabbedPaneRightClickBlocker {
             } catch (NullPointerException npe) {
             }
         }
-
 
         public void mouseExited(MouseEvent e) {
             if (e.isPopupTrigger())

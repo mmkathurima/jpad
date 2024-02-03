@@ -3,25 +3,20 @@ package io.jpad;
 import org.junit.Assert;
 import org.junit.Test;
 
-
 public class JpadHeaderTest {
     private final String messyDoc = "       /**    \r\n    *    @title      tittle tattle    \r\n   *     @url     http://jpad.io/example/j/tittle-tattle     \r\n    *    @tags    java,kdb,tags\r\n   *    @description     How to do stuff in a cool way.    \r\n */";
 
-
     private final String perfectDoc = "/**\r\n * @title tittle tattle\r\n * @url http://jpad.io/example/j/tittle-tattle\r\n * @tags java,kdb,tags\r\n * @description How to do stuff in a cool way.\r\n */";
-
 
     @Test
     public void testPerfectFormat() {
-        checkDE(JpadHeader.extract(this.perfectDoc));
+        this.checkDE(JpadHeader.extract(this.perfectDoc));
     }
-
 
     @Test
     public void testMessyFormat() {
-        checkDE(JpadHeader.extract(this.messyDoc));
+        this.checkDE(JpadHeader.extract(this.messyDoc));
     }
-
 
     @Test
     public void testInvalidDocs() {
@@ -30,7 +25,6 @@ public class JpadHeaderTest {
         JpadHeader.extract("/**");
         JpadHeader.extract("/*");
     }
-
 
     @Test
     public void testAsComment() {
@@ -47,14 +41,13 @@ public class JpadHeaderTest {
         }
     }
 
-
     @Test
     public void testCompactUrlOnly() {
-        checkURL("/** @url http://jpad.io/example/j/tittle-tattle */");
-        checkURL("/*http://jpad.io/example/j/tittle-tattle*/");
-        checkURL("/*****http://jpad.io/example/j/tittle-tattle********/");
-        checkURL("/* **http://jpad.io/example/j/tittle-tattle**** **/");
-        checkURL("/* **   http://jpad.io/example/j/tittle-tattle   **** **/");
+        this.checkURL("/** @url http://jpad.io/example/j/tittle-tattle */");
+        this.checkURL("/*http://jpad.io/example/j/tittle-tattle*/");
+        this.checkURL("/*****http://jpad.io/example/j/tittle-tattle********/");
+        this.checkURL("/* **http://jpad.io/example/j/tittle-tattle**** **/");
+        this.checkURL("/* **   http://jpad.io/example/j/tittle-tattle   **** **/");
     }
 
     private void checkURL(String doc) {
@@ -70,11 +63,9 @@ public class JpadHeaderTest {
         Assert.assertEquals("How to do stuff in a cool way.", jpde.getDescription());
     }
 
-
     @Test
     public void testReplaceComment() {
-        String partialDoc = "/**\n * @title tittle tattle\n * @url http://jpad.io/example/j/tittle-tattle\n */";
-
+        final String partialDoc = "/**\n * @title tittle tattle\n * @url http://jpad.io/example/j/tittle-tattle\n */";
 
         JpadHeader j = JpadHeader.extract(partialDoc);
         String actual = j.replaceComment("2+2");

@@ -11,7 +11,6 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.util.List;
 
-
 public class CommandSplitPane
         extends JSplitPane {
     private static final long serialVersionUID = 1L;
@@ -29,11 +28,9 @@ public class CommandSplitPane
         JScrollPane selectionScroll = new JScrollPane(this.commandPanel);
         selectionScroll.setMinimumSize(new Dimension(75, 50));
 
-
-        setLeftComponent(selectionScroll);
-        setRightComponent(this.detailsPanel);
-        setResizeWeight(0.33D);
-
+        this.setLeftComponent(selectionScroll);
+        this.setRightComponent(this.detailsPanel);
+        this.setResizeWeight(0.33D);
 
         this.commandPanel.setChangeListener(new ChangeListener() {
             public void changedTo(Command command) {
@@ -90,7 +87,6 @@ public class CommandSplitPane
 
         JScrollPane scrollPane = new JScrollPane(txtPane, 22, 31);
 
-
         txtPane.setCaretPosition(0);
 
         p.add(scrollPane, "Center");
@@ -109,20 +105,19 @@ public class CommandSplitPane
             extends JPanel {
         private static final long serialVersionUID = 1L;
 
-
         public DetailsPanel() {
-            setLayout(new BorderLayout());
-            setBorder(BorderFactory.createRaisedBevelBorder());
-            setMinimumSize(new Dimension(100, 50));
+            this.setLayout(new BorderLayout());
+            this.setBorder(BorderFactory.createRaisedBevelBorder());
+            this.setMinimumSize(new Dimension(100, 50));
         }
 
         void displayDoc(Command c) {
-            removeAll();
+            this.removeAll();
             if (c != null) {
-                add(CommandSplitPane.this.getCommandPanel(c), "Center");
+                this.add(CommandSplitPane.this.getCommandPanel(c), "Center");
             }
-            revalidate();
-            repaint();
+            this.revalidate();
+            this.repaint();
         }
     }
 }

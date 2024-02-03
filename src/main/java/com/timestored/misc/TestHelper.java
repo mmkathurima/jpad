@@ -7,12 +7,10 @@ import org.junit.Assert;
 import java.awt.Component;
 import java.io.*;
 
-
 public class TestHelper {
     private static final int DEFAULT_WIDTH = 400;
     private static final int DEFAULT_HEIGHT = 400;
     private static final String TEST_OUTPUT_DIR = "target" + File.separator + "testout" + File.separator;
-
 
     public static String getOutDir() throws IOException {
         System.out.println((new File(".")).getAbsolutePath());
@@ -21,13 +19,11 @@ public class TestHelper {
         return TEST_OUTPUT_DIR;
     }
 
-
     public static File saveComponentImage(Component c, String filename) throws IOException {
         File f = new File(getOutDir() + filename);
         SaveableFrame.saveComponentImage(c, 400, 400, f, false);
         return f;
     }
-
 
     public static boolean assertFilesMatch(File file, InputStream knownFile) {
         if (knownFile != null) {
@@ -45,7 +41,6 @@ public class TestHelper {
         }
         return false;
     }
-
 
     private static boolean isEqual(InputStream i1, InputStream i2) throws IOException {
         byte[] buf1 = new byte[65536];

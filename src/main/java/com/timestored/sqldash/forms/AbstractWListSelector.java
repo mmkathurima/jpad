@@ -10,7 +10,6 @@ import java.awt.EventQueue;
 import java.awt.FlowLayout;
 import java.util.List;
 
-
 abstract class AbstractWListSelector
         extends JPanel
         implements WListSelector {
@@ -25,20 +24,18 @@ abstract class AbstractWListSelector
         this.cbw = listSelectionWidget;
         this.desktopModel = desktopModel;
 
-
         this.lbl = new JLabel();
         JPanel p = new JPanel(new FlowLayout(0));
         this.inputPanel = new JPanel(new BorderLayout());
         p.add(this.lbl);
         p.add(this.inputPanel);
 
-        add(p);
+        this.add(p);
     }
-
 
     public void refresh() {
         if (EventQueue.isDispatchThread()) {
-            doRefresh();
+            this.doRefresh();
         } else {
             EventQueue.invokeLater(new Runnable() {
                 public void run() {
@@ -48,11 +45,10 @@ abstract class AbstractWListSelector
         }
     }
 
-
     private void doRefresh() {
         if (this.inputComponent == null || !this.inputComponent.isFocusOwner()) {
             this.inputPanel.removeAll();
-            this.inputComponent = getInputComponent(this.desktopModel);
+            this.inputComponent = this.getInputComponent(this.desktopModel);
             this.inputComponent.setName("ListSelector-" + this.cbw.getId());
             this.inputPanel.add(this.inputComponent, "North");
             this.lbl.setLabelFor(this.inputComponent);
@@ -60,12 +56,11 @@ abstract class AbstractWListSelector
             this.lbl.setText(this.cbw.getTitle());
             this.lbl.setToolTipText(this.cbw.getTooltip());
 
-            setOptionsShown(this.cbw.getOptions());
-            setSelection(this.cbw.getSelections());
+            this.setOptionsShown(this.cbw.getOptions());
+            this.setSelection(this.cbw.getSelections());
             this.inputPanel.revalidate();
         }
     }
-
 
     public JPanel getDisplay() {
         return this;

@@ -14,7 +14,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
-
 class CommandPanel
         extends JPanel {
     private static final Logger LOG = Logger.getLogger(CommandPanel.class.getName());
@@ -25,8 +24,8 @@ class CommandPanel
     private List<Command> docsShown = new ArrayList<Command>();
 
     public CommandPanel() {
-        setLayout(new BorderLayout());
-        setBorder(BorderFactory.createRaisedBevelBorder());
+        this.setLayout(new BorderLayout());
+        this.setBorder(BorderFactory.createRaisedBevelBorder());
 
         this.list = new JList(new Object[]{""});
         this.list.setSelectionMode(0);
@@ -42,18 +41,17 @@ class CommandPanel
         });
     }
 
-
     void setCloseAction(Action action) {
         this.list.getActionMap().put("closeAll", action);
         this.list.getInputMap().put(SwingUtils.ESC_KEYSTROKE, "closeAll");
     }
 
     public void moveDown() {
-        move(1);
+        this.move(1);
     }
 
     public void moveUp() {
-        move(-1);
+        this.move(-1);
     }
 
     private void move(int direction) {
@@ -68,17 +66,17 @@ class CommandPanel
     public void setCommands(Collection<Command> docsShown) {
         LOG.info("setDocsShown");
         this.docsShown = new ArrayList<Command>(docsShown);
-        removeAll();
+        this.removeAll();
         this.list.setModel(new DefaultComboBoxModel(docsShown.toArray()));
         if (!docsShown.isEmpty()) {
             this.list.setSelectedIndex(0);
-            add(new JScrollPane(this.list), "Center");
+            this.add(new JScrollPane(this.list), "Center");
         } else {
             JLabel l = new JLabel("No matches found");
-            add(l, "Center");
+            this.add(l, "Center");
         }
-        revalidate();
-        repaint();
+        this.revalidate();
+        this.repaint();
     }
 
     public Command getSelectedCommand() {
@@ -95,11 +93,10 @@ class CommandPanel
     }
 
     void setSelectAction(Action action) {
-        final KeyStroke enter = KeyStroke.getKeyStroke(10, 0);
+        KeyStroke enter = KeyStroke.getKeyStroke(10, 0);
 
         this.list.getInputMap().put(enter, enter);
         this.list.getActionMap().put(enter, action);
-
 
         this.list.addMouseListener(new MouseAdapter() {
             public void mouseClicked(MouseEvent e) {

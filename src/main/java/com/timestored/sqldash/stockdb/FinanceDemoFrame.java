@@ -14,7 +14,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.WindowAdapter;
 import java.awt.event.WindowEvent;
 
-
 public class FinanceDemoFrame
         extends JFrame {
     private static final long serialVersionUID = 1L;
@@ -26,11 +25,11 @@ public class FinanceDemoFrame
 
     public FinanceDemoFrame(String title, FinanceDataDemo financeDataDemo) {
         super("Stock Database Demo Runner");
-        setIconImage(Theme.CIcon.SERVER_GO.getBufferedImage());
+        this.setIconImage(Theme.CIcon.SERVER_GO.getBufferedImage());
 
         this.fdDemo = Preconditions.checkNotNull(financeDataDemo);
 
-        Container cp = getContentPane();
+        Container cp = this.getContentPane();
         cp.setLayout(new BorderLayout());
 
         JPanel titlePanel = new JPanel(new BorderLayout());
@@ -53,7 +52,7 @@ public class FinanceDemoFrame
         cp.setPreferredSize(SIZE);
         cp.setMinimumSize(SIZE);
 
-        addWindowListener(new WindowAdapter() {
+        this.addWindowListener(new WindowAdapter() {
             public void windowClosing(WindowEvent e) {
                 FinanceDemoFrame.this.close();
             }
@@ -64,17 +63,16 @@ public class FinanceDemoFrame
                 FinanceDemoFrame.this.sTextArea.appendMessage(s);
             }
         });
-        pack();
+        this.pack();
     }
-
 
     private void close() {
         if (!this.fdDemo.isStopped()) {
             this.fdDemo.stop();
         }
         this.fdDemo.setListener(null);
-        setVisible(false);
-        dispose();
+        this.setVisible(false);
+        this.dispose();
     }
 }
 

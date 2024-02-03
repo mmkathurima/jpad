@@ -2,7 +2,6 @@ package com.timestored.sqldash.chart;
 
 import java.awt.Color;
 
-
 public class InverseColorScheme
         implements ColorScheme {
     private final Color bg;
@@ -31,7 +30,6 @@ public class InverseColorScheme
     private static Color invert(Color c) {
         return new Color(255 - c.getRed(), 255 - c.getGreen(), 255 - c.getBlue());
     }
-
 
     public Color getBG() {
         return this.bg;

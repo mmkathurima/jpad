@@ -5,7 +5,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.zip.DeflaterOutputStream;
 import java.util.zip.InflaterInputStream;
 
-
 public class StringUtils {
     public static boolean equals(String a, String b) {
         if (a == null) {
@@ -14,11 +13,9 @@ public class StringUtils {
         return a.equals(b);
     }
 
-
     public static String abbreviate(String str, int maxWidth) {
         return abbreviate(str, 0, maxWidth);
     }
-
 
     public static String abbreviate(String str, int offset, int maxWidth) {
         if (str == null) {
@@ -36,7 +33,7 @@ public class StringUtils {
         if (str.length() - offset < maxWidth - 3) {
             offset = str.length() - maxWidth - 3;
         }
-        String abrevMarker = "...";
+        final String abrevMarker = "...";
         if (offset <= 4) {
             return str.substring(0, maxWidth - 3) + "...";
         }

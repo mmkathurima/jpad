@@ -5,7 +5,6 @@ import com.timestored.misc.DynamicClassLoader;
 import java.io.File;
 import java.util.List;
 
-
 public class PluginLoader {
     private static DatabaseAuthenticationService databaseAuthenticationService;
 
@@ -18,7 +17,6 @@ public class PluginLoader {
             databaseAuthenticationService = instances.get(0);
         }
 
-
         if (databaseAuthenticationService != null) {
             writePropIfNotExist("jdbc.isKDB", "true");
             writePropIfNotExist("jdbc.dbRequired", "false");
@@ -30,7 +28,6 @@ public class PluginLoader {
 
         return (databaseAuthenticationService != null);
     }
-
 
     private static void writePropIfNotExist(String key, String value) {
         if (System.getProperty(key) == null)

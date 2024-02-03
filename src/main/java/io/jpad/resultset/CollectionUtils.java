@@ -1,12 +1,10 @@
 package io.jpad.resultset;
 
-
 class CollectionUtils {
 
     static Class<?> getType(Iterable c) {
 
         Class<?> t = null;
-
 
         for (Object o : c) {
 
@@ -16,24 +14,17 @@ class CollectionUtils {
 
                     t = o.getClass();
                     continue;
-
                 }
 
                 if (!t.equals(o.getClass())) {
 
                     return Object.class;
-
                 }
-
             }
-
         }
 
-
         return (t != null) ? t : Object.class;
-
     }
-
 }
 
 

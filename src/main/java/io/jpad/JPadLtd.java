@@ -8,7 +8,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
-
 public class JPadLtd {
     public static final String TECH_EMAIL_ADDRESS = "tech@jpad.io";
     public static final String URL = "http://jpad.io";
@@ -36,7 +35,6 @@ public class JPadLtd {
         return getContactUrl(subject, null);
     }
 
-
     public enum Page {
         HELP("help"),
         REPL("repl"),
@@ -56,7 +54,7 @@ public class JPadLtd {
         }
 
         public String toAnchor() {
-            return "<a href='" + url() + "'>" + niceUrl() + "</a>";
+            return "<a href='" + this.url() + "'>" + this.niceUrl() + "</a>";
         }
     }
 }

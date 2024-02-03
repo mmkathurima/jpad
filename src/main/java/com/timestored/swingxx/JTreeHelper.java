@@ -10,15 +10,12 @@ import javax.swing.tree.TreePath;
 import java.util.Enumeration;
 import java.util.Set;
 
-
 public class JTreeHelper {
     public static void expandAll(JTree tree, boolean expand) {
         TreeNode root = (TreeNode) tree.getModel().getRoot();
 
-
         expandAll(tree, new TreePath(root), expand);
     }
-
 
     public static void expandAll(JTree tree, TreePath parent, boolean expand) {
         TreeNode node = (TreeNode) parent.getLastPathComponent();
@@ -30,14 +27,12 @@ public class JTreeHelper {
             }
         }
 
-
         if (expand) {
             tree.expandPath(parent);
         } else {
             tree.collapsePath(parent);
         }
     }
-
 
     public static void setFolderExpansions(JTree tree, Set<String> curExpandedFolders) {
         Preconditions.checkNotNull(tree);
@@ -61,7 +56,6 @@ public class JTreeHelper {
             }
         }
     }
-
 
     public static Set<String> getExpandedFolders(JTree tree) {
         Set<String> curExpandedFolders = Sets.newHashSet();

@@ -9,31 +9,25 @@ import bibliothek.gui.dock.station.support.PlaceholderStrategy;
 
 import java.util.Map;
 
-
 public abstract class AbstractDockFactory
         implements DockFactory<Dockable, PerspectiveElement, MyLayout> {
     public MyLayout getPerspectiveLayout(PerspectiveElement arg0, Map<PerspectiveDockable, Integer> arg1) {
         return null;
     }
 
-
     public void setLayout(Dockable arg0, MyLayout arg1, Map<Integer, Dockable> arg2, PlaceholderStrategy arg3) {
-        setLayout(arg0, arg1, arg3);
+        this.setLayout(arg0, arg1, arg3);
     }
-
 
     public void setLayout(Dockable arg0, MyLayout arg1, PlaceholderStrategy arg2) {
     }
 
-
     public void estimateLocations(MyLayout arg0, LocationEstimationMap arg1) {
     }
 
-
     public Dockable layout(MyLayout ml, Map<Integer, Dockable> m, PlaceholderStrategy p) {
-        return layout(ml, p);
+        return this.layout(ml, p);
     }
-
 
     public PerspectiveElement layoutPerspective(MyLayout arg0, Map<Integer, PerspectiveDockable> arg1) {
         return null;

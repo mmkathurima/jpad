@@ -18,18 +18,14 @@ import java.sql.SQLException;
 import java.util.Map;
 import java.util.logging.Logger;
 
-
 public class ExampleDbHtmlGenerator {
     private static final Logger LOG = Logger.getLogger(ExampleDbHtmlGenerator.class.getName());
 
-
     private static final String NL = "\r\n";
-
 
     private static final int IMG_WIDTH = 500;
 
     private static final int IMG_HEIGHT = 300;
-
 
     public static void generatePages(ExampleChartDB exampleChartDB, File outDir) throws IOException, SQLException {
         outDir.mkdirs();
@@ -51,7 +47,6 @@ public class ExampleDbHtmlGenerator {
         IOUtils.writeStringToFile(phpFile, new File(outDir, "index.php"));
     }
 
-
     private static String generateHtml(ExampleChartDB exampleChartDB, Map<String, ExampleChartQuery> charts, String title, String sqlFilename) {
         LOG.info("generateHtml for " + exampleChartDB.getName());
 
@@ -59,7 +54,6 @@ public class ExampleDbHtmlGenerator {
         sb.append("\r\n");
 
         String dbName = exampleChartDB.getDbType().getNiceName();
-
 
         sb.append("<h1>").append(title).append("</h1>");
         sb.append("\r\n");
@@ -72,7 +66,6 @@ public class ExampleDbHtmlGenerator {
             HtmlUtils.appendQCodeArea(sb, initSql.substring(0, Math.min(initSql.length(), 1000)));
         }
 
-
         sb.append("<div class='conListing'> <h4>Contents</h4><ol>");
         for (Map.Entry<String, ExampleChartQuery> e : charts.entrySet()) {
             ExampleChartQuery ecq = e.getValue();
@@ -81,7 +74,6 @@ public class ExampleDbHtmlGenerator {
         }
 
         sb.append("</ol></div>");
-
 
         sb.append("<div id='chart-container'>").append("\r\n");
         for (Map.Entry<String, ExampleChartQuery> e : charts.entrySet()) {
@@ -104,10 +96,8 @@ public class ExampleDbHtmlGenerator {
         return sb.toString();
     }
 
-
     private static Map<String, ExampleChartQuery> generate(File parentFolder, ExampleChartDB exampleChartDB) throws SQLException, IOException {
         Preconditions.checkArgument(parentFolder.isDirectory());
-
 
         DBTestRunner dbRunner = DBTestRunnerFactory.getDbRunner(exampleChartDB.getDbType());
         if (dbRunner == null) {
@@ -118,7 +108,6 @@ public class ExampleDbHtmlGenerator {
 
         Map<String, ExampleChartQuery> generatedCharts = Maps.newHashMap();
 
-
         try {
             for (String initSql : exampleChartDB.getInitSQL(false)) {
                 LOG.fine("sending initSql: " + initSql.substring(0, Math.min(initSql.length(), 33)));
@@ -127,7 +116,6 @@ public class ExampleDbHtmlGenerator {
                     LOG.warning("Could not run initSQL: " + initSql);
                 }
             }
-
 
             String PRE = HtmlUtils.clean(exampleChartDB.getDbType().name()) + "-chart-";
             for (ExampleChartQuery exq : exampleChartDB.getQueries()) {
@@ -139,7 +127,6 @@ public class ExampleDbHtmlGenerator {
                 }
 
                 ChartParams chartParams = (new ChartParams.ChartParamsBuilder()).serverConfig(sc).height(300).width(500).file(new File(parentFolder, filename)).viewStrategy(exq.getSupportedViewStrategy()).query(exq.getSqlQuery()).build();
-
 
                 SqlChart.generate(chartParams);
                 generatedCharts.put(filename, exq);

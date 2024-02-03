@@ -16,14 +16,11 @@ import java.util.Collection;
 import java.util.List;
 import java.util.logging.Logger;
 
-
 public class HelpGenerator {
     private static final Logger LOG = Logger.getLogger(HelpGenerator.class.getName());
 
-
     public static void main(String... args) throws IOException, InterruptedException, InvocationTargetException, SQLException {
         File targetDir = null;
-
 
         if (args.length > 0) {
             targetDir = new File(args[0]);
@@ -43,17 +40,14 @@ public class HelpGenerator {
         System.exit(0);
     }
 
-
     public static void generate(File outDir) throws IOException, InterruptedException, InvocationTargetException, SQLException {
         File helpFolder = new File(outDir, "help");
         helpFolder.mkdir();
-
 
         File parent = new File(helpFolder, "database");
         parent.mkdir();
 
         List<String> folderLinks = Lists.newArrayList();
-
 
         Collection<ExampleChartDB> exampleDBs = StockDBAdapter.getStockExampleChartDBs();
 
@@ -62,7 +56,6 @@ public class HelpGenerator {
             folderLinks.add("<a href='" + fname + "'>" + fname + "</a>");
             ExampleDbHtmlGenerator.generatePages(egDB, new File(parent, fname));
         }
-
 
         String sb = HtmlUtils.getXhtmlTop("Database Charting Examples") +
                 HtmlUtils.toList(folderLinks) +

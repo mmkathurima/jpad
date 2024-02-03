@@ -15,7 +15,6 @@ import java.awt.Font;
 import java.sql.ResultSet;
 import java.text.DecimalFormat;
 
-
 class CategoryDatasetUpdateableView
         implements UpdateableView {
     private static final Font TINY_FONT = new Font("Times New Roman", 0, 0);
@@ -51,13 +50,11 @@ class CategoryDatasetUpdateableView
             throw new ChartFormatException("Atleast one numeric column is required.");
         }
 
-
         JFreeChart chart = this.chartPanel.getChart();
         CategoryPlot cplot = chart.getCategoryPlot();
         CategoryItemRenderer renderer = cplot.getRenderer();
 
         renderer.setDefaultToolTipGenerator(new StandardCategoryToolTipGenerator(Tooltip.LABEL_XY_FORMAT, new DecimalFormat("#,###.##")));
-
 
         cplot.getDomainAxis().setLabel(chartRS.getRowTitle());
         ValueAxis rangeAxis = cplot.getRangeAxis();
@@ -69,7 +66,6 @@ class CategoryDatasetUpdateableView
 
         this.dataset.clear();
         add(chartRS, this.dataset);
-
 
         if (this.dataset.getColumnCount() > 30) {
             CategoryAxis dAxis = cplot.getDomainAxis();

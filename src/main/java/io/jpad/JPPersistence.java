@@ -1,23 +1,21 @@
 package io.jpad;
 
 import com.timestored.tscore.persistance.KeyInterface;
-import com.timestored.tscore.persistance.PersistanceInterface;
+import com.timestored.tscore.persistance.PersistenceInterface;
 
 import java.util.prefs.BackingStoreException;
 import java.util.prefs.Preferences;
 
-
-public enum JPPersistance
-        implements PersistanceInterface {
+public enum JPPersistence implements PersistenceInterface {
     INSTANCE;
     private static final Preferences PREF;
 
     static {
-        PREF = Preferences.userNodeForPackage(JPPersistance.class);
+        PREF = Preferences.userNodeForPackage(JPPersistence.class);
     }
 
     boolean isLoginSet() {
-        return (get(Key.USERNAME, "").length() > 0 && get(Key.PASSWORD, "").length() > 0);
+        return (this.get(Key.USERNAME, "").length() > 0 && this.get(Key.PASSWORD, "").length() > 0);
     }
 
     public void put(KeyInterface key, String value) {

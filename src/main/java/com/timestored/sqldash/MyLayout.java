@@ -1,6 +1,5 @@
 package com.timestored.sqldash;
 
-
 class MyLayout {
     private final int id;
 

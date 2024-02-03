@@ -4,10 +4,9 @@ import com.timestored.theme.Icon;
 import org.simplericity.macify.eawt.ApplicationListener;
 import org.simplericity.macify.eawt.DefaultApplication;
 
-
 public class Mac {
     public static void configureIfMac(ApplicationListener applicationListener, Icon icon) {
-        if (System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0) {
+        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
             DefaultApplication defaultApplication = new DefaultApplication();
             defaultApplication.addApplicationListener(applicationListener);
             defaultApplication.setApplicationIconImage(icon.getBufferedImage());

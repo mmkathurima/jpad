@@ -1,6 +1,5 @@
 package io.jpad.model;
 
-
 import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
@@ -10,9 +9,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-
 public class JreClassGrabber {
-
 
     private static final ArrayListMultimap<String, String> shortToFullNames = ArrayListMultimap.create();
     private static final Map<String, String> singles = new HashMap<>();
@@ -22,7 +19,6 @@ public class JreClassGrabber {
 
     private static final List<String> PREFERRED_PACKAGE_PREFIXES = Lists.newArrayList("lombok", "java.util", "java", "com.google");
     private static final JreClassGrabber INSTANCE = new JreClassGrabber();
-
 
     private JreClassGrabber() {
 
@@ -34,32 +30,25 @@ public class JreClassGrabber {
 
                     boolean ignore = false;
 
-                    for (String igPack : JreClassGrabber.IGNORED_PACKAGES_PREFIXES) {
+                    for (String igPack : IGNORED_PACKAGES_PREFIXES) {
 
                         if (c.startsWith(igPack)) {
 
                             ignore = true;
 
                             break;
-
                         }
-
                     }
 
                     if (!ignore) {
 
-                        JreClassGrabber.shortToFullNames.put(JreClassGrabber.getShortName(c), c);
-
+                        shortToFullNames.put(getShortName(c), c);
                     }
-
                 }
 
                 return true;
-
             }
-
         });
-
 
         for (String k : shortToFullNames.keySet()) {
 
@@ -70,18 +59,15 @@ public class JreClassGrabber {
                 singles.put(k, fullNames.get(0));
 
                 continue;
-
             }
 
             String chosenFN = fullNames.get(0);
 
             int chosenIdx = findFirstIdxWithMatchingPrefix(chosenFN, PREFERRED_PACKAGE_PREFIXES);
 
-
             for (String fn : fullNames) {
 
                 int idx = findFirstIdxWithMatchingPrefix(fn, PREFERRED_PACKAGE_PREFIXES);
-
 
                 if (idx <= chosenIdx) {
 
@@ -89,31 +75,23 @@ public class JreClassGrabber {
 
                         chosenFN = fn;
                         continue;
-
                     }
 
                     chosenFN = fn;
 
                     chosenIdx = idx;
-
                 }
-
             }
 
-
             guesses.put(k, chosenFN);
-
         }
-
 
         guesses.put("List", "java.util.List");
 
         guesses.put("Date", "java.util.Date");
 
         guesses.put("JPad", "io.jpad.scratch.JPad");
-
     }
-
 
     private static int findFirstIdxWithMatchingPrefix(String st, List<String> prefixes) {
 
@@ -122,22 +100,16 @@ public class JreClassGrabber {
             if (st.startsWith(prefixes.get(i))) {
 
                 return i;
-
             }
-
         }
 
         return prefixes.size();
-
     }
-
 
     public static JreClassGrabber getInstance() {
 
         return INSTANCE;
-
     }
-
 
     private static String getPackageName(String fullyQualifiedClassName) {
 
@@ -146,13 +118,10 @@ public class JreClassGrabber {
         if (s.contains(".")) {
 
             return s.substring(0, s.lastIndexOf("."));
-
         }
 
         return s;
-
     }
-
 
     public static String getShortName(String fullyQualifiedClassName) {
 
@@ -161,13 +130,10 @@ public class JreClassGrabber {
         if (s.contains(".")) {
 
             return s.substring(1 + s.lastIndexOf("."));
-
         }
 
         return s;
-
     }
-
 
     public boolean equals(Object o) {
 
@@ -189,19 +155,15 @@ public class JreClassGrabber {
         return "JreClassGrabber()";
     }
 
-
     public Map<String, String> getOneToOneMappings() {
 
         return singles;
-
     }
 
     public Map<String, String> getGuesses() {
 
         return guesses;
-
     }
-
 }
 
 

@@ -17,28 +17,23 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.logging.Logger;
 
-
 public class ChartPhpHelpGenerator {
     private static final Logger LOG = Logger.getLogger(ChartPhpHelpGenerator.class.getName());
     private static final int VIEW_WIDTH = 410;
     private static final int VIEW_HEIGHT = 320;
     private static final ViewStrategy TAB_VS = DataTableViewStrategy.getInstance(false);
 
-
     private static String generateBody(ChartTheme chartTheme, String title) {
         StringBuilder sb = new StringBuilder();
         sb.append("<h1>" + title + "</h1>");
         sb.append("<p>For each of the chart types their data format expected together with some examples are shown below</p>");
-
 
         sb.append("<ul class='contentListing'>");
         for (ViewStrategy vs : ViewStrategyFactory.getStrategies()) {
             sb.append("<li><a href='#").append(HtmlUtils.clean(vs.getDescription())).append("'>").append(HtmlUtils.clean(vs.getDescription())).append("</a>").append("</li>");
         }
 
-
         sb.append("</ul>");
-
 
         for (ViewStrategy vs : ViewStrategyFactory.getStrategies()) {
 
@@ -63,7 +58,6 @@ public class ChartPhpHelpGenerator {
                     HtmlUtils.appendImage(sb, imgSrc, exampleView.getDescription(), 320, 410);
                 }
 
-
                 sb.append("<p>KDB Code </p>");
                 String kdbCode = exampleView.getTestCase().getKdbQuery();
                 HtmlUtils.appendQCodeArea(sb, kdbCode);
@@ -77,16 +71,13 @@ public class ChartPhpHelpGenerator {
         return sb.toString();
     }
 
-
     private static String getImgPath(ViewStrategy viewStrategy, ExampleView exampleView, ChartTheme chartTheme) {
         return HtmlUtils.clean(viewStrategy.getDescription()) + "-" + HtmlUtils.clean(exampleView.getName()) + "-" + HtmlUtils.clean(chartTheme.getTitle()) + ".png";
     }
 
-
     private static String getTabImgPath(ViewStrategy viewStrategy, ExampleView exampleView) {
         return HtmlUtils.clean(viewStrategy.getDescription()) + "-" + HtmlUtils.clean(exampleView.getName()) + ".png";
     }
-
 
     public static void generate(File outdir) throws IOException, InterruptedException, InvocationTargetException, SQLException {
         Preconditions.checkArgument(outdir.isDirectory());
@@ -106,7 +97,6 @@ public class ChartPhpHelpGenerator {
         generateImages(new File(outdir, "images"));
     }
 
-
     private static void generateImages(File outDir) throws IOException, InterruptedException, InvocationTargetException, SQLException {
         Connection conn = KdbTestHelper.getNewConn();
         for (ViewStrategy vs : ViewStrategyFactory.getStrategies()) {
@@ -115,13 +105,11 @@ public class ChartPhpHelpGenerator {
 
             for (ExampleView exampleView : vs.getExamples()) {
 
-
                 String query = exampleView.getTestCase().getKdbQuery();
                 Statement st = conn.createStatement();
                 ResultSet rs = st.executeQuery("q)" + query);
 
-
-                final JdbcChartPanel jdbcChartPanel = ViewStrategyFactory.getJdbcChartpanel();
+                JdbcChartPanel jdbcChartPanel = ViewStrategyFactory.getJdbcChartpanel();
                 jdbcChartPanel.update(rs);
                 EventQueue.invokeAndWait(new Runnable() {
                     public void run() {
@@ -130,7 +118,6 @@ public class ChartPhpHelpGenerator {
                     }
                 });
 
-
                 jdbcChartPanel.setViewStrategy(TAB_VS);
                 clearEventQueue();
                 if (!vs.equals(TAB_VS)) {
@@ -138,7 +125,6 @@ public class ChartPhpHelpGenerator {
                     Files.createParentDirs(tabFile);
                     SaveableFrame.saveComponentImage(jdbcChartPanel, 410, 320, tabFile, false);
                 }
-
 
                 for (ChartTheme chartTheme : ViewStrategyFactory.getThemes()) {
 
@@ -152,14 +138,12 @@ public class ChartPhpHelpGenerator {
                     SaveableFrame.saveComponentImage(jdbcChartPanel, 410, 320, file, false);
                 }
 
-
                 st.close();
             }
         }
 
         KdbTestHelper.killAnyOpenProcesses();
     }
-
 
     public static void clearEventQueue() throws InterruptedException, InvocationTargetException {
         EventQueue.invokeAndWait(new Runnable() {

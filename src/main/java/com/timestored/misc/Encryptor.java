@@ -8,7 +8,6 @@ import java.nio.charset.StandardCharsets;
 import java.security.GeneralSecurityException;
 import java.security.Key;
 
-
 public class Encryptor {
     public static byte[] encrypt(byte[] utf8, String keyString) throws IOException {
         try {
@@ -23,7 +22,6 @@ public class Encryptor {
         }
     }
 
-
     public static String encrypt(String str, String keyString) throws IOException {
         return Base64.encodeBytes(encrypt(str.getBytes(StandardCharsets.UTF_8), keyString));
     }
@@ -33,7 +31,6 @@ public class Encryptor {
         Key key = new SecretKeySpec(p, 0, p.length, "DES");
         return key;
     }
-
 
     public static byte[] decrypt(byte[] dec, String keyString) throws IOException {
         try {
@@ -46,7 +43,6 @@ public class Encryptor {
             throw new IOException(e);
         }
     }
-
 
     public static String decrypt(String str, String keyString) throws IOException {
         return new String(decrypt(Base64.decode(str.getBytes()), keyString), StandardCharsets.UTF_8);

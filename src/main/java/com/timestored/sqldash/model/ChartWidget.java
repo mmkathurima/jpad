@@ -16,7 +16,6 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 
-
 public class ChartWidget
         extends AbstractWidget {
     private final ChartViewConfiguration chartViewConfig;
@@ -28,18 +27,16 @@ public class ChartWidget
     };
     private ChartTheme chartTheme;
     private ViewStrategy viewStrategy;
-    private JdbcChartPanel chartPanel = null;
-    private ResultSet prevRS = null;
+    private JdbcChartPanel chartPanel;
+    private ResultSet prevRS;
     private Queryable q = new Queryable();
     private ViewStrategy prevNonTabVS;
-    private boolean ignoreConfigChanges = false;
+    private boolean ignoreConfigChanges;
     private Widget.Listener updateListener;
-
 
     public ChartWidget() {
         this((DesktopModel) null);
     }
-
 
     public ChartWidget(ChartWidget app) {
         this(null, app);
@@ -65,10 +62,9 @@ public class ChartWidget
         this.q.addListener(this.queryableListener);
     }
 
-
     public ChartWidget(DesktopModel desktopModel, ChartWidget app) {
         super(desktopModel, app);
-        this.q = new Queryable(app.getQ());
+        this.q = new Queryable(app.q);
         this.queryable.add(this.q);
         this.viewStrategy = app.viewStrategy;
         this.chartTheme = app.chartTheme;
@@ -86,7 +82,7 @@ public class ChartWidget
 
     public void setChartTheme(ChartTheme chartTheme) {
         this.chartTheme = chartTheme;
-        configChanged();
+        this.configChanged();
     }
 
     public ViewStrategy getViewStrategy() {
@@ -98,7 +94,7 @@ public class ChartWidget
             this.prevNonTabVS = this.viewStrategy;
         }
         this.viewStrategy = viewStrategy;
-        configChanged();
+        this.configChanged();
     }
 
     public ChartViewConfiguration getChartViewConfig() {
@@ -109,12 +105,11 @@ public class ChartWidget
         return MoreObjects.toStringHelper(this).add("viewStrategy", this.viewStrategy).add("chartTheme", this.chartTheme).add("chartViewConfig", this.chartViewConfig).add("queryable", this.q).toString();
     }
 
-
     private JdbcChartPanel generateChart() {
         synchronized (this) {
             this.chartPanel = ViewStrategyFactory.getJdbcChartpanel();
-            this.chartPanel.setViewStrategy(getViewStrategy());
-            this.chartPanel.setTheme(getChartTheme());
+            this.chartPanel.setViewStrategy(this.viewStrategy);
+            this.chartPanel.setTheme(this.chartTheme);
 
             this.updateListener = new Widget.Listener() {
                 public void configChanged(Widget app) {
@@ -125,9 +120,8 @@ public class ChartWidget
                     }
                 }
             };
-            addListener(this.updateListener);
+            this.addListener(this.updateListener);
         }
-
 
         return this.chartPanel;
     }
@@ -136,14 +130,13 @@ public class ChartWidget
         if (this.chartPanel != null) {
             synchronized (this) {
                 if (this.chartPanel != null) {
-                    removeListener(this.updateListener);
+                    this.removeListener(this.updateListener);
                     this.chartPanel = null;
                     this.updateListener = null;
                 }
             }
         }
     }
-
 
     public void tabChanged(Queryable w, ResultSet rs) {
         if (this.chartPanel != null && w == this.q && !this.ignoreConfigChanges) {
@@ -159,7 +152,6 @@ public class ChartWidget
         }
     }
 
-
     public void setIgnoreConfigChanges(boolean ignoreConfigChanges) {
         this.ignoreConfigChanges = ignoreConfigChanges;
     }
@@ -168,7 +160,7 @@ public class ChartWidget
         if (this.chartPanel == null) {
             synchronized (this) {
                 if (this.chartPanel == null) {
-                    this.chartPanel = generateChart();
+                    this.chartPanel = this.generateChart();
                 }
             }
         }
@@ -190,19 +182,16 @@ public class ChartWidget
         return this.q;
     }
 
-
     public void setQueryable(Queryable q) {
         this.q.removeListener(this.queryableListener);
         this.q = q;
         this.queryable.set(0, q);
         this.q.addListener(this.queryableListener);
-        configChanged();
+        this.configChanged();
     }
-
 
     public void argChange(Map<String, Object> changes) {
     }
-
 
     public Icon getTSIcon() {
         if (this.viewStrategy != null && this.viewStrategy.getIcon() != null) {
@@ -212,7 +201,7 @@ public class ChartWidget
     }
 
     public javax.swing.Icon getIcon() {
-        return getTSIcon().get16();
+        return this.getTSIcon().get16();
     }
 
     public Collection<Action> getActions() {

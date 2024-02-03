@@ -11,28 +11,26 @@ import java.io.IOException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-
 public class DocumentsPopupMenu
         extends JPopupMenu {
     private static final Logger log = Logger.getLogger(DocumentsPopupMenu.class.getName());
     private static final long serialVersionUID = 1L;
 
     public DocumentsPopupMenu(DocumentActions documentActions, Document document) {
-        setName("DocumentsPopupMenu");
+        this.setName("DocumentsPopupMenu");
 
         Action closeOthersAction = documentActions.getCloseOtherFilesAction(document);
-        add(closeOthersAction);
+        this.add(closeOthersAction);
         closeOthersAction.setEnabled((document != null));
-        add(documentActions.getCloseFileAction(document));
-        add(documentActions.getCloseAllFileAction());
-
+        this.add(documentActions.getCloseFileAction(document));
+        this.add(documentActions.getCloseAllFileAction());
 
         String p = null;
         String fp = (document != null) ? document.getFilePath() : null;
         if (fp != null) {
             p = (new File(fp)).getParentFile().getAbsolutePath();
         }
-        final String parentPath = p;
+        String parentPath = p;
         Action copyFilePathToClipboard = new AbstractAction("Open Containing Folder") {
             public void actionPerformed(ActionEvent e) {
                 File parentFolder = new File(parentPath);
@@ -40,8 +38,8 @@ public class DocumentsPopupMenu
                     try {
                         Desktop.getDesktop().open(parentFolder);
                     } catch (IOException ioe) {
-                        String message = "Could not open folder";
-                        DocumentsPopupMenu.log.log(Level.WARNING, message, ioe);
+                        final String message = "Could not open folder";
+                        log.log(Level.WARNING, message, ioe);
                         JOptionPane.showMessageDialog(null, message);
                     }
                 } else {
@@ -50,7 +48,7 @@ public class DocumentsPopupMenu
             }
         };
         copyFilePathToClipboard.setEnabled((parentPath != null));
-        add(copyFilePathToClipboard);
+        this.add(copyFilePathToClipboard);
     }
 }
 

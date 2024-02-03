@@ -4,7 +4,6 @@ import javax.swing.DefaultComboBoxModel;
 import javax.swing.JComboBox;
 import java.util.List;
 
-
 public class ServerNameComboBox
         extends JComboBox {
     private static final long serialVersionUID = 1L;
@@ -23,22 +22,21 @@ public class ServerNameComboBox
             }
         });
 
-        refresh();
+        this.refresh();
     }
 
     private void refresh() {
-        String selectedServer = (String) getSelectedItem();
+        String selectedServer = (String) this.getSelectedItem();
         List<String> serverNames = this.connectionManager.getServerNames();
         String[] names = serverNames.toArray(new String[0]);
-        setModel(new DefaultComboBoxModel(names));
+        this.setModel(new DefaultComboBoxModel(names));
         if (serverNames.contains(selectedServer)) {
-            setSelectedItem(selectedServer);
+            this.setSelectedItem(selectedServer);
         }
     }
 
-
     public ServerConfig getSelectedServer() {
-        return this.connectionManager.getServer((String) getSelectedItem());
+        return this.connectionManager.getServer((String) this.getSelectedItem());
     }
 }
 

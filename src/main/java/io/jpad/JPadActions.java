@@ -25,16 +25,16 @@ import java.util.Map;
 public class JPadActions
         implements CommandProvider {
     private final JEngine jEngine;
-    private final JPPersistance jpPersistance;
+    private final JPPersistence jpPersistence;
     private final Frame frame;
     private final OpenDocumentsModel openDocumentsModel;
     private final Action runAction;
     private final Action preferencesAction;
     private final UploadSnipAction uploadSnipAction;
 
-    public JPadActions(final JEngine jEngine, final DocumentTabbedPane documentTabbedPane, final JPPersistance jpPersistance, final Frame frame, OpenDocumentsModel openDocumentsModel, final RunConfig runConfig) {
+    public JPadActions(JEngine jEngine, DocumentTabbedPane documentTabbedPane, JPPersistence jpPersistence, Frame frame, OpenDocumentsModel openDocumentsModel, RunConfig runConfig) {
         this.jEngine = Preconditions.checkNotNull(jEngine);
-        this.jpPersistance = Preconditions.checkNotNull(jpPersistance);
+        this.jpPersistence = Preconditions.checkNotNull(jpPersistence);
         this.frame = Preconditions.checkNotNull(frame);
         this.openDocumentsModel = Preconditions.checkNotNull(openDocumentsModel);
 
@@ -61,20 +61,20 @@ public class JPadActions
         this.runAction.putValue("AcceleratorKey", KeyStroke.getKeyStroke(116, 0));
         this.runAction.putValue("MnemonicKey", Integer.valueOf(82));
 
-        String lTitle = "Configure Upload Login";
-        String lMsg = "Set the username and password used for uploading to jpad.io";
+        final String lTitle = "Configure Upload Login";
+        final String lMsg = "Set the username and password used for uploading to jpad.io";
         this
                 .preferencesAction = new ShortcutAction(lTitle, null, lMsg, Integer.valueOf(67), 0) {
             private static final long serialVersionUID = 1L;
 
             public void actionPerformed(ActionEvent e) {
-                final LoginConfigureDialog d = new LoginConfigureDialog();
-                d.setUsername(jpPersistance.get(JPPersistance.Key.USERNAME, ""));
-                d.setPassword(jpPersistance.get(JPPersistance.Key.PASSWORD, ""));
+                LoginConfigureDialog d = new LoginConfigureDialog();
+                d.setUsername(jpPersistence.get(JPPersistence.Key.USERNAME, ""));
+                d.setPassword(jpPersistence.get(JPPersistence.Key.PASSWORD, ""));
                 d.setListener(new LoginConfigureDialog.Listener() {
                     public void onSave() {
-                        jpPersistance.put(JPPersistance.Key.USERNAME, d.getUsername());
-                        jpPersistance.put(JPPersistance.Key.PASSWORD, new String(d.getPassword()));
+                        jpPersistence.put(JPPersistence.Key.USERNAME, d.getUsername());
+                        jpPersistence.put(JPPersistence.Key.PASSWORD, new String(d.getPassword()));
                     }
                 });
                 d.setLocationRelativeTo(frame);
@@ -100,7 +100,6 @@ public class JPadActions
         snip.setConsoleOut(getVal(renderings, "consoleOut"));
         snip.setBytecodeOut(getVal(renderings, "bytecodeOut"));
         snip.setJpadVersion("1.07");
-
 
         JpadHeader jpde = JpadHeader.extract(snip.getJpadCode());
         snip.setTitle(jpde.getTitle());
@@ -136,8 +135,7 @@ public class JPadActions
         }
 
         public void actionPerformed(ActionEvent e) {
-            Snip snip = JPadActions.getSnip(JPadActions.this.jEngine.getLatestRenderings());
-
+            Snip snip = getSnip(JPadActions.this.jEngine.getLatestRenderings());
 
             if (snip.getTitle().isEmpty()) {
                 String t = JPadActions.this.openDocumentsModel.getSelectedDocument().getTitle();
@@ -148,21 +146,20 @@ public class JPadActions
             }
 
             if (snip.getJpadCode().isEmpty()) {
-                String message = "You must first run some jpad code before attempting to upload.";
+                final String message = "You must first run some jpad code before attempting to upload.";
                 SwingUtils.showMessageDialog(JPadActions.this.frame, message, "Must Run Code First", 2);
 
                 return;
             }
-            if (!JPadActions.this.jpPersistance.isLoginSet()) {
+            if (!JPadActions.this.jpPersistence.isLoginSet()) {
                 JPadActions.this.preferencesAction.actionPerformed(null);
             }
 
-            if (JPadActions.this.jpPersistance.isLoginSet()) {
-                String u = JPadActions.this.jpPersistance.get(JPPersistance.Key.USERNAME, "");
-                String p = JPadActions.this.jpPersistance.get(JPPersistance.Key.PASSWORD, "");
+            if (JPadActions.this.jpPersistence.isLoginSet()) {
+                String u = JPadActions.this.jpPersistence.get(JPPersistence.Key.USERNAME, "");
+                String p = JPadActions.this.jpPersistence.get(JPPersistence.Key.PASSWORD, "");
                 SnipUploadDialog sed = new SnipUploadDialog(JPadActions.this.frame, snip, u, p);
                 sed.setVisible(true);
-
 
                 UploadResult uploadResult = sed.getUploadResult();
                 if (uploadResult != null && uploadResult.isSuccessful()) {
@@ -175,7 +172,7 @@ public class JPadActions
         }
 
         public boolean calculateEnabled() {
-            Snip snip = JPadActions.getSnip(JPadActions.this.jEngine.getLatestRenderings());
+            Snip snip = getSnip(JPadActions.this.jEngine.getLatestRenderings());
             Document doc = JPadActions.this.openDocumentsModel.getSelectedDocument();
             String content = doc.getContent();
             return (!snip.getJpadCode().isEmpty() && content.equals(snip.getJpadCode()));
