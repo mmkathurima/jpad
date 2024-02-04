@@ -50,14 +50,11 @@ public class SqlChart {
                 } else {
                     generate(ChartParams.getChartParams(o));
                 }
-            } catch (IOException e) {
+            } catch (IOException | IllegalArgumentException e) {
                 ex = e;
             } catch (SQLException e) {
                 ex = new SQLException("SQL Error: " + e.getMessage());
             } catch (OptionException e) {
-                OptionException optionException1 = e;
-            } catch (IllegalArgumentException e) {
-                ex = e;
             }
 
             if (ex != null) {

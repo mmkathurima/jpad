@@ -15,6 +15,7 @@ import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.List;
+import java.util.Objects;
 
 class FormWidgetEditorPanel
         extends JPanel {
@@ -109,10 +110,10 @@ class FormWidgetEditorPanel
     }
 
     private static JComboBox getLayoutComboBox(FormWidget formWidget) {
-        JComboBox<String> layoutCB = new JComboBox<String>(new String[]{"Horizontal", "Vertical"});
+        JComboBox<String> layoutCB = new JComboBox<>(new String[]{"Horizontal", "Vertical"});
         layoutCB.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                if (layoutCB.getSelectedItem().equals("Horizontal")) {
+                if (Objects.equals(layoutCB.getSelectedItem(), "Horizontal")) {
                     formWidget.setLayout(3);
                 } else {
                     formWidget.setLayout(2);

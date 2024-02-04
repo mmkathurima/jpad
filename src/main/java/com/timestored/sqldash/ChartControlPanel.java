@@ -47,17 +47,17 @@ public class ChartControlPanel
         for (ViewStrategy cs : chartStrats) {
             descToChartStrat.put(cs.getDescription(), cs);
         }
-        this.chartStratComboBoxModel = new MapComboBoxModel(descToChartStrat);
+        this.chartStratComboBoxModel = new MapComboBoxModel<>(descToChartStrat);
 
         List<ChartTheme> chartThemes = ViewStrategyFactory.getThemes();
         Map<String, ChartTheme> descToChartTheme = Maps.newLinkedHashMap();
         for (ChartTheme ct : chartThemes) {
             descToChartTheme.put(ct.getTitle(), ct);
         }
-        this.chartThemeComboBoxModel = new MapComboBoxModel(descToChartTheme);
+        this.chartThemeComboBoxModel = new MapComboBoxModel<>(descToChartTheme);
 
         this.setBorder(BorderFactory.createTitledBorder("Control Panel"));
-        this.setLayout(new BoxLayout(this, 1));
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         Theme.InputLabeller IL = Theme.getInputLabeller();
         this.chartComboBox = new JComboBox<String>(this.chartStratComboBoxModel);
@@ -135,11 +135,7 @@ public class ChartControlPanel
     }
 
     public void configChanged(Widget app) {
-        SwingUtilities.invokeLater(new Runnable() {
-            public void run() {
-                ChartControlPanel.this.refreshGui();
-            }
-        });
+        SwingUtilities.invokeLater(ChartControlPanel.this::refreshGui);
     }
 
     public class CurrentViewInfoLinkLabel
@@ -152,7 +148,7 @@ public class ChartControlPanel
             ToolTipManager.sharedInstance().registerComponent(this);
 
             if (HtmlUtils.isBrowseSupported()) {
-                this.setCursor(Cursor.getPredefinedCursor(12));
+                this.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
                 this.addMouseListener(new MouseAdapter() {
                     public void mouseClicked(MouseEvent e) {
                         HtmlUtils.browse(helpPage.url());

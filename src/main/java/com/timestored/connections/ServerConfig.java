@@ -80,12 +80,12 @@ public class ServerConfig {
 
     public static List<String> extractParts(String name) {
         if (!name.contains("/")) {
-            List<String> list = new ArrayList<String>(1);
+            List<String> list = new ArrayList<>(1);
             list.add(name);
             return list;
         }
         String[] a = name.split("/");
-        List<String> r = new ArrayList<String>(a.length);
+        List<String> r = new ArrayList<>(a.length);
         for (String s : a) {
             if (s.length() > 0) {
                 r.add(s);
@@ -129,8 +129,7 @@ public class ServerConfig {
 
     public String getFolder() {
         int p = this.name.lastIndexOf("/");
-        String s = (p > -1) ? this.name.substring(0, p) : "";
-        return s;
+        return (p > -1) ? this.name.substring(0, p) : "";
     }
 
     public List<String> getFolders() {
@@ -160,13 +159,13 @@ public class ServerConfig {
     }
 
     public int hashCode() {
-        return Objects.hashCode(this.name, this.username, this.password, this.host, Integer.valueOf(this.port), this.database, this.jdbcType, this.color);
+        return Objects.hashCode(this.name, this.username, this.password, this.host, this.port, this.database, this.jdbcType, this.color);
     }
 
     public boolean equals(Object object) {
         if (object instanceof ServerConfig) {
             ServerConfig that = (ServerConfig) object;
-            return (Objects.equal(this.name, that.name) && Objects.equal(this.username, that.username) && Objects.equal(this.password, that.password) && Objects.equal(this.host, that.host) && Objects.equal(Integer.valueOf(this.port), Integer.valueOf(that.port)) && Objects.equal(this.getDatabase(), that.getDatabase()) && Objects.equal(this.getFolder(), that.getFolder()) && Objects.equal(this.jdbcType, that.jdbcType) && Objects.equal(this.color, that.color));
+            return (Objects.equal(this.name, that.name) && Objects.equal(this.username, that.username) && Objects.equal(this.password, that.password) && Objects.equal(this.host, that.host) && Objects.equal(this.port, that.port) && Objects.equal(this.getDatabase(), that.getDatabase()) && Objects.equal(this.getFolder(), that.getFolder()) && Objects.equal(this.jdbcType, that.jdbcType) && Objects.equal(this.color, that.color));
         }
 
         return false;

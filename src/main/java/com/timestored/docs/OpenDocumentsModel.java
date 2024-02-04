@@ -16,14 +16,14 @@ import java.util.logging.Logger;
 public class OpenDocumentsModel {
     private static final Logger LOG = Logger.getLogger(OpenDocumentsModel.class.getName());
 
-    private final List<Document> documents = new CopyOnWriteArrayList<Document>();
+    private final List<Document> documents = new CopyOnWriteArrayList<>();
     private final CopyOnWriteArrayList<Listener> listeners;
     private final Document.Listener selectedDocListener;
     private Document selectedDocument;
     private File selectedFolder;
 
     private OpenDocumentsModel() {
-        this.listeners = new CopyOnWriteArrayList<Listener>();
+        this.listeners = new CopyOnWriteArrayList<>();
 
         this.selectedDocListener = new Document.Listener() {
             public void docContentModified() {
@@ -269,7 +269,7 @@ public class OpenDocumentsModel {
     }
 
     public void closeAll() {
-        List<Document> docs = new ArrayList<Document>(this.documents);
+        List<Document> docs = new ArrayList<>(this.documents);
         LOG.info("closeAll");
         this.documents.clear();
         this.changeSelectedDocTo(this.addDocument());

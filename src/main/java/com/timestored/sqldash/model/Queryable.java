@@ -9,7 +9,7 @@ import java.util.logging.Logger;
 public class Queryable {
     private static final Logger LOG = Logger.getLogger(Queryable.class.getName());
 
-    private final transient List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
+    private final transient List<Listener> listeners = new CopyOnWriteArrayList<>();
 
     private String serverName = "localhost:5000";
     private String query = "";
@@ -71,12 +71,12 @@ public class Queryable {
         }
     }
 
-    public boolean addListener(Listener queryableListener) {
-        return this.listeners.add(queryableListener);
+    public void addListener(Listener queryableListener) {
+        this.listeners.add(queryableListener);
     }
 
-    public boolean removeListener(Listener queryableListener) {
-        return this.listeners.remove(queryableListener);
+    public void removeListener(Listener queryableListener) {
+        this.listeners.remove(queryableListener);
     }
 
     public interface Listener {

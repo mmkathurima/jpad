@@ -155,9 +155,9 @@ public class JavaTokeniser {
 
     private boolean contains(char[] set, char c) {
 
-        for (int i = 0; i < set.length; i++) {
+        for (char value : set) {
 
-            if (set[i] == c) {
+            if (value == c) {
 
                 return true;
             }

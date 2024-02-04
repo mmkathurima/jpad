@@ -72,12 +72,12 @@ class StandardTheme
 
     public JWindow getWindow(Growl message, JFrame parentFrame) {
         JWindow frame = new JWindow();
-        new BoxLayout(frame, 3);
+        new BoxLayout(frame, BoxLayout.PAGE_AXIS);
         frame.setAlwaysOnTop(parentFrame.isFocused());
         frame.setMaximumSize(new Dimension(200, 2147483647));
 
         JPanel panel = new JPanel();
-        new BoxLayout(panel, 3);
+        new BoxLayout(panel, BoxLayout.PAGE_AXIS);
         JLabel label = new JLabel("<html><body style='width:124px'>" + message.getMessage() + "</body></html>");
 
         label.setBorder(BorderFactory.createEmptyBorder(3, 3, 3, 3));

@@ -140,7 +140,7 @@ public class FinanceDataDemo {
 
     private void sendFirstFakeLivePrice(String sym, List<OHLCDataPoint> ohlcPrices) throws SQLException {
         List<OHLCDataPoint> a = Lists.newArrayList(ohlcPrices);
-        Collections.sort(a, new Comparator<OHLCDataPoint>() {
+        a.sort(new Comparator<>() {
             public int compare(OHLCDataPoint o, OHLCDataPoint p) {
                 return o.getDate().compareTo(p.getDate());
             }
@@ -188,7 +188,7 @@ public class FinanceDataDemo {
     private void sendEach(String sym, List<OHLCDataPoint> dataPoints) throws SQLException, InterruptedException {
         final int BATCH_SIZE = 20;
 
-        List<OHLCDataPoint> t = new ArrayList<OHLCDataPoint>(20);
+        List<OHLCDataPoint> t = new ArrayList<>(20);
         for (int i = 1; i <= dataPoints.size(); i++) {
             t.add(dataPoints.get(i - 1));
             if (i % 20 == 0) {

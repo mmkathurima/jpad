@@ -18,7 +18,7 @@ public class Demo
 
     public void run() {
         JFrame frame = new JFrame("JGrowl Demo");
-        frame.setDefaultCloseOperation(3);
+        frame.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
         frame.setPreferredSize(new Dimension(640, 480));
         Container c = frame.getContentPane();
         c.setLayout(new BorderLayout(5, 5));
@@ -35,7 +35,7 @@ public class Demo
         JPanel p = new JPanel(new GridLayout(0, 1));
         p.add(buttonPanel);
         p.add(this.titleField);
-        JPanel panel = new JPanel(new FlowLayout(0));
+        JPanel panel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         panel.add(p);
         c.add(panel, "North");
         c.add(this.textArea, "Center");

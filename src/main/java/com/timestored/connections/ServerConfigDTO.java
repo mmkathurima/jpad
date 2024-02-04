@@ -36,13 +36,13 @@ class ServerConfigDTO {
         this.database = sc.getDatabase();
         this.jdbcType = sc.getJdbcType();
 
-        this.clr = Integer.valueOf(sc.getColor().getRGB());
+        this.clr = sc.getColor().getRGB();
     }
 
     ServerConfig getInstance() {
         Color c = null;
         if (this.clr != null) {
-            c = new Color(this.clr.intValue());
+            c = new Color(this.clr);
         }
 
         String n = this.name;

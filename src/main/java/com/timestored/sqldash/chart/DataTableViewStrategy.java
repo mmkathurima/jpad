@@ -11,6 +11,7 @@ import org.jdesktop.swingx.renderer.DefaultTableRenderer;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.ScrollPaneConstants;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import java.awt.BorderLayout;
@@ -163,7 +164,7 @@ public class DataTableViewStrategy
 
             this.table.packAll();
             this.table.setAutoResizeMode(0);
-            JScrollPane scrollPane = new JScrollPane(this.table, 20, 31);
+            JScrollPane scrollPane = new JScrollPane(this.table, ScrollPaneConstants.VERTICAL_SCROLLBAR_AS_NEEDED, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
             JTableHeader thead = this.table.getTableHeader();
             scrollPane.setColumnHeaderView(thead);
@@ -185,10 +186,7 @@ public class DataTableViewStrategy
                 try {
                     Field f = Color.class.getField(cVal);
                     cl = (Color) f.get(null);
-                } catch (SecurityException e) {
-                } catch (NoSuchFieldException e) {
-                } catch (IllegalArgumentException e) {
-                } catch (IllegalAccessException e) {
+                } catch (SecurityException | IllegalAccessException | IllegalArgumentException | NoSuchFieldException e) {
                 }
 
                 if (cl == null) {
@@ -216,8 +214,8 @@ public class DataTableViewStrategy
             rs.beforeFirst();
             ResultSetMetaData metaData = rs.getMetaData();
 
-            Vector<String> columnNames = new Vector<String>();
-            Vector<String> cleanNames = new Vector<String>();
+            Vector<String> columnNames = new Vector<>();
+            Vector<String> cleanNames = new Vector<>();
             int columnCount = metaData.getColumnCount();
             for (int c = 1; c <= columnCount; c++) {
                 String cn = metaData.getColumnName(c);
@@ -227,12 +225,12 @@ public class DataTableViewStrategy
                 }
             }
 
-            List<Color> rowBgColorsNew = new ArrayList<Color>();
-            List<Color> rowFgColorsNew = new ArrayList<Color>();
+            List<Color> rowBgColorsNew = new ArrayList<>();
+            List<Color> rowFgColorsNew = new ArrayList<>();
 
-            Vector<Vector<Object>> data = new Vector<Vector<Object>>();
+            Vector<Vector<Object>> data = new Vector<>();
             while (rs.next()) {
-                Vector<Object> vector = new Vector();
+                Vector<Object> vector = new Vector<>();
                 for (int cIdx = 1; cIdx <= columnCount; cIdx++) {
                     String cn = columnNames.get(cIdx - 1).toLowerCase();
                     if (this.debugView || !cn.startsWith("sd_")) {

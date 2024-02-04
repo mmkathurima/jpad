@@ -14,7 +14,7 @@ import java.util.logging.Logger;
 
 public class DirWatch {
     private static final Logger LOG = Logger.getLogger(DirWatch.class.getName());
-    private final List<DirWatchListener> listeners = new CopyOnWriteArrayList<DirWatchListener>();
+    private final List<DirWatchListener> listeners = new CopyOnWriteArrayList<>();
 
     private final FileFilter fileFilter;
     private final ChangedFileAlterationListener fileAlterationListener;

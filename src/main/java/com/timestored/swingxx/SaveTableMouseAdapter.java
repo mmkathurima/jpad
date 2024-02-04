@@ -84,7 +84,7 @@ public class SaveTableMouseAdapter
             }
         }
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         if (includeHeaders) {
             for (int ci = c; ci < cEnd; ci++) {
@@ -145,7 +145,7 @@ public class SaveTableMouseAdapter
             } catch (IOException e) {
                 final String msg = "Error saving file: ";
                 LOG.log(Level.INFO, msg, e);
-                JOptionPane.showMessageDialog(null, msg, "Error Saving", 0);
+                JOptionPane.showMessageDialog(null, msg, "Error Saving", JOptionPane.ERROR_MESSAGE);
             }
         }
     }

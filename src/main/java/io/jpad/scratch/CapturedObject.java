@@ -30,15 +30,9 @@ public class CapturedObject {
         if (!(o instanceof CapturedObject)) return false;
         CapturedObject other = (CapturedObject) o;
         if (!other.canEqual(this)) return false;
-        Object this$name = this.name;
-        Object other$name = other.name;
-        if (!Objects.equals(this$name, other$name)) return false;
-        Object this$object = this.object;
-        Object other$object = other.object;
-        if (!Objects.equals(this$object, other$object)) return false;
-        Object this$resultSet = this.resultSet;
-        Object other$resultSet = other.resultSet;
-        return Objects.equals(this$resultSet, other$resultSet);
+        if (!Objects.equals(this.name, other.name)) return false;
+        if (!Objects.equals(this.object, other.object)) return false;
+        return Objects.equals(this.resultSet, other.resultSet);
     }
 
     protected boolean canEqual(Object other) {

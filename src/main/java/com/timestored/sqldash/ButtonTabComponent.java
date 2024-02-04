@@ -28,7 +28,7 @@ class ButtonTabComponent
     private final JTabbedPane pane;
 
     public ButtonTabComponent(JTabbedPane pane) {
-        super(new FlowLayout(0, 0, 0));
+        super(new FlowLayout(FlowLayout.LEFT, 0, 0));
         if (pane == null) {
             throw new NullPointerException("TabbedPane is null");
         }

@@ -28,15 +28,9 @@ class UploadResult {
         if (!(o instanceof UploadResult)) return false;
         UploadResult other = (UploadResult) o;
         if (!other.canEqual(this)) return false;
-        Object this$type = this.type;
-        Object other$type = other.type;
-        if (!Objects.equals(this$type, other$type)) return false;
-        Object this$message = this.message;
-        Object other$message = other.message;
-        if (!Objects.equals(this$message, other$message)) return false;
-        Object this$url = this.url;
-        Object other$url = other.url;
-        return Objects.equals(this$url, other$url) && (this.revisionId == other.revisionId);
+        if (!Objects.equals(this.type, other.type)) return false;
+        if (!Objects.equals(this.message, other.message)) return false;
+        return Objects.equals(this.url, other.url) && (this.revisionId == other.revisionId);
     }
 
     protected boolean canEqual(Object other) {

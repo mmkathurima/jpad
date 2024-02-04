@@ -69,7 +69,7 @@ public class SnipUploadDialog
         c.add(IL.get("Tags:", this.tagsTextField, "tagsTextField", helpLabel, "Comma separated list of tags."));
 
         JPanel buttonPanel = new JPanel();
-        buttonPanel.setLayout(new BoxLayout(buttonPanel, 2));
+        buttonPanel.setLayout(new BoxLayout(buttonPanel, BoxLayout.LINE_AXIS));
 
         buttonPanel.add(Theme.makeButton("Upload", new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -118,7 +118,7 @@ public class SnipUploadDialog
             if (this.uploadResult != null) {
                 msg = this.uploadResult.getMessage();
             }
-            JOptionPane.showMessageDialog(this.pparent, msg, "Upload Failed", 0);
+            JOptionPane.showMessageDialog(this.pparent, msg, "Upload Failed", JOptionPane.ERROR_MESSAGE);
         }
     }
 }

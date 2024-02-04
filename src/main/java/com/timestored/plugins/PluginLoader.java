@@ -8,7 +8,7 @@ import java.util.List;
 public class PluginLoader {
     private static DatabaseAuthenticationService databaseAuthenticationService;
 
-    public static boolean loadPlugins() {
+    public static void loadPlugins() {
         String curDir = System.getProperty("user.dir");
         curDir = curDir + "/libs";
         File dir = new File(curDir);
@@ -25,8 +25,6 @@ public class PluginLoader {
             writePropIfNotExist("jdbc.niceName", "Kdb with " + databaseAuthenticationService.getName());
             writePropIfNotExist("jdbc.authenticator", databaseAuthenticationService.getClass().getCanonicalName());
         }
-
-        return (databaseAuthenticationService != null);
     }
 
     private static void writePropIfNotExist(String key, String value) {

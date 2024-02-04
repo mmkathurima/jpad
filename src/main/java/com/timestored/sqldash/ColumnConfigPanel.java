@@ -24,16 +24,16 @@ class ColumnConfigPanel
         dataModel.addListener(this);
 
         this.setBorder(BorderFactory.createTitledBorder("Column Configuration"));
-        this.setLayout(new BoxLayout(this, 1));
+        this.setLayout(new BoxLayout(this, BoxLayout.Y_AXIS));
 
         this.add(new JLabel("Domain Names"));
         this.domPanel = new JPanel();
-        this.domPanel.setLayout(new BoxLayout(this.domPanel, 1));
+        this.domPanel.setLayout(new BoxLayout(this.domPanel, BoxLayout.Y_AXIS));
         this.add(this.domPanel);
 
         this.add(new JLabel("Col Names"));
         this.colPanel = new JPanel();
-        this.colPanel.setLayout(new BoxLayout(this.colPanel, 1));
+        this.colPanel.setLayout(new BoxLayout(this.colPanel, BoxLayout.Y_AXIS));
         this.add(this.colPanel);
     }
 

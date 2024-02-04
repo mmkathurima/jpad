@@ -23,7 +23,7 @@ public class OpenDocumentPersister
 
     private static final String PATH_MARKER = "\r\nPATH:\r\n";
     private final OpenDocumentsModel openDocumentsModel;
-    private final FifoBuffer<String> recentFilePaths = new FifoBuffer(9);
+    private final FifoBuffer<String> recentFilePaths = new FifoBuffer<>(9);
 
     private final PersistenceInterface persistance;
 
@@ -75,7 +75,7 @@ public class OpenDocumentPersister
         List<Document> documents = this.openDocumentsModel.getDocuments();
         for (Document d : documents) {
 
-            File f = null;
+            File f;
             do {
                 i++;
                 f = new File(this.scratchDir, i + "-" + d.getTitle());
@@ -116,7 +116,7 @@ public class OpenDocumentPersister
                         content = c.substring(contentPos + "\r\nCONTENT:\r\n".length());
                     }
 
-                    Document d = null;
+                    Document d;
                     if (path.trim().length() > 0) {
                         log.info("attempting to restore existing known document");
                         File pFile = new File(path);

@@ -25,7 +25,7 @@ abstract class AbstractWListSelector
         this.desktopModel = desktopModel;
 
         this.lbl = new JLabel();
-        JPanel p = new JPanel(new FlowLayout(0));
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
         this.inputPanel = new JPanel(new BorderLayout());
         p.add(this.lbl);
         p.add(this.inputPanel);
@@ -37,11 +37,7 @@ abstract class AbstractWListSelector
         if (EventQueue.isDispatchThread()) {
             this.doRefresh();
         } else {
-            EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    AbstractWListSelector.this.doRefresh();
-                }
-            });
+            EventQueue.invokeLater(AbstractWListSelector.this::doRefresh);
         }
     }
 

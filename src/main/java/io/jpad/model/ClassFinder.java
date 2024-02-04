@@ -18,7 +18,7 @@ public class ClassFinder {
 
         List<Class<T>> instances = Lists.newArrayList();
 
-        findClasses(new Visitor<String>() {
+        findClasses(new Visitor<>() {
 
             public boolean visit(String t) {
 
@@ -119,7 +119,7 @@ public class ClassFinder {
 
     private static String createClassName(File root, File file) {
 
-        StringBuffer sb = new StringBuffer();
+        StringBuilder sb = new StringBuilder();
 
         String fileName = file.getName();
 

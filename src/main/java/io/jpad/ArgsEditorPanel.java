@@ -35,11 +35,7 @@ class ArgsEditorPanel
             }
         });
 
-        runConfig.addListener(new RunConfig.Listener() {
-            public void change() {
-                ArgsEditorPanel.this.refresh();
-            }
-        });
+        runConfig.addListener(ArgsEditorPanel.this::refresh);
         this.refresh();
     }
 

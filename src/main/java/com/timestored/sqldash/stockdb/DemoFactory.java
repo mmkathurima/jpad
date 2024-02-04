@@ -15,7 +15,7 @@ public class DemoFactory {
 
     public static FinanceDataDemo getFinanceDataDemo(ServerConfig serverConfig) throws IOException {
         try {
-            DBConfig dbConfig = null;
+            DBConfig dbConfig;
 
             switch (serverConfig.getJdbcType()) {
                 case KDB:
@@ -23,8 +23,6 @@ public class DemoFactory {
 
                     return new FinanceDataDemo(dbConfig, serverConfig);
                 case H2:
-                    dbConfig = H2DBConfig.INSTANCE;
-                    return new FinanceDataDemo(dbConfig, serverConfig);
                 case MYSQL:
                     dbConfig = H2DBConfig.INSTANCE;
                     return new FinanceDataDemo(dbConfig, serverConfig);

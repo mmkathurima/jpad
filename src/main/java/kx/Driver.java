@@ -71,7 +71,7 @@ public class Driver implements java.sql.Driver {
     }
 
     @Override
-    public Logger getParentLogger() throws SQLFeatureNotSupportedException {
+    public Logger getParentLogger() {
         return Logger.getLogger(this.getClass().getName());
     }
 
@@ -83,7 +83,7 @@ public class Driver implements java.sql.Driver {
         return !this.acceptsURL(s) ? null : new Connection(s.substring(7), (p != null) ? p.get("user") : p, (p != null) ? p.get("password") : p);
     }
 
-    public DriverPropertyInfo[] getPropertyInfo(String s, Properties p) throws SQLException {
+    public DriverPropertyInfo[] getPropertyInfo(String s, Properties p) {
         return new DriverPropertyInfo[0];
     }
 
@@ -109,31 +109,29 @@ public class Driver implements java.sql.Driver {
             }
         }
 
-        public java.sql.ResultSetMetaData getMetaData() throws SQLException {
+        public java.sql.ResultSetMetaData getMetaData() {
             return new ResultSetMetaData(this.f, this.d);
         }
 
-        public int findColumn(String s) throws SQLException {
+        public int findColumn(String s) {
             return 1 + find(this.f, s);
         }
 
-        public boolean next() throws SQLException {
+        public boolean next() {
             return (++this.r < this.n);
         }
 
-        public boolean wasNull() throws SQLException {
+        public boolean wasNull() {
             return (this.o == null);
         }
 
-        public Object getObject(int i) throws SQLException {
+        public Object getObject(int i) {
             this.o = C.at(this.d[i - 1], this.r);
 
             if (this.o instanceof C.Month)
                 return new MonthDate((C.Month) this.o);
             if (this.o instanceof C.Second)
                 return new SecondTime((C.Second) this.o);
-            if (this.o instanceof C.Minute)
-                return new MinuteTime((C.Minute) this.o);
             if (this.o instanceof C.Minute)
                 return new MinuteTime((C.Minute) this.o);
             if (this.o instanceof C.Timespan) {
@@ -143,53 +141,53 @@ public class Driver implements java.sql.Driver {
             return (this.o instanceof char[]) ? new String((char[]) this.o) : this.o;
         }
 
-        public boolean getBoolean(int i) throws SQLException {
-            return ((Boolean) this.getObject(i)).booleanValue();
+        public boolean getBoolean(int i) {
+            return (Boolean) this.getObject(i);
         }
 
-        public byte getByte(int i) throws SQLException {
-            return ((Byte) this.getObject(i)).byteValue();
+        public byte getByte(int i) {
+            return (Byte) this.getObject(i);
         }
 
-        public short getShort(int i) throws SQLException {
+        public short getShort(int i) {
             Object x = this.getObject(i);
-            return (x == null) ? 0 : ((Short) x).shortValue();
+            return (x == null) ? 0 : (Short) x;
         }
 
-        public int getInt(int i) throws SQLException {
+        public int getInt(int i) {
             Object x = this.getObject(i);
-            return (x == null) ? 0 : ((Integer) x).intValue();
+            return (x == null) ? 0 : (Integer) x;
         }
 
-        public long getLong(int i) throws SQLException {
+        public long getLong(int i) {
             Object x = this.getObject(i);
-            return (x == null) ? 0L : ((Long) x).longValue();
+            return (x == null) ? 0L : (Long) x;
         }
 
-        public float getFloat(int i) throws SQLException {
+        public float getFloat(int i) {
             Object x = this.getObject(i);
-            return (x == null) ? 0.0F : ((Float) x).floatValue();
+            return (x == null) ? 0.0F : (Float) x;
         }
 
-        public double getDouble(int i) throws SQLException {
+        public double getDouble(int i) {
             Object x = this.getObject(i);
-            return (x == null) ? 0.0D : ((Double) x).doubleValue();
+            return (x == null) ? 0.0D : (Double) x;
         }
 
-        public String getString(int i) throws SQLException {
+        public String getString(int i) {
             Object x = this.getObject(i);
             return (x == null) ? null : x.toString();
         }
 
-        public Date getDate(int i) throws SQLException {
+        public Date getDate(int i) {
             return (Date) this.getObject(i);
         }
 
-        public Time getTime(int i) throws SQLException {
+        public Time getTime(int i) {
             return (Time) this.getObject(i);
         }
 
-        public Timestamp getTimestamp(int i) throws SQLException {
+        public Timestamp getTimestamp(int i) {
             return (Timestamp) this.getObject(i);
         }
 
@@ -218,51 +216,51 @@ public class Driver implements java.sql.Driver {
             return null;
         }
 
-        public Object getObject(String s) throws SQLException {
+        public Object getObject(String s) {
             return this.getObject(this.findColumn(s));
         }
 
-        public boolean getBoolean(String s) throws SQLException {
+        public boolean getBoolean(String s) {
             return this.getBoolean(this.findColumn(s));
         }
 
-        public byte getByte(String s) throws SQLException {
+        public byte getByte(String s) {
             return this.getByte(this.findColumn(s));
         }
 
-        public short getShort(String s) throws SQLException {
+        public short getShort(String s) {
             return this.getShort(this.findColumn(s));
         }
 
-        public int getInt(String s) throws SQLException {
+        public int getInt(String s) {
             return this.getInt(this.findColumn(s));
         }
 
-        public long getLong(String s) throws SQLException {
+        public long getLong(String s) {
             return this.getLong(this.findColumn(s));
         }
 
-        public float getFloat(String s) throws SQLException {
+        public float getFloat(String s) {
             return this.getFloat(this.findColumn(s));
         }
 
-        public double getDouble(String s) throws SQLException {
+        public double getDouble(String s) {
             return this.getDouble(this.findColumn(s));
         }
 
-        public String getString(String s) throws SQLException {
+        public String getString(String s) {
             return this.getString(this.findColumn(s));
         }
 
-        public Date getDate(String s) throws SQLException {
+        public Date getDate(String s) {
             return this.getDate(this.findColumn(s));
         }
 
-        public Time getTime(String s) throws SQLException {
+        public Time getTime(String s) {
             return this.getTime(this.findColumn(s));
         }
 
-        public Timestamp getTimestamp(String s) throws SQLException {
+        public Timestamp getTimestamp(String s) {
             return this.getTimestamp(this.findColumn(s));
         }
 
@@ -286,11 +284,11 @@ public class Driver implements java.sql.Driver {
             return this.getBinaryStream(this.findColumn(s));
         }
 
-        public SQLWarning getWarnings() throws SQLException {
+        public SQLWarning getWarnings() {
             return null;
         }
 
-        public void clearWarnings() throws SQLException {
+        public void clearWarnings() {
         }
 
         public String getCursorName() throws SQLException {
@@ -298,7 +296,7 @@ public class Driver implements java.sql.Driver {
             return "";
         }
 
-        public void close() throws SQLException {
+        public void close() {
             this.d = null;
         }
 
@@ -322,80 +320,80 @@ public class Driver implements java.sql.Driver {
             return null;
         }
 
-        public boolean isBeforeFirst() throws SQLException {
+        public boolean isBeforeFirst() {
             return (this.r < 0);
         }
 
-        public boolean isAfterLast() throws SQLException {
+        public boolean isAfterLast() {
             return (this.r >= this.n);
         }
 
-        public boolean isFirst() throws SQLException {
+        public boolean isFirst() {
             return (this.r == 0);
         }
 
-        public boolean isLast() throws SQLException {
+        public boolean isLast() {
             return (this.r == this.n - 1);
         }
 
-        public void beforeFirst() throws SQLException {
+        public void beforeFirst() {
             this.r = -1;
         }
 
-        public void afterLast() throws SQLException {
+        public void afterLast() {
             this.r = this.n;
         }
 
-        public boolean first() throws SQLException {
+        public boolean first() {
             this.r = 0;
             return (this.n > 0);
         }
 
-        public boolean last() throws SQLException {
+        public boolean last() {
             this.r = this.n - 1;
             return (this.n > 0);
         }
 
-        public int getRow() throws SQLException {
+        public int getRow() {
             return this.r + 1;
         }
 
-        public boolean absolute(int row) throws SQLException {
+        public boolean absolute(int row) {
             this.r = row - 1;
             return (this.r < this.n);
         }
 
-        public boolean relative(int rows) throws SQLException {
+        public boolean relative(int rows) {
             this.r += rows;
             return (this.r >= 0 && this.r < this.n);
         }
 
-        public boolean previous() throws SQLException {
+        public boolean previous() {
             this.r--;
             return (this.r >= 0);
         }
 
-        public int getFetchDirection() throws SQLException {
-            return 1000;
+        public int getFetchDirection() {
+            return java.sql.ResultSet.FETCH_FORWARD;
         }
 
         public void setFetchDirection(int direction) throws SQLException {
             q("fd");
         }
 
-        public int getFetchSize() throws SQLException {
+        public int getFetchSize() {
             return 0;
         }
 
-        public void setFetchSize(int rows) throws SQLException {
+        public void setFetchSize(int rows) {
         }
 
-        public int getType() throws SQLException {
-            return 1005;
+        public int getType() {
+            return java.sql.ResultSet.TYPE_SCROLL_SENSITIVE;
         }
 
-        public int getConcurrency() throws SQLException {
-            return 1007;
+        public int getConcurrency() {
+            return java.sql.ResultSet.CONCUR_READ_ONLY;
         }
 
         public boolean rowUpdated() throws SQLException {
@@ -593,7 +591,7 @@ public class Driver implements java.sql.Driver {
             q();
         }
 
-        public java.sql.Statement getStatement() throws SQLException {
+        public java.sql.Statement getStatement() {
             return this.Statement;
         }
 
@@ -742,7 +740,7 @@ public class Driver implements java.sql.Driver {
             return 0;
         }
 
-        public boolean isClosed() throws SQLException {
+        public boolean isClosed() {
             return (this.d == null);
         }
 
@@ -1017,83 +1015,83 @@ public class Driver implements java.sql.Driver {
             this.d = y;
         }
 
-        public int getColumnCount() throws SQLException {
+        public int getColumnCount() {
             return this.f.length;
         }
 
-        public String getColumnName(int i) throws SQLException {
+        public String getColumnName(int i) {
             return this.f[i - 1];
         }
 
-        public String getColumnTypeName(int i) throws SQLException {
+        public String getColumnTypeName(int i) {
             return TYPE[C.t(this.d[i - 1])];
         }
 
-        public int getColumnDisplaySize(int i) throws SQLException {
+        public int getColumnDisplaySize(int i) {
             return 11;
         }
 
-        public int getScale(int i) throws SQLException {
+        public int getScale(int i) {
             return 2;
         }
 
-        public int isNullable(int i) throws SQLException {
-            return 1;
+        public int isNullable(int i) {
+            return java.sql.ResultSetMetaData.columnNullable;
         }
 
-        public String getColumnLabel(int i) throws SQLException {
+        public String getColumnLabel(int i) {
             return this.getColumnName(i);
         }
 
-        public int getColumnType(int i) throws SQLException {
+        public int getColumnType(int i) {
             return SQLTYPE[C.t(this.d[i - 1])];
         }
 
-        public int getPrecision(int i) throws SQLException {
+        public int getPrecision(int i) {
             return 11;
         }
 
-        public boolean isSigned(int i) throws SQLException {
+        public boolean isSigned(int i) {
             return true;
         }
 
-        public String getTableName(int i) throws SQLException {
+        public String getTableName(int i) {
             return "";
         }
 
-        public String getSchemaName(int i) throws SQLException {
+        public String getSchemaName(int i) {
             return "";
         }
 
-        public String getCatalogName(int i) throws SQLException {
+        public String getCatalogName(int i) {
             return "";
         }
 
-        public boolean isReadOnly(int i) throws SQLException {
+        public boolean isReadOnly(int i) {
             return false;
         }
 
-        public boolean isWritable(int i) throws SQLException {
+        public boolean isWritable(int i) {
             return false;
         }
 
-        public boolean isDefinitelyWritable(int i) throws SQLException {
+        public boolean isDefinitelyWritable(int i) {
             return false;
         }
 
-        public boolean isAutoIncrement(int i) throws SQLException {
+        public boolean isAutoIncrement(int i) {
             return false;
         }
 
-        public boolean isCaseSensitive(int i) throws SQLException {
+        public boolean isCaseSensitive(int i) {
             return true;
         }
 
-        public boolean isSearchable(int i) throws SQLException {
+        public boolean isSearchable(int i) {
             return true;
         }
 
-        public boolean isCurrency(int i) throws SQLException {
+        public boolean isCurrency(int i) {
             return false;
         }
 
@@ -1166,49 +1164,49 @@ public class Driver implements java.sql.Driver {
             }
         }
 
-        public boolean getAutoCommit() throws SQLException {
+        public boolean getAutoCommit() {
             return this.a;
         }
 
-        public void setAutoCommit(boolean b) throws SQLException {
+        public void setAutoCommit(boolean b) {
             this.a = b;
         }
 
-        public void rollback() throws SQLException {
+        public void rollback() {
         }
 
-        public void commit() throws SQLException {
+        public void commit() {
         }
 
-        public boolean isClosed() throws SQLException {
+        public boolean isClosed() {
             return (this.c == null);
         }
 
-        public java.sql.Statement createStatement() throws SQLException {
+        public java.sql.Statement createStatement() {
             return new Statement(this);
         }
 
-        public java.sql.DatabaseMetaData getMetaData() throws SQLException {
+        public java.sql.DatabaseMetaData getMetaData() {
             return new DatabaseMetaData(this);
         }
 
-        public java.sql.PreparedStatement prepareStatement(String s) throws SQLException {
+        public java.sql.PreparedStatement prepareStatement(String s) {
             return new PreparedStatement(this, s);
         }
 
-        public java.sql.CallableStatement prepareCall(String s) throws SQLException {
+        public java.sql.CallableStatement prepareCall(String s) {
             return new CallableStatement(this, s);
         }
 
-        public String nativeSQL(String s) throws SQLException {
+        public String nativeSQL(String s) {
             return s;
         }
 
-        public boolean isReadOnly() throws SQLException {
+        public boolean isReadOnly() {
             return this.b;
         }
 
-        public void setReadOnly(boolean x) throws SQLException {
+        public void setReadOnly(boolean x) {
             this.b = x;
         }
 
@@ -1221,19 +1219,19 @@ public class Driver implements java.sql.Driver {
             q("cat");
         }
 
-        public int getTransactionIsolation() throws SQLException {
+        public int getTransactionIsolation() {
             return this.i;
         }
 
-        public void setTransactionIsolation(int x) throws SQLException {
+        public void setTransactionIsolation(int x) {
             this.i = x;
         }
 
-        public SQLWarning getWarnings() throws SQLException {
+        public SQLWarning getWarnings() {
             return null;
         }
 
-        public void clearWarnings() throws SQLException {
+        public void clearWarnings() {
         }
 
         public void close() throws SQLException {
@@ -1248,30 +1246,30 @@ public class Driver implements java.sql.Driver {
             }
         }
 
-        public java.sql.Statement createStatement(int resultSetType, int resultSetConcurrency) throws SQLException {
+        public java.sql.Statement createStatement(int resultSetType, int resultSetConcurrency) {
             return new Statement(this);
         }
 
-        public java.sql.PreparedStatement prepareStatement(String s, int resultSetType, int resultSetConcurrency) throws SQLException {
+        public java.sql.PreparedStatement prepareStatement(String s, int resultSetType, int resultSetConcurrency) {
             return new PreparedStatement(this, s);
         }
 
-        public java.sql.CallableStatement prepareCall(String s, int resultSetType, int resultSetConcurrency) throws SQLException {
+        public java.sql.CallableStatement prepareCall(String s, int resultSetType, int resultSetConcurrency) {
             return new CallableStatement(this, s);
         }
 
-        public Map getTypeMap() throws SQLException {
+        public Map getTypeMap() {
             return null;
         }
 
-        public void setTypeMap(Map map) throws SQLException {
+        public void setTypeMap(Map map) {
         }
 
-        public int getHoldability() throws SQLException {
+        public int getHoldability() {
             return this.h;
         }
 
-        public void setHoldability(int holdability) throws SQLException {
+        public void setHoldability(int holdability) {
             this.h = holdability;
         }
 
@@ -1285,33 +1283,33 @@ public class Driver implements java.sql.Driver {
             return null;
         }
 
-        public void rollback(Savepoint savepoint) throws SQLException {
+        public void rollback(Savepoint savepoint) {
         }
 
-        public void releaseSavepoint(Savepoint savepoint) throws SQLException {
+        public void releaseSavepoint(Savepoint savepoint) {
         }
 
-        public java.sql.Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        public java.sql.Statement createStatement(int resultSetType, int resultSetConcurrency, int resultSetHoldability) {
             return new Statement(this);
         }
 
-        public java.sql.PreparedStatement prepareStatement(String s, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        public java.sql.PreparedStatement prepareStatement(String s, int resultSetType, int resultSetConcurrency, int resultSetHoldability) {
             return new PreparedStatement(this, s);
         }
 
-        public java.sql.CallableStatement prepareCall(String s, int resultSetType, int resultSetConcurrency, int resultSetHoldability) throws SQLException {
+        public java.sql.CallableStatement prepareCall(String s, int resultSetType, int resultSetConcurrency, int resultSetHoldability) {
             return new CallableStatement(this, s);
         }
 
-        public java.sql.PreparedStatement prepareStatement(String s, int autoGeneratedKeys) throws SQLException {
+        public java.sql.PreparedStatement prepareStatement(String s, int autoGeneratedKeys) {
             return new PreparedStatement(this, s);
         }
 
-        public java.sql.PreparedStatement prepareStatement(String s, int[] columnIndexes) throws SQLException {
+        public java.sql.PreparedStatement prepareStatement(String s, int[] columnIndexes) {
             return new PreparedStatement(this, s);
         }
 
-        public java.sql.PreparedStatement prepareStatement(String s, String[] columnNames) throws SQLException {
+        public java.sql.PreparedStatement prepareStatement(String s, String[] columnNames) {
             return new PreparedStatement(this, s);
         }
 
@@ -1341,19 +1339,19 @@ public class Driver implements java.sql.Driver {
             return (this.c != null);
         }
 
-        public void setClientInfo(String k, String v) throws SQLClientInfoException {
+        public void setClientInfo(String k, String v) {
             this.clientInfo.setProperty(k, v);
         }
 
-        public String getClientInfo(String k) throws SQLException {
+        public String getClientInfo(String k) {
             return (String) this.clientInfo.get(k);
         }
 
-        public Properties getClientInfo() throws SQLException {
+        public Properties getClientInfo() {
             return this.clientInfo;
         }
 
-        public void setClientInfo(Properties p) throws SQLClientInfoException {
+        public void setClientInfo(Properties p) {
             this.clientInfo = p;
         }
 
@@ -1368,27 +1366,27 @@ public class Driver implements java.sql.Driver {
         }
 
         @Override
-        public String getSchema() throws SQLException {
+        public String getSchema() {
             return this.schema;
         }
 
         @Override
-        public void setSchema(String schema) throws SQLException {
+        public void setSchema(String schema) {
             this.schema = schema;
         }
 
         @Override
-        public void abort(Executor executor) throws SQLException {
+        public void abort(Executor executor) {
 
         }
 
         @Override
-        public void setNetworkTimeout(Executor executor, int milliseconds) throws SQLException {
+        public void setNetworkTimeout(Executor executor, int milliseconds) {
 
         }
 
         @Override
-        public int getNetworkTimeout() throws SQLException {
+        public int getNetworkTimeout() {
             return 0;
         }
 
@@ -1437,55 +1435,55 @@ public class Driver implements java.sql.Driver {
             return -1;
         }
 
-        public int getMaxRows() throws SQLException {
+        public int getMaxRows() {
             return this.R;
         }
 
-        public void setMaxRows(int i) throws SQLException {
+        public void setMaxRows(int i) {
             this.R = i;
         }
 
-        public int getQueryTimeout() throws SQLException {
+        public int getQueryTimeout() {
             return this.T;
         }
 
-        public void setQueryTimeout(int i) throws SQLException {
+        public void setQueryTimeout(int i) {
             this.T = i;
         }
 
-        public int getMaxFieldSize() throws SQLException {
+        public int getMaxFieldSize() {
             return 0;
         }
 
-        public void setMaxFieldSize(int i) throws SQLException {
+        public void setMaxFieldSize(int i) {
         }
 
-        public void setEscapeProcessing(boolean b) throws SQLException {
+        public void setEscapeProcessing(boolean b) {
         }
 
-        public void cancel() throws SQLException {
+        public void cancel() {
         }
 
-        public SQLWarning getWarnings() throws SQLException {
+        public SQLWarning getWarnings() {
             return null;
         }
 
-        public void clearWarnings() throws SQLException {
+        public void clearWarnings() {
         }
 
         public void setCursorName(String name) throws SQLException {
             q("cur");
         }
 
-        public boolean getMoreResults() throws SQLException {
+        public boolean getMoreResults() {
             return false;
         }
 
-        public void close() throws SQLException {
+        public void close() {
             this.Connection = null;
         }
 
-        public int getFetchDirection() throws SQLException {
+        public int getFetchDirection() {
             return 0;
         }
 
@@ -1493,41 +1491,41 @@ public class Driver implements java.sql.Driver {
             q("fd");
         }
 
-        public int getFetchSize() throws SQLException {
+        public int getFetchSize() {
             return 0;
         }
 
-        public void setFetchSize(int rows) throws SQLException {
+        public void setFetchSize(int rows) {
         }
 
-        public int getResultSetConcurrency() throws SQLException {
-            return 1007;
+        public int getResultSetConcurrency() {
+            return java.sql.ResultSet.CONCUR_READ_ONLY;
         }
 
-        public int getResultSetType() throws SQLException {
-            return 1004;
+        public int getResultSetType() {
+            return java.sql.ResultSet.TYPE_SCROLL_INSENSITIVE;
         }
 
         public void addBatch(String sql) throws SQLException {
             q("bat");
         }
 
-        public void clearBatch() throws SQLException {
+        public void clearBatch() {
         }
 
-        public int[] executeBatch() throws SQLException {
+        public int[] executeBatch() {
             return new int[0];
         }
 
-        public java.sql.Connection getConnection() throws SQLException {
+        public java.sql.Connection getConnection() {
             return this.Connection;
         }
 
-        public boolean getMoreResults(int current) throws SQLException {
+        public boolean getMoreResults(int current) {
             return false;
         }
 
-        public java.sql.ResultSet getGeneratedKeys() throws SQLException {
+        public java.sql.ResultSet getGeneratedKeys() {
             return null;
         }
 
@@ -1561,11 +1559,11 @@ public class Driver implements java.sql.Driver {
             return false;
         }
 
-        public int getResultSetHoldability() throws SQLException {
+        public int getResultSetHoldability() {
             return 1;
         }
 
-        public boolean isClosed() throws SQLException {
+        public boolean isClosed() {
             return (this.Connection == null || this.Connection.isClosed());
         }
 
@@ -1582,12 +1580,12 @@ public class Driver implements java.sql.Driver {
         }
 
         @Override
-        public void closeOnCompletion() throws SQLException {
+        public void closeOnCompletion() {
 
         }
 
         @Override
-        public boolean isCloseOnCompletion() throws SQLException {
+        public boolean isCloseOnCompletion() {
             return false;
         }
 
@@ -1662,31 +1660,31 @@ public class Driver implements java.sql.Driver {
         }
 
         public void setBoolean(int i, boolean x) throws SQLException {
-            this.setObject(i, Boolean.valueOf(x));
+            this.setObject(i, x);
         }
 
         public void setByte(int i, byte x) throws SQLException {
-            this.setObject(i, Byte.valueOf(x));
+            this.setObject(i, x);
         }
 
         public void setShort(int i, short x) throws SQLException {
-            this.setObject(i, Short.valueOf(x));
+            this.setObject(i, x);
         }
 
         public void setInt(int i, int x) throws SQLException {
-            this.setObject(i, Integer.valueOf(x));
+            this.setObject(i, x);
         }
 
         public void setLong(int i, long x) throws SQLException {
-            this.setObject(i, Long.valueOf(x));
+            this.setObject(i, x);
         }
 
         public void setFloat(int i, float x) throws SQLException {
-            this.setObject(i, new Float(x));
+            this.setObject(i, x);
         }
 
         public void setDouble(int i, double x) throws SQLException {
-            this.setObject(i, new Double(x));
+            this.setObject(i, x);
         }
 
         public void setString(int i, String x) throws SQLException {
@@ -1725,7 +1723,7 @@ public class Driver implements java.sql.Driver {
             q();
         }
 
-        public void addBatch() throws SQLException {
+        public void addBatch() {
         }
 
         public void setCharacterStream(int parameterIndex, Reader reader, int length) throws SQLException {
@@ -1857,69 +1855,69 @@ public class Driver implements java.sql.Driver {
             super(c, s);
         }
 
-        public void registerOutParameter(int i, int sqlType) throws SQLException {
+        public void registerOutParameter(int i, int sqlType) {
         }
 
-        public void registerOutParameter(int i, int sqlType, int scale) throws SQLException {
+        public void registerOutParameter(int i, int sqlType, int scale) {
         }
 
-        public boolean wasNull() throws SQLException {
+        public boolean wasNull() {
             return false;
         }
 
-        public String getString(int i) throws SQLException {
+        public String getString(int i) {
             return null;
         }
 
-        public boolean getBoolean(int i) throws SQLException {
+        public boolean getBoolean(int i) {
             return false;
         }
 
-        public byte getByte(int i) throws SQLException {
+        public byte getByte(int i) {
             return 0;
         }
 
-        public short getShort(int i) throws SQLException {
+        public short getShort(int i) {
             return 0;
         }
 
-        public int getInt(int i) throws SQLException {
+        public int getInt(int i) {
             return 0;
         }
 
-        public long getLong(int i) throws SQLException {
+        public long getLong(int i) {
             return 0L;
         }
 
-        public float getFloat(int i) throws SQLException {
+        public float getFloat(int i) {
             return 0.0F;
         }
 
-        public double getDouble(int i) throws SQLException {
+        public double getDouble(int i) {
             return 0.0D;
         }
 
-        public BigDecimal getBigDecimal(int i, int scale) throws SQLException {
+        public BigDecimal getBigDecimal(int i, int scale) {
             return null;
         }
 
-        public Date getDate(int i) throws SQLException {
+        public Date getDate(int i) {
             return null;
         }
 
-        public Time getTime(int i) throws SQLException {
+        public Time getTime(int i) {
             return null;
         }
 
-        public Timestamp getTimestamp(int i) throws SQLException {
+        public Timestamp getTimestamp(int i) {
             return null;
         }
 
-        public byte[] getBytes(int i) throws SQLException {
+        public byte[] getBytes(int i) {
             return null;
         }
 
-        public Object getObject(int i) throws SQLException {
+        public Object getObject(int i) {
             return null;
         }
 
@@ -2089,95 +2087,95 @@ public class Driver implements java.sql.Driver {
             q();
         }
 
-        public String getString(String parameterName) throws SQLException {
+        public String getString(String parameterName) {
             return null;
         }
 
-        public boolean getBoolean(String parameterName) throws SQLException {
+        public boolean getBoolean(String parameterName) {
             return false;
         }
 
-        public byte getByte(String parameterName) throws SQLException {
+        public byte getByte(String parameterName) {
             return 0;
         }
 
-        public short getShort(String parameterName) throws SQLException {
+        public short getShort(String parameterName) {
             return 0;
         }
 
-        public int getInt(String parameterName) throws SQLException {
+        public int getInt(String parameterName) {
             return 0;
         }
 
-        public long getLong(String parameterName) throws SQLException {
+        public long getLong(String parameterName) {
             return 0L;
         }
 
-        public float getFloat(String parameterName) throws SQLException {
+        public float getFloat(String parameterName) {
             return 0.0F;
         }
 
-        public double getDouble(String parameterName) throws SQLException {
+        public double getDouble(String parameterName) {
             return 0.0D;
         }
 
-        public byte[] getBytes(String parameterName) throws SQLException {
+        public byte[] getBytes(String parameterName) {
             return null;
         }
 
-        public Date getDate(String parameterName) throws SQLException {
+        public Date getDate(String parameterName) {
             return null;
         }
 
-        public Time getTime(String parameterName) throws SQLException {
+        public Time getTime(String parameterName) {
             return null;
         }
 
-        public Timestamp getTimestamp(String parameterName) throws SQLException {
+        public Timestamp getTimestamp(String parameterName) {
             return null;
         }
 
-        public Object getObject(String parameterName) throws SQLException {
+        public Object getObject(String parameterName) {
             return null;
         }
 
-        public BigDecimal getBigDecimal(String parameterName) throws SQLException {
+        public BigDecimal getBigDecimal(String parameterName) {
             return null;
         }
 
-        public Object getObject(String parameterName, Map map) throws SQLException {
+        public Object getObject(String parameterName, Map map) {
             return null;
         }
 
-        public Ref getRef(String parameterName) throws SQLException {
+        public Ref getRef(String parameterName) {
             return null;
         }
 
-        public Blob getBlob(String parameterName) throws SQLException {
+        public Blob getBlob(String parameterName) {
             return null;
         }
 
-        public Clob getClob(String parameterName) throws SQLException {
+        public Clob getClob(String parameterName) {
             return null;
         }
 
-        public Array getArray(String parameterName) throws SQLException {
+        public Array getArray(String parameterName) {
             return null;
         }
 
-        public Date getDate(String parameterName, Calendar cal) throws SQLException {
+        public Date getDate(String parameterName, Calendar cal) {
             return null;
         }
 
-        public Time getTime(String parameterName, Calendar cal) throws SQLException {
+        public Time getTime(String parameterName, Calendar cal) {
             return null;
         }
 
-        public Timestamp getTimestamp(String parameterName, Calendar cal) throws SQLException {
+        public Timestamp getTimestamp(String parameterName, Calendar cal) {
             return null;
         }
 
-        public URL getURL(String parameterName) throws SQLException {
+        public URL getURL(String parameterName) {
             return null;
         }
 
@@ -2427,179 +2425,179 @@ public class Driver implements java.sql.Driver {
             return null;
         }
 
-        public boolean allProceduresAreCallable() throws SQLException {
+        public boolean allProceduresAreCallable() {
             return true;
         }
 
-        public boolean allTablesAreSelectable() throws SQLException {
+        public boolean allTablesAreSelectable() {
             return true;
         }
 
-        public boolean dataDefinitionCausesTransactionCommit() throws SQLException {
+        public boolean dataDefinitionCausesTransactionCommit() {
             return false;
         }
 
-        public boolean dataDefinitionIgnoredInTransactions() throws SQLException {
+        public boolean dataDefinitionIgnoredInTransactions() {
             return false;
         }
 
-        public boolean doesMaxRowSizeIncludeBlobs() throws SQLException {
+        public boolean doesMaxRowSizeIncludeBlobs() {
             return true;
         }
 
-        public String getSchemaTerm() throws SQLException {
+        public String getSchemaTerm() {
             return "schema";
         }
 
-        public String getProcedureTerm() throws SQLException {
+        public String getProcedureTerm() {
             return "procedure";
         }
 
-        public String getCatalogTerm() throws SQLException {
+        public String getCatalogTerm() {
             return "catalog";
         }
 
-        public String getCatalogSeparator() throws SQLException {
+        public String getCatalogSeparator() {
             return ".";
         }
 
-        public int getMaxBinaryLiteralLength() throws SQLException {
+        public int getMaxBinaryLiteralLength() {
             return 0;
         }
 
-        public int getMaxCharLiteralLength() throws SQLException {
+        public int getMaxCharLiteralLength() {
             return 0;
         }
 
-        public int getMaxColumnNameLength() throws SQLException {
+        public int getMaxColumnNameLength() {
             return 0;
         }
 
-        public int getMaxColumnsInGroupBy() throws SQLException {
+        public int getMaxColumnsInGroupBy() {
             return 0;
         }
 
-        public int getMaxColumnsInIndex() throws SQLException {
+        public int getMaxColumnsInIndex() {
             return 0;
         }
 
-        public int getMaxColumnsInOrderBy() throws SQLException {
+        public int getMaxColumnsInOrderBy() {
             return 0;
         }
 
-        public int getMaxColumnsInSelect() throws SQLException {
+        public int getMaxColumnsInSelect() {
             return 0;
         }
 
-        public int getMaxColumnsInTable() throws SQLException {
+        public int getMaxColumnsInTable() {
             return 0;
         }
 
-        public int getMaxConnections() throws SQLException {
+        public int getMaxConnections() {
             return 0;
         }
 
-        public int getMaxCursorNameLength() throws SQLException {
+        public int getMaxCursorNameLength() {
             return 0;
         }
 
-        public int getMaxIndexLength() throws SQLException {
+        public int getMaxIndexLength() {
             return 0;
         }
 
-        public int getMaxSchemaNameLength() throws SQLException {
+        public int getMaxSchemaNameLength() {
             return 0;
         }
 
-        public int getMaxProcedureNameLength() throws SQLException {
+        public int getMaxProcedureNameLength() {
             return 0;
         }
 
-        public int getMaxCatalogNameLength() throws SQLException {
+        public int getMaxCatalogNameLength() {
             return 0;
         }
 
-        public int getMaxRowSize() throws SQLException {
+        public int getMaxRowSize() {
             return 0;
         }
 
-        public int getMaxStatementLength() throws SQLException {
+        public int getMaxStatementLength() {
             return 0;
         }
 
-        public int getMaxStatements() throws SQLException {
+        public int getMaxStatements() {
             return 0;
         }
 
-        public int getMaxTableNameLength() throws SQLException {
+        public int getMaxTableNameLength() {
             return 0;
         }
 
-        public int getMaxTablesInSelect() throws SQLException {
+        public int getMaxTablesInSelect() {
             return 0;
         }
 
-        public int getMaxUserNameLength() throws SQLException {
+        public int getMaxUserNameLength() {
             return 0;
         }
 
-        public int getDefaultTransactionIsolation() throws SQLException {
+        public int getDefaultTransactionIsolation() {
             return 8;
         }
 
-        public String getSQLKeywords() throws SQLException {
+        public String getSQLKeywords() {
             return "show,meta,load,save";
         }
 
-        public String getNumericFunctions() throws SQLException {
+        public String getNumericFunctions() {
             return "";
         }
 
-        public String getStringFunctions() throws SQLException {
+        public String getStringFunctions() {
             return "";
         }
 
-        public String getSystemFunctions() throws SQLException {
+        public String getSystemFunctions() {
             return "";
         }
 
-        public String getTimeDateFunctions() throws SQLException {
+        public String getTimeDateFunctions() {
             return "";
         }
 
-        public String getSearchStringEscape() throws SQLException {
+        public String getSearchStringEscape() {
             return "";
         }
 
-        public String getExtraNameCharacters() throws SQLException {
+        public String getExtraNameCharacters() {
             return "";
         }
 
-        public String getIdentifierQuoteString() throws SQLException {
+        public String getIdentifierQuoteString() {
             return "";
         }
 
-        public String getURL() throws SQLException {
+        public String getURL() {
             return null;
         }
 
-        public String getUserName() throws SQLException {
+        public String getUserName() {
             return "";
         }
 
-        public String getDatabaseProductName() throws SQLException {
+        public String getDatabaseProductName() {
             return "kdb";
         }
 
-        public String getDatabaseProductVersion() throws SQLException {
+        public String getDatabaseProductVersion() {
             return "2.0";
         }
 
-        public String getDriverName() throws SQLException {
+        public String getDriverName() {
             return "jdbc";
         }
 
-        public String getDriverVersion() throws SQLException {
+        public String getDriverVersion() {
             return V + "." + v;
         }
 
@@ -2611,411 +2609,411 @@ public class Driver implements java.sql.Driver {
             return v;
         }
 
-        public boolean isCatalogAtStart() throws SQLException {
+        public boolean isCatalogAtStart() {
             return true;
         }
 
-        public boolean isReadOnly() throws SQLException {
+        public boolean isReadOnly() {
             return false;
         }
 
-        public boolean nullsAreSortedHigh() throws SQLException {
+        public boolean nullsAreSortedHigh() {
             return false;
         }
 
-        public boolean nullsAreSortedLow() throws SQLException {
+        public boolean nullsAreSortedLow() {
             return true;
         }
 
-        public boolean nullsAreSortedAtStart() throws SQLException {
+        public boolean nullsAreSortedAtStart() {
             return false;
         }
 
-        public boolean nullsAreSortedAtEnd() throws SQLException {
+        public boolean nullsAreSortedAtEnd() {
             return false;
         }
 
-        public boolean supportsMixedCaseIdentifiers() throws SQLException {
+        public boolean supportsMixedCaseIdentifiers() {
             return false;
         }
 
-        public boolean storesUpperCaseIdentifiers() throws SQLException {
+        public boolean storesUpperCaseIdentifiers() {
             return false;
         }
 
-        public boolean storesLowerCaseIdentifiers() throws SQLException {
+        public boolean storesLowerCaseIdentifiers() {
             return false;
         }
 
-        public boolean storesMixedCaseIdentifiers() throws SQLException {
+        public boolean storesMixedCaseIdentifiers() {
             return true;
         }
 
-        public boolean supportsMixedCaseQuotedIdentifiers() throws SQLException {
+        public boolean supportsMixedCaseQuotedIdentifiers() {
             return true;
         }
 
-        public boolean storesUpperCaseQuotedIdentifiers() throws SQLException {
+        public boolean storesUpperCaseQuotedIdentifiers() {
             return false;
         }
 
-        public boolean storesLowerCaseQuotedIdentifiers() throws SQLException {
+        public boolean storesLowerCaseQuotedIdentifiers() {
             return false;
         }
 
-        public boolean storesMixedCaseQuotedIdentifiers() throws SQLException {
+        public boolean storesMixedCaseQuotedIdentifiers() {
             return true;
         }
 
-        public boolean supportsAlterTableWithAddColumn() throws SQLException {
+        public boolean supportsAlterTableWithAddColumn() {
             return true;
         }
 
-        public boolean supportsAlterTableWithDropColumn() throws SQLException {
+        public boolean supportsAlterTableWithDropColumn() {
             return true;
         }
 
-        public boolean supportsTableCorrelationNames() throws SQLException {
+        public boolean supportsTableCorrelationNames() {
             return true;
         }
 
-        public boolean supportsDifferentTableCorrelationNames() throws SQLException {
+        public boolean supportsDifferentTableCorrelationNames() {
             return true;
         }
 
-        public boolean supportsColumnAliasing() throws SQLException {
+        public boolean supportsColumnAliasing() {
             return true;
         }
 
-        public boolean nullPlusNonNullIsNull() throws SQLException {
+        public boolean nullPlusNonNullIsNull() {
             return true;
         }
 
-        public boolean supportsExpressionsInOrderBy() throws SQLException {
+        public boolean supportsExpressionsInOrderBy() {
             return true;
         }
 
-        public boolean supportsOrderByUnrelated() throws SQLException {
+        public boolean supportsOrderByUnrelated() {
             return false;
         }
 
-        public boolean supportsGroupBy() throws SQLException {
+        public boolean supportsGroupBy() {
             return true;
         }
 
-        public boolean supportsGroupByUnrelated() throws SQLException {
+        public boolean supportsGroupByUnrelated() {
             return false;
         }
 
-        public boolean supportsGroupByBeyondSelect() throws SQLException {
+        public boolean supportsGroupByBeyondSelect() {
             return false;
         }
 
-        public boolean supportsLikeEscapeClause() throws SQLException {
+        public boolean supportsLikeEscapeClause() {
             return false;
         }
 
-        public boolean supportsMultipleResultSets() throws SQLException {
+        public boolean supportsMultipleResultSets() {
             return false;
         }
 
-        public boolean supportsMultipleTransactions() throws SQLException {
+        public boolean supportsMultipleTransactions() {
             return false;
         }
 
-        public boolean supportsNonNullableColumns() throws SQLException {
+        public boolean supportsNonNullableColumns() {
             return true;
         }
 
-        public boolean supportsMinimumSQLGrammar() throws SQLException {
+        public boolean supportsMinimumSQLGrammar() {
             return true;
         }
 
-        public boolean supportsCoreSQLGrammar() throws SQLException {
+        public boolean supportsCoreSQLGrammar() {
             return true;
         }
 
-        public boolean supportsExtendedSQLGrammar() throws SQLException {
+        public boolean supportsExtendedSQLGrammar() {
             return false;
         }
 
-        public boolean supportsANSI92EntryLevelSQL() throws SQLException {
+        public boolean supportsANSI92EntryLevelSQL() {
             return true;
         }
 
-        public boolean supportsANSI92IntermediateSQL() throws SQLException {
+        public boolean supportsANSI92IntermediateSQL() {
             return false;
         }
 
-        public boolean supportsANSI92FullSQL() throws SQLException {
+        public boolean supportsANSI92FullSQL() {
             return false;
         }
 
-        public boolean supportsIntegrityEnhancementFacility() throws SQLException {
+        public boolean supportsIntegrityEnhancementFacility() {
             return false;
         }
 
-        public boolean supportsOuterJoins() throws SQLException {
+        public boolean supportsOuterJoins() {
             return false;
         }
 
-        public boolean supportsFullOuterJoins() throws SQLException {
+        public boolean supportsFullOuterJoins() {
             return false;
         }
 
-        public boolean supportsLimitedOuterJoins() throws SQLException {
+        public boolean supportsLimitedOuterJoins() {
             return false;
         }
 
-        public boolean supportsConvert() throws SQLException {
+        public boolean supportsConvert() {
             return false;
         }
 
-        public boolean supportsConvert(int fromType, int toType) throws SQLException {
+        public boolean supportsConvert(int fromType, int toType) {
             return false;
         }
 
-        public boolean supportsSchemasInDataManipulation() throws SQLException {
+        public boolean supportsSchemasInDataManipulation() {
             return false;
         }
 
-        public boolean supportsSchemasInProcedureCalls() throws SQLException {
+        public boolean supportsSchemasInProcedureCalls() {
             return false;
         }
 
-        public boolean supportsSchemasInTableDefinitions() throws SQLException {
+        public boolean supportsSchemasInTableDefinitions() {
             return false;
         }
 
-        public boolean supportsSchemasInIndexDefinitions() throws SQLException {
+        public boolean supportsSchemasInIndexDefinitions() {
             return false;
         }
 
-        public boolean supportsSchemasInPrivilegeDefinitions() throws SQLException {
+        public boolean supportsSchemasInPrivilegeDefinitions() {
             return false;
         }
 
-        public boolean supportsCatalogsInDataManipulation() throws SQLException {
+        public boolean supportsCatalogsInDataManipulation() {
             return false;
         }
 
-        public boolean supportsCatalogsInProcedureCalls() throws SQLException {
+        public boolean supportsCatalogsInProcedureCalls() {
             return false;
         }
 
-        public boolean supportsCatalogsInTableDefinitions() throws SQLException {
+        public boolean supportsCatalogsInTableDefinitions() {
             return false;
         }
 
-        public boolean supportsCatalogsInIndexDefinitions() throws SQLException {
+        public boolean supportsCatalogsInIndexDefinitions() {
             return false;
         }
 
-        public boolean supportsCatalogsInPrivilegeDefinitions() throws SQLException {
+        public boolean supportsCatalogsInPrivilegeDefinitions() {
             return false;
         }
 
-        public boolean supportsSelectForUpdate() throws SQLException {
+        public boolean supportsSelectForUpdate() {
             return false;
         }
 
-        public boolean supportsPositionedDelete() throws SQLException {
+        public boolean supportsPositionedDelete() {
             return false;
         }
 
-        public boolean supportsPositionedUpdate() throws SQLException {
+        public boolean supportsPositionedUpdate() {
             return false;
         }
 
-        public boolean supportsOpenCursorsAcrossCommit() throws SQLException {
+        public boolean supportsOpenCursorsAcrossCommit() {
             return true;
         }
 
-        public boolean supportsOpenCursorsAcrossRollback() throws SQLException {
+        public boolean supportsOpenCursorsAcrossRollback() {
             return true;
         }
 
-        public boolean supportsOpenStatementsAcrossCommit() throws SQLException {
+        public boolean supportsOpenStatementsAcrossCommit() {
             return true;
         }
 
-        public boolean supportsOpenStatementsAcrossRollback() throws SQLException {
+        public boolean supportsOpenStatementsAcrossRollback() {
             return true;
         }
 
-        public boolean supportsStoredProcedures() throws SQLException {
+        public boolean supportsStoredProcedures() {
             return false;
         }
 
-        public boolean supportsSubqueriesInComparisons() throws SQLException {
+        public boolean supportsSubqueriesInComparisons() {
             return true;
         }
 
-        public boolean supportsSubqueriesInExists() throws SQLException {
+        public boolean supportsSubqueriesInExists() {
             return true;
         }
 
-        public boolean supportsSubqueriesInIns() throws SQLException {
+        public boolean supportsSubqueriesInIns() {
             return true;
         }
 
-        public boolean supportsSubqueriesInQuantifieds() throws SQLException {
+        public boolean supportsSubqueriesInQuantifieds() {
             return true;
         }
 
-        public boolean supportsCorrelatedSubqueries() throws SQLException {
+        public boolean supportsCorrelatedSubqueries() {
             return true;
         }
 
-        public boolean supportsUnion() throws SQLException {
+        public boolean supportsUnion() {
             return true;
         }
 
-        public boolean supportsUnionAll() throws SQLException {
+        public boolean supportsUnionAll() {
             return true;
         }
 
-        public boolean supportsTransactions() throws SQLException {
+        public boolean supportsTransactions() {
             return true;
         }
 
-        public boolean supportsTransactionIsolationLevel(int level) throws SQLException {
+        public boolean supportsTransactionIsolationLevel(int level) {
             return true;
         }
 
-        public boolean supportsDataDefinitionAndDataManipulationTransactions() throws SQLException {
+        public boolean supportsDataDefinitionAndDataManipulationTransactions() {
             return true;
         }
 
-        public boolean supportsDataManipulationTransactionsOnly() throws SQLException {
+        public boolean supportsDataManipulationTransactionsOnly() {
             return false;
         }
 
-        public boolean usesLocalFiles() throws SQLException {
+        public boolean usesLocalFiles() {
             return false;
         }
 
-        public boolean usesLocalFilePerTable() throws SQLException {
+        public boolean usesLocalFilePerTable() {
             return false;
         }
 
-        public boolean supportsResultSetType(int type) throws SQLException {
+        public boolean supportsResultSetType(int type) {
             return (type != 1005);
         }
 
-        public boolean supportsResultSetConcurrency(int type, int concurrency) throws SQLException {
+        public boolean supportsResultSetConcurrency(int type, int concurrency) {
             return (type == 1007);
         }
 
-        public boolean ownUpdatesAreVisible(int type) throws SQLException {
+        public boolean ownUpdatesAreVisible(int type) {
             return false;
         }
 
-        public boolean ownDeletesAreVisible(int type) throws SQLException {
+        public boolean ownDeletesAreVisible(int type) {
             return false;
         }
 
-        public boolean ownInsertsAreVisible(int type) throws SQLException {
+        public boolean ownInsertsAreVisible(int type) {
             return false;
         }
 
-        public boolean othersUpdatesAreVisible(int type) throws SQLException {
+        public boolean othersUpdatesAreVisible(int type) {
             return false;
         }
 
-        public boolean othersDeletesAreVisible(int type) throws SQLException {
+        public boolean othersDeletesAreVisible(int type) {
             return false;
         }
 
-        public boolean othersInsertsAreVisible(int type) throws SQLException {
+        public boolean othersInsertsAreVisible(int type) {
             return false;
         }
 
-        public boolean updatesAreDetected(int type) throws SQLException {
+        public boolean updatesAreDetected(int type) {
             return false;
         }
 
-        public boolean deletesAreDetected(int type) throws SQLException {
+        public boolean deletesAreDetected(int type) {
             return false;
         }
 
-        public boolean insertsAreDetected(int type) throws SQLException {
+        public boolean insertsAreDetected(int type) {
             return false;
         }
 
-        public boolean supportsBatchUpdates() throws SQLException {
+        public boolean supportsBatchUpdates() {
             return false;
         }
 
-        public java.sql.ResultSet getUDTs(String catalog, String schemaPattern, String typeNamePattern, int[] types) throws SQLException {
+        public java.sql.ResultSet getUDTs(String catalog, String schemaPattern, String typeNamePattern, int[] types) {
             return null;
         }
 
-        public java.sql.Connection getConnection() throws SQLException {
+        public java.sql.Connection getConnection() {
             return this.Connection;
         }
 
-        public boolean supportsSavepoints() throws SQLException {
+        public boolean supportsSavepoints() {
             return false;
         }
 
-        public boolean supportsNamedParameters() throws SQLException {
+        public boolean supportsNamedParameters() {
             return false;
         }
 
-        public boolean supportsMultipleOpenResults() throws SQLException {
+        public boolean supportsMultipleOpenResults() {
             return false;
         }
 
-        public boolean supportsGetGeneratedKeys() throws SQLException {
+        public boolean supportsGetGeneratedKeys() {
             return false;
         }
 
-        public java.sql.ResultSet getSuperTypes(String catalog, String schemaPattern, String typeNamePattern) throws SQLException {
+        public java.sql.ResultSet getSuperTypes(String catalog, String schemaPattern, String typeNamePattern) {
             return null;
         }
 
-        public java.sql.ResultSet getSuperTables(String catalog, String schemaPattern, String tableNamePattern) throws SQLException {
+        public java.sql.ResultSet getSuperTables(String catalog, String schemaPattern, String tableNamePattern) {
             return null;
         }
 
-        public java.sql.ResultSet getAttributes(String catalog, String schemaPattern, String typeNamePattern, String attributeNamePattern) throws SQLException {
+        public java.sql.ResultSet getAttributes(String catalog, String schemaPattern, String typeNamePattern, String attributeNamePattern) {
             return null;
         }
 
-        public boolean supportsResultSetHoldability(int holdability) throws SQLException {
+        public boolean supportsResultSetHoldability(int holdability) {
             return false;
         }
 
-        public int getResultSetHoldability() throws SQLException {
+        public int getResultSetHoldability() {
             return 0;
         }
 
-        public int getDatabaseMajorVersion() throws SQLException {
+        public int getDatabaseMajorVersion() {
             return 0;
         }
 
-        public int getDatabaseMinorVersion() throws SQLException {
+        public int getDatabaseMinorVersion() {
             return 0;
         }
 
-        public int getJDBCMajorVersion() throws SQLException {
+        public int getJDBCMajorVersion() {
             return 0;
         }
 
-        public int getJDBCMinorVersion() throws SQLException {
+        public int getJDBCMinorVersion() {
             return 0;
         }
 
-        public int getSQLStateType() throws SQLException {
+        public int getSQLStateType() {
             return 0;
         }
 
-        public boolean locatorsUpdateCopy() throws SQLException {
+        public boolean locatorsUpdateCopy() {
             return false;
         }
 
-        public boolean supportsStatementPooling() throws SQLException {
+        public boolean supportsStatementPooling() {
             return false;
         }
 

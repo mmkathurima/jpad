@@ -102,19 +102,11 @@ public class JpadHeader {
         if (!(o instanceof JpadHeader)) return false;
         JpadHeader other = (JpadHeader) o;
         if (!other.canEqual(this)) return false;
-        Object this$title = this.title;
-        Object other$title = other.title;
-        if (!Objects.equals(this$title, other$title)) return false;
-        Object this$description = this.description;
-        Object other$description = other.description;
-        if (!Objects.equals(this$description, other$description))
+        if (!Objects.equals(this.title, other.title)) return false;
+        if (!Objects.equals(this.description, other.description))
             return false;
-        Object this$tags = this.tags;
-        Object other$tags = other.tags;
-        if (!Objects.equals(this$tags, other$tags)) return false;
-        Object this$url = this.url;
-        Object other$url = other.url;
-        return Objects.equals(this$url, other$url);
+        if (!Objects.equals(this.tags, other.tags)) return false;
+        return Objects.equals(this.url, other.url);
     }
 
     protected boolean canEqual(Object other) {
@@ -172,30 +164,28 @@ public class JpadHeader {
 
     String getAsComment() {
         final String N = "\n";
-        String sb = "/**" + "\n" +
+        return "/**" + "\n" +
                 getTag("title", this.title) +
                 getTag("description", this.description) +
                 getTag("tags", this.tags) +
                 getTag("url", this.url) +
                 " */";
-        return sb;
     }
 
     public String replaceComment(String jpadCodeWithOptionalHeaderComment) {
-        String s = jpadCodeWithOptionalHeaderComment;
-        if (s.startsWith("/*")) {
-            int end = s.indexOf("*/");
+        if (jpadCodeWithOptionalHeaderComment.startsWith("/*")) {
+            int end = jpadCodeWithOptionalHeaderComment.indexOf("*/");
             if (end > -1) {
-                return this.getAsComment() + s.substring(end + "*/".length());
+                return this.getAsComment() + jpadCodeWithOptionalHeaderComment.substring(end + "*/".length());
             }
         }
 
         String space = "";
-        if (s.charAt(0) != '\n' && s.charAt(1) != '\n') {
+        if (jpadCodeWithOptionalHeaderComment.charAt(0) != '\n' && jpadCodeWithOptionalHeaderComment.charAt(1) != '\n') {
             space = "\n";
         }
 
-        return this.getAsComment() + space + s;
+        return this.getAsComment() + space + jpadCodeWithOptionalHeaderComment;
     }
 }
 

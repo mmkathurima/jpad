@@ -23,7 +23,7 @@ public class DynamicClassLoader {
 
     public static <T> List<T> loadInstances(File dir, Class<T> interfaceWanted, boolean onlyLoadFirstMatch) {
         log.info("Searching for plugins in folder: " + dir.getAbsolutePath());
-        InstanceFinderVisitor<T> v = new InstanceFinderVisitor<T>(interfaceWanted, onlyLoadFirstMatch);
+        InstanceFinderVisitor<T> v = new InstanceFinderVisitor<>(interfaceWanted, onlyLoadFirstMatch);
         try {
             visitJarFileJavaClasses(dir, v);
         } catch (IOException e) {
@@ -44,8 +44,8 @@ public class DynamicClassLoader {
 
         String[] children = dir.list(filter);
         if (children != null)
-            for (int child = 0; child < children.length; child++) {
-                String filename = dir.getAbsolutePath() + "/" + children[child];
+            for (String s : children) {
+                String filename = dir.getAbsolutePath() + "/" + s;
                 log.info("Looking for plugins inside: " + filename);
 
                 URL url = new URL("jar:file:" + filename + "/!/");
@@ -91,8 +91,8 @@ public class DynamicClassLoader {
                 try {
                     Class<?> c = loader.loadClass(classDetails.className);
                     Class[] interfaces = c.getInterfaces();
-                    for (int i = 0; i < interfaces.length; i++) {
-                        if (this.interfaceWanted == interfaces[i]) {
+                    for (Class anInterface : interfaces) {
+                        if (this.interfaceWanted == anInterface) {
                             log.info("Found Plugin with correct interface: " + classDetails.className);
                             Method addURL = URLClassLoader.class.getDeclaredMethod("addURL", URL.class);
                             addURL.setAccessible(true);
@@ -103,17 +103,10 @@ public class DynamicClassLoader {
                             return !this.stopAtFirstMatch;
                         }
                     }
-                } catch (NoClassDefFoundError e) {
-                } catch (IllegalAccessError e) {
-                } catch (VerifyError e) {
+                } catch (NoClassDefFoundError | VerifyError | IllegalAccessError e) {
                 }
-            } catch (IllegalAccessException e) {
-            } catch (NoSuchMethodException e) {
-            } catch (SecurityException e) {
-            } catch (IllegalArgumentException e) {
-            } catch (InvocationTargetException e) {
-            } catch (InstantiationException e) {
-            } catch (ClassNotFoundException e) {
+            } catch (IllegalAccessException | ClassNotFoundException | InstantiationException |
+                     InvocationTargetException | IllegalArgumentException | SecurityException | NoSuchMethodException e) {
             }
 
             return true;
@@ -135,13 +128,9 @@ public class DynamicClassLoader {
             if (!(o instanceof ClassDetails)) return false;
             ClassDetails other = (ClassDetails) o;
             if (!other.canEqual(this)) return false;
-            Object this$className = this.className;
-            Object other$className = other.className;
-            if (!Objects.equals(this$className, other$className))
+            if (!Objects.equals(this.className, other.className))
                 return false;
-            Object this$classUrl = this.classUrl;
-            Object other$classUrl = other.classUrl;
-            return Objects.equals(this$classUrl, other$classUrl);
+            return Objects.equals(this.classUrl, other.classUrl);
         }
 
         protected boolean canEqual(Object other) {

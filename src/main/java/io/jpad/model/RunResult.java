@@ -96,7 +96,7 @@ public class RunResult {
         this.stage = stage;
     }
 
-    RunResult setCompileResult(boolean compileSuccessful, String compileResult, List<Diagnostic<? extends JavaFileObject>> diagnostics, String javapOutput) {
+    void setCompileResult(boolean compileSuccessful, String compileResult, List<Diagnostic<? extends JavaFileObject>> diagnostics, String javapOutput) {
 
         this.compileSuccessful = compileSuccessful;
 
@@ -117,8 +117,6 @@ public class RunResult {
         this.diagnostics = ImmutableList.copyOf(ds);
 
         this.setStage(Stage.COMPILED);
-
-        return this;
     }
 
     public void setRunning() {

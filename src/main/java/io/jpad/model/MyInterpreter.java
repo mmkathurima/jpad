@@ -3,7 +3,6 @@ package io.jpad.model;
 import javax.tools.*;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.lang.reflect.Method;
 import java.net.MalformedURLException;
@@ -71,8 +70,7 @@ class MyInterpreter {
             Method thisMethod = thisClass.getDeclaredMethod(methodName, params);
 
             thisMethod.invoke(instance, paramsObj);
-        } catch (MalformedURLException e) {
-        } catch (ClassNotFoundException e) {
+        } catch (MalformedURLException | ClassNotFoundException e) {
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -133,9 +131,9 @@ class MyInterpreter {
 
             String[] children = dir.list();
 
-            for (int i = 0; i < children.length; i++) {
+            for (String child : children) {
 
-                boolean success = deleteDir(new File(dir, children[i]));
+                boolean success = deleteDir(new File(dir, child));
 
                 if (!success) {
 
@@ -161,14 +159,14 @@ class MyInterpreter {
             extends SimpleJavaFileObject {
         private final String contents;
 
-        public InMemoryJavaFileObject(String className, String contents) throws Exception {
+        public InMemoryJavaFileObject(String className, String contents) {
 
             super(URI.create("string:///" + className.replace('.', '/') + JavaFileObject.Kind.SOURCE.extension), JavaFileObject.Kind.SOURCE);
 
             this.contents = contents;
         }
 
-        public CharSequence getCharContent(boolean ignoreEncodingErrors) throws IOException {
+        public CharSequence getCharContent(boolean ignoreEncodingErrors) {
 
             return this.contents;
         }

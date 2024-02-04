@@ -7,9 +7,9 @@ public class ServerConfigBuilder {
     private String username;
     private String password;
     private String host;
-    private int port = -1;
+    private int port;
     private String database;
-    private JdbcTypes jdbcType = JdbcTypes.KDB;
+    private JdbcTypes jdbcType;
 
     private Color color;
 

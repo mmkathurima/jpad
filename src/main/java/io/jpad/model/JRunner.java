@@ -6,7 +6,7 @@ import java.util.List;
 
 class JRunner {
 
-    public static void main(String query) throws Exception {
+    public static void main(String query) {
 
         File f = new File(QjInterpreter.classOutputFolder);
 

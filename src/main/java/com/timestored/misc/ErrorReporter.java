@@ -79,7 +79,7 @@ public class ErrorReporter {
             b.add(Theme.getTextArea("repError", msg), "North");
 
             JTextArea errTA = Theme.getTextArea("errDetails", errDetails);
-            errTA.setFont(new Font("Verdana", 1, 12));
+            errTA.setFont(new Font("Verdana", Font.BOLD, 12));
             errTA.setForeground(Color.GRAY);
             errTA.setWrapStyleWord(false);
             errTA.setLineWrap(false);
@@ -89,7 +89,7 @@ public class ErrorReporter {
 
             String[] options = {"Report", "Close"};
 
-            int choice = JOptionPane.showOptionDialog(null, b, "Error", 2, 0, Theme.CIcon.ERROR.get(), options, options[0]);
+            int choice = JOptionPane.showOptionDialog(null, b, "Error", JOptionPane.OK_CANCEL_OPTION, JOptionPane.ERROR_MESSAGE, Theme.CIcon.ERROR.get(), options, options[0]);
 
             if (choice == 0) {
                 HtmlUtils.browse(this.websiteUrl + "&details=" + URLEncoder.encode(errDetails, StandardCharsets.UTF_8));

@@ -59,12 +59,12 @@ public class JPadActions
         };
         this.runAction.putValue("ShortDescription", "Run Java Code.");
         this.runAction.putValue("AcceleratorKey", KeyStroke.getKeyStroke(116, 0));
-        this.runAction.putValue("MnemonicKey", Integer.valueOf(82));
+        this.runAction.putValue("MnemonicKey", 82);
 
         final String lTitle = "Configure Upload Login";
         final String lMsg = "Set the username and password used for uploading to jpad.io";
         this
-                .preferencesAction = new ShortcutAction(lTitle, null, lMsg, Integer.valueOf(67), 0) {
+                .preferencesAction = new ShortcutAction(lTitle, null, lMsg, 67, 0) {
             private static final long serialVersionUID = 1L;
 
             public void actionPerformed(ActionEvent e) {

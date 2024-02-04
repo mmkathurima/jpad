@@ -43,7 +43,7 @@ public final class TextWrapper {
         SOFT {
             public String wrap(Iterable<String> words, int width) {
                 StringBuilder sb = new StringBuilder();
-                int lineLength = 0;
+                int lineLength;
                 Iterator<String> iterator = words.iterator();
                 if (iterator.hasNext()) {
                     sb.append(iterator.next());

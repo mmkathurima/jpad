@@ -41,7 +41,7 @@ public enum HeatMapViewStrategy
         if (levels >= 0) {
             List<Map<String, TreeMapNode>> levelMaps = Lists.newArrayListWithCapacity(levels);
             for (int l = 0; l < levels; l++) {
-                levelMaps.add(new HashMap<String, TreeMapNode>());
+                levelMaps.add(new HashMap<>());
             }
 
             for (int row = 0; row < weights.length; row++) {
@@ -53,7 +53,7 @@ public enum HeatMapViewStrategy
                     if (atBranch) {
 
                         String branchName = stringCols.get(col).getVals().get(row).toString();
-                        TreeMapNode branchNode = (TreeMapNode) ((Map) levelMaps.get(col)).get(branchName);
+                        TreeMapNode branchNode = (TreeMapNode) ((Map<?, ?>) levelMaps.get(col)).get(branchName);
                         if (branchNode == null) {
                             branchNode = builder.buildBranch(branchName, parent);
                             levelMaps.get(col).put(branchName, branchNode);

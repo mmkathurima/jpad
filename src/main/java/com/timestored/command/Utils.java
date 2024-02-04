@@ -46,23 +46,19 @@ class Utils {
 
     public static void putEscapeAction(JComponent searchTextField, Action action) {
         ActionMap am = searchTextField.getActionMap();
-        InputMap im = searchTextField.getInputMap(1);
+        InputMap im = searchTextField.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         am.put("escapeAction", action);
         im.put(SwingUtils.ESC_KEYSTROKE, "escapeAction");
     }
 
-    public static boolean browse(String url) {
+    public static void browse(String url) {
         if (browseSupported) {
             try {
                 Desktop.getDesktop().browse(new URI(url));
-                return true;
-            } catch (IOException e) {
-                LOG.log(Level.WARNING, "couldn't open browser", e);
-            } catch (URISyntaxException e) {
+            } catch (IOException | URISyntaxException e) {
                 LOG.log(Level.WARNING, "couldn't open browser", e);
             }
         }
-        return false;
     }
 
     public static JPanel getSubHeader(String title, Color foregroundColor, Color backgroundColor) {
@@ -71,7 +67,7 @@ class Utils {
         JPanel headerPanel = new JPanel(new BorderLayout());
         JLabel titleLabel = new JLabel(title);
         Font cf = titleLabel.getFont();
-        titleLabel.setFont(new Font(cf.getName(), 1, cf.getSize() + 3));
+        titleLabel.setFont(new Font(cf.getName(), Font.BOLD, cf.getSize() + 3));
         if (foregroundColor != null) {
             titleLabel.setForeground(foregroundColor);
         }

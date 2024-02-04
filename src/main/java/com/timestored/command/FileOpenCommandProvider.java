@@ -27,7 +27,7 @@ public class FileOpenCommandProvider
     public Collection<Command> getCommands() {
         Collection<File> fcache = this.fileTreePanel.getFileCache();
         if (fcache.size() > 0) {
-            List<Command> cmds = new ArrayList<Command>(fcache.size());
+            List<Command> cmds = new ArrayList<>(fcache.size());
             for (File f : fcache) {
                 cmds.add(new FileOpenCommand(f));
             }

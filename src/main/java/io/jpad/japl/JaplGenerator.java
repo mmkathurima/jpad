@@ -150,13 +150,11 @@ public class JaplGenerator {
             }
         }
 
-        SpacingStringBuilder append(Object o) {
+        void append(Object o) {
 
             String s = o.toString().replace("\n", "\n" + this.indent);
 
             this.sb.append(this.indent).append(s).append("\r\n\r\n");
-
-            return this;
         }
 
         public String toString() {

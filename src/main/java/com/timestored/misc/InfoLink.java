@@ -25,8 +25,7 @@ public class InfoLink
 
     private static String addHttp(String webUrl) {
         boolean hasHttp = webUrl.toLowerCase().startsWith("http://");
-        String actualUrl = hasHttp ? webUrl : ("http://" + webUrl);
-        return actualUrl;
+        return hasHttp ? webUrl : ("http://" + webUrl);
     }
 
     public static JLabel getLabel(String title, String text, TimeStored.Page webPage, boolean showTitleText) {
@@ -44,7 +43,7 @@ public class InfoLink
         }
 
         if (HtmlUtils.isBrowseSupported()) {
-            l.setCursor(Cursor.getPredefinedCursor(12));
+            l.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             l.addMouseListener(new MouseAdapter() {
                 public void mouseClicked(MouseEvent e) {
                     HtmlUtils.browse(actualWebUrl);
@@ -67,7 +66,7 @@ public class InfoLink
         b.setText(title);
 
         if (HtmlUtils.isBrowseSupported()) {
-            b.setCursor(Cursor.getPredefinedCursor(12));
+            b.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
             b.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     HtmlUtils.browse(actualWebUrl);
@@ -88,7 +87,7 @@ public class InfoLink
 
         JEditorPane ep = Theme.getHtmlText(html);
 
-        JOptionPane.showMessageDialog(parent, ep, title, 1);
+        JOptionPane.showMessageDialog(parent, ep, title, JOptionPane.INFORMATION_MESSAGE);
     }
 }
 

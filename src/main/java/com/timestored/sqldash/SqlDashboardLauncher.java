@@ -19,7 +19,7 @@ public class SqlDashboardLauncher {
     private static SqlDashFrame appFrame;
 
     public static KeyedPrefs<SqldKey> getStoredPrefs() {
-        return new KeyedPrefs("com.timestored.sqldashboard");
+        return new KeyedPrefs<>("com.timestored.sqldashboard");
     }
 
     public static void main(String[] args) {
@@ -51,7 +51,7 @@ public class SqlDashboardLauncher {
                     if (f.isFile() && f.exists()) {
                         appFrame.openFile(f);
                     } else {
-                        JOptionPane.showMessageDialog(null, "No valid file was selected", "Error Opening File", 0);
+                        JOptionPane.showMessageDialog(null, "No valid file was selected", "Error Opening File", JOptionPane.ERROR_MESSAGE);
                     }
                 }
             }

@@ -29,35 +29,42 @@ class REPL {
 
                 if (s.startsWith("\\")) {
                     String slashCmd = s;
-                    if (s.indexOf(" ") != -1) {
+                    if (s.contains(" ")) {
                         slashCmd = s.substring(0, s.indexOf(" "));
                     }
 
-                    if (slashCmd.equals("\\")) {
-                        this.debugMode = !this.debugMode;
-                    } else if (slashCmd.equals("\\exit") || slashCmd.equals("\\\\")) {
-                        System.exit(0);
-                    } else if (slashCmd.equals("\\help") || slashCmd.equals("\\?")) {
-                        this.displayHelp();
-                    } else if (slashCmd.equals("\\clear")) {
-                        String[] st = s.split(" ");
-                        if (st.length < 2) {
-                            this.history.clear();
-                        } else {
-                            try {
-                                int rowsToRemove = Integer.parseInt(st[1]);
-                                for (int i = this.history.size() - 1; i >= 0 && rowsToRemove > 0; i--, rowsToRemove--) {
-                                    this.history.remove(i - 1);
+                    switch (slashCmd) {
+                        case "\\":
+                            this.debugMode = !this.debugMode;
+                            break;
+                        case "\\exit":
+                        case "\\\\":
+                            System.exit(0);
+                        case "\\help":
+                        case "\\?":
+                            this.displayHelp();
+                            break;
+                        case "\\clear":
+                            String[] st = s.split(" ");
+                            if (st.length < 2) {
+                                this.history.clear();
+                            } else {
+                                try {
+                                    int rowsToRemove = Integer.parseInt(st[1]);
+                                    for (int i = this.history.size() - 1; i >= 0 && rowsToRemove > 0; i--, rowsToRemove--) {
+                                        this.history.remove(i - 1);
+                                    }
+                                } catch (NumberFormatException nfe) {
+                                    System.err.println("Could not understand clear number");
                                 }
-                            } catch (NumberFormatException nfe) {
-                                System.err.println("Could not understand clear number");
                             }
-                        }
-                        System.out.println("history cleared");
-                    } else if (slashCmd.equals("\\history")) {
-                        for (String h : this.history) {
-                            System.out.println(h);
-                        }
+                            System.out.println("history cleared");
+                            break;
+                        case "\\history":
+                            for (String h : this.history) {
+                                System.out.println(h);
+                            }
+                            break;
                     }
                 } else {
 

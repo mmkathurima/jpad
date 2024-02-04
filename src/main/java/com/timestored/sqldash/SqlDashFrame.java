@@ -75,7 +75,7 @@ public class SqlDashFrame
 
         this.setLayout(new BorderLayout());
         this.setIconImage(Theme.CIcon.SQLDASH_LOGO.get().getImage());
-        this.setDefaultCloseOperation(3);
+        this.setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.toolbar = getToolbar(this.appActions, appModel);
         this.add(this.toolbar, "North");
@@ -232,7 +232,7 @@ public class SqlDashFrame
         });
         JMenu helpMenu = getJMenu("Help", 72);
         Action a = HtmlUtils.getWWWaction("Welcome", "http://www.timestored.com/sqlDashboards/help/");
-        a.putValue("MnemonicKey", Integer.valueOf(72));
+        a.putValue("MnemonicKey", 72);
         a.putValue("AcceleratorKey", KeyStroke.getKeyStroke("F1"));
         helpMenu.add(a);
 
@@ -283,7 +283,7 @@ public class SqlDashFrame
 
     public JMenu getViewMenu() {
         JMenu viewMenu = getJMenu("View", 86);
-        ShortcutAction shortcutAction = new ShortcutAction("Full Screen", null, "Hide all toolbars and maximize the chart viewing area.", Integer.valueOf(122), 65535) {
+        ShortcutAction shortcutAction = new ShortcutAction("Full Screen", null, "Hide all toolbars and maximize the chart viewing area.", 122, 65535) {
             public void actionPerformed(ActionEvent e) {
                 boolean showing = (SqlDashFrame.this.toolbar.isVisible() || SqlDashFrame.this.dockingAppPanel.isEditorVisible());
                 SqlDashFrame.this.toolbar.setVisible(!showing);
@@ -380,7 +380,7 @@ public class SqlDashFrame
             super("Add Server...", Theme.CIcon.SERVER_ADD.get());
             this.putValue("ShortDescription", "Add a server to the list of possible connections");
 
-            this.putValue("MnemonicKey", Integer.valueOf(65));
+            this.putValue("MnemonicKey", 65);
         }
 
         public void actionPerformed(ActionEvent arg0) {

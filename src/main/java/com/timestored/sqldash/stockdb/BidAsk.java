@@ -21,12 +21,8 @@ public class BidAsk {
         if (!(o instanceof BidAsk)) return false;
         BidAsk other = (BidAsk) o;
         if (!other.canEqual(this)) return false;
-        Object this$sym = this.sym;
-        Object other$sym = other.sym;
-        if (!Objects.equals(this$sym, other$sym)) return false;
-        Object this$time = this.time;
-        Object other$time = other.time;
-        return Objects.equals(this$time, other$time) && (Double.compare(this.bid, other.bid) == 0 && (Double.compare(this.ask, other.ask) == 0));
+        if (!Objects.equals(this.sym, other.sym)) return false;
+        return Objects.equals(this.time, other.time) && (Double.compare(this.bid, other.bid) == 0 && (Double.compare(this.ask, other.ask) == 0));
     }
 
     protected boolean canEqual(Object other) {

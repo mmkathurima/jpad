@@ -16,7 +16,7 @@ public class FileDropDocumentHandler
     private static final long serialVersionUID = 1L;
     private static final DataFlavor MY_DATA_FLAVOR = DataFlavor.javaFileListFlavor;
     private final TransferHandler fallbackHandler;
-    private final List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
+    private final List<Listener> listeners = new CopyOnWriteArrayList<>();
 
     public FileDropDocumentHandler() {
         this(null);
@@ -53,9 +53,7 @@ public class FileDropDocumentHandler
                 for (Listener l : this.listeners) {
                     l.filesDropped(files);
                 }
-            } catch (IOException e1) {
-                return false;
-            } catch (UnsupportedFlavorException e) {
+            } catch (IOException | UnsupportedFlavorException e1) {
                 return false;
             }
         }

@@ -56,15 +56,13 @@ public enum PieChartViewStrategy
                     p.setLabelGenerator(null);
                 }
 
-                ChartPanel cp = new ChartPanel(theme.apply(chart), false, true, true, false, true);
-
-                return cp;
+                return new ChartPanel(theme.apply(chart), false, true, true, false, true);
             }
         });
     }
 
     private List<PieGroup> createPies(ChartResultSet chartResultSet) {
-        List<PieGroup> res = new ArrayList<PieGroup>();
+        List<PieGroup> res = new ArrayList<>();
         for (ChartResultSet.NumericCol numCol : chartResultSet.getNumericColumns()) {
             DefaultPieDataset dataset = new DefaultPieDataset();
             double[] pieVals = numCol.getDoubles();

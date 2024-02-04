@@ -123,7 +123,7 @@ public class JPad {
 
     public static String getArg(String[] args, int idx, String title, String defaultValue) {
 
-        String r = null;
+        String r;
 
         if (idx < 0) {
 

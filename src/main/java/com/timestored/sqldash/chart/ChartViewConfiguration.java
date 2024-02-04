@@ -5,11 +5,11 @@ import java.util.*;
 
 public class ChartViewConfiguration {
     private static final ColumnConfiguration DEFAULT_COLUMN_CONFIG = new ColumnConfiguration(Shape.LINE, Axis.LEFT);
-    private final Set<String> domainColumnNames = new HashSet<String>();
+    private final Set<String> domainColumnNames = new HashSet<>();
     private final Map<String, ColumnConfiguration> colConfigs;
 
     public ChartViewConfiguration() {
-        this.colConfigs = new HashMap<String, ColumnConfiguration>();
+        this.colConfigs = new HashMap<>();
     }
 
     private boolean refresh(ResultSet tab) {
@@ -19,9 +19,9 @@ public class ChartViewConfiguration {
     }
 
     public List<String> getAllColumnNames() {
-        Set<String> cols = new HashSet<String>(this.colConfigs.keySet());
+        Set<String> cols = new HashSet<>(this.colConfigs.keySet());
         cols.addAll(this.domainColumnNames);
-        return new ArrayList<String>(cols);
+        return new ArrayList<>(cols);
     }
 
     public boolean isDomainColumn(String colName) {

@@ -79,12 +79,12 @@ public class ConnectionManagerDialog
         this.setLayout(new BorderLayout());
         this.setModalityType(Dialog.ModalityType.APPLICATION_MODAL);
         JPanel cp = new JPanel();
-        cp.setLayout(new BoxLayout(cp, 3));
+        cp.setLayout(new BoxLayout(cp, BoxLayout.PAGE_AXIS));
         SwingUtils.addEscapeCloseListener(this);
 
         JPanel connPanel = new JPanel();
-        connPanel.setBorder(new TitledBorder(null, "Connection", 4, 2, null, null));
-        connPanel.setLayout(new BoxLayout(connPanel, 3));
+        connPanel.setBorder(new TitledBorder(null, "Connection", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        connPanel.setLayout(new BoxLayout(connPanel, BoxLayout.PAGE_AXIS));
 
         Component verticalBox = Box.createVerticalStrut(10);
         connPanel.add(verticalBox);
@@ -104,12 +104,12 @@ public class ConnectionManagerDialog
         for (int i = 0; i < names.length; i++) {
             names[i] = jdbcTypesShown.get(i).getNiceName();
         }
-        this.serverTypeComboBox = new JComboBox<String>(names);
+        this.serverTypeComboBox = new JComboBox<>(names);
 
         final String stLbl = "Server Type:";
         connPanel.add(INPUT_LABELLER.get(stLbl, this.serverTypeComboBox, "serverTypeDropdown"));
 
-        this.databasePanel = new JPanel(new FlowLayout(0));
+        this.databasePanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         this.serverTypeComboBox.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent arg0) {
                 JdbcTypes t = jdbcTypesShown.get(ConnectionManagerDialog.this.serverTypeComboBox.getSelectedIndex());
@@ -126,8 +126,8 @@ public class ConnectionManagerDialog
         this.databasePanel.add(INPUT_LABELLER.get(Msg.get(Msg.Key.DATABASE) + ":", this.databaseTextField, "dbField"));
 
         JPanel loginPanel = new JPanel();
-        loginPanel.setBorder(new TitledBorder(null, "Login", 4, 2, null, null));
-        loginPanel.setLayout(new BoxLayout(loginPanel, 3));
+        loginPanel.setBorder(new TitledBorder(null, "Login", TitledBorder.LEADING, TitledBorder.TOP, null, null));
+        loginPanel.setLayout(new BoxLayout(loginPanel, BoxLayout.PAGE_AXIS));
 
         this.usernameTextField = new HighlightTextField("");
         loginPanel.add(INPUT_LABELLER.get(Msg.get(Msg.Key.USERNAME) + ":", this.usernameTextField, "usernameField"));
@@ -138,7 +138,7 @@ public class ConnectionManagerDialog
 
         JPanel nameColorPanel = new JPanel();
         nameColorPanel.setBorder(new EtchedBorder(1, null, null));
-        nameColorPanel.setLayout(new BoxLayout(nameColorPanel, 3));
+        nameColorPanel.setLayout(new BoxLayout(nameColorPanel, BoxLayout.PAGE_AXIS));
 
         this.nameTextField = new HighlightTextField("");
         final String nameLbl = "<html><b>Name:</b></html>";
@@ -167,7 +167,7 @@ public class ConnectionManagerDialog
                         }
                     } catch (Exception e) {
                         final String msg = "Possible problem deleting server.";
-                        JOptionPane.showMessageDialog(parent, msg, "Delete error", 0);
+                        JOptionPane.showMessageDialog(parent, msg, "Delete error", JOptionPane.ERROR_MESSAGE);
 
                         LOG.log(Level.SEVERE, msg, e);
                     }
@@ -188,7 +188,7 @@ public class ConnectionManagerDialog
                     final String message = "Connection does not work.";
                     String fullMsg = TextWrapper.forWidth(80).hard().wrap(message + " " + ioe);
 
-                    JOptionPane.showMessageDialog(parent, fullMsg, message, 2);
+                    JOptionPane.showMessageDialog(parent, fullMsg, message, JOptionPane.WARNING_MESSAGE);
 
                     LOG.log(Level.INFO, message);
                 }
@@ -272,19 +272,19 @@ public class ConnectionManagerDialog
             this.closeDialog();
         } catch (IllegalArgumentException ex) {
             String msg = "Error saving server changes. \r\n" + ex.getMessage();
-            JOptionPane.showMessageDialog(this, msg, "Save error", 0);
+            JOptionPane.showMessageDialog(this, msg, "Save error", JOptionPane.ERROR_MESSAGE);
 
             LOG.info(msg);
         }
     }
 
     public void setFolder(String selectedFolder) {
-        Set<String> foldSet = new HashSet<String>(this.conMan.getFolders());
+        Set<String> foldSet = new HashSet<>(this.conMan.getFolders());
         foldSet.add("");
         foldSet.add(selectedFolder);
         String[] folders = foldSet.toArray(new String[0]);
 
-        this.folderComboBox.setModel(new DefaultComboBoxModel<String>(folders));
+        this.folderComboBox.setModel(new DefaultComboBoxModel<>(folders));
         this.folderComboBox.setSelectedItem(selectedFolder);
     }
 

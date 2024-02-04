@@ -12,23 +12,23 @@ class ChartResultSetBuilder {
         ResultSetMetaData md = rs.getMetaData();
         int colCount = md.getColumnCount();
 
-        List<ChartResultSet.NumericCol> numericColumns = new ArrayList<ChartResultSet.NumericCol>();
-        List<ChartResultSet.StringyCol> stringyColumns = new ArrayList<ChartResultSet.StringyCol>();
+        List<ChartResultSet.NumericCol> numericColumns = new ArrayList<>();
+        List<ChartResultSet.StringyCol> stringyColumns = new ArrayList<>();
         ChartResultSet.TimeCol timeColumn = null;
 
-        String rowTitle = "";
-        List<Integer> stringIdxs = new ArrayList<Integer>();
+        StringBuilder rowTitle = new StringBuilder();
+        List<Integer> stringIdxs = new ArrayList<>();
         for (int c = 1; c <= colCount; ) {
             int ctype = md.getColumnType(c);
             if (!SqlHelper.isNumeric(ctype)) {
-                rowTitle = rowTitle + ((c == 1) ? "" : " - ") + md.getColumnName(c);
-                stringIdxs.add(Integer.valueOf(c));
+                rowTitle.append((c == 1) ? "" : " - ").append(md.getColumnName(c));
+                stringIdxs.add(c);
 
                 c++;
             } else if (c == colCount) break;
         }
         if (rowTitle.length() == 0) {
-            rowTitle = "Row";
+            rowTitle = new StringBuilder("Row");
         }
         List<String> rowLabels = getRowLabels(rs, stringIdxs);
         int rowCount = rowLabels.size();
@@ -45,20 +45,20 @@ class ChartResultSetBuilder {
             }
         }
 
-        return new ChartResultSet(numericColumns, stringyColumns, rowLabels, timeColumn, rowTitle, "");
+        return new ChartResultSet(numericColumns, stringyColumns, rowLabels, timeColumn, rowTitle.toString(), "");
     }
 
     private static List<String> getRowLabels(ResultSet rs, List<Integer> stringIdxs) throws SQLException {
-        List<String> rowNames = new ArrayList<String>();
+        List<String> rowNames = new ArrayList<>();
 
         rs.beforeFirst();
         if (stringIdxs.size() > 0) {
             while (rs.next()) {
-                String s = "" + rs.getObject(stringIdxs.get(0).intValue());
+                StringBuilder s = new StringBuilder("" + rs.getObject(stringIdxs.get(0)));
                 for (int idx = 1; idx < stringIdxs.size(); idx++) {
-                    s = s + " - " + rs.getObject(stringIdxs.get(idx).intValue());
+                    s.append(" - ").append(rs.getObject(stringIdxs.get(idx)));
                 }
-                rowNames.add(s);
+                rowNames.add(s.toString());
             }
         } else {
             int row = 1;
@@ -88,7 +88,7 @@ class ChartResultSetBuilder {
     }
 
     private static List<Object> getObjects(int column, ResultSet rs) throws SQLException {
-        ArrayList<Object> vals = new ArrayList();
+        ArrayList<Object> vals = new ArrayList<>();
         rs.beforeFirst();
         while (rs.next()) {
             vals.add(rs.getObject(column));

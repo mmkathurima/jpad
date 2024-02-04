@@ -1,5 +1,6 @@
 package io.jpad;
 
+import com.google.common.io.Resources;
 import com.timestored.swingxx.SwingUtils;
 import com.timestored.theme.Theme;
 import io.jpad.model.JPadCode;
@@ -19,7 +20,7 @@ import javax.swing.JToolBar;
 import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
-import java.nio.file.Path;
+import java.nio.charset.StandardCharsets;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -44,7 +45,7 @@ public class HtmlResultPanel extends PanelResultRenderer {
         JToolBar toolBar = new JToolBar("htmlResultBar");
 
         try {
-            c = java.nio.file.Files.readString(Path.of(this.getClass().getClassLoader().getResource("s.css").toURI()));
+            c = Resources.toString(Resources.getResource("s.css"), StandardCharsets.UTF_8);
         } catch (Exception e) {
             c = "";
         }

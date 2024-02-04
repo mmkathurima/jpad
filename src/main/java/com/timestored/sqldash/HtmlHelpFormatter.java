@@ -14,12 +14,12 @@ class HtmlHelpFormatter
 
         if (!options.isEmpty()) {
 
-            Comparator<OptionDescriptor> comparator = new Comparator<OptionDescriptor>() {
+            Comparator<OptionDescriptor> comparator = new Comparator<>() {
                 public int compare(OptionDescriptor first, OptionDescriptor second) {
                     return first.options().iterator().next().compareTo(second.options().iterator().next());
                 }
             };
-            TreeSet<OptionDescriptor> sorted = new TreeSet<OptionDescriptor>(comparator);
+            TreeSet<OptionDescriptor> sorted = new TreeSet<>(comparator);
 
             Set<String> seenCommands = Sets.newHashSet();
 

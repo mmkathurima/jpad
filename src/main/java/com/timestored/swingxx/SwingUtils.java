@@ -120,7 +120,7 @@ public class SwingUtils {
 
     private static void putEscapeAction(JComponent com, Action action) {
         ActionMap am = com.getActionMap();
-        InputMap im = com.getInputMap(1);
+        InputMap im = com.getInputMap(JComponent.WHEN_ANCESTOR_OF_FOCUSED_COMPONENT);
         am.put("escapeAction", action);
         im.put(ESC_KEYSTROKE, "escapeAction");
     }
@@ -152,7 +152,7 @@ public class SwingUtils {
 
     public static void offerToOpenFile(String message, File file, String optionOpen, String optionClose) {
         String[] options = {optionOpen, optionClose};
-        int option = JOptionPane.showOptionDialog(null, message, "Open File?", 2, 1, Theme.CIcon.TEXT_HTML.get32(), options, options[0]);
+        int option = JOptionPane.showOptionDialog(null, message, "Open File?", JOptionPane.OK_CANCEL_OPTION, JOptionPane.INFORMATION_MESSAGE, Theme.CIcon.TEXT_HTML.get32(), options, options[0]);
 
         if (option == 0) {
             try {
@@ -164,7 +164,7 @@ public class SwingUtils {
     }
 
     public static File askUserSaveLocation(String filetypeExtension, File fileOrFolder) {
-        JFileChooser fc = null;
+        JFileChooser fc;
         if (fileOrFolder != null && fileOrFolder.isDirectory()) {
             fc = new JFileChooser(fileOrFolder);
         } else {
@@ -201,7 +201,7 @@ public class SwingUtils {
             } catch (IOException e) {
                 String msg = Msg.get(Msg.Key.ERROR_SAVING) + ": " + f;
                 LOG.info(msg);
-                JOptionPane.showMessageDialog(null, msg, Msg.get(Msg.Key.ERROR_SAVING), 0);
+                JOptionPane.showMessageDialog(null, msg, Msg.get(Msg.Key.ERROR_SAVING), JOptionPane.ERROR_MESSAGE);
             }
         }
         return f;

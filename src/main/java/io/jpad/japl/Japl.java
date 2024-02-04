@@ -20,13 +20,13 @@ public class Japl {
     }
 
     public static int set(String key, int value) {
-        data.put(key, Integer.valueOf(value));
+        data.put(key, value);
         return value;
     }
 
     public static double set(String key, double value) {
 
-        data.put(key, Double.valueOf(value));
+        data.put(key, value);
         return value;
     }
 
@@ -35,11 +35,11 @@ public class Japl {
     }
 
     public static int geti(String key) {
-        return ((Integer) data.get(key)).intValue();
+        return (Integer) data.get(key);
     }
 
     public static double getd(String key) {
-        return ((Double) data.get(key)).doubleValue();
+        return (Double) data.get(key);
     }
 
     public static int[] getia(String key) {
@@ -135,7 +135,7 @@ public class Japl {
         int[] r = new int[l.size()];
 
         for (int i = 0; i < r.length; ) {
-            r[i] = l.get(i).intValue();
+            r[i] = l.get(i);
             i++;
         }
 
@@ -433,7 +433,7 @@ public class Japl {
         List<Integer> r = new ArrayList<>(x.length);
 
         for (int i = 0; i < x.length; ) {
-            if (x[i]) r.add(Integer.valueOf(i));
+            if (x[i]) r.add(i);
             i++;
         }
 

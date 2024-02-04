@@ -306,7 +306,7 @@ abstract class AbstractResultSet
         this.updateTimestamp(this.findColumn(columnLabel), x);
     }
 
-    public Array getArray(int columnIndex) throws SQLException {
+    public Array getArray(int columnIndex) {
         throw new UnsupportedOperationException();
     }
 
@@ -331,11 +331,11 @@ abstract class AbstractResultSet
     }
 
     public boolean getBoolean(int columnIndex) throws SQLException {
-        return ((Boolean) this.getObject(columnIndex)).booleanValue();
+        return (Boolean) this.getObject(columnIndex);
     }
 
     public byte getByte(int columnIndex) throws SQLException {
-        return ((Byte) this.getObject(columnIndex)).byteValue();
+        return (Byte) this.getObject(columnIndex);
     }
 
     public byte[] getBytes(int columnIndex) throws SQLException {
@@ -371,7 +371,7 @@ abstract class AbstractResultSet
     }
 
     public short getShort(int columnIndex) throws SQLException {
-        return ((Short) this.getObject(columnIndex)).shortValue();
+        return (Short) this.getObject(columnIndex);
     }
 
     public String getString(int columnIndex) throws SQLException {
@@ -395,7 +395,7 @@ abstract class AbstractResultSet
     }
 
     public float getFloat(int columnIndex) throws SQLException {
-        return ((Float) this.getObject(columnIndex)).floatValue();
+        return (Float) this.getObject(columnIndex);
     }
 
     public Date getDate(int columnIndex) throws SQLException {
@@ -407,15 +407,15 @@ abstract class AbstractResultSet
     }
 
     public double getDouble(int columnIndex) throws SQLException {
-        return ((Double) this.getObject(columnIndex)).doubleValue();
+        return (Double) this.getObject(columnIndex);
     }
 
     public int getInt(int columnIndex) throws SQLException {
-        return ((Integer) this.getObject(columnIndex)).intValue();
+        return (Integer) this.getObject(columnIndex);
     }
 
     public long getLong(int columnIndex) throws SQLException {
-        return ((Long) this.getObject(columnIndex)).longValue();
+        return (Long) this.getObject(columnIndex);
     }
 
     public <T> T getObject(int columnIndex, Class<T> arg1) throws SQLException {

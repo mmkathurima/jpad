@@ -110,7 +110,7 @@ public class JPadParams {
 
         cmd = cmd.trim();
         final String regExp = "\"(\\\"|[^\"])*?\"|[^ ]+";
-        Pattern pattern = Pattern.compile(regExp, 10);
+        Pattern pattern = Pattern.compile(regExp, Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
         Matcher matcher = pattern.matcher(cmd);
         List<String> matches = new ArrayList<>();
@@ -125,8 +125,7 @@ public class JPadParams {
             }
             matches.add(s);
         }
-        String[] parsedCommand = matches.toArray(new String[0]);
-        return parsedCommand;
+        return matches.toArray(new String[0]);
     }
 
     public static JPadParamsBuilder builder() {
@@ -170,9 +169,8 @@ public class JPadParams {
             return this;
         }
 
-        public JPadParamsBuilder programArgs(String[] programArgs) {
+        public void programArgs(String[] programArgs) {
             this.programArgs = programArgs;
-            return this;
         }
 
         public JPadParams build() {

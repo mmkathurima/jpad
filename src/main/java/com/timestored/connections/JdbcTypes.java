@@ -48,13 +48,9 @@ public enum JdbcTypes {
                         if (object instanceof DatabaseAuthenticationService) {
                             this.dbAuthenticatorService = (DatabaseAuthenticationService) object;
                         }
-                    } catch (ClassNotFoundException e) {
-                    } catch (NoSuchMethodException e) {
-                    } catch (SecurityException e) {
-                    } catch (InstantiationException e) {
-                    } catch (IllegalAccessException e) {
-                    } catch (IllegalArgumentException e) {
-                    } catch (InvocationTargetException e) {
+                    } catch (ClassNotFoundException | InvocationTargetException | IllegalArgumentException |
+                             IllegalAccessException | InstantiationException | SecurityException |
+                             NoSuchMethodException e) {
                     }
 
                     this.init = true;

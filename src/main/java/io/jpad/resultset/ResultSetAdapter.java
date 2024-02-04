@@ -134,8 +134,7 @@ public enum ResultSetAdapter
         List<Integer> l = new ArrayList<>(v.length);
 
         for (int a : v)
-
-            l.add(Integer.valueOf(a));
+            l.add(a);
 
         return l;
     }
@@ -188,7 +187,7 @@ public enum ResultSetAdapter
 
         KeyedResultSet rs = null;
 
-        Class<? extends Object> cls = o.getClass();
+        Class<?> cls = o.getClass();
 
         String oClassName = cls.getSimpleName();
 
@@ -226,7 +225,7 @@ public enum ResultSetAdapter
 
                     String colName = oClassName + "<" + ctype.getSimpleName() + ">";
 
-                    rs = new SimpleCollectionResultSet(colName, c);
+                    rs = new SimpleCollectionResultSet<>(colName, c);
                 } else {
 
                     rs = this.getRS(Lists.newArrayList(c), oClassName, INSTANCE, depth);
@@ -296,9 +295,9 @@ public enum ResultSetAdapter
         }
 
         if (showAsColumnPerGetter)
-            return new SameObjectCollectionResultSet(c, caption, processor, depth);
+            return new SameObjectCollectionResultSet<>(c, caption, processor, depth);
 
-        return new DiffObjectCollectionResultSet(c, caption, processor, depth);
+        return new DiffObjectCollectionResultSet<>(c, caption, processor, depth);
     }
 
     private KeyedResultSet mapEveryObjectPropertyToColumn(Iterable c, int depth) {

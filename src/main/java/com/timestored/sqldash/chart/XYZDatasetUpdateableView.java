@@ -19,7 +19,7 @@ class XYZDatasetUpdateableView
         this.chartPanel = chartPanel;
     }
 
-    private static DefaultXYZDataset add(ChartResultSet colResultSet, DefaultXYZDataset dataset) throws ChartFormatException {
+    private static void add(ChartResultSet colResultSet, DefaultXYZDataset dataset) throws ChartFormatException {
         List<ChartResultSet.NumericCol> numCols = colResultSet.getNumericColumns();
         if (numCols.size() < 3) {
             throw new ChartFormatException("Need atleast three numerical columns.");
@@ -30,8 +30,6 @@ class XYZDatasetUpdateableView
             vals[i] = numCols.get(i).getDoubles();
         }
         dataset.addSeries("", vals);
-
-        return dataset;
     }
 
     public void update(ResultSet rs, ChartResultSet chartResultSet) throws ChartFormatException {

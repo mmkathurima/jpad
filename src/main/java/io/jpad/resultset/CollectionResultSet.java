@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 import com.timestored.sqldash.chart.BaseResultSet;
 
-import java.sql.SQLException;
 import java.util.List;
 
 abstract class CollectionResultSet<T>
@@ -17,54 +16,54 @@ abstract class CollectionResultSet<T>
         this.l = Lists.newArrayList((Iterable) Preconditions.checkNotNull(c));
     }
 
-    public boolean next() throws SQLException {
+    public boolean next() {
         return (++this.i < this.l.size());
     }
 
-    public boolean previous() throws SQLException {
+    public boolean previous() {
         return (--this.i >= 0);
     }
 
-    public void beforeFirst() throws SQLException {
+    public void beforeFirst() {
         this.i = -1;
     }
 
-    public boolean isBeforeFirst() throws SQLException {
+    public boolean isBeforeFirst() {
         return (this.i < 0);
     }
 
-    public boolean isAfterLast() throws SQLException {
+    public boolean isAfterLast() {
         return (this.i >= this.l.size());
     }
 
-    public boolean isFirst() throws SQLException {
+    public boolean isFirst() {
         return (this.i == 0);
     }
 
-    public boolean isLast() throws SQLException {
+    public boolean isLast() {
         return (this.i == this.l.size() - 1);
     }
 
-    public void afterLast() throws SQLException {
+    public void afterLast() {
         this.i = this.l.size();
     }
 
-    public boolean first() throws SQLException {
+    public boolean first() {
         this.i = 0;
         return this.l.isEmpty();
     }
 
-    public boolean last() throws SQLException {
+    public boolean last() {
         this.i = this.l.size() - 1;
         return this.l.isEmpty();
     }
 
-    public int getRow() throws SQLException {
+    public int getRow() {
 
         return this.i + 1;
     }
 
-    public boolean absolute(int row) throws SQLException {
+    public boolean absolute(int row) {
 
         this.i = row + 1;
 

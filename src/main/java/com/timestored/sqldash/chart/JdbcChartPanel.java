@@ -83,19 +83,14 @@ public class JdbcChartPanel
         } else {
 
             try {
-                EventQueue.invokeAndWait(new Runnable() {
-                    public void run() {
-                        JdbcChartPanel.this.runn();
-                    }
-                });
-            } catch (InterruptedException e) {
-            } catch (InvocationTargetException e) {
+                EventQueue.invokeAndWait(JdbcChartPanel.this::runn);
+            } catch (InterruptedException | InvocationTargetException e) {
             }
         }
     }
 
     private void runn() {
-        Component c = null;
+        Component c;
         try {
             this.updateableView = this.viewCreator.getView(this.theme);
             if (this.prevRS != null) {
@@ -118,13 +113,9 @@ public class JdbcChartPanel
         } catch (ChartFormatException cfe) {
             this.lastChartFormatException = cfe;
             c = getChartFormatExplaination(this.viewCreator, cfe);
-        } catch (IllegalArgumentException iae) {
+        } catch (IllegalArgumentException | NullPointerException iae) {
             final String txt = "Problem updating view from RecordSet";
             LOG.log(Level.SEVERE, txt, iae);
-            c = Theme.getErrorBox("RS Error", Theme.getTextArea("errTxt", txt));
-        } catch (NullPointerException npe) {
-            final String txt = "Problem updating view from RecordSet";
-            LOG.log(Level.SEVERE, txt, npe);
             c = Theme.getErrorBox("RS Error", Theme.getTextArea("errTxt", txt));
         }
 
@@ -142,9 +133,7 @@ public class JdbcChartPanel
                 this.prevCRS = ChartResultSet.getInstance(resultSet);
             } catch (SQLException e) {
                 LOG.log(Level.INFO, "could not create chartResultSet ", e);
-            } catch (IllegalArgumentException e) {
-                LOG.log(Level.WARNING, "could not create chartResultSet ", e);
-            } catch (NullPointerException e) {
+            } catch (IllegalArgumentException | NullPointerException e) {
                 LOG.log(Level.WARNING, "could not create chartResultSet ", e);
             }
         }

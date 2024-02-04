@@ -17,7 +17,7 @@ public class Document {
     private static final Logger LOG = Logger.getLogger(Document.class.getName());
     private static final AtomicInteger counter = new AtomicInteger(0);
 
-    private final List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
+    private final List<Listener> listeners = new CopyOnWriteArrayList<>();
 
     private String title;
     private File file;
@@ -155,7 +155,7 @@ public class Document {
     }
 
     private boolean isWindows() {
-        return (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0);
+        return (System.getProperty("os.name").toLowerCase().contains("win"));
     }
 
     public void save() throws IOException {

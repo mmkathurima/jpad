@@ -44,10 +44,7 @@ public class ApplicationInstanceManager {
                             }
                             oin.close();
                             client.close();
-                        } catch (ClassNotFoundException e) {
-                            LOG.severe("Shared key matched - new application instance found");
-                            socketClosed = true;
-                        } catch (IOException e) {
+                        } catch (ClassNotFoundException | IOException e) {
                             LOG.severe("Shared key matched - new application instance found");
                             socketClosed = true;
                         }

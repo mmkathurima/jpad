@@ -11,7 +11,7 @@ import java.util.List;
 class DesktopDTO {
     @XStreamAsAttribute
     public final String title;
-    public List<WorkspaceDTO> workspaces = new ArrayList<WorkspaceDTO>();
+    public List<WorkspaceDTO> workspaces = new ArrayList<>();
 
     public DesktopDTO(DesktopModel desktopModel) {
         this.title = desktopModel.getTitle();

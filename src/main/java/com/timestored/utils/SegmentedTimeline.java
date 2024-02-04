@@ -228,7 +228,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
         // calculate midnight of first monday after 1/1/1900 relative to
         // current locale
         Calendar cal = new GregorianCalendar(NO_DST_TIME_ZONE);
-        cal.set(1900, 0, 1, 0, 0, 0);
+        cal.set(1900, Calendar.JANUARY, 1, 0, 0, 0);
         cal.set(Calendar.MILLISECOND, 0);
         while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
             cal.add(Calendar.DATE, 1);
@@ -359,7 +359,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
         // calculate midnight of first monday after 1/1/1900 relative to
         // current locale
         Calendar cal = new GregorianCalendar(z);
-        cal.set(1900, 0, 1, 0, 0, 0);
+        cal.set(1900, Calendar.JANUARY, 1, 0, 0, 0);
         cal.set(Calendar.MILLISECOND, 0);
         while (cal.get(Calendar.DAY_OF_WEEK) != Calendar.MONDAY) {
             cal.add(Calendar.DATE, 1);
@@ -763,7 +763,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
                             + ") < domainValueStart (" + domainValueStart + ")");
         }
         Segment segment = this.getSegment(domainValueStart);
-        boolean contains = true;
+        boolean contains;
         do {
             contains = (segment.inIncludeSegments());
             if (segment.contains(domainValueEnd)) {
@@ -855,8 +855,8 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
      *                      exclude.
      */
     public void addExceptions(List exceptionList) {
-        for (Iterator iter = exceptionList.iterator(); iter.hasNext(); ) {
-            this.addException((Date) iter.next());
+        for (Object o : exceptionList) {
+            this.addException((Date) o);
         }
     }
 
@@ -1010,9 +1010,8 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
         }
 
         int n = 0;
-        for (Iterator iter = this.exceptionSegments.iterator();
-             iter.hasNext(); ) {
-            Segment segment = (Segment) iter.next();
+        for (Object exceptionSegment : this.exceptionSegments) {
+            Segment segment = (Segment) exceptionSegment;
             Segment intersection = segment.intersect(fromMillisecond,
                     toMillisecond);
             if (intersection != null) {
@@ -1187,8 +1186,7 @@ public class SegmentedTimeline implements Timeline, Cloneable, Serializable {
      * @throws CloneNotSupportedException ??.
      */
     public Object clone() throws CloneNotSupportedException {
-        SegmentedTimeline clone = (SegmentedTimeline) super.clone();
-        return clone;
+        return super.clone();
     }
 
     /**

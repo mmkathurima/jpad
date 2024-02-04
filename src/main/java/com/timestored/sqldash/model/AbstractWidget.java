@@ -12,7 +12,7 @@ public abstract class AbstractWidget
     private static final Logger LOG = Logger.getLogger(AbstractWidget.class.getName());
     private static int count;
     protected final transient DesktopModel desktopModel;
-    private final transient List<Widget.Listener> listeners = new CopyOnWriteArrayList<Widget.Listener>();
+    private final transient List<Widget.Listener> listeners = new CopyOnWriteArrayList<>();
     private final int id;
     protected String title = "untitled";
 
@@ -60,8 +60,8 @@ public abstract class AbstractWidget
         this.listeners.add(widgetListener);
     }
 
-    public boolean removeListener(Widget.Listener widgetListener) {
-        return this.listeners.remove(widgetListener);
+    public void removeListener(Listener widgetListener) {
+        this.listeners.remove(widgetListener);
     }
 
     public int getId() {

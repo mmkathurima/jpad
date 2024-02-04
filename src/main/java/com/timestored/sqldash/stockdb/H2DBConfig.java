@@ -58,7 +58,7 @@ class H2DBConfig
         StringBuilder sb = new StringBuilder();
         for (Stock s : stocks) {
             sb.append("INSERT INTO stock(sym,name,price,volume,pe,eps,week52low,week52high,daylow,dayhigh,movingav50day,marketcap) VALUES(");
-            Joiner.on(",").appendTo(sb, "'" + s.getSymbol() + "'", "'" + s.getName().replace("'", "''") + "'", toS(s.getPrice().doubleValue()), toS(s.getVolume()), toS(s.getPe()), toS(s.getEps()), toS(s.getWeek52low()), toS(s.getWeek52high()), toS(s.getDaylow()), toS(s.getDayhigh()), toS(s.getMovingav50day()), toS(s.getMarketcap()));
+            Joiner.on(",").appendTo(sb, "'" + s.getSymbol() + "'", "'" + s.getName().replace("'", "''") + "'", toS(s.getPrice()), toS(s.getVolume()), toS(s.getPe()), toS(s.getEps()), toS(s.getWeek52low()), toS(s.getWeek52high()), toS(s.getDaylow()), toS(s.getDayhigh()), toS(s.getMovingav50day()), toS(s.getMarketcap()));
 
             r.add(sb.append(");").toString());
             sb.setLength(0);

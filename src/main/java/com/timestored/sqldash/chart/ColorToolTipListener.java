@@ -22,7 +22,7 @@ class ColorToolTipListener
     private XYItemEntity lastSeenEntity;
     private JPopupMenu lastPopupMenu;
 
-    public static final ColorToolTipListener getInstance() {
+    public static ColorToolTipListener getInstance() {
         return INSTANCE;
     }
 

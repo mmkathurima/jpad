@@ -4,7 +4,6 @@ import com.google.common.base.Preconditions;
 import com.google.common.collect.Lists;
 
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.List;
 
 class SimpleResultSetMetaData
@@ -14,7 +13,7 @@ class SimpleResultSetMetaData
 
     public SimpleResultSetMetaData(String colName, int colType) {
 
-        this(Lists.newArrayList(colName), Lists.newArrayList(Integer.valueOf(colType)));
+        this(Lists.newArrayList(colName), Lists.newArrayList(colType));
     }
 
     public SimpleResultSetMetaData(List<String> colNames, List<Integer> colTypes) {
@@ -28,116 +27,116 @@ class SimpleResultSetMetaData
         this.colTypes = colTypes;
     }
 
-    public int getColumnCount() throws SQLException {
+    public int getColumnCount() {
 
         return this.colNames.size();
     }
 
-    public String getColumnName(int column) throws SQLException {
+    public String getColumnName(int column) {
 
         return this.colNames.get(column - 1);
     }
 
-    public int getColumnType(int column) throws SQLException {
+    public int getColumnType(int column) {
 
-        return this.colTypes.get(column - 1).intValue();
+        return this.colTypes.get(column - 1);
     }
 
-    public String getColumnClassName(int column) throws SQLException {
+    public String getColumnClassName(int column) {
 
         throw new UnsupportedOperationException();
     }
 
-    public String getColumnTypeName(int column) throws SQLException {
+    public String getColumnTypeName(int column) {
 
         throw new UnsupportedOperationException();
     }
 
-    public <T> T unwrap(Class<T> iface) throws SQLException {
+    public <T> T unwrap(Class<T> iface) {
 
         throw new UnsupportedOperationException();
     }
 
-    public boolean isWrapperFor(Class<?> iface) throws SQLException {
+    public boolean isWrapperFor(Class<?> iface) {
 
         throw new UnsupportedOperationException();
     }
 
-    public boolean isAutoIncrement(int column) throws SQLException {
+    public boolean isAutoIncrement(int column) {
 
         return false;
     }
 
-    public boolean isCaseSensitive(int column) throws SQLException {
+    public boolean isCaseSensitive(int column) {
 
         return true;
     }
 
-    public boolean isSearchable(int column) throws SQLException {
+    public boolean isSearchable(int column) {
 
         throw new UnsupportedOperationException();
     }
 
-    public boolean isCurrency(int column) throws SQLException {
+    public boolean isCurrency(int column) {
 
         throw new UnsupportedOperationException();
     }
 
-    public int isNullable(int column) throws SQLException {
+    public int isNullable(int column) {
 
         throw new UnsupportedOperationException();
     }
 
-    public boolean isSigned(int column) throws SQLException {
+    public boolean isSigned(int column) {
 
         throw new UnsupportedOperationException();
     }
 
-    public int getColumnDisplaySize(int column) throws SQLException {
+    public int getColumnDisplaySize(int column) {
 
         throw new UnsupportedOperationException();
     }
 
-    public String getColumnLabel(int column) throws SQLException {
+    public String getColumnLabel(int column) {
 
         return this.getColumnName(column);
     }
 
-    public String getSchemaName(int column) throws SQLException {
+    public String getSchemaName(int column) {
 
         return "";
     }
 
-    public int getPrecision(int column) throws SQLException {
+    public int getPrecision(int column) {
 
         throw new UnsupportedOperationException();
     }
 
-    public int getScale(int column) throws SQLException {
+    public int getScale(int column) {
 
         throw new UnsupportedOperationException();
     }
 
-    public String getTableName(int column) throws SQLException {
+    public String getTableName(int column) {
 
         return "";
     }
 
-    public String getCatalogName(int column) throws SQLException {
+    public String getCatalogName(int column) {
 
         return "";
     }
 
-    public boolean isReadOnly(int column) throws SQLException {
+    public boolean isReadOnly(int column) {
         return true;
     }
 
-    public boolean isWritable(int column) throws SQLException {
+    public boolean isWritable(int column) {
 
         return false;
     }
 
-    public boolean isDefinitelyWritable(int column) throws SQLException {
+    public boolean isDefinitelyWritable(int column) {
 
         return false;
     }

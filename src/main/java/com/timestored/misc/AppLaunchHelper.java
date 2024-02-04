@@ -14,7 +14,7 @@ public class AppLaunchHelper {
     private static final Logger LOG = Logger.getLogger(AppLaunchHelper.class.getName());
 
     public static void setMacAndWindowsAppearance(String title) {
-        if (System.getProperty("os.name").toLowerCase().indexOf("mac") >= 0) {
+        if (System.getProperty("os.name").toLowerCase().contains("mac")) {
             System.setProperty("apple.laf.useScreenMenuBar", "true");
             System.setProperty("com.apple.mrj.application.apple.menu.about.name", title);
         }
@@ -38,9 +38,7 @@ public class AppLaunchHelper {
             FileHandler fh = new FileHandler("%h/" + folder + "/log%g.log", 1048576, 1, true);
             fh.setFormatter(new SimpleFormatter());
             Logger.getLogger("").addHandler(fh);
-        } catch (IOException ex) {
-            LOG.log(Level.SEVERE, ex.getMessage(), ex);
-        } catch (SecurityException ex) {
+        } catch (IOException | SecurityException ex) {
             LOG.log(Level.SEVERE, ex.getMessage(), ex);
         }
     }

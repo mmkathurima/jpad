@@ -38,7 +38,7 @@ public class ColorChooserPanel
             }
         });
 
-        JPanel p = new JPanel(new FlowLayout(0));
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT));
         p.add(this.colorButton);
         p.add(this.colorPreviewLabel);
         this.add(p);

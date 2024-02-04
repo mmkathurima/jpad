@@ -48,7 +48,7 @@ public class StockFetcher {
     }
 
     private static List<BidAsk> readLivePricesCsv(InputStream is) throws IOException {
-        List<BidAsk> r = new ArrayList<BidAsk>();
+        List<BidAsk> r = new ArrayList<>();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
         String line;
@@ -81,7 +81,7 @@ public class StockFetcher {
     }
 
     private static List<Stock> readStocksCsv(InputStream is) throws IOException {
-        List<Stock> r = new ArrayList<Stock>();
+        List<Stock> r = new ArrayList<>();
         BufferedReader br = new BufferedReader(new InputStreamReader(is));
 
         String line;
@@ -118,13 +118,13 @@ public class StockFetcher {
 
                 String sym = stripQuotes(ls[10]);
 
-                String name = "";
+                StringBuilder name = new StringBuilder();
                 for (int i = 11; i < ls.length; i++) {
-                    name = name + ls[i];
+                    name.append(ls[i]);
                 }
-                name = stripQuotes(name);
+                name = new StringBuilder(stripQuotes(name.toString()));
 
-                r.add(new Stock(sym, name, price, volume, pe, eps, week52low, week52high, daylow, dayhigh, movingav50day, marketcap));
+                r.add(new Stock(sym, name.toString(), price, volume, pe, eps, week52low, week52high, daylow, dayhigh, movingav50day, marketcap));
             } catch (NumberFormatException e) {
             }
         }
@@ -158,10 +158,10 @@ public class StockFetcher {
 
     private static List<OHLCDataPoint> readToList(InputStream is) throws IOException {
         BufferedReader breader = new BufferedReader(new InputStreamReader(is));
-        String line = breader.readLine();
-        List<OHLCDataPoint> d = new ArrayList<OHLCDataPoint>();
+        List<OHLCDataPoint> d = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+        String line;
         while ((line = breader.readLine()) != null) {
 
             try {
@@ -185,10 +185,10 @@ public class StockFetcher {
     public static List<DividendDatapoint> getDividends(String symbol) throws IOException {
         BufferedReader breader = new BufferedReader(new InputStreamReader(getHistoricStream(symbol, true)));
 
-        String line = breader.readLine();
-        List<DividendDatapoint> d = new ArrayList<DividendDatapoint>();
+        List<DividendDatapoint> d = new ArrayList<>();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 
+        String line;
         while ((line = breader.readLine()) != null) {
             try {
                 String[] sl = line.split(",");

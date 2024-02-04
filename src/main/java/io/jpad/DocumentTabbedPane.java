@@ -171,10 +171,10 @@ class DocumentTabbedPane
     }
 
     private JPanel getTabComponent(Document doc) {
-        JPanel p = new JPanel(new FlowLayout(0, 2, 0));
+        JPanel p = new JPanel(new FlowLayout(FlowLayout.LEFT, 2, 0));
         p.setName("tab-" + doc.getTitle());
 
-        JLabel label = new JLabel(doc.getTitle(), doc.getIcon().get16(), 2);
+        JLabel label = new JLabel(doc.getTitle(), doc.getIcon().get16(), SwingConstants.LEFT);
         label.addMouseListener(new MouseAdapter() {
             public void mousePressed(MouseEvent e) {
                 if (SwingUtilities.isLeftMouseButton(e)) {
@@ -278,11 +278,7 @@ class DocumentTabbedPane
         }
 
         public void docAdded(Document document) {
-            EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    DocumentTabbedPane.this.refreshTabAppearance();
-                }
-            });
+            EventQueue.invokeLater(DocumentTabbedPane.this::refreshTabAppearance);
         }
 
         public void docSaved() {
@@ -294,11 +290,7 @@ class DocumentTabbedPane
         }
 
         private void refresh() {
-            EventQueue.invokeLater(new Runnable() {
-                public void run() {
-                    DocumentTabbedPane.this.refreshTabAppearance();
-                }
-            });
+            EventQueue.invokeLater(DocumentTabbedPane.this::refreshTabAppearance);
         }
 
         public void docCaratModified() {

@@ -26,9 +26,7 @@ public class DBTestRunnerFactory {
         public ConnectionManager start() throws SQLException {
             try {
                 return KdbTestHelper.getNewConnectedMangager();
-            } catch (IOException e) {
-                throw new SQLException(e);
-            } catch (InterruptedException e) {
+            } catch (IOException | InterruptedException e) {
                 throw new SQLException(e);
             }
         }

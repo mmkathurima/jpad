@@ -13,9 +13,9 @@ public class WorkspaceModel
     private static final Logger LOG = Logger.getLogger(WorkspaceModel.class.getName());
 
     private final List<DesktopModelListener> listeners;
-    private final List<Widget> apps = new CopyOnWriteArrayList<Widget>();
+    private final List<Widget> apps = new CopyOnWriteArrayList<>();
     private Widget selectedApp;
-    private String title = "workspace";
+    private String title;
     private String javaLayoutXml;
 
     public WorkspaceModel(String title, List<DesktopModelListener> listeners) {
@@ -37,7 +37,7 @@ public class WorkspaceModel
         this.setSelectedApp(app);
     }
 
-    boolean removeApp(Widget app) {
+    void removeApp(Widget app) {
         Preconditions.checkNotNull(app);
         LOG.info("removeApp: " + app);
         app.removeListener(this);
@@ -56,8 +56,6 @@ public class WorkspaceModel
         if (this.apps.size() > 0) {
             this.setSelectedApp(this.apps.iterator().next());
         }
-
-        return removed;
     }
 
     public String getTitle() {
@@ -132,7 +130,7 @@ public class WorkspaceModel
     }
 
     public Collection<Queryable> getQueryables() {
-        List<Queryable> r = new ArrayList<Queryable>();
+        List<Queryable> r = new ArrayList<>();
         for (Widget w : this.getApps()) {
             r.addAll(w.getQueryables());
         }

@@ -16,14 +16,14 @@ import java.util.logging.Logger;
 
 public class QueryEngine {
     private static final Logger LOG = Logger.getLogger(QueryEngine.class.getName());
-    private final List<QueryEngineListener> listeners = new CopyOnWriteArrayList<QueryEngineListener>();
+    private final List<QueryEngineListener> listeners = new CopyOnWriteArrayList<>();
     private final int milliseconds = 50;
-    private final ConcurrentLinkedQueue<Queryable> priorityQueue = new ConcurrentLinkedQueue<Queryable>();
+    private final ConcurrentLinkedQueue<Queryable> priorityQueue = new ConcurrentLinkedQueue<>();
     private final Map<Queryable, ResultSet> queryablesResultCache = Maps.newConcurrentMap();
     private ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
     private int counter;
     private ConnectionManager connMan;
-    private Collection<Queryable> queryables = new CopyOnWriteArrayList<Queryable>();
+    private Collection<Queryable> queryables = new CopyOnWriteArrayList<>();
     private QueryTranslator queryTranslator;
 
     private QueryEngine(ConnectionManager connMan) {
@@ -47,7 +47,7 @@ public class QueryEngine {
                 try {
                     ConnectionManager cm = QueryEngine.this.connMan;
 
-                    Queryable w = null;
+                    Queryable w;
                     while ((w = QueryEngine.this.priorityQueue.poll()) != null) {
                         LOG.info("priorityQueueing");
                         QueryEngine.this.requery(w, cm);
@@ -83,7 +83,7 @@ public class QueryEngine {
         ResultSet crs = null;
         Exception e = null;
 
-        ServerConfig sc = null;
+        ServerConfig sc;
         try {
             String srv = w.getServerName();
             if (srv == null) {

@@ -147,7 +147,7 @@ public class CommandDialog
     private void showDocsForSearch(String txt) {
         if (txt.trim().length() > 0) {
             String[] t = txt.trim().split(" ");
-            List<Command> r = new ArrayList<Command>();
+            List<Command> r = new ArrayList<>();
             for (Command c : this.commands) {
                 boolean match = true;
                 if (t.length > 0) {

@@ -10,45 +10,44 @@ class SqlHelper {
     private static final Set<Integer> STRINGYS;
 
     static {
-        Set<Integer> nums = new HashSet<Integer>();
-        nums.add(Integer.valueOf(-5));
-        nums.add(Integer.valueOf(3));
-        nums.add(Integer.valueOf(8));
-        nums.add(Integer.valueOf(6));
-        nums.add(Integer.valueOf(4));
-        nums.add(Integer.valueOf(4));
-        nums.add(Integer.valueOf(2));
-        nums.add(Integer.valueOf(7));
-        nums.add(Integer.valueOf(5));
-        nums.add(Integer.valueOf(-6));
+        Set<Integer> nums = new HashSet<>();
+        nums.add(-5);
+        nums.add(3);
+        nums.add(8);
+        nums.add(6);
+        nums.add(4);
+        nums.add(2);
+        nums.add(7);
+        nums.add(5);
+        nums.add(-6);
         NUMBERS = Collections.unmodifiableSet(nums);
 
-        Set<Integer> times = new HashSet<Integer>();
-        times.add(Integer.valueOf(92));
-        times.add(Integer.valueOf(93));
-        times.add(Integer.valueOf(91));
+        Set<Integer> times = new HashSet<>();
+        times.add(92);
+        times.add(93);
+        times.add(91);
         TEMPORALS = Collections.unmodifiableSet(times);
 
-        Set<Integer> stringys = new HashSet<Integer>();
-        stringys.add(Integer.valueOf(1));
-        stringys.add(Integer.valueOf(-16));
-        stringys.add(Integer.valueOf(-1));
-        stringys.add(Integer.valueOf(-15));
-        stringys.add(Integer.valueOf(-9));
-        stringys.add(Integer.valueOf(12));
+        Set<Integer> stringys = new HashSet<>();
+        stringys.add(1);
+        stringys.add(-16);
+        stringys.add(-1);
+        stringys.add(-15);
+        stringys.add(-9);
+        stringys.add(12);
         STRINGYS = Collections.unmodifiableSet(stringys);
     }
 
     public static boolean isNumeric(int type) {
-        return NUMBERS.contains(Integer.valueOf(type));
+        return NUMBERS.contains(type);
     }
 
     public static boolean isTemporal(int type) {
-        return TEMPORALS.contains(Integer.valueOf(type));
+        return TEMPORALS.contains(type);
     }
 
     public static boolean isStringy(int type) {
-        return STRINGYS.contains(Integer.valueOf(type));
+        return STRINGYS.contains(type);
     }
 }
 

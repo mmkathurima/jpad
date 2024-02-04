@@ -19,7 +19,7 @@ import java.util.Map;
 public class ChartWidget
         extends AbstractWidget {
     private final ChartViewConfiguration chartViewConfig;
-    private final List<Queryable> queryable = new ArrayList<Queryable>(1);
+    private final List<Queryable> queryable = new ArrayList<>(1);
     private final Queryable.Listener queryableListener = new Queryable.Listener() {
         public void configChanged(Queryable queryable) {
             ChartWidget.this.configChanged();

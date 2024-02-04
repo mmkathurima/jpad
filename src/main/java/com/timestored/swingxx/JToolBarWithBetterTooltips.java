@@ -19,10 +19,10 @@ public class JToolBarWithBetterTooltips
         Object o = a.getValue("AcceleratorKey");
         Object deso = a.getValue("ShortDescription");
         String t = "";
-        if (deso != null && deso instanceof String) {
+        if (deso instanceof String) {
             t = (String) deso;
         }
-        if (o != null && o instanceof KeyStroke) {
+        if (o instanceof KeyStroke) {
             KeyStroke ks = (KeyStroke) o;
             t = t + " (" + ks.toString().replace("pressed", "+") + ")";
         }

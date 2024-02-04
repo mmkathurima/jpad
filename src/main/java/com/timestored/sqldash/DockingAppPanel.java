@@ -43,8 +43,8 @@ public class DockingAppPanel
     private final DockFrontend frontend;
     private final SplitDockStation station;
     private final JPanel appEditorPanel;
-    private final Map<Integer, DefaultDockable> apptoDockable = new ConcurrentHashMap<Integer, DefaultDockable>();
-    private final Map<Dockable, Widget> dockableToWidget = new ConcurrentHashMap<Dockable, Widget>();
+    private final Map<Integer, DefaultDockable> apptoDockable = new ConcurrentHashMap<>();
+    private final Map<Dockable, Widget> dockableToWidget = new ConcurrentHashMap<>();
     private final JPanel stationHolder;
     private boolean refreshing;
 
@@ -67,8 +67,7 @@ public class DockingAppPanel
         IdLookupFactory dockFactory = new IdLookupFactory("REARDEN") {
             public int getId(Dockable d) {
                 String name = DockingAppPanel.this.frontend.getNameOf(d);
-                int id = Integer.parseInt(name);
-                return id;
+                return Integer.parseInt(name);
             }
 
             public Dockable getDockable(int id) {
@@ -199,7 +198,7 @@ public class DockingAppPanel
                 try {
 
                     Set<String> layouts = this.frontend.getSettings();
-                    String[] keys = layouts.toArray(new String[layouts.size()]);
+                    String[] keys = layouts.toArray(new String[0]);
                     for (String key : keys) {
                         this.frontend.delete(key);
                     }
@@ -264,7 +263,7 @@ public class DockingAppPanel
 
     public void removeDockable(Widget app) {
         app.invalidatePanelCache();
-        Dockable d = this.apptoDockable.remove(Integer.valueOf(app.getId()));
+        Dockable d = this.apptoDockable.remove(app.getId());
         this.dockableToWidget.remove(d);
         if (d != null) {
             this.frontend.hide(d);
@@ -312,7 +311,7 @@ public class DockingAppPanel
                     }
             }
         });
-        this.apptoDockable.put(Integer.valueOf(app.getId()), dockable);
+        this.apptoDockable.put(app.getId(), dockable);
         this.dockableToWidget.put(dockable, app);
         return dockable;
     }
@@ -348,7 +347,7 @@ public class DockingAppPanel
         public void appSelected(WorkspaceModel workspaceModel, Widget selectedApp) {
             DockingAppPanel.this.refreshAppEditor();
             if (selectedApp != null) {
-                DefaultDockable d = DockingAppPanel.this.apptoDockable.get(Integer.valueOf(selectedApp.getId()));
+                DefaultDockable d = DockingAppPanel.this.apptoDockable.get(selectedApp.getId());
                 if (d != null && !DockingAppPanel.this.frontend.getController().isFocused(d)) {
                     DockingAppPanel.this.frontend.getController().setFocusedDockable(d, true);
                 }
@@ -359,7 +358,7 @@ public class DockingAppPanel
         }
 
         public void appEdited(WorkspaceModel workspaceModel, Widget widget) {
-            DefaultDockable dockable = DockingAppPanel.this.apptoDockable.get(Integer.valueOf(widget.getId()));
+            DefaultDockable dockable = DockingAppPanel.this.apptoDockable.get(widget.getId());
             if (dockable != null) {
                 String appTitle = widget.getTitle();
                 if (!dockable.getTitleText().equals(appTitle)) {

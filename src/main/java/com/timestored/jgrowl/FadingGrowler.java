@@ -22,7 +22,7 @@ class FadingGrowler {
     private static ExecutorService executor;
     private final Theme theme;
     private final JFrame parentFrame;
-    private final List<DisplayedItem> displayedItems = new ArrayList<DisplayedItem>();
+    private final List<DisplayedItem> displayedItems = new ArrayList<>();
     private int lastSeenY;
 
     public FadingGrowler(JFrame parentFrame, Theme theme) {
@@ -54,9 +54,9 @@ class FadingGrowler {
             Class<?> awtutil = Class.forName("com.sun.awt.AWTUtilities");
 
             Method setWindowOpaque = awtutil.getMethod("setWindowOpacity", Window.class, float.class);
-            setWindowOpaque.invoke(null, win, Float.valueOf(alpha));
+            setWindowOpaque.invoke(null, win, alpha);
         } catch (Exception ex) {
-            win.getRootPane().putClientProperty("Window.alpha", new Float(alpha));
+            win.getRootPane().putClientProperty("Window.alpha", alpha);
         }
     }
 

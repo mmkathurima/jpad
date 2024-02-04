@@ -45,7 +45,7 @@ public class TestHelper {
     private static boolean isEqual(InputStream i1, InputStream i2) throws IOException {
         byte[] buf1 = new byte[65536];
         byte[] buf2 = new byte[65536];
-        try {
+        try (i1; i2) {
             DataInputStream d2 = new DataInputStream(i2);
             int len;
             while ((len = i1.read(buf1)) > 0) {
@@ -57,9 +57,6 @@ public class TestHelper {
             return (d2.read() < 0);
         } catch (EOFException ioe) {
             return false;
-        } finally {
-            i1.close();
-            i2.close();
         }
     }
 }

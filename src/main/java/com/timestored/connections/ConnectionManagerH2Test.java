@@ -36,9 +36,10 @@ public class ConnectionManagerH2Test {
 
         Assert.assertTrue(this.csManager.execute(sc, insertSQL));
 
-        ResultSet rs = this.csManager.executeQuery(sc, "select count(*) from STATION");
-        rs.next();
-        Assert.assertEquals(2L, rs.getInt(1));
+        try (ResultSet rs = this.csManager.executeQuery(sc, "select count(*) from STATION")) {
+            rs.next();
+            Assert.assertEquals(2L, rs.getInt(1));
+        }
     }
 }
 

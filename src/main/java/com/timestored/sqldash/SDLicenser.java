@@ -56,8 +56,7 @@ public class SDLicenser {
             signedLicense = signedLicense.replace("\r", "").replace("\n", "");
             String m = MessageSigner.getMessage("MIHwMIGoBgcqhkjOOAQBMIGcAkEA/KaCzo4Syrom78z3EQ5SbbB4sF7ey80etKII864WF64B81uRpH5t9jQTxeEu0ImbzRMqzVDZkVG9xD7nN1kuFwIVAJYu3cw2nLqOuyYO5rahJtk0bjjFAkBnhHGyepz0TukaScUUfbGpqvJE8FpDTWSGkx0tFCcbnjUDC3H9c9oXkGmzLik1Yw4cIGI1TQ2iCmxBblC+eUykA0MAAkBDhrGYHGc6FoB5ljIjrrRPST5alK4SAzxEMZrxvcqb8OSGyz3G8VD1vNV2Aa9XoUqZPizlgBPylDMjUl7nnqoz", signedLicense);
             if (m != null) {
-                License l = License.fromXML(m);
-                license = l;
+                license = License.fromXML(m);
                 SqlDashboardLauncher.getStoredPrefs().put(SqldKey.SIGNED_LICENSE, signedLicense);
                 return true;
             }

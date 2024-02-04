@@ -14,7 +14,7 @@ public interface Widget extends QueryEngine.QueryEngineListener, DesktopModelArg
 
     void addListener(Listener paramListener);
 
-    boolean removeListener(Listener paramListener);
+    void removeListener(Listener paramListener);
 
     JPanel getPanel();
 

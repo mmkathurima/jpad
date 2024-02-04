@@ -30,7 +30,7 @@ class WListWListSelector
         this.l.addListSelectionListener(new ListSelectionListener() {
             public void valueChanged(ListSelectionEvent e) {
                 if (!WListWListSelector.this.ignoreChanges) {
-                    List<String> r = new ArrayList<String>();
+                    List<String> r = new ArrayList<>();
                     for (Object o : WListWListSelector.this.l.getSelectedValues()) {
                         r.add("" + o);
                     }
@@ -43,11 +43,11 @@ class WListWListSelector
     }
 
     public synchronized void setSelection(List<String> selections) {
-        List<Integer> indices = new ArrayList<Integer>();
+        List<Integer> indices = new ArrayList<>();
         ListModel m = this.l.getModel();
         for (int i = 0; i < m.getSize(); i++) {
             if (selections.contains(m.getElementAt(i))) {
-                indices.add(Integer.valueOf(i));
+                indices.add(i);
             }
         }
 

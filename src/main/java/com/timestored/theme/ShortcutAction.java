@@ -10,7 +10,7 @@ public abstract class ShortcutAction
     private static final long serialVersionUID = 1L;
 
     public ShortcutAction(String text, Icon icon, int mnemonicAccel) {
-        this(text, icon, text, Integer.valueOf(mnemonicAccel), mnemonicAccel);
+        this(text, icon, text, mnemonicAccel, mnemonicAccel);
     }
 
     public ShortcutAction(String text, Icon icon, String desc) {

@@ -8,15 +8,15 @@ public class ConnectionShortFormat {
     public static List<ParseResult> parse(String serverEntries, JdbcTypes defaultServerType, JdbcTypes[] permittedJdbcTypes) {
         Preconditions.checkNotNull(defaultServerType);
         Preconditions.checkNotNull(permittedJdbcTypes);
-        Set<JdbcTypes> permittedTypes = new HashSet<JdbcTypes>(Arrays.asList(permittedJdbcTypes));
+        Set<JdbcTypes> permittedTypes = new HashSet<>(Arrays.asList(permittedJdbcTypes));
         Preconditions.checkArgument(permittedTypes.contains(defaultServerType));
 
         String[] serverLines = serverEntries.split("\n");
-        List<ParseResult> r = new ArrayList<ParseResult>(serverLines.length);
+        List<ParseResult> r = new ArrayList<>(serverLines.length);
 
-        for (int i = 0; i < serverLines.length; i++) {
+        for (String serverLine : serverLines) {
 
-            String l = serverLines[i].trim();
+            String l = serverLine.trim();
             if (l.length() > 0) {
                 r.add(parseLine(defaultServerType, permittedTypes, l));
             }

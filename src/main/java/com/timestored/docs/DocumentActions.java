@@ -63,7 +63,7 @@ public class DocumentActions
 
         this.generateDocumentationAction = generateDocumentationAction;
         if (generateDocumentationAction != null) {
-            generateDocumentationAction.putValue("MnemonicKey", Integer.valueOf(68));
+            generateDocumentationAction.putValue("MnemonicKey", 68);
         }
 
         this.openFilesAction = new ShortcutAction(Msg.get(Msg.Key.OPEN_FILE) + "...", Theme.CIcon.DOCUMENT_OPEN, 79) {
@@ -122,7 +122,7 @@ public class DocumentActions
             }
         };
 
-        this.closeFileAction = new ShortcutAction(Msg.get(Msg.Key.CLOSE), null, Msg.get(Msg.Key.CLOSE), Integer.valueOf(67), 115) {
+        this.closeFileAction = new ShortcutAction(Msg.get(Msg.Key.CLOSE), null, Msg.get(Msg.Key.CLOSE), 67, 115) {
             private static final long serialVersionUID = 1L;
 
             public void actionPerformed(ActionEvent arg0) {
@@ -144,7 +144,7 @@ public class DocumentActions
                 } catch (IOException e) {
                     String msg = Msg.get(Msg.Key.SAVE_FILE_ERROR);
                     LOG.info(msg);
-                    JOptionPane.showMessageDialog(null, msg, Msg.get(Msg.Key.SAVE_ERROR), 0);
+                    JOptionPane.showMessageDialog(null, msg, Msg.get(Msg.Key.SAVE_ERROR), JOptionPane.ERROR_MESSAGE);
                 }
             }
         };
@@ -177,7 +177,7 @@ public class DocumentActions
         toggleCommentAction.putValue("LineComments", "/ ");
         findNextAction.putValue("AcceleratorKey", KeyStroke.getKeyStroke("F3"));
 
-        List<Action> acts = new ArrayList<Action>();
+        List<Action> acts = new ArrayList<>();
         acts.add(this.cutAction);
         acts.add(this.copyAction);
         acts.add(getAction(Msg.get(Msg.Key.PASTE), Theme.CIcon.EDIT_PASTE, new DefaultEditorKit.PasteAction(), 86));
@@ -258,7 +258,7 @@ public class DocumentActions
         }
         if (errMsg.length() > 0) {
             String msg = Msg.get(Msg.Key.EROR_OPENING_FILES) + errMsg;
-            JOptionPane.showMessageDialog(null, msg, Msg.get(Msg.Key.ERROR_OPENING), 0);
+            JOptionPane.showMessageDialog(null, msg, Msg.get(Msg.Key.ERROR_OPENING), JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -347,7 +347,7 @@ public class DocumentActions
         } catch (IOException e) {
             String msg = Msg.get(Msg.Key.ERROR_SAVING);
             LOG.info(msg);
-            JOptionPane.showMessageDialog(null, msg, msg, 0);
+            JOptionPane.showMessageDialog(null, msg, msg, JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -360,7 +360,7 @@ public class DocumentActions
             } catch (IOException e) {
                 String msg = Msg.get(Msg.Key.ERROR_SAVING) + ": " + file;
                 LOG.info(msg);
-                JOptionPane.showMessageDialog(null, msg, Msg.get(Msg.Key.ERROR_SAVING), 0);
+                JOptionPane.showMessageDialog(null, msg, Msg.get(Msg.Key.ERROR_SAVING), JOptionPane.ERROR_MESSAGE);
             }
         } else {
             LOG.info(Msg.get(Msg.Key.SAVE_CANCELLED));
@@ -450,7 +450,7 @@ public class DocumentActions
         public CloseAllFileAction() {
             super(Msg.get(Msg.Key.CLOSE_ALL));
             this.putValue("ShortDescription", Msg.get(Msg.Key.CLOSE_ALL));
-            this.putValue("MnemonicKey", Integer.valueOf(65));
+            this.putValue("MnemonicKey", 65);
         }
 
         public void actionPerformed(ActionEvent arg0) {
@@ -467,7 +467,7 @@ public class DocumentActions
         public SaveAsFileAction() {
             super(Msg.get(Msg.Key.SAVE_AS) + "...", Theme.CIcon.DOCUMENT_SAVE.get16());
             this.putValue("ShortDescription", Msg.get(Msg.Key.SAVE_AS) + "...");
-            this.putValue("MnemonicKey", Integer.valueOf(65));
+            this.putValue("MnemonicKey", 65);
         }
 
         public void actionPerformed(ActionEvent arg0) {

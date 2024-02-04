@@ -57,14 +57,14 @@ class CombinedResultSet
 
                 colNames.add(leftMD.getColumnName(i + 1));
 
-                colTypes.add(Integer.valueOf(leftMD.getColumnType(i + 1)));
+                colTypes.add(leftMD.getColumnType(i + 1));
             }
 
             for (i = 0; i < rightMD.getColumnCount(); i++) {
 
                 colNames.add(rightMD.getColumnName(i + 1));
 
-                colTypes.add(Integer.valueOf(rightMD.getColumnType(i + 1)));
+                colTypes.add(rightMD.getColumnType(i + 1));
             }
 
             this.resultSetMetaData = new SimpleResultSetMetaData(colNames, colTypes);
@@ -123,7 +123,7 @@ class CombinedResultSet
         return this.rightRS.first();
     }
 
-    public ResultSetMetaData getMetaData() throws SQLException {
+    public ResultSetMetaData getMetaData() {
 
         return this.resultSetMetaData;
     }

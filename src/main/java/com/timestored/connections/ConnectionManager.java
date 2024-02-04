@@ -37,7 +37,7 @@ public class ConnectionManager {
     public static String XML_ROOT = "serverlist";
     private final List<ServerConfig> serverConns;
     private final Map<ServerConfig, ObjectPool> serverConnPool;
-    private final Map<ServerConfig, Boolean> serverConnected = new ConcurrentHashMap<ServerConfig, Boolean>();
+    private final Map<ServerConfig, Boolean> serverConnected = new ConcurrentHashMap<>();
     private final List<ServerConfig> readonlyServerConnections;
     private final CopyOnWriteArrayList<Listener> listeners;
     private String defaultLoginUsername = "";
@@ -46,10 +46,10 @@ public class ConnectionManager {
     private String prefKey;
 
     private ConnectionManager() {
-        this.serverConnPool = new HashMap<ServerConfig, ObjectPool>();
-        this.serverConns = new CopyOnWriteArrayList<ServerConfig>();
+        this.serverConnPool = new HashMap<>();
+        this.serverConns = new CopyOnWriteArrayList<>();
         this.readonlyServerConnections = Collections.unmodifiableList(this.serverConns);
-        this.listeners = new CopyOnWriteArrayList<Listener>();
+        this.listeners = new CopyOnWriteArrayList<>();
     }
 
     public static ConnectionManager newInstance() {
@@ -59,7 +59,7 @@ public class ConnectionManager {
     public static String getConnectionsXml(List<ServerConfig> serverConns) {
         XStream xstream = new XStream();
         xstream.processAnnotations(ServerConfigDTO.class);
-        ArrayList<ServerConfigDTO> l = new ArrayList<ServerConfigDTO>(serverConns.size());
+        ArrayList<ServerConfigDTO> l = new ArrayList<>(serverConns.size());
         for (ServerConfig sc : serverConns) {
             l.add(new ServerConfigDTO(sc));
         }
@@ -74,10 +74,9 @@ public class ConnectionManager {
 
                 xstream.processAnnotations(ServerConfigDTO.class);
                 ArrayList<ServerConfigDTO> a = (ArrayList<ServerConfigDTO>) xstream.fromXML(s);
-                List<ServerConfig> r = new ArrayList<ServerConfig>();
-                for (ServerConfigDTO scDTO : a) {
+                List<ServerConfig> r = new ArrayList<>();
+                for (ServerConfigDTO scDTO : a)
                     r.add(scDTO.getInstance());
-                }
                 return r;
             }
         } catch (Exception e) {
@@ -89,26 +88,17 @@ public class ConnectionManager {
     }
 
     public static boolean execute(String sql, Connection conn) {
-        Statement st = null;
-        try {
-            st = conn.createStatement();
+        try (Statement st = conn.createStatement()) {
             st.execute(sql);
             return true;
         } catch (SQLException sqe) {
             LOG.log(Level.WARNING, "error running sql:\r\n" + sql, sqe);
-        } finally {
-            try {
-                if (st != null) st.close();
-            } catch (SQLException e) {
-            }
         }
         return false;
     }
 
     public static CachedRowSet executeQuery(ServerConfig serverConfig, String sql, Connection conn) throws SQLException {
-        Statement st = null;
-        try {
-            st = conn.createStatement();
+        try (Statement st = conn.createStatement()) {
             String pre = serverConfig.isKDB() ? "q)" : "";
             ResultSet rs = st.executeQuery(pre + sql);
             CachedRowSet crs = javax.sql.rowset.RowSetProvider.newFactory().createCachedRowSet();
@@ -117,11 +107,6 @@ public class ConnectionManager {
         } catch (SQLException sqe) {
             LOG.warning("Error running sql:\r\n" + sql);
             throw sqe;
-        } finally {
-            try {
-                if (st != null) st.close();
-            } catch (SQLException e) {
-            }
         }
     }
 
@@ -132,13 +117,13 @@ public class ConnectionManager {
     }
 
     public List<ServerConfig> getServerConnections() {
-        List<ServerConfig> r = new ArrayList<ServerConfig>(this.readonlyServerConnections);
-        Comparator<ServerConfig> alphabetOrder = new Comparator<ServerConfig>() {
+        List<ServerConfig> r = new ArrayList<>(this.readonlyServerConnections);
+        Comparator<ServerConfig> alphabetOrder = new Comparator<>() {
             public int compare(ServerConfig sc1, ServerConfig sc2) {
                 return sc1.getName().compareTo(sc2.getName());
             }
         };
-        Collections.sort(r, alphabetOrder);
+        r.sort(alphabetOrder);
         return r;
     }
 
@@ -173,10 +158,10 @@ public class ConnectionManager {
         this.notifyListeners();
     }
 
-    public List<ServerConfig> addServer(List<ServerConfig> connections) {
+    public void addServer(List<ServerConfig> connections) {
         this.reloadFromPreferences();
         Preconditions.checkNotNull(connections);
-        List<ServerConfig> failedConfigs = new ArrayList<ServerConfig>();
+        List<ServerConfig> failedConfigs = new ArrayList<>();
         for (ServerConfig sc : connections) {
             try {
                 this.addServerSilently(sc);
@@ -188,7 +173,6 @@ public class ConnectionManager {
 
         this.save();
         this.notifyListeners();
-        return failedConfigs;
     }
 
     public void updateServer(String oldServerName, ServerConfig serverConnection) {
@@ -198,7 +182,7 @@ public class ConnectionManager {
         }
         LOG.info("updateServer(" + oldServerName + " -> " + serverConnection + ")");
 
-        ServerConfig existingSC = null;
+        ServerConfig existingSC;
         synchronized (this.serverConns) {
             this.reloadFromPreferences();
             existingSC = this.getServer(oldServerName);
@@ -212,9 +196,8 @@ public class ConnectionManager {
         }
         LOG.info("updated server: " + serverConnection);
         this.notifyListeners();
-        if (existingSC == null) {
+        if (existingSC == null)
             throw new IllegalArgumentException("server does not exist already, so can't remove");
-        }
     }
 
     public void moveServer(ServerConfig serverConfig, String folderName) {
@@ -279,7 +262,7 @@ public class ConnectionManager {
         return null;
     }
 
-    public boolean returnConn(ServerConfig serverConfig, Connection conn) {
+    public void returnConn(ServerConfig serverConfig, Connection conn) {
         ObjectPool sp = this.serverConnPool.get(serverConfig);
         if (sp != null && conn != null) {
             try {
@@ -288,12 +271,10 @@ public class ConnectionManager {
                 } else {
                     sp.returnObject(conn);
                 }
-                return true;
             } catch (Exception e) {
                 LOG.log(Level.SEVERE, "error returning object to pool", e);
             }
         }
-        return false;
     }
 
     private Connection getConn(ServerConfig serverConfig) throws IOException {
@@ -380,7 +361,7 @@ public class ConnectionManager {
     }
 
     public void testConnection(ServerConfig serverConfig) throws IOException {
-        boolean connected = false;
+        boolean connected;
 
         Connection conn = this.getConn(serverConfig);
         try {
@@ -414,8 +395,8 @@ public class ConnectionManager {
     }
 
     private void statusUpdate(ServerConfig serverConfig, boolean connected) {
-        Boolean prevVal = this.serverConnected.put(serverConfig, Boolean.valueOf(connected));
-        boolean change = (prevVal == null || !prevVal.equals(Boolean.valueOf(connected)));
+        Boolean prevVal = this.serverConnected.put(serverConfig, connected);
+        boolean change = (prevVal == null || !prevVal.equals(connected));
         if (change) {
             LOG.info(serverConfig.getName() + " Connected = " + connected);
             for (Listener l : this.listeners) {
@@ -432,7 +413,7 @@ public class ConnectionManager {
     public boolean isConnected(ServerConfig sc) {
         if (sc != null) {
             Boolean b = this.serverConnected.get(sc);
-            return b != null && b.booleanValue();
+            return b != null && b;
         }
         return false;
     }
@@ -610,7 +591,7 @@ public class ConnectionManager {
         for (ServerConfig sc : this.serverConns) {
             if (sc.getFolder().startsWith(fn)) {
                 if (r == null) {
-                    r = new ArrayList<ServerConfig>();
+                    r = new ArrayList<>();
                 }
                 r.add(sc);
             }

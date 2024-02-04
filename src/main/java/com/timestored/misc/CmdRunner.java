@@ -6,6 +6,7 @@ import com.google.common.base.Preconditions;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -16,11 +17,11 @@ public class CmdRunner {
     private static final Logger LOG = Logger.getLogger(CmdRunner.class.getName());
 
     private static final String REG_EXP = "\"(\\\"|[^\"])*?\"|[^ ]+";
-    private static final Pattern PATTERN = Pattern.compile("\"(\\\"|[^\"])*?\"|[^ ]+", 10);
+    private static final Pattern PATTERN = Pattern.compile("\"(\\\"|[^\"])*?\"|[^ ]+", Pattern.CASE_INSENSITIVE | Pattern.MULTILINE);
 
     public static String run(String[] commands, String[] envp, File dir) throws IOException {
         Process p = Runtime.getRuntime().exec(commands, envp, dir);
-        LOG.info("getRuntime().exec " + commands);
+        LOG.info("getRuntime().exec " + Arrays.toString(commands));
         return waitGobbleReturn(p);
     }
 
@@ -73,7 +74,7 @@ public class CmdRunner {
 
         cmd = cmd.trim();
         Matcher matcher = PATTERN.matcher(cmd);
-        List<String> matches = new ArrayList<String>();
+        List<String> matches = new ArrayList<>();
         while (matcher.find()) {
             String s = matcher.group();
             if (s.length() >= 2) {
@@ -85,8 +86,7 @@ public class CmdRunner {
             }
             matches.add(s);
         }
-        String[] parsedCommand = matches.toArray(new String[0]);
-        return parsedCommand;
+        return matches.toArray(new String[0]);
     }
 
     private static class StreamGobbler
@@ -102,7 +102,7 @@ public class CmdRunner {
         public void run() {
             try {
                 BufferedReader br = new BufferedReader(this.isr);
-                String line = null;
+                String line;
                 while ((line = br.readLine()) != null) {
                     this.ps.println(line);
                 }

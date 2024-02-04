@@ -34,7 +34,7 @@ public class KdbExampleChartDB
     }
 
     public List<ExampleChartQuery> getQueries() {
-        List<ExampleChartQuery> l = new ArrayList<ExampleChartQuery>();
+        List<ExampleChartQuery> l = new ArrayList<>();
         for (ViewStrategy vs : ViewStrategyFactory.getStrategies()) {
             for (ExampleView ev : vs.getExamples()) {
                 l.add(new ExampleWrapper(ev, vs));

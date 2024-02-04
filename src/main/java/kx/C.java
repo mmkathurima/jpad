@@ -44,7 +44,7 @@ public class C {
 
         nt = new int[]{0, 1, 16, 0, 1, 2, 4, 8, 4, 8, 1, 0, 8, 4, 4, 8, 8, 4, 4, 4};
 
-        NULL = new Object[]{null, Boolean.FALSE, new UUID(0L, 0L), null, Byte.valueOf((byte) 0), -32768, Integer.valueOf(ni), Long.valueOf(nj), new Float(nf), new Double(nf), new Character(' '), "", new Timestamp(nj), new Month(ni), new Date(nj), new Date(nj), new Timespan(nj), new Minute(ni), new Second(ni), new Time(nj)};
+        NULL = new Object[]{null, Boolean.FALSE, new UUID(0L, 0L), null, (byte) 0, -32768, ni, nj, (float) nf, nf, ' ', "", new Timestamp(nj), new Month(ni), new Date(nj), new Date(nj), new Timespan(nj), new Minute(ni), new Second(ni), new Time(nj)};
     }
 
     public Socket s;
@@ -76,7 +76,7 @@ public class C {
             throw new IOException("access");
         }
         this.vt = (n > 1) ? this.b[n - 2] : 0;
-        this.b[0] = (byte) ((this.vt < 3) ? this.vt : 3);
+        this.b[0] = (byte) (Math.min(this.vt, 3));
         this.o.write(this.b, 0, 1);
     }
 
@@ -235,7 +235,7 @@ public class C {
     }
 
     private void u() {
-        int n = 0, r = 0, f = 0, s = 8, p = s;
+        int n = 0, r, f = 0, s = 8, p = s;
         short i = 0;
         this.j = 0;
         byte[] dst = new byte[this.ri()];
@@ -474,23 +474,23 @@ public class C {
         int t = this.b[this.j++];
         if (t < 0) switch (t) {
             case -1:
-                return Boolean.valueOf(this.rb());
+                return this.rb();
             case -2:
                 return this.rg();
             case -4:
-                return Byte.valueOf(this.b[this.j++]);
+                return this.b[this.j++];
             case -5:
-                return Short.valueOf(this.rh());
+                return this.rh();
             case -6:
-                return Integer.valueOf(this.ri());
+                return this.ri();
             case -7:
-                return Long.valueOf(this.rj());
+                return this.rj();
             case -8:
-                return new Float(this.re());
+                return this.re();
             case -9:
-                return new Double(this.rf());
+                return this.rf();
             case -10:
-                return new Character(this.rc());
+                return this.rc();
             case -11:
                 return this.rs();
             case -12:
@@ -529,22 +529,22 @@ public class C {
                 return null;
             }
             if (t == 104) {
-                String s = "";
+                StringBuilder s = new StringBuilder();
                 boolean first = true;
                 for (int j = this.ri(); i < j; i++) {
                     Object o = this.r();
                     if (o instanceof char[]) o = new String((char[]) o);
-                    s = s + o;
+                    s.append(o);
                     if (first) {
                         first = false;
-                        s = s + "[";
+                        s.append("[");
                     } else if (i != j - 1) {
-                        s = s + ";";
+                        s.append(";");
                     } else {
-                        s = s + "]";
+                        s.append("]");
                     }
                 }
-                return s.toCharArray();
+                return s.toString().toCharArray();
             }
             if (t == 101 && this.b[this.j] == -1) {
                 this.j++;
@@ -701,8 +701,6 @@ public class C {
                 this.w((Month) x);
                 return;
             case -14:
-                this.w((Date) x);
-                return;
             case -15:
                 this.w((Date) x);
                 return;
@@ -988,7 +986,7 @@ public class C {
         }
 
         public int compareTo(Timespan t) {
-            return (this.j > t.j) ? 1 : ((this.j < t.j) ? -1 : 0);
+            return Long.compare(this.j, t.j);
         }
 
         public boolean equals(Object o) {

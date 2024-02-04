@@ -71,7 +71,7 @@ public enum KError {
     private static final Map<String, KError> lookup;
 
     static {
-        lookup = new HashMap<String, KError>();
+        lookup = new HashMap<>();
 
         for (KError e : EnumSet.allOf(KError.class))
             lookup.put(e.sym, e);

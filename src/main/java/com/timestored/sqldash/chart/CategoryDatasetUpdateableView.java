@@ -17,7 +17,7 @@ import java.text.DecimalFormat;
 
 class CategoryDatasetUpdateableView
         implements UpdateableView {
-    private static final Font TINY_FONT = new Font("Times New Roman", 0, 0);
+    private static final Font TINY_FONT = new Font("Times New Roman", Font.PLAIN, 0);
 
     private final ChartPanel chartPanel;
     private final DefaultCategoryDataset dataset;

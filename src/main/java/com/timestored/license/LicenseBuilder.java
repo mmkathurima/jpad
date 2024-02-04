@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class LicenseBuilder {
-    private final List<ProductLicense> productLicenses = new ArrayList<ProductLicense>();
+    private final List<ProductLicense> productLicenses = new ArrayList<>();
     private final String owner;
     private Date startDate;
     private Date endDate;

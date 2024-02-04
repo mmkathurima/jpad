@@ -21,7 +21,7 @@ class CommandPanel
     private static final long serialVersionUID = 1L;
     private final JList list;
     private ChangeListener changeListener;
-    private List<Command> docsShown = new ArrayList<Command>();
+    private List<Command> docsShown = new ArrayList<>();
 
     public CommandPanel() {
         this.setLayout(new BorderLayout());
@@ -65,7 +65,7 @@ class CommandPanel
 
     public void setCommands(Collection<Command> docsShown) {
         LOG.info("setDocsShown");
-        this.docsShown = new ArrayList<Command>(docsShown);
+        this.docsShown = new ArrayList<>(docsShown);
         this.removeAll();
         this.list.setModel(new DefaultComboBoxModel(docsShown.toArray()));
         if (!docsShown.isEmpty()) {

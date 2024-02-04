@@ -72,13 +72,12 @@ public class JEngine {
     }
 
     private void runn(JPadCode code, RunConfig runConfig, RunResult runResult) {
-        File base = null;
+        File base;
         try {
             base = Files.createTempDirectory("").toFile();
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        if (!code.getGradleCode().isEmpty()) ;
         File root = new File(base, "src/main/java");
         LOG.info("root = " + root.getAbsolutePath());
         File sourceFile = new File(root, "io/jpad/scratch/RunnContainer.java");
@@ -102,7 +101,7 @@ public class JEngine {
                 .getJavaFileObjects(sourceFile));
         ExecutorService service = Executors.newFixedThreadPool(20);
         Future<Boolean> result = service.submit(compileTask);
-        boolean compileSuccessful = false;
+        boolean compileSuccessful;
         try {
             compileSuccessful = result.get();
         } catch (InterruptedException | ExecutionException e) {
@@ -186,7 +185,7 @@ public class JEngine {
             try {
                 Files.walk(dir.toPath(), new java.nio.file.FileVisitOption[0])
                         .filter(fn -> fn.getFileName().toString().endsWith(".jpad"))
-                        .forEach(new Consumer<Path>() {
+                        .forEach(new Consumer<>() {
                             public void accept(Path pth) {
                                 try {
                                     RunConfig rc = new RunConfig(IOUtils.toString(pth.toFile()));

@@ -11,7 +11,7 @@ import java.util.List;
 class WorkspaceDTO {
     @XStreamAsAttribute
     public final String title;
-    public final List<WidgetDTO> widgets = new ArrayList<WidgetDTO>();
+    public final List<WidgetDTO> widgets = new ArrayList<>();
     public final String jlayout;
 
     public WorkspaceDTO(WorkspaceModel workspaceModel) {

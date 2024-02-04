@@ -8,7 +8,6 @@ import java.beans.Introspector;
 import java.beans.PropertyDescriptor;
 import java.lang.reflect.Method;
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -64,7 +63,7 @@ class SameObjectCollectionResultSet<T>
 
                     if (sqlType == null) {
 
-                        sqlType = Integer.valueOf(12);
+                        sqlType = 12;
                     }
 
                     if (!m.getName().equals("getClass")) {
@@ -77,7 +76,7 @@ class SameObjectCollectionResultSet<T>
 
                         this.colNames.add(s.startsWith("get") ? s.substring(3) : s);
 
-                        colTypes.add(Integer.valueOf((sqlType != null) ? sqlType.intValue() : 12));
+                        colTypes.add((sqlType != null) ? sqlType : 12);
                     }
                 }
             }
@@ -95,12 +94,12 @@ class SameObjectCollectionResultSet<T>
         return this.caption;
     }
 
-    public ResultSetMetaData getMetaData() throws SQLException {
+    public ResultSetMetaData getMetaData() {
 
         return this.rsmd;
     }
 
-    public Object getObject(int columnIndex) throws SQLException {
+    public Object getObject(int columnIndex) {
 
         Method m = this.methods.get(columnIndex - 1);
 
@@ -118,12 +117,12 @@ class SameObjectCollectionResultSet<T>
         }
     }
 
-    public int findColumn(String columnLabel) throws SQLException {
+    public int findColumn(String columnLabel) {
 
         return 1 + this.colNames.indexOf(columnLabel);
     }
 
-    public Object getObject(int columnIndex, Map<String, Class<?>> map) throws SQLException {
+    public Object getObject(int columnIndex, Map<String, Class<?>> map) {
 
         return null;
     }

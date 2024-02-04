@@ -42,7 +42,7 @@ public class ServerNameComboBox
 
             List<String> displayedNames = this.connMan.getServerNames();
             if (!displayedNames.contains(this.app.getServerName())) {
-                displayedNames = new ArrayList<String>(displayedNames);
+                displayedNames = new ArrayList<>(displayedNames);
                 displayedNames.add(this.app.getServerName());
             }
             String[] items = displayedNames.toArray(new String[0]);

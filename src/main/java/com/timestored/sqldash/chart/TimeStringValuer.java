@@ -16,7 +16,7 @@ public class TimeStringValuer
     private final Map<Class<?>, Format> formatters;
 
     public TimeStringValuer() {
-        this.formatters = new HashMap<Class<?>, Format>();
+        this.formatters = new HashMap<>();
         this.formatters.put(Time.class, new SimpleDateFormat("HH:mm:ss.SSS"));
         this.formatters.put(Date.class, new SimpleDateFormat("yyyy-MM-dd"));
         this.formatters.put(Date.class, new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS"));

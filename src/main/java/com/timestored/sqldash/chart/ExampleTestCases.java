@@ -108,10 +108,10 @@ public class ExampleTestCases {
         cal.setTime(dt);
         while (i < count) {
             for (int j = 0; j < 5 && i < count; j++, i++) {
-                cal.add(5, 1);
+                cal.add(Calendar.DATE, 1);
                 r[i] = new Date(cal.getTimeInMillis());
             }
-            cal.add(5, 2);
+            cal.add(Calendar.DATE, 2);
         }
         return r;
     }

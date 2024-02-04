@@ -19,7 +19,7 @@ class ProductLicense {
     @XStreamAsAttribute
     private final Date endDate;
     @XStreamAsAttribute
-    private final List<FeatureLicense> featureLicenses = new ArrayList<FeatureLicense>();
+    private final List<FeatureLicense> featureLicenses = new ArrayList<>();
 
     ProductLicense(String title, Date endDate, Date startDate) {
         this.title = Preconditions.checkNotNull(title);
@@ -34,11 +34,11 @@ class ProductLicense {
         return this.title;
     }
 
-    boolean addFeature(FeatureLicense fl) {
+    void addFeature(FeatureLicense fl) {
         if (this.getFeatureLicense(fl.getTitle()) != null) {
             throw new IllegalArgumentException("Feature of that name already exists");
         }
-        return this.featureLicenses.add(fl);
+        this.featureLicenses.add(fl);
     }
 
     List<FeatureLicense> getFeatureLicenses() {

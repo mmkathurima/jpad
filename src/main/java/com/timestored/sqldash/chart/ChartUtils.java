@@ -37,8 +37,7 @@ public class ChartUtils {
                     jdbcChartPanel.repaint();
                 }
             });
-        } catch (InterruptedException e) {
-        } catch (InvocationTargetException e) {
+        } catch (InterruptedException | InvocationTargetException e) {
         }
         ChartFormatException cfe = jdbcChartPanel.getLastChartFormatException();
         if (cfe != null) {

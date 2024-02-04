@@ -119,7 +119,7 @@ public class QueryTranslator {
                                 i++;
                             }
                             if (l == null) {
-                                l = new HashSet<String>();
+                                l = new HashSet<>();
                             }
                             l.add(qry.substring(st, i));
                         }
@@ -134,7 +134,7 @@ public class QueryTranslator {
     }
 
     public static Collection<Queryable> filterByKeys(Collection<Queryable> qs, Set<String> keySet) {
-        List<Queryable> r = new ArrayList<Queryable>();
+        List<Queryable> r = new ArrayList<>();
         for (Queryable q : qs) {
             for (String a : keySet) {
                 if (extractArgs(q.getQuery()).contains(a)) {

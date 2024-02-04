@@ -50,22 +50,20 @@ public class HtmlUtils {
 
     public static String getTSPageHead(String title, String subTitleLink, String headContent, boolean withTSFavicon) {
 
-        String s = getHead(title + " - TimeStored.com", headContent + "<link rel=\"shortcut icon\" type=\"image/png\" href=\"http://www.timestored.com/favicon.png\" />") +
+        return getHead(title + " - TimeStored.com", headContent + "<link rel=\"shortcut icon\" type=\"image/png\" href=\"http://www.timestored.com/favicon.png\" />") +
                 "\r\n<div id='wrap'><div id='page'>" +
                 "\r\n<div id='header'><h2>" + subTitleLink + " - " + "<a target='a' href='" + "http://www.timestored.com" + "'>TimeStored.com</a></h2></div>" +
                 "\r\n<div id='main'>";
-        return s;
     }
 
     public static String getTSPageTail(String subTitleLink) {
 
-        String s = "\r\n</div>" +
+        return "\r\n</div>" +
                 "<div id='footer'> <p>&copy; 2013 " +
                 subTitleLink +
                 " | <a target='a' href='http://www.timestored.com'>TimeStored.com</a> | <a target='a' href='" + TimeStored.Page.TRAINING.url() + "'>KDB Training</a>" + " | <a target='a' href='" + TimeStored.Page.CONSULTING.url() + "'>KDB Consulting</a>" + " | <a target='a' href='" + TimeStored.Page.CONTACT.url() + "'>Contact Us</a></p>" + "</div>" +
                 "\r\n</div></div>\r\n" +
                 "</body></html>";
-        return s;
     }
 
     public static String toList(List<String> items) {
@@ -99,7 +97,7 @@ public class HtmlUtils {
 
     private static String expandMapToHtml(Map<String, String> smap, boolean hideEmpty, String preKey, String postKey, String preVal, String postVal) {
         StringBuilder sb = new StringBuilder();
-        List<String> keyList = new ArrayList<String>(smap.keySet());
+        List<String> keyList = new ArrayList<>(smap.keySet());
         Collections.sort(keyList);
 
         for (String key : keyList) {
@@ -134,18 +132,14 @@ public class HtmlUtils {
         return htmlDoc.substring(st + b.length(), end);
     }
 
-    public static boolean browse(String url) {
+    public static void browse(String url) {
         if (browseSupported) {
             try {
                 Desktop.getDesktop().browse(new URI(url));
-                return true;
-            } catch (IOException e) {
-                LOG.log(Level.WARNING, "couldn't open browser", e);
-            } catch (URISyntaxException e) {
+            } catch (IOException | URISyntaxException e) {
                 LOG.log(Level.WARNING, "couldn't open browser", e);
             }
         }
-        return false;
     }
 
     public static boolean isBrowseSupported() {

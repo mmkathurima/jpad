@@ -18,9 +18,9 @@ public class DesktopModel {
 
     private static int workspaceCounter = 1;
 
-    private final Map<String, Object> argMap = new ConcurrentHashMap<String, Object>();
-    private final List<DesktopModelListener> listeners = new CopyOnWriteArrayList<DesktopModelListener>();
-    private final List<WorkspaceModel> workspaces = new CopyOnWriteArrayList<WorkspaceModel>();
+    private final Map<String, Object> argMap = new ConcurrentHashMap<>();
+    private final List<DesktopModelListener> listeners = new CopyOnWriteArrayList<>();
+    private final List<WorkspaceModel> workspaces = new CopyOnWriteArrayList<>();
     private final ConnectionManager connMan;
     private WorkspaceModel selectedWorkspace;
     private String title = "Untitled";
@@ -85,7 +85,7 @@ public class DesktopModel {
         } else {
             this.argMap.put(key, value);
         }
-        Map<String, Object> m = new HashMap<String, Object>(1);
+        Map<String, Object> m = new HashMap<>(1);
         m.put(key, value);
         for (DesktopModelListener l : this.listeners) {
             l.argChange(m);
@@ -139,11 +139,11 @@ public class DesktopModel {
         return workspaceModel;
     }
 
-    public WorkspaceModel addWorkspace() {
-        return this.addWorkspace("Untitled " + workspaceCounter++);
+    public void addWorkspace() {
+        this.addWorkspace("Untitled " + workspaceCounter++);
     }
 
-    public boolean remove(WorkspaceModel workspaceModel) {
+    public void remove(WorkspaceModel workspaceModel) {
         boolean removed = this.workspaces.remove(workspaceModel);
         if (removed) {
             if (this.workspaces.size() == 0) {
@@ -151,17 +151,15 @@ public class DesktopModel {
             }
             this.setSelectedWorkspace(this.workspaces.get(0));
         }
-
-        return removed;
     }
 
     public void add(Widget widget) {
         this.selectedWorkspace.addApp(widget);
     }
 
-    public boolean remove(Widget widget) {
+    public void remove(Widget widget) {
         LOG.info("remove: " + widget);
-        return this.selectedWorkspace.removeApp(widget);
+        this.selectedWorkspace.removeApp(widget);
     }
 
     public void addListener(DesktopModelListener listener) {
@@ -199,7 +197,7 @@ public class DesktopModel {
     }
 
     public Collection<Queryable> getQueryables() {
-        Collection<Queryable> r = new ArrayList<Queryable>();
+        Collection<Queryable> r = new ArrayList<>();
         for (WorkspaceModel wsm : this.workspaces) {
             r.addAll(wsm.getQueryables());
         }

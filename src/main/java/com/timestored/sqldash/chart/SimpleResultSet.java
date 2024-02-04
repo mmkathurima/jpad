@@ -21,7 +21,7 @@ public class SimpleResultSet
         this.colNames = colNames;
         this.colValues = colValues;
 
-        int[] types = null;
+        int[] types;
         if (colValues.length == 0) {
             types = new int[colNames.length];
             Arrays.fill(types, 12);
@@ -65,16 +65,16 @@ public class SimpleResultSet
         return r;
     }
 
-    public boolean absolute(int row) throws SQLException {
+    public boolean absolute(int row) {
         this.idx = row - 1;
         return true;
     }
 
-    public void beforeFirst() throws SQLException {
+    public void beforeFirst() {
         this.idx = -1;
     }
 
-    public void afterLast() throws SQLException {
+    public void afterLast() {
         if (this.colValues.length > 0) {
             this.idx = Array.getLength(this.colValues[0]) + 1;
         }
@@ -89,44 +89,44 @@ public class SimpleResultSet
         throw new SQLException();
     }
 
-    public boolean first() throws SQLException {
+    public boolean first() {
         this.idx = 0;
         return true;
     }
 
-    public ResultSetMetaData getMetaData() throws SQLException {
+    public ResultSetMetaData getMetaData() {
         return this.resultSetMetaData;
     }
 
-    public Object getObject(int columnIndex) throws SQLException {
+    public Object getObject(int columnIndex) {
         return Array.get(this.colValues[columnIndex - 1], this.idx);
     }
 
-    public Object getObject(int columnIndex, Map<String, Class<?>> map) throws SQLException {
+    public Object getObject(int columnIndex, Map<String, Class<?>> map) {
         throw new UnsupportedOperationException();
     }
 
-    public int getRow() throws SQLException {
+    public int getRow() {
         return this.idx;
     }
 
-    public boolean isAfterLast() throws SQLException {
+    public boolean isAfterLast() {
         return (this.idx >= this.colNames.length);
     }
 
-    public boolean isBeforeFirst() throws SQLException {
+    public boolean isBeforeFirst() {
         return (this.idx < 0);
     }
 
-    public boolean isFirst() throws SQLException {
+    public boolean isFirst() {
         return (this.idx == 0);
     }
 
-    public boolean isLast() throws SQLException {
+    public boolean isLast() {
         return (this.idx == this.colNames.length - 1);
     }
 
-    public boolean last() throws SQLException {
+    public boolean last() {
         if (this.colValues.length > 0) {
             this.idx = Array.getLength(this.colValues[0]);
             return true;
@@ -134,12 +134,12 @@ public class SimpleResultSet
         return false;
     }
 
-    public boolean next() throws SQLException {
+    public boolean next() {
         this.idx++;
         return (this.colValues.length > 0 && this.idx < Array.getLength(this.colValues[0]));
     }
 
-    public boolean previous() throws SQLException {
+    public boolean previous() {
         this.idx--;
         return (this.idx >= 0);
     }

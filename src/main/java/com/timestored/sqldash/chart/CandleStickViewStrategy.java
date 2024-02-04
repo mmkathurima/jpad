@@ -191,9 +191,8 @@ public enum CandleStickViewStrategy
                 plot.setOrientation(PlotOrientation.VERTICAL);
 
                 JFreeChart chart = new JFreeChart("", JFreeChart.DEFAULT_TITLE_FONT, plot, false);
-                ChartPanel cp = new ChartPanel(theme.apply(chart));
 
-                return cp;
+                return new ChartPanel(theme.apply(chart));
             }
         });
     }

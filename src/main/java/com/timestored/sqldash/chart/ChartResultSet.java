@@ -108,10 +108,8 @@ class ChartResultSet {
     }
 
     public StringyCol getRowLabels() {
-        List<Object> objList = new ArrayList(this.rowLabels.size());
-        for (String s : this.rowLabels) {
-            objList.add(s);
-        }
+        List<Object> objList = new ArrayList<>(this.rowLabels.size());
+        objList.addAll(this.rowLabels);
         return new StringyCol(this.rowTitle, 12, objList);
     }
 

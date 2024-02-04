@@ -20,7 +20,7 @@ public class CommandSplitPane
     private Color bgColor;
 
     public CommandSplitPane() {
-        super(1, true);
+        super(JSplitPane.HORIZONTAL_SPLIT, true);
 
         this.commandPanel = new CommandPanel();
         this.detailsPanel = new DetailsPanel();
@@ -32,11 +32,7 @@ public class CommandSplitPane
         this.setRightComponent(this.detailsPanel);
         this.setResizeWeight(0.33D);
 
-        this.commandPanel.setChangeListener(new ChangeListener() {
-            public void changedTo(Command command) {
-                CommandSplitPane.this.detailsPanel.displayDoc(command);
-            }
-        });
+        this.commandPanel.setChangeListener(CommandSplitPane.this.detailsPanel::displayDoc);
     }
 
     public void moveDown() {
@@ -85,7 +81,7 @@ public class CommandSplitPane
         p.setScrollableTracksViewportWidth(true);
         p.setScrollableWidthHint(ScrollableSizeHint.FIT);
 
-        JScrollPane scrollPane = new JScrollPane(txtPane, 22, 31);
+        JScrollPane scrollPane = new JScrollPane(txtPane, ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS, ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
 
         txtPane.setCaretPosition(0);
 

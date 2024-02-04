@@ -58,11 +58,7 @@ public class FinanceDemoFrame
             }
         });
 
-        financeDataDemo.setListener(new DemoListener() {
-            public void message(String s) {
-                FinanceDemoFrame.this.sTextArea.appendMessage(s);
-            }
-        });
+        financeDataDemo.setListener(FinanceDemoFrame.this.sTextArea::appendMessage);
         this.pack();
     }
 

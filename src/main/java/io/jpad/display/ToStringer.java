@@ -68,9 +68,8 @@ public class ToStringer {
 
                 s = vs(k, forTable, singleLine);
             }
-        } catch (ClassCastException e) {
+        } catch (ClassCastException | IllegalArgumentException e) {
 
-        } catch (IllegalArgumentException e) {
         }
 
         return s;
@@ -89,12 +88,12 @@ public class ToStringer {
 
         if (a.length > 0) {
 
-            s.append(format(Integer.valueOf(a[0])));
+            s.append(format(a[0]));
         }
 
         for (int i = 1; i < a.length && s.length() < 1000; i++) {
 
-            s.append(",").append(format(Integer.valueOf(a[i])));
+            s.append(",").append(format(a[i]));
         }
 
         return doEnding(s);
@@ -120,12 +119,12 @@ public class ToStringer {
 
         if (a.length > 0) {
 
-            s.append(format(Short.valueOf(a[0])));
+            s.append(format(a[0]));
         }
 
         for (int i = 1; i < a.length && s.length() < 1000; i++) {
 
-            s.append(",").append(format(Short.valueOf(a[i])));
+            s.append(",").append(format(a[i]));
         }
 
         return doEnding(s);
@@ -158,12 +157,12 @@ public class ToStringer {
 
         if (a.length > 0) {
 
-            s.append(format(Byte.valueOf(a[0])));
+            s.append(format(a[0]));
         }
 
         for (int i = 1; i < a.length && s.length() < 1000; i++) {
 
-            s.append(",").append(format(Byte.valueOf(a[i])));
+            s.append(",").append(format(a[i]));
         }
 
         return doEnding(s);
@@ -177,12 +176,12 @@ public class ToStringer {
 
         if (a.length > 0) {
 
-            s.append(format(Long.valueOf(a[0])));
+            s.append(format(a[0]));
         }
 
         for (int i = 1; i < a.length && s.length() < 1000; i++) {
 
-            s.append(",").append(format(Long.valueOf(a[i])));
+            s.append(",").append(format(a[i]));
         }
 
         return doEnding(s);
@@ -196,12 +195,12 @@ public class ToStringer {
 
         if (a.length > 0) {
 
-            s.append(format(Float.valueOf(a[0])));
+            s.append(format(a[0]));
         }
 
         for (int i = 1; i < a.length && s.length() < 1000; i++) {
 
-            s.append(",").append(format(Float.valueOf(a[i])));
+            s.append(",").append(format(a[i]));
         }
 
         return doEnding(s);
@@ -215,12 +214,12 @@ public class ToStringer {
 
         if (a.length > 0) {
 
-            s.append(format(Double.valueOf(a[0])));
+            s.append(format(a[0]));
         }
 
         for (int i = 1; i < a.length && s.length() < 1000; i++) {
 
-            s.append(",").append(format(Double.valueOf(a[i])));
+            s.append(",").append(format(a[i]));
         }
 
         return s.append("}").toString();
@@ -285,9 +284,6 @@ public class ToStringer {
         } else if (k instanceof Character) {
 
             li = forTable ? k.toString() : ("\"" + k + "\"");
-        } else if (k instanceof String[]) {
-
-            li = flatten((String[]) k);
         } else if (k instanceof char[]) {
 
             li = new String((char[]) k);
@@ -388,10 +384,10 @@ public class ToStringer {
 
             if (f.isInfinite()) {
 
-                return (f.equals(Float.valueOf(Float.POSITIVE_INFINITY)) ? "" : "-") + "∞";
+                return (f.equals(Float.POSITIVE_INFINITY) ? "" : "-") + "∞";
             }
 
-            return formatFloatingPt(f.floatValue(), forTable);
+            return formatFloatingPt(f, forTable);
         }
         if (o instanceof Double) {
 
@@ -399,10 +395,10 @@ public class ToStringer {
 
             if (d.isInfinite()) {
 
-                return (d.equals(Double.valueOf(Double.POSITIVE_INFINITY)) ? "" : "-") + "∞";
+                return (d.equals(Double.POSITIVE_INFINITY) ? "" : "-") + "∞";
             }
 
-            return formatFloatingPt(((Double) o).doubleValue(), forTable);
+            return formatFloatingPt(d, forTable);
         }
         if (o != null && TIME_VALUER.isSupported(o.getClass())) {
 
@@ -424,7 +420,7 @@ public class ToStringer {
             return NUM_FORMAT.format(d);
         }
 
-        String tmp = String.format(formatString, Double.valueOf(d));
+        String tmp = String.format(formatString, d);
 
         int dotPos = tmp.lastIndexOf(".");
 

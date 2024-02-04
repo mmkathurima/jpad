@@ -35,7 +35,6 @@ import org.simplericity.macify.eawt.ApplicationEvent;
 import javax.swing.*;
 import javax.swing.event.MenuEvent;
 import javax.swing.event.MenuListener;
-import javax.swing.filechooser.FileSystemView;
 import java.awt.BorderLayout;
 import java.awt.Component;
 import java.awt.Insets;
@@ -47,7 +46,6 @@ import java.awt.event.WindowEvent;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -123,7 +121,7 @@ public class JPadFrame
             egDir = new File("C:\\Program Files (x86)\\TimeStored.com\\JPad\\examples");
         }
         DefaultDockable egFileTreeDockable = this.getFilePanel(egDir, Msg.get(Msg.Key.EXAMPLE_SCRIPTS), false);
-        JPadConfig.SCRIPTS_FOLDER = Path.of(FileSystemView.getFileSystemView().getDefaultDirectory().getPath(), "EspressoPad").toFile();
+        //JPadConfig.SCRIPTS_FOLDER = Path.of(FileSystemView.getFileSystemView().getDefaultDirectory().getPath(), "EspressoPad").toFile();
         if (!JPadConfig.SCRIPTS_FOLDER.exists()) {
             try {
                 Files.createDirectory(JPadConfig.SCRIPTS_FOLDER.toPath());
@@ -151,7 +149,7 @@ public class JPadFrame
             }
         }
 
-        DefaultDockable generatedCodeDockable = null;
+        DefaultDockable generatedCodeDockable;
 
         generatedCodeDockable = this.addRenderer(Msg.get(Msg.Key.FILE), new GeneratedCodePanel());
 
@@ -191,7 +189,7 @@ public class JPadFrame
 
         List<Dockable> outputGrp = Lists.newArrayList(new Dockable[]{htmlDockable, consoleDockable, chartResultDockable, javapDockable, generatedCodeDockable});
         outputGrp.addAll(pluggedinDockables);
-        SplitDockTree<Dockable>.Key consoleGroup = this.putTree(tree, outputGrp.toArray(new Dockable[outputGrp.size()]));
+        SplitDockTree<Dockable>.Key consoleGroup = this.putTree(tree, outputGrp.toArray(new Dockable[0]));
         SplitDockTree<Dockable>.Key editorTree = tree.vertical(docsGroup, consoleGroup, 0.75D);
 
         SplitDockTree<Dockable>.Key root = editorTree;
@@ -326,7 +324,7 @@ public class JPadFrame
     }
 
     private boolean isWindows() {
-        return (System.getProperty("os.name").toLowerCase().indexOf("win") >= 0);
+        return (System.getProperty("os.name").toLowerCase().contains("win"));
     }
 
     private DefaultDockable getFilePanel(File exampleRoot, String uniqTitle, boolean rightClickMenuShown) {

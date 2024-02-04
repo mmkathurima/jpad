@@ -5,10 +5,10 @@ import com.google.common.collect.Lists;
 import com.timestored.sqldash.chart.BaseResultSet;
 
 import java.sql.ResultSetMetaData;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public class EmptyResultSet
         extends BaseResultSet
@@ -30,17 +30,12 @@ public class EmptyResultSet
 
         this.keyColumns = keyColumns;
 
-        List<Integer> types = Lists.newArrayListWithCapacity(colNames.length);
-
-        for (String c : colNames) {
-
-            types.add(Integer.valueOf(12));
-        }
+        List<Integer> types = Arrays.stream(colNames).map(c -> 12).collect(Collectors.toCollection(() -> Lists.newArrayListWithCapacity(colNames.length)));
 
         this.rsmd = new SimpleResultSetMetaData(Arrays.asList(colNames), types);
     }
 
-    public ResultSetMetaData getMetaData() throws SQLException {
+    public ResultSetMetaData getMetaData() {
         return this.rsmd;
     }
 
@@ -52,64 +47,63 @@ public class EmptyResultSet
         return this.caption;
     }
 
-    public void afterLast() throws SQLException {
+    public void afterLast() {
     }
 
-    public boolean absolute(int row) throws SQLException {
-
+    public boolean absolute(int row) {
         return false;
     }
 
-    public void beforeFirst() throws SQLException {
+    public void beforeFirst() {
     }
 
-    public int findColumn(String columnLabel) throws SQLException {
+    public int findColumn(String columnLabel) {
 
         return 0;
     }
 
-    public boolean first() throws SQLException {
+    public boolean first() {
         return false;
     }
 
-    public Object getObject(int columnIndex) throws SQLException {
+    public Object getObject(int columnIndex) {
 
         return null;
     }
 
-    public Object getObject(int columnIndex, Map<String, Class<?>> map) throws SQLException {
+    public Object getObject(int columnIndex, Map<String, Class<?>> map) {
         return null;
     }
 
-    public int getRow() throws SQLException {
+    public int getRow() {
         return 0;
     }
 
-    public boolean isAfterLast() throws SQLException {
+    public boolean isAfterLast() {
         return false;
     }
 
-    public boolean isBeforeFirst() throws SQLException {
+    public boolean isBeforeFirst() {
         return false;
     }
 
-    public boolean isFirst() throws SQLException {
+    public boolean isFirst() {
         return false;
     }
 
-    public boolean isLast() throws SQLException {
+    public boolean isLast() {
         return false;
     }
 
-    public boolean last() throws SQLException {
+    public boolean last() {
         return false;
     }
 
-    public boolean next() throws SQLException {
+    public boolean next() {
         return false;
     }
 
-    public boolean previous() throws SQLException {
+    public boolean previous() {
 
         return false;
     }

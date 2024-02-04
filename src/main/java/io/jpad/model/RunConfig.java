@@ -3,6 +3,7 @@ package io.jpad.model;
 import java.beans.ConstructorProperties;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 public class RunConfig {
@@ -12,8 +13,6 @@ public class RunConfig {
 
     @ConstructorProperties({"rawCode", "args"})
     public RunConfig(String rawCode, String[] args) {
-
-        this.args = new String[0];
 
         this.listeners = new CopyOnWriteArrayList<>();
 
@@ -37,7 +36,7 @@ public class RunConfig {
     }
 
     public void setRawCode(String rawCode) {
-        if (this.rawCode != rawCode) {
+        if (!Objects.equals(this.rawCode, rawCode)) {
 
             this.rawCode = rawCode;
 
@@ -60,8 +59,8 @@ public class RunConfig {
         }
     }
 
-    public boolean addListener(Listener listener) {
-        return this.listeners.add(listener);
+    public void addListener(Listener listener) {
+        this.listeners.add(listener);
     }
 
     public boolean removeListener(Listener listener) {

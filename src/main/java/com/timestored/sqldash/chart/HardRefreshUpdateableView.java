@@ -25,11 +25,10 @@ class HardRefreshUpdateableView
         Component c = this.viewGetter.getView(resultSet, chartResultSet);
 
         if (c != null) {
-            Component com = c;
             EventQueue.invokeLater(new Runnable() {
                 public void run() {
                     HardRefreshUpdateableView.this.panel.removeAll();
-                    HardRefreshUpdateableView.this.panel.add(com, "Center");
+                    HardRefreshUpdateableView.this.panel.add(c, "Center");
                     HardRefreshUpdateableView.this.panel.revalidate();
                 }
             });

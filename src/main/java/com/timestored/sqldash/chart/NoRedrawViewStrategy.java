@@ -19,7 +19,7 @@ public enum NoRedrawViewStrategy
 
     public UpdateableView getView(ChartTheme theme) {
         return new UpdateableView() {
-            public void update(ResultSet rs, ChartResultSet chartResultSet) throws ChartFormatException {
+            public void update(ResultSet rs, ChartResultSet chartResultSet) {
             }
 
             public Component getComponent() {

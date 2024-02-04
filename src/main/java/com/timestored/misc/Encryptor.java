@@ -1,7 +1,6 @@
 package com.timestored.misc;
 
 import javax.crypto.Cipher;
-import javax.crypto.IllegalBlockSizeException;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -13,10 +12,7 @@ public class Encryptor {
         try {
             Cipher ecipher = Cipher.getInstance("DES");
             ecipher.init(1, getKey(keyString));
-            byte[] enc = ecipher.doFinal(utf8);
-            return enc;
-        } catch (IllegalBlockSizeException e) {
-            throw new IOException(e);
+            return ecipher.doFinal(utf8);
         } catch (GeneralSecurityException e) {
             throw new IOException(e);
         }
@@ -28,8 +24,7 @@ public class Encryptor {
 
     private static Key getKey(String keyString) throws IOException {
         byte[] p = Base64.decode(keyString);
-        Key key = new SecretKeySpec(p, 0, p.length, "DES");
-        return key;
+        return new SecretKeySpec(p, 0, p.length, "DES");
     }
 
     public static byte[] decrypt(byte[] dec, String keyString) throws IOException {
@@ -37,8 +32,6 @@ public class Encryptor {
             Cipher dcipher = Cipher.getInstance("DES");
             dcipher.init(2, getKey(keyString));
             return dcipher.doFinal(dec);
-        } catch (IllegalBlockSizeException e) {
-            throw new IOException(e);
         } catch (GeneralSecurityException e) {
             throw new IOException(e);
         }

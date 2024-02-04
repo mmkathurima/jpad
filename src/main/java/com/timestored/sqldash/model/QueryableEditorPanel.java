@@ -151,7 +151,7 @@ public class QueryableEditorPanel
 
     private static class RefreshRateComboBoxModel
             extends ListComboBoxModel<String> {
-        private static final List<String> L = new ArrayList<String>();
+        private static final List<String> L = new ArrayList<>();
         private static final List<Integer> VALS = Lists.newArrayList(0, 100, 1000, 10000, 60000, -1);
 
         static {
@@ -168,7 +168,7 @@ public class QueryableEditorPanel
         }
 
         public void setSelectedRefreshRate(int refreshPeriod) {
-            int idx = VALS.indexOf(Integer.valueOf(refreshPeriod));
+            int idx = VALS.indexOf(refreshPeriod);
             if (idx > -1 && idx < L.size()) {
                 String s = L.get(idx);
                 if (s != null) {
@@ -179,7 +179,7 @@ public class QueryableEditorPanel
 
         public int getRefreshRate() {
             int index = L.indexOf(this.getSelectedItem());
-            return VALS.get(index).intValue();
+            return VALS.get(index);
         }
     }
 }

@@ -16,7 +16,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
 class WCheckboxWListSelector
         extends AbstractWListSelector {
     private static final long serialVersionUID = 1L;
-    private final List<JCheckBox> checkboxes = new CopyOnWriteArrayList<JCheckBox>();
+    private final List<JCheckBox> checkboxes = new CopyOnWriteArrayList<>();
     private JPanel p;
 
     public WCheckboxWListSelector(ListSelectionWidget lsw, DesktopModel desktopModel) {
@@ -26,7 +26,7 @@ class WCheckboxWListSelector
 
     public JPanel getInputComponent(DesktopModel desktopModel) {
         this.p = new JPanel();
-        this.p.setLayout(new BoxLayout(this.p, 3));
+        this.p.setLayout(new BoxLayout(this.p, BoxLayout.PAGE_AXIS));
         return this.p;
     }
 
@@ -55,7 +55,7 @@ class WCheckboxWListSelector
                 JCheckBox cb = new JCheckBox(v);
                 cb.addActionListener(new ActionListener() {
                     public void actionPerformed(ActionEvent e) {
-                        List<String> r = new ArrayList<String>();
+                        List<String> r = new ArrayList<>();
                         for (JCheckBox cb : WCheckboxWListSelector.this.checkboxes) {
                             if (cb.isSelected()) {
                                 r.add(cb.getText());

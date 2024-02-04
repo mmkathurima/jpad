@@ -30,7 +30,7 @@ public class AboutDialog
 
         Container cp = this.getContentPane();
 
-        cp.setLayout(new BoxLayout(cp, 3));
+        cp.setLayout(new BoxLayout(cp, BoxLayout.PAGE_AXIS));
         cp.add(logoPanel);
         cp.add(timestoredLinkPanel);
 

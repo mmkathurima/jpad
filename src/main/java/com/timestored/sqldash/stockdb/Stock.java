@@ -38,7 +38,7 @@ public class Stock {
     }
 
     public Double getPrice() {
-        return Double.valueOf(this.price);
+        return this.price;
     }
 
     public long getVolume() {

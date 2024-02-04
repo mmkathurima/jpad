@@ -7,10 +7,10 @@ import java.util.List;
 
 public class CommandManager
         implements CommandProvider {
-    private final List<CommandProvider> providers = new ArrayList<CommandProvider>();
+    private final List<CommandProvider> providers = new ArrayList<>();
 
     public static Collection<Command> toCommands(List<Action> actions) {
-        List<Command> cs = new ArrayList<Command>();
+        List<Command> cs = new ArrayList<>();
         for (Action a : actions) {
             cs.add(new ActionCommand(a));
         }
@@ -22,7 +22,7 @@ public class CommandManager
     }
 
     public Collection<Command> getCommands() {
-        List<Command> r = new ArrayList<Command>();
+        List<Command> r = new ArrayList<>();
         for (CommandProvider cp : this.providers) {
             r.addAll(cp.getCommands());
         }

@@ -82,7 +82,7 @@ public class StockDBAdapter
     }
 
     public List<ExampleChartQuery> getQueries() {
-        List<ExampleChartQuery> qs = new ArrayList<ExampleChartQuery>();
+        List<ExampleChartQuery> qs = new ArrayList<>();
         qs.add(new MyExampleChartQuery("Market Cap Volume", HeatMapViewStrategy.INSTANCE, this.dbConfig.getMarketCapVolSQL()));
         qs.add(new MyExampleChartQuery("Amazon 60 Day History", CandleStickViewStrategy.INSTANCE, this.dbConfig.getOhlcSQL("AMZN", 60)));
         qs.add(new MyExampleChartQuery("Amazon Adjusted Price History", TimeseriesViewStrategy.INSTANCE, this.dbConfig.getSelectAdjPriceHistorySql("AMZN")));

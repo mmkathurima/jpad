@@ -36,12 +36,12 @@ class DiffObjectCollectionResultSet<T>
         return this.caption;
     }
 
-    public ResultSetMetaData getMetaData() throws SQLException {
+    public ResultSetMetaData getMetaData() {
 
         return this.rsmd;
     }
 
-    public Object getObject(int columnIndex) throws SQLException {
+    public Object getObject(int columnIndex) {
 
         Object o = this.l.get(this.i);
 
@@ -58,7 +58,7 @@ class DiffObjectCollectionResultSet<T>
         throw new SQLException("unknown columnLabel");
     }
 
-    public Object getObject(int columnIndex, Map<String, Class<?>> map) throws SQLException {
+    public Object getObject(int columnIndex, Map<String, Class<?>> map) {
 
         return null;
     }

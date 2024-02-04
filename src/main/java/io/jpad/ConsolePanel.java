@@ -39,7 +39,7 @@ class ConsolePanel
         this.setLayout(new BorderLayout());
 
         this.scText = new ScrollingTextArea(FG_COLOR, Color.BLACK);
-        this.scText.setTextareaFont(new Font("Monospaced", 0, 12));
+        this.scText.setTextareaFont(new Font("Monospaced", Font.PLAIN, 12));
         this.add(this.scText, "Center");
     }
 

@@ -22,7 +22,7 @@ public class JreClassGrabber {
 
     private JreClassGrabber() {
 
-        ClassFinder.findClasses(new Visitor<String>() {
+        ClassFinder.findClasses(new Visitor<>() {
 
             public boolean visit(String c) {
 
@@ -113,26 +113,22 @@ public class JreClassGrabber {
 
     private static String getPackageName(String fullyQualifiedClassName) {
 
-        String s = fullyQualifiedClassName;
+        if (fullyQualifiedClassName.contains(".")) {
 
-        if (s.contains(".")) {
-
-            return s.substring(0, s.lastIndexOf("."));
+            return fullyQualifiedClassName.substring(0, fullyQualifiedClassName.lastIndexOf("."));
         }
 
-        return s;
+        return fullyQualifiedClassName;
     }
 
     public static String getShortName(String fullyQualifiedClassName) {
 
-        String s = fullyQualifiedClassName;
+        if (fullyQualifiedClassName.contains(".")) {
 
-        if (s.contains(".")) {
-
-            return s.substring(1 + s.lastIndexOf("."));
+            return fullyQualifiedClassName.substring(1 + fullyQualifiedClassName.lastIndexOf("."));
         }
 
-        return s;
+        return fullyQualifiedClassName;
     }
 
     public boolean equals(Object o) {

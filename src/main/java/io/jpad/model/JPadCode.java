@@ -99,9 +99,7 @@ public class JPadCode {
                         if (!Modifier.isPublic(cls.getModifiers())) {
                             fullClassName = null;
                         }
-                    } catch (ClassNotFoundException e) {
-                        fullClassName = null;
-                    } catch (NoClassDefFoundError e) {
+                    } catch (ClassNotFoundException | NoClassDefFoundError e) {
                         fullClassName = null;
                     }
                 }
@@ -124,20 +122,12 @@ public class JPadCode {
         if (!(o instanceof JPadCode)) return false;
         JPadCode other = (JPadCode) o;
         if (!other.canEqual(this)) return false;
-        Object this$rawCode = this.rawCode;
-        Object other$rawCode = other.rawCode;
-        if (!Objects.equals(this$rawCode, other$rawCode)) return false;
-        Object this$gradleCode = this.gradleCode;
-        Object other$gradleCode = other.gradleCode;
-        if (!Objects.equals(this$gradleCode, other$gradleCode))
+        if (!Objects.equals(this.rawCode, other.rawCode)) return false;
+        if (!Objects.equals(this.gradleCode, other.gradleCode))
             return false;
-        Set<String> this$userImports = this.userImports;
-        Set<String> other$userImports = other.userImports;
-        if (!Objects.equals(this$userImports, other$userImports))
+        if (!Objects.equals(this.userImports, other.userImports))
             return false;
-        Set<String> this$smartImports = this.smartImports;
-        Set<String> other$smartImports = other.smartImports;
-        if (!Objects.equals(this$smartImports, other$smartImports))
+        if (!Objects.equals(this.smartImports, other.smartImports))
             return false;
         if (!Objects.equals(this.userImportString, other.userImportString))
             return false;
@@ -199,11 +189,10 @@ public class JPadCode {
     public int translateOffset(int newOffsetPosition) {
         int newMainO = this.generateResult.getOffsetToMainInGeneratedCode();
         int newImportO = this.generateResult.getOffsetToNewUserImports();
-        int nop = newOffsetPosition;
-        if (nop >= newMainO && nop < newMainO + this.mainCode.length())
-            return nop - newMainO - this.offsetToOriginalMainCode;
-        if (nop >= newImportO && nop < newImportO + this.userImportString.length()) {
-            return nop - newImportO - this.offsetToOriginalUserImports;
+        if (newOffsetPosition >= newMainO && newOffsetPosition < newMainO + this.mainCode.length())
+            return newOffsetPosition - newMainO - this.offsetToOriginalMainCode;
+        if (newOffsetPosition >= newImportO && newOffsetPosition < newImportO + this.userImportString.length()) {
+            return newOffsetPosition - newImportO - this.offsetToOriginalUserImports;
         }
         throw new IllegalArgumentException("position is before any original import location");
     }
@@ -215,7 +204,7 @@ public class JPadCode {
             s.append("// Smart Imports").append("\r\n");
             this.smartImports.forEach(imp -> s.append("import ").append(imp).append(";").append("\r\n"));
         }
-        int offsetToNewUserImports = s.length();
+        int offsetToNewUserImports;
         if (this.userImports.isEmpty()) {
             s.append("import static io.jpad.japl.Japl.*; import static io.jpad.japl.Predef.*;");
             offsetToNewUserImports = s.length();
@@ -264,9 +253,7 @@ public class JPadCode {
             if (!(o instanceof GenerateResult)) return false;
             GenerateResult other = (GenerateResult) o;
             if (!other.canEqual(this)) return false;
-            Object this$generatedCode = this.generatedCode;
-            Object other$generatedCode = other.generatedCode;
-            return Objects.equals(this$generatedCode, other$generatedCode) && (this.offsetToMainInGeneratedCode == other.offsetToMainInGeneratedCode && (this.offsetToNewUserImports == other.offsetToNewUserImports));
+            return Objects.equals(this.generatedCode, other.generatedCode) && (this.offsetToMainInGeneratedCode == other.offsetToMainInGeneratedCode && (this.offsetToNewUserImports == other.offsetToNewUserImports));
         }
 
         protected boolean canEqual(Object other) {

@@ -50,9 +50,7 @@ public class DasFile {
     }
 
     public DasFile(File dasFile) throws IOException {
-        ZipInputStream zin = null;
-        try {
-            zin = new ZipInputStream(new BufferedInputStream(new FileInputStream(dasFile)));
+        try (ZipInputStream zin = new ZipInputStream(new BufferedInputStream(new FileInputStream(dasFile)))) {
 
             String xml = "";
             ZipEntry ze;
@@ -62,10 +60,6 @@ public class DasFile {
                 }
             }
             this.setFromXml(xml);
-        } finally {
-            if (zin != null) {
-                zin.close();
-            }
         }
     }
 

@@ -86,7 +86,7 @@ public class ChartParams {
     }
 
     public static ChartParams getChartParams(OptionSet o) throws IOException {
-        String qry = "";
+        String qry;
         if (o.has("execute")) {
             qry = "" + o.valueOf("execute");
         } else {
@@ -150,7 +150,7 @@ public class ChartParams {
 
     private static Collection<String> getChartThemes() {
         List<ChartTheme> ts = ViewStrategyFactory.getThemes();
-        Collection<String> r = new ArrayList<String>(ts.size());
+        Collection<String> r = new ArrayList<>(ts.size());
         for (ChartTheme ct : ts) {
             r.add(ct.getTitle().toLowerCase());
         }
@@ -159,7 +159,7 @@ public class ChartParams {
 
     private static Collection<String> getChartTypes() {
         List<ViewStrategy> strats = ViewStrategyFactory.getStrategies();
-        Collection<String> r = new ArrayList<String>(strats.size());
+        Collection<String> r = new ArrayList<>(strats.size());
         for (ViewStrategy v : strats) {
             r.add(v.getDescription().toLowerCase().replace(" ", ""));
         }
@@ -168,16 +168,22 @@ public class ChartParams {
 
     private static JdbcTypes getJdbcType(String s) {
         JdbcTypes stype = null;
-        if (s.equals("kdb")) {
-            stype = JdbcTypes.KDB;
-        } else if (s.equals("mysql")) {
-            stype = JdbcTypes.MYSQL;
-        } else if (s.equals("postgres")) {
-            stype = JdbcTypes.POSTGRES;
-        } else if (s.equals("mssql")) {
-            stype = JdbcTypes.MSSERVER;
-        } else if (s.equals("h2")) {
-            stype = JdbcTypes.H2;
+        switch (s) {
+            case "kdb":
+                stype = JdbcTypes.KDB;
+                break;
+            case "mysql":
+                stype = JdbcTypes.MYSQL;
+                break;
+            case "postgres":
+                stype = JdbcTypes.POSTGRES;
+                break;
+            case "mssql":
+                stype = JdbcTypes.MSSERVER;
+                break;
+            case "h2":
+                stype = JdbcTypes.H2;
+                break;
         }
         return stype;
     }
@@ -185,12 +191,11 @@ public class ChartParams {
     public static String readConsole() throws IOException {
         BufferedReader f = new BufferedReader(new InputStreamReader(System.in));
         StringBuilder sb = new StringBuilder();
-        String s = "";
+        String s;
         while ((s = f.readLine()) != null) {
             sb.append(s);
         }
-        String q = sb.toString();
-        return q;
+        return sb.toString();
     }
 
     public static void printHelpOn(PrintStream out) throws IOException {

@@ -8,7 +8,7 @@ public class JPadConfig {
     public static final String FILE_EXTENSION = "jpad";
     static final String APP_TITLE = "JPad";
     static final File PLUGINS_FOLDER = new File(APP_HOME, "plugins");
-    public static File SCRIPTS_FOLDER = new File(APP_HOME, "scripts");
+    public static final File SCRIPTS_FOLDER = new File(APP_HOME, "scripts");
 }
 
 

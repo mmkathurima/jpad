@@ -35,7 +35,7 @@ public class Console
 
         this.textArea.setEditable(false);
 
-        this.textArea.setFont(new Font("Dialog", 0, 10));
+        this.textArea.setFont(new Font("Dialog", Font.PLAIN, 10));
 
         JButton button = new JButton("Effacer");
 
@@ -73,13 +73,9 @@ public class Console
             PipedOutputStream pout = new PipedOutputStream(this.pin);
 
             System.setOut(new PrintStream(pout, true));
-        } catch (IOException io) {
+        } catch (IOException | SecurityException io) {
 
             this.textArea.append("Couldn't redirect STDOUT to this console\n" + io
-                    .getMessage());
-        } catch (SecurityException se) {
-
-            this.textArea.append("Couldn't redirect STDOUT to this console\n" + se
                     .getMessage());
         }
 
@@ -88,13 +84,9 @@ public class Console
             PipedOutputStream pout2 = new PipedOutputStream(this.pin2);
 
             System.setErr(new PrintStream(pout2, true));
-        } catch (IOException io) {
+        } catch (IOException | SecurityException io) {
 
             this.textArea.append("Couldn't redirect STDERR to this console\n" + io
-                    .getMessage());
-        } catch (SecurityException se) {
-
-            this.textArea.append("Couldn't redirect STDERR to this console\n" + se
                     .getMessage());
         }
 
@@ -177,7 +169,7 @@ public class Console
 
     protected synchronized String readLine(PipedInputStream in) throws IOException {
 
-        String input = "";
+        StringBuilder input = new StringBuilder();
 
         do {
 
@@ -190,10 +182,10 @@ public class Console
 
             in.read(b);
 
-            input = input + new String(b, 0, b.length);
-        } while (!input.endsWith("\n") && !input.endsWith("\r\n") && !this.quit);
+            input.append(new String(b, 0, b.length));
+        } while (!input.toString().endsWith("\n") && !input.toString().endsWith("\r\n") && !this.quit);
 
-        return input;
+        return input.toString();
     }
 
     public void windowOpened(WindowEvent e) {

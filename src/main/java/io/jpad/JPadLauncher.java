@@ -14,7 +14,6 @@ import javax.swing.JDialog;
 import javax.swing.SwingUtilities;
 import java.awt.*;
 import java.io.File;
-import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
 import java.util.Arrays;
@@ -62,16 +61,12 @@ public class JPadLauncher {
 
         SwingUtilities.invokeAndWait(new Runnable() {
             public void run() {
-                try {
-                    launch(args);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                }
+                launch(args);
             }
         });
     }
 
-    private static void launch(String... args) throws IOException {
+    private static void launch(String... args) {
         final String title = "JPad";
 
         AppLaunchHelper.setMacAndWindowsAppearance(title);

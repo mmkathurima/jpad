@@ -14,9 +14,9 @@ import java.util.logging.Logger;
 public class AppModel {
     private static final Logger LOG = Logger.getLogger(AppModel.class.getName());
     private static int desktopCounter = 1;
-    public final List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
+    public final List<Listener> listeners = new CopyOnWriteArrayList<>();
     private final QueryEngine queryEngine;
-    private final Set<DesktopModelListener> openDeskListeners = new HashSet<DesktopModelListener>();
+    private final Set<DesktopModelListener> openDeskListeners = new HashSet<>();
     private DesktopModel selectedDesktopModel;
     private ConnectionManager connMan;
 
@@ -103,11 +103,10 @@ public class AppModel {
         this.setQueryablesToSelectedWorkspace();
     }
 
-    public DesktopModel newDesktop() {
+    public void newDesktop() {
         DesktopModel dm = new DesktopModel(this.connMan);
         dm.setTitle("Unknown Desktop " + desktopCounter++);
         this.changeDesktop(dm);
-        return dm;
     }
 
     public DesktopModel getSelectedDesktopModel() {
@@ -169,14 +168,12 @@ public class AppModel {
         return null;
     }
 
-    public boolean changeToDesktop(DasFile desFileDTO, boolean addConnections) {
+    public void changeToDesktop(DasFile desFileDTO, boolean addConnections) {
         if (addConnections) {
             this.connMan.removeServers();
             this.connMan.addServer(desFileDTO.getConnections());
         }
         this.changeDesktop(new DesktopModel(desFileDTO.getDesktopDTO(), this.connMan));
-
-        return true;
     }
 
     public void startQueryEngine() {

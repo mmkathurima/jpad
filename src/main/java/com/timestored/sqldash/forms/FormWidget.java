@@ -16,7 +16,7 @@ import java.util.Map;
 public class FormWidget
         extends AbstractWidget
         implements Widget {
-    final List<Widget> ws = new ArrayList<Widget>();
+    final List<Widget> ws = new ArrayList<>();
     private int layout = 3;
     private JPanel p;
     private JPanel b;
@@ -185,7 +185,7 @@ public class FormWidget
     }
 
     public Collection<Queryable> getQueryables() {
-        List<Queryable> q = new ArrayList<Queryable>();
+        List<Queryable> q = new ArrayList<>();
         for (Widget w : this.ws) {
             q.addAll(w.getQueryables());
         }

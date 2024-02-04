@@ -11,7 +11,7 @@ public class FifoBuffer<E> {
 
     public FifoBuffer(int limit) {
         this.limit = limit;
-        this.linkList = new LinkedList<E>();
+        this.linkList = new LinkedList<>();
     }
 
     public void addAll(Collection<E> items) {
@@ -35,7 +35,7 @@ public class FifoBuffer<E> {
     }
 
     public List<E> getAll() {
-        return new ArrayList<E>(this.linkList);
+        return new ArrayList<>(this.linkList);
     }
 }
 

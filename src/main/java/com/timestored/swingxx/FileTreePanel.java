@@ -38,7 +38,7 @@ public class FileTreePanel extends JPanel {
     private final TreeMouseListener treeMouseListener;
     private final FileFilter fileFilter;
     private final DirWatch dirWatch;
-    private final FifoBuffer<File> fileCache = new FifoBuffer(1000);
+    private final FifoBuffer<File> fileCache = new FifoBuffer<>(1000);
     private final FileTreeCellRenderer fileTreeCellRenderer;
     private JTree tree;
     private File root;
@@ -46,7 +46,7 @@ public class FileTreePanel extends JPanel {
     private boolean rightClickMenuShown = true;
 
     public FileTreePanel() {
-        this.listeners = new CopyOnWriteArrayList<Listener>();
+        this.listeners = new CopyOnWriteArrayList<>();
         this.fileFilter = IGNORE_SVN_FILTER;
         this.dirWatch = new DirWatch(30100L, this.fileFilter);
         this.setLayout(new BorderLayout());
@@ -56,18 +56,10 @@ public class FileTreePanel extends JPanel {
         this.treeMouseListener = new TreeMouseListener();
         this.addMouseListener(new RefreshTreeMouseListener());
         this.refreshGui();
-        this.dirWatch.addListener(new DirWatch.DirWatchListener() {
-            public void changeOccurred() {
-                FileTreePanel.this.refreshGui();
-            }
-        });
+        this.dirWatch.addListener(FileTreePanel.this::refreshGui);
 
         this.fileTreeCellRenderer = new FileTreeCellRenderer();
-        this.fileTreeCellRenderer.addListener(new FileTreeCellRenderer.Listener() {
-            public void renderedFile(File file) {
-                FileTreePanel.this.fileCache.add(file);
-            }
-        });
+        this.fileTreeCellRenderer.addListener(FileTreePanel.this.fileCache::add);
     }
 
     private static void addChildren(List<File> fs, File[] list, FileFilter fileFilter) {
@@ -82,7 +74,7 @@ public class FileTreePanel extends JPanel {
     }
 
     private static File[] getFiles(FileFilter fileFilter, File f) {
-        File[] files = new File[0];
+        File[] files;
         if (fileFilter == null) {
             files = f.listFiles();
         } else {
@@ -145,7 +137,7 @@ public class FileTreePanel extends JPanel {
                 final String errMsg = "Could not create new File";
                 if (newFileName != null) {
                     File f = new File(nearestDir, newFileName);
-                    boolean success = true;
+                    boolean success;
                     f.getParentFile().mkdirs();
                     try {
                         success = f.createNewFile();
@@ -214,7 +206,7 @@ public class FileTreePanel extends JPanel {
 
     private Collection<File> generateFileCache(File[] files, FileFilter fileFilter) {
         if (files != null && files.length > 0) {
-            List<File> fs = new ArrayList<File>();
+            List<File> fs = new ArrayList<>();
             addChildren(fs, files, fileFilter);
             return fs;
         }
@@ -261,13 +253,8 @@ public class FileTreePanel extends JPanel {
             } else {
 
                 try {
-                    EventQueue.invokeAndWait(new Runnable() {
-                        public void run() {
-                            FileTreePanel.this.refreshGui();
-                        }
-                    });
-                } catch (InterruptedException e) {
-                } catch (InvocationTargetException e) {
+                    EventQueue.invokeAndWait(FileTreePanel.this::refreshGui);
+                } catch (InterruptedException | InvocationTargetException e) {
                 }
             }
         }
@@ -291,11 +278,11 @@ public class FileTreePanel extends JPanel {
 
     private static class FileTreeCellRenderer
             extends DefaultTreeCellRenderer {
-        private final Map<String, Icon> iconCache = new HashMap<String, Icon>();
+        private final Map<String, Icon> iconCache = new HashMap<>();
 
-        private final Map<File, String> rootNameCache = new HashMap<File, String>();
+        private final Map<File, String> rootNameCache = new HashMap<>();
 
-        private final List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
+        private final List<Listener> listeners = new CopyOnWriteArrayList<>();
 
         private FileTreeCellRenderer() {
         }
@@ -464,7 +451,7 @@ public class FileTreePanel extends JPanel {
             File f = null;
             TreePath tp = FileTreePanel.this.tree.getSelectionPath();
             Object o = (tp == null) ? null : tp.getLastPathComponent();
-            if (o != null && o instanceof FileTreePanel.FileTreeNode) {
+            if (o instanceof FileTreeNode) {
                 f = ((FileTreePanel.FileTreeNode) o).file;
             }
 

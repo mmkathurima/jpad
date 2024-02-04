@@ -24,7 +24,7 @@ public class Theme {
     public static final int GAP = 4;
     public static final Border CENTRE_BORDER = BorderFactory.createEmptyBorder(4, 4, 4, 4);
 
-    private static final Font CODE_FONT = new Font("Monospaced", 0, 14);
+    private static final Font CODE_FONT = new Font("Monospaced", Font.PLAIN, 14);
     private static final Color HEADER_FG_COLOR = new Color(252, 252, 252);
     private static final Color HEADER_BG_COLOR = new Color(154, 165, 190);
     private static final Border OFFSET_BORDER = BorderFactory.createEmptyBorder(0, 0, 4, 4);
@@ -33,11 +33,11 @@ public class Theme {
     private static final InputLabeller INPUT_LABELLER_INSTANCE = new InputLabeller();
 
     private static Font getHeaderFont(Font curFont) {
-        return new Font(curFont.getName(), 1, curFont.getSize() + 7);
+        return new Font(curFont.getName(), Font.BOLD, curFont.getSize() + 7);
     }
 
     private static Font getSubHeaderFont(Font curFont) {
-        return new Font(curFont.getName(), 1, curFont.getSize() + 3);
+        return new Font(curFont.getName(), Font.BOLD, curFont.getSize() + 3);
     }
 
     public static Font getCodeFont() {
@@ -67,7 +67,7 @@ public class Theme {
         tablePanel.setAlignmentX(0.0F);
         tablePanel.setBorder(BorderFactory.createLineBorder(Color.LIGHT_GRAY));
 
-        JPanel tContainerPanel = new JPanel(new FlowLayout(0));
+        JPanel tContainerPanel = new JPanel(new FlowLayout(FlowLayout.LEFT));
         tContainerPanel.add(tablePanel);
         table.packAll();
         return tContainerPanel;
@@ -237,7 +237,7 @@ public class Theme {
 
         p.add(scrPane, "Center");
         String[] options = {"ok", "cancel"};
-        JOptionPane optPane = new JOptionPane(p, 3, 0, null, options, options[0]);
+        JOptionPane optPane = new JOptionPane(p, JOptionPane.QUESTION_MESSAGE, JOptionPane.YES_NO_OPTION, null, options, options[0]);
 
         JDialog d = optPane.createDialog(parent, title);
         d.setSize(new Dimension(560, 400));
@@ -372,7 +372,7 @@ public class Theme {
     public static class BoxyPanel
             extends JPanel {
         public BoxyPanel() {
-            this.setLayout(new BoxLayout(this, 3));
+            this.setLayout(new BoxLayout(this, BoxLayout.PAGE_AXIS));
         }
 
         public Component add(Component c) {
@@ -401,7 +401,7 @@ public class Theme {
         public JPanel get(String labelText, Component inputComp, String inputName, Component helpComponent, String lblTooltip) {
             JPanel p = new JPanel();
             FlowLayout flowLayout = (FlowLayout) p.getLayout();
-            flowLayout.setAlignment(0);
+            flowLayout.setAlignment(FlowLayout.LEFT);
 
             JLabel label = new JLabel(labelText);
             if (lblTooltip != null) {

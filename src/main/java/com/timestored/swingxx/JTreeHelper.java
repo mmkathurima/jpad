@@ -43,7 +43,7 @@ public class JTreeHelper {
                 if (path != null) {
                     DefaultMutableTreeNode mtn = (DefaultMutableTreeNode) path.getLastPathComponent();
                     Object o = (mtn != null) ? mtn.getUserObject() : null;
-                    if (o != null && o instanceof IdentifiableNode) {
+                    if (o instanceof IdentifiableNode) {
                         IdentifiableNode fn = (IdentifiableNode) o;
                         String id = fn.getId();
                         if (id != null && id.length() > 0 && curExpandedFolders.contains(id)) {
@@ -65,7 +65,7 @@ public class JTreeHelper {
                 if (path != null) {
                     DefaultMutableTreeNode mtn = (DefaultMutableTreeNode) path.getLastPathComponent();
                     Object o = (mtn != null) ? mtn.getUserObject() : null;
-                    if (o != null && o instanceof IdentifiableNode && tree.isExpanded(row)) {
+                    if (o instanceof IdentifiableNode && tree.isExpanded(row)) {
                         curExpandedFolders.add(((IdentifiableNode) o).getId());
                     }
                 }

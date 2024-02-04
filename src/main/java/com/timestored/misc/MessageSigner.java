@@ -35,11 +35,8 @@ public class MessageSigner {
                     }
                 }
             }
-        } catch (GeneralSecurityException e) {
+        } catch (GeneralSecurityException | IllegalArgumentException | IOException e) {
 
-        } catch (IOException e) {
-
-        } catch (IllegalArgumentException e) {
         }
 
         return null;

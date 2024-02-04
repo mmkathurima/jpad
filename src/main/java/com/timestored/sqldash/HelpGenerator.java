@@ -10,7 +10,6 @@ import com.timestored.sqldash.exampledb.StockDBAdapter;
 import javax.swing.JFileChooser;
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.Collection;
 import java.util.List;
@@ -19,7 +18,7 @@ import java.util.logging.Logger;
 public class HelpGenerator {
     private static final Logger LOG = Logger.getLogger(HelpGenerator.class.getName());
 
-    public static void main(String... args) throws IOException, InterruptedException, InvocationTargetException, SQLException {
+    public static void main(String... args) throws IOException, SQLException {
         File targetDir = null;
 
         if (args.length > 0) {
@@ -40,7 +39,7 @@ public class HelpGenerator {
         System.exit(0);
     }
 
-    public static void generate(File outDir) throws IOException, InterruptedException, InvocationTargetException, SQLException {
+    public static void generate(File outDir) throws IOException, SQLException {
         File helpFolder = new File(outDir, "help");
         helpFolder.mkdir();
 

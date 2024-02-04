@@ -19,7 +19,7 @@ class ListSelectionWidget
         extends AbstractWidget
         implements Widget {
     private final Queryable q;
-    private final Collection<Queryable> qs = new ArrayList<Queryable>(1);
+    private final Collection<Queryable> qs = new ArrayList<>(1);
     private String argKey = "";
     private String tooltip = "";
     private String hardcodedOptionsCsv;
@@ -29,7 +29,7 @@ class ListSelectionWidget
     private List<String> selections = Collections.emptyList();
     private WListSelector wListSelector;
     private ListEditorPanel ep;
-    private SELECTOR_TYPE selectorType = SELECTOR_TYPE.COMBOBOX;
+    private SELECTOR_TYPE selectorType;
     private JPanel p;
 
     public ListSelectionWidget(DesktopModel desktopModel, SELECTOR_TYPE selectorType) {
@@ -121,7 +121,7 @@ class ListSelectionWidget
     public void argChange(Map<String, Object> changes) {
         if (changes.containsKey(this.argKey)) {
             Object value = changes.get(this.argKey);
-            List<String> r = new ArrayList<String>();
+            List<String> r = new ArrayList<>();
             if (value instanceof List) {
                 for (String o : (List<String>) value) {
                     r.add("" + o);
@@ -156,7 +156,7 @@ class ListSelectionWidget
                 if (this.title == null) {
                     this.setTitle(rs.getMetaData().getColumnLabel(1));
                 }
-                List<String> v = new ArrayList<String>();
+                List<String> v = new ArrayList<>();
                 rs.beforeFirst();
                 while (rs.next()) {
                     v.add("" + rs.getObject(1));
@@ -251,7 +251,7 @@ class ListSelectionWidget
         if (this.hardcodedOptions.size() == 0) {
             return this.RSoptions;
         }
-        List<String> r = new ArrayList<String>(this.hardcodedOptions);
+        List<String> r = new ArrayList<>(this.hardcodedOptions);
         r.addAll(this.RSoptions);
         return r;
     }
@@ -322,7 +322,7 @@ class ListSelectionWidget
             this.appQueryEditorPanel = new QueryableEditorPanel(listWidget.desktopModel.getConnectionManager());
             this.appQueryEditorPanel.display(listWidget.q);
 
-            JComboBox<ListSelectionWidget.SELECTOR_TYPE> typeCB = new JComboBox<ListSelectionWidget.SELECTOR_TYPE>(ListSelectionWidget.SELECTOR_TYPE.values());
+            JComboBox<ListSelectionWidget.SELECTOR_TYPE> typeCB = new JComboBox<>(ListSelectionWidget.SELECTOR_TYPE.values());
             typeCB.addActionListener(new ActionListener() {
                 public void actionPerformed(ActionEvent e) {
                     listWidget.setSelectorType((ListSelectionWidget.SELECTOR_TYPE) typeCB.getSelectedItem());

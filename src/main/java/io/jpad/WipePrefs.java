@@ -4,10 +4,10 @@ import javax.swing.JOptionPane;
 import java.util.prefs.BackingStoreException;
 
 public class WipePrefs {
-    public static void main(String... args) throws BackingStoreException {
+    public static void main(String... args) {
         final String message = "First make sure JPad is closed!\r\n\r\nThen clicking yes below will remove:\r\n- all saved settings and \r\n- open file history. \r\nAre you sure you want to continue?";
 
-        int choice = JOptionPane.showConfirmDialog(null, message, "Delete all settings?", 0, 2);
+        int choice = JOptionPane.showConfirmDialog(null, message, "Delete all settings?", JOptionPane.YES_NO_OPTION, JOptionPane.WARNING_MESSAGE);
 
         if (choice == 0) {
             try {

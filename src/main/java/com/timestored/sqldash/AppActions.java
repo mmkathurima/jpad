@@ -36,7 +36,7 @@ import java.util.logging.Logger;
 public class AppActions {
     private static final Logger LOG = Logger.getLogger(AppActions.class.getName());
 
-    private final List<Action> addChartActions = new ArrayList<Action>();
+    private final List<Action> addChartActions = new ArrayList<>();
 
     private final Action addWorkspaceAction;
 
@@ -48,8 +48,8 @@ public class AppActions {
     private final Action newFileAction;
     private final Action closeFileAction;
     private final Action addFormWidgetAction;
-    private final FifoBuffer<File> recentOpenPaths = new FifoBuffer(9);
-    private final List<Listener> listeners = new CopyOnWriteArrayList<Listener>();
+    private final FifoBuffer<File> recentOpenPaths = new FifoBuffer<>(9);
+    private final List<Listener> listeners = new CopyOnWriteArrayList<>();
 
     private final AppModel appModel;
 
@@ -154,7 +154,7 @@ public class AppActions {
                 }
             }
         };
-        this.saveFileAction.putValue("MnemonicKey", Integer.valueOf(83));
+        this.saveFileAction.putValue("MnemonicKey", 83);
 
         this.saveAsFileAction = new ShortcutAction("Save As...", Theme.CIcon.DOCUMENT_SAVE_AS, null) {
             public void actionPerformed(ActionEvent e) {
@@ -163,7 +163,7 @@ public class AppActions {
                 }
             }
         };
-        this.saveAsFileAction.putValue("MnemonicKey", Integer.valueOf(65));
+        this.saveAsFileAction.putValue("MnemonicKey", 65);
 
         this.newFileAction = new ShortcutAction("New File", Theme.CIcon.DOCUMENT_NEW, 78) {
             public void actionPerformed(ActionEvent e) {
@@ -171,7 +171,7 @@ public class AppActions {
             }
         };
 
-        this.closeFileAction = new ShortcutAction("Close", null, "Close", Integer.valueOf(67), 115) {
+        this.closeFileAction = new ShortcutAction("Close", null, "Close", 67, 115) {
             public void actionPerformed(ActionEvent e) {
                 appModel.newDesktop();
                 File f = AppActions.this.currentFile;
@@ -179,11 +179,10 @@ public class AppActions {
                 for (Listener l : AppActions.this.listeners) {
                     l.fileClosed(f);
                 }
-                f = null;
             }
         };
 
-        this.demoLaunchActions = new ArrayList<Action>();
+        this.demoLaunchActions = new ArrayList<>();
 
         this.demoLaunchActions.add(new AbstractAction("MySQL Yahoo Finance Dashboard", Theme.CIcon.DAS_FILE.get16()) {
             public void actionPerformed(ActionEvent e) {
@@ -199,7 +198,7 @@ public class AppActions {
 
                     String msg = "This demo creates tables and insert data onto your MySQL database server:.\r\n" + mySC.getShortName() + "\r\n\r\nAre you sure you want to proceed?";
 
-                    int choice = JOptionPane.showConfirmDialog(parent, msg, null, 0);
+                    int choice = JOptionPane.showConfirmDialog(parent, msg, null, JOptionPane.YES_NO_OPTION);
 
                     if (choice == 0) {
                         AppActions.this.openDemoDialog(mySC, "stock-watch-h2.das");
@@ -227,7 +226,7 @@ public class AppActions {
                     });
                 } catch (SQLException se) {
                     String message = "Unable to initialise database:\r\n" + se.getMessage();
-                    JOptionPane.showMessageDialog(parent, message, "Sql Intiialisation Error", 2);
+                    JOptionPane.showMessageDialog(parent, message, "Sql Intiialisation Error", JOptionPane.WARNING_MESSAGE);
                 }
             }
         };
@@ -238,7 +237,7 @@ public class AppActions {
             public void actionPerformed(ActionEvent e) {
                 final String msg = "This demo creates tables and insert data onto a kdb database server on the local machine with port 5000.\r\n\r\nHave you started the kdb server on port 5000 and is it ok to proceed?";
 
-                int choice = JOptionPane.showConfirmDialog(parent, msg, null, 0);
+                int choice = JOptionPane.showConfirmDialog(parent, msg, null, JOptionPane.YES_NO_OPTION);
 
                 if (choice == 0) {
                     ServerConfig sc = new ServerConfig("localhost", 5000);
@@ -252,7 +251,7 @@ public class AppActions {
                 if (AppActions.this.openExample("example.das", new ServerConfig("localhost", 5000))) {
                     final String message = "This example relies on a kdb database server being present on localhost port 5000.\r\nIf you are not running a server on that port, edit the server configuration to point at an existing server.";
 
-                    JOptionPane.showMessageDialog(parent, message, "Example Dashboard", -1);
+                    JOptionPane.showMessageDialog(parent, message, "Example Dashboard", JOptionPane.PLAIN_MESSAGE);
                 }
             }
         });
@@ -321,9 +320,9 @@ public class AppActions {
         } catch (IOException e) {
             final String msg = "Error could not understand the file format.\r\nIf you are sure this is a valid .das file please contact\r\ntech@timestored.com";
 
-            JOptionPane.showMessageDialog(this.parent, msg, "File Open Error", 2);
+            JOptionPane.showMessageDialog(this.parent, msg, "File Open Error", JOptionPane.WARNING_MESSAGE);
             LOG.info(msg);
-            JOptionPane.showMessageDialog(this.parent, msg, "Error Opening", 0);
+            JOptionPane.showMessageDialog(this.parent, msg, "Error Opening", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -347,7 +346,7 @@ public class AppActions {
         } catch (IOException e) {
             String msg = "Error saving file: " + file;
             LOG.info(msg);
-            JOptionPane.showMessageDialog(this.parent, msg, "Error Saving", 0);
+            JOptionPane.showMessageDialog(this.parent, msg, "Error Saving", JOptionPane.ERROR_MESSAGE);
         }
     }
 
@@ -411,7 +410,7 @@ public class AppActions {
     }
 
     public List<JMenuItem> getOpenRecentFileActions() {
-        List<JMenuItem> l = new ArrayList<JMenuItem>();
+        List<JMenuItem> l = new ArrayList<>();
         List<File> fps = this.recentOpenPaths.getAll();
 
         for (int i = 0; i < fps.size(); i++) {
@@ -433,8 +432,8 @@ public class AppActions {
         return l;
     }
 
-    public boolean addListener(Listener appActionslistener) {
-        return this.listeners.add(appActionslistener);
+    public void addListener(Listener appActionslistener) {
+        this.listeners.add(appActionslistener);
     }
 
     public File getCurrentFile() {
@@ -450,7 +449,7 @@ public class AppActions {
         }
 
         if (fdDemo == null) {
-            JOptionPane.showMessageDialog(this.parent, "Could not find demo for the database type you requested.", "Sql Intiialisation Error", 2);
+            JOptionPane.showMessageDialog(this.parent, "Could not find demo for the database type you requested.", "Sql Intiialisation Error", JOptionPane.WARNING_MESSAGE);
         } else {
 
             fdDialog = new FinanceDemoFrame(sc.getShortName(), fdDemo);
@@ -472,7 +471,7 @@ public class AppActions {
             } catch (SQLException se) {
                 fdDialog.dispose();
                 String message = "Unable to initialise database:\r\n" + se.getMessage();
-                JOptionPane.showMessageDialog(this.parent, message, "Sql Intiialisation Error", 2);
+                JOptionPane.showMessageDialog(this.parent, message, "Sql Intiialisation Error", JOptionPane.WARNING_MESSAGE);
             }
         }
 

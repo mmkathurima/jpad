@@ -112,7 +112,7 @@ public class JDK9ClasspathLibraryInfo extends LibraryInfo {
     }
 
     @Override
-    public ClassFile createClassFile(String entryName) throws IOException {
+    public ClassFile createClassFile(String entryName) {
         // System.out.println("Create class file for entry: " + entryName);
         // NOTE: entryName always ends in ".class", so our map must account
         // for this.
@@ -192,17 +192,17 @@ public class JDK9ClasspathLibraryInfo extends LibraryInfo {
     }
 
     @Override
-    public void bulkClassFileCreationEnd() throws IOException {
+    public void bulkClassFileCreationEnd() {
 
     }
 
     @Override
-    public void bulkClassFileCreationStart() throws IOException {
+    public void bulkClassFileCreationStart() {
 
     }
 
     @Override
-    public ClassFile createClassFileBulk(String string) throws IOException {
+    public ClassFile createClassFileBulk(String string) {
         return this.createClassFileImpl(string);
     }
 }

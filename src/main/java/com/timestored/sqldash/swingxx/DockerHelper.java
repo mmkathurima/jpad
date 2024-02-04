@@ -11,8 +11,7 @@ public class DockerHelper {
     public static String getLayout(DockFrontend frontend) {
         XElement xroot = new XElement("layout");
         frontend.writeXML(xroot);
-        String layoutXml = xroot.toString();
-        return layoutXml;
+        return xroot.toString();
     }
 
     public static void loadLayout(String layoutXml, DockFrontend frontend) {
@@ -21,7 +20,7 @@ public class DockerHelper {
             try {
 
                 Set<String> layouts = frontend.getSettings();
-                String[] keys = layouts.toArray(new String[layouts.size()]);
+                String[] keys = layouts.toArray(new String[0]);
                 for (String key : keys) {
                     frontend.delete(key);
                 }

@@ -24,7 +24,7 @@ public class FormWidgetDTO
         this.id = formWidget.getId();
         this.title = formWidget.getTitle();
         this.layout = formWidget.getLayout();
-        this.widgets = new ArrayList<WidgetDTO>();
+        this.widgets = new ArrayList<>();
         for (Widget w : formWidget.ws)
             this.widgets.add(w.getDTO());
     }

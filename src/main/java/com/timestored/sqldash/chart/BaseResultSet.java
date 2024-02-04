@@ -8,295 +8,295 @@ import java.util.Map;
 
 public abstract class BaseResultSet
         extends AbstractResultSet {
-    public <T> T getObject(String arg0, Class<T> arg1) throws SQLException {
+    public <T> T getObject(String arg0, Class<T> arg1) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean isWrapperFor(Class<?> arg0) throws SQLException {
+    public boolean isWrapperFor(Class<?> arg0) {
         throw new UnsupportedOperationException();
     }
 
-    public Object getObject(String columnLabel, Map<String, Class<?>> map) throws SQLException {
+    public Object getObject(String columnLabel, Map<String, Class<?>> map) {
         throw new UnsupportedOperationException();
     }
 
-    public <T> T unwrap(Class<T> arg0) throws SQLException {
+    public <T> T unwrap(Class<T> arg0) {
         return null;
     }
 
-    public void cancelRowUpdates() throws SQLException {
+    public void cancelRowUpdates() {
         throw new UnsupportedOperationException();
     }
 
-    public void clearWarnings() throws SQLException {
+    public void clearWarnings() {
         throw new UnsupportedOperationException();
     }
 
-    public void insertRow() throws SQLException {
+    public void insertRow() {
         throw new UnsupportedOperationException();
     }
 
-    public Ref getRef(int columnIndex) throws SQLException {
+    public Ref getRef(int columnIndex) {
         throw new UnsupportedOperationException();
     }
 
-    public void close() throws SQLException {
+    public void close() {
         throw new UnsupportedOperationException();
     }
 
-    public void deleteRow() throws SQLException {
+    public void deleteRow() {
         throw new UnsupportedOperationException();
     }
 
-    public String getCursorName() throws SQLException {
+    public String getCursorName() {
         throw new UnsupportedOperationException();
     }
 
-    public int getFetchDirection() throws SQLException {
+    public int getFetchDirection() {
         throw new UnsupportedOperationException();
     }
 
-    public void setFetchDirection(int direction) throws SQLException {
+    public void setFetchDirection(int direction) {
         throw new UnsupportedOperationException();
     }
 
-    public int getFetchSize() throws SQLException {
+    public int getFetchSize() {
         throw new UnsupportedOperationException();
     }
 
-    public void setFetchSize(int rows) throws SQLException {
+    public void setFetchSize(int rows) {
         throw new UnsupportedOperationException();
     }
 
-    public int getHoldability() throws SQLException {
+    public int getHoldability() {
         throw new UnsupportedOperationException();
     }
 
-    public RowId getRowId(int columnIndex) throws SQLException {
+    public RowId getRowId(int columnIndex) {
         throw new UnsupportedOperationException();
     }
 
-    public SQLXML getSQLXML(int columnIndex) throws SQLException {
+    public SQLXML getSQLXML(int columnIndex) {
         throw new UnsupportedOperationException();
     }
 
-    public Statement getStatement() throws SQLException {
+    public Statement getStatement() {
         throw new UnsupportedOperationException();
     }
 
-    public int getType() throws SQLException {
+    public int getType() {
         throw new UnsupportedOperationException();
     }
 
-    public SQLWarning getWarnings() throws SQLException {
+    public SQLWarning getWarnings() {
         return null;
     }
 
-    public int getConcurrency() throws SQLException {
+    public int getConcurrency() {
         throw new UnsupportedOperationException();
     }
 
-    public boolean isClosed() throws SQLException {
+    public boolean isClosed() {
         throw new UnsupportedOperationException();
     }
 
-    public void moveToCurrentRow() throws SQLException {
+    public void moveToCurrentRow() {
         throw new UnsupportedOperationException();
     }
 
-    public void moveToInsertRow() throws SQLException {
+    public void moveToInsertRow() {
         throw new UnsupportedOperationException();
     }
 
-    public void refreshRow() throws SQLException {
+    public void refreshRow() {
         throw new UnsupportedOperationException();
     }
 
-    public boolean relative(int rows) throws SQLException {
+    public boolean relative(int rows) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean rowDeleted() throws SQLException {
+    public boolean rowDeleted() {
         throw new UnsupportedOperationException();
     }
 
-    public boolean rowInserted() throws SQLException {
+    public boolean rowInserted() {
         throw new UnsupportedOperationException();
     }
 
-    public boolean rowUpdated() throws SQLException {
+    public boolean rowUpdated() {
         throw new UnsupportedOperationException();
     }
 
-    public void updateAsciiStream(int columnIndex, InputStream x) throws SQLException {
+    public void updateAsciiStream(int columnIndex, InputStream x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateAsciiStream(int columnIndex, InputStream x, int length) throws SQLException {
+    public void updateAsciiStream(int columnIndex, InputStream x, int length) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateAsciiStream(int columnIndex, InputStream x, long length) throws SQLException {
+    public void updateAsciiStream(int columnIndex, InputStream x, long length) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateBigDecimal(int columnIndex, BigDecimal x) throws SQLException {
+    public void updateBigDecimal(int columnIndex, BigDecimal x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateBinaryStream(int columnIndex, InputStream x) throws SQLException {
+    public void updateBinaryStream(int columnIndex, InputStream x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateBinaryStream(int columnIndex, InputStream x, int length) throws SQLException {
+    public void updateBinaryStream(int columnIndex, InputStream x, int length) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateBinaryStream(int columnIndex, InputStream x, long length) throws SQLException {
+    public void updateBinaryStream(int columnIndex, InputStream x, long length) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateBlob(int columnIndex, Blob x) throws SQLException {
+    public void updateBlob(int columnIndex, Blob x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateBlob(int columnIndex, InputStream inputStream) throws SQLException {
+    public void updateBlob(int columnIndex, InputStream inputStream) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateBlob(int columnIndex, InputStream inputStream, long length) throws SQLException {
+    public void updateBlob(int columnIndex, InputStream inputStream, long length) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateBoolean(int columnIndex, boolean x) throws SQLException {
+    public void updateBoolean(int columnIndex, boolean x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateByte(int columnIndex, byte x) throws SQLException {
+    public void updateByte(int columnIndex, byte x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateBytes(int columnIndex, byte[] x) throws SQLException {
+    public void updateBytes(int columnIndex, byte[] x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateCharacterStream(int columnIndex, Reader x) throws SQLException {
+    public void updateCharacterStream(int columnIndex, Reader x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateCharacterStream(int columnIndex, Reader x, int length) throws SQLException {
+    public void updateCharacterStream(int columnIndex, Reader x, int length) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateCharacterStream(int columnIndex, Reader x, long length) throws SQLException {
+    public void updateCharacterStream(int columnIndex, Reader x, long length) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateClob(int columnIndex, Clob x) throws SQLException {
+    public void updateClob(int columnIndex, Clob x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateClob(int columnIndex, Reader reader) throws SQLException {
+    public void updateClob(int columnIndex, Reader reader) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateClob(int columnIndex, Reader reader, long length) throws SQLException {
+    public void updateClob(int columnIndex, Reader reader, long length) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateDate(int columnIndex, Date x) throws SQLException {
+    public void updateDate(int columnIndex, Date x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateDouble(int columnIndex, double x) throws SQLException {
+    public void updateDouble(int columnIndex, double x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateFloat(int columnIndex, float x) throws SQLException {
+    public void updateFloat(int columnIndex, float x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateInt(int columnIndex, int x) throws SQLException {
+    public void updateInt(int columnIndex, int x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateNCharacterStream(int columnIndex, Reader x) throws SQLException {
+    public void updateNCharacterStream(int columnIndex, Reader x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateNCharacterStream(int columnIndex, Reader x, long length) throws SQLException {
+    public void updateNCharacterStream(int columnIndex, Reader x, long length) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateNClob(int columnIndex, NClob nClob) throws SQLException {
+    public void updateNClob(int columnIndex, NClob nClob) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateNClob(int columnIndex, Reader reader) throws SQLException {
+    public void updateNClob(int columnIndex, Reader reader) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateNClob(int columnIndex, Reader reader, long length) throws SQLException {
+    public void updateNClob(int columnIndex, Reader reader, long length) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateNString(int columnIndex, String nString) throws SQLException {
+    public void updateNString(int columnIndex, String nString) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateNull(int columnIndex) throws SQLException {
+    public void updateNull(int columnIndex) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateObject(int columnIndex, Object x) throws SQLException {
+    public void updateObject(int columnIndex, Object x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateObject(int columnIndex, Object x, int scaleOrLength) throws SQLException {
+    public void updateObject(int columnIndex, Object x, int scaleOrLength) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateRef(int columnIndex, Ref x) throws SQLException {
+    public void updateRef(int columnIndex, Ref x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateRow() throws SQLException {
+    public void updateRow() {
         throw new UnsupportedOperationException();
     }
 
-    public void updateRowId(int columnIndex, RowId x) throws SQLException {
+    public void updateRowId(int columnIndex, RowId x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateSQLXML(int columnIndex, SQLXML xmlObject) throws SQLException {
+    public void updateSQLXML(int columnIndex, SQLXML xmlObject) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateShort(int columnIndex, short x) throws SQLException {
+    public void updateShort(int columnIndex, short x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateString(int columnIndex, String x) throws SQLException {
+    public void updateString(int columnIndex, String x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateTime(int columnIndex, Time x) throws SQLException {
+    public void updateTime(int columnIndex, Time x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateTimestamp(int columnIndex, Timestamp x) throws SQLException {
+    public void updateTimestamp(int columnIndex, Timestamp x) {
         throw new UnsupportedOperationException();
     }
 
-    public boolean wasNull() throws SQLException {
+    public boolean wasNull() {
         throw new UnsupportedOperationException();
     }
 
-    public void updateLong(int columnIndex, long x) throws SQLException {
+    public void updateLong(int columnIndex, long x) {
         throw new UnsupportedOperationException();
     }
 
-    public void updateArray(int columnIndex, Array x) throws SQLException {
+    public void updateArray(int columnIndex, Array x) {
         throw new UnsupportedOperationException();
     }
 }

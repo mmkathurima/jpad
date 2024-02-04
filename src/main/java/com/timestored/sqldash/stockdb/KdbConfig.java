@@ -79,7 +79,7 @@ class KdbConfig
         sb.append(")");
 
         sb.append(";\r\n\t price:");
-        for (Stock s : stocks) this.appendNumL(sb, s.getPrice().doubleValue());
+        for (Stock s : stocks) this.appendNumL(sb, s.getPrice());
         sb.append("f;\r\n\t volume:");
         for (Stock s : stocks) this.appendNumL(sb, s.getVolume());
         sb.append("f;\r\n\t pe:");
@@ -103,7 +103,7 @@ class KdbConfig
     }
 
     private void appendNumL(StringBuilder sb, double v) {
-        sb.append(" ").append(Double.isNaN(v) ? "0n" : Double.valueOf(v));
+        sb.append(" ").append(Double.isNaN(v) ? "0n" : v);
     }
 
     public List<String> getInitSql() {
